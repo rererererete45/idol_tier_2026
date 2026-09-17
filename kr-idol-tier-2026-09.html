@@ -34,11 +34,9 @@ header>*:not(.aurora){position:relative;z-index:1}
 @keyframes auroraMove2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,40px)}}
 @keyframes auroraMove3{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-30px)}}
 .eyebrow{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin:0 0 10px}
-h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin:0 0 12px;background:linear-gradient(100deg,#fff 40%,rgba(255,255,255,.45) 50%,#fff 60%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s ease-in-out infinite}
-@keyframes shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin:0 0 12px}
 @media(prefers-reduced-motion:reduce){
   .aurora span{animation:none}
-  h1{animation:none;background:none;-webkit-text-fill-color:initial;color:var(--tx)}
 }
 .sub{font-size:14px;color:var(--tx2);margin:0;max-width:62ch}
 .formula{margin:18px 0 0;display:flex;flex-wrap:wrap;gap:6px}
