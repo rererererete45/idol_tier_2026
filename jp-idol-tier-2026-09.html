@@ -72,6 +72,12 @@ h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-hei
 .card{background:var(--surf);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;transition:background .2s,box-shadow .2s,transform .2s}
 .card:hover{background:var(--card2);box-shadow:var(--sh-md);transform:translateY(-2px)}
 .crow{display:flex;align-items:flex-start;gap:10px}
+.card:has(.cmpbtn.on){box-shadow:0 0 0 2px var(--green) inset}
+.cmpbtn{flex:none;width:28px;height:28px;border-radius:50%;background:var(--surf2);color:var(--tx2);border:0;cursor:pointer;font-size:15px;font-weight:700;line-height:1;display:inline-flex;align-items:center;justify-content:center;padding:0;transition:background .15s,color .15s}
+.cmpbtn:hover{background:var(--card)}
+.cmpbtn.on{background:var(--green);color:#000}
+@keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-3px)}40%,60%{transform:translateX(3px)}}
+.cmpbtn.shake{animation:shake .3s}
 .rank{font-size:12px;font-weight:700;color:var(--tx3);min-width:34px;padding-top:3px}
 .nm{font-size:16px;font-weight:700;line-height:1.25;margin:0;word-break:break-word;flex:1}
 .tot{text-align:right;line-height:1}
@@ -98,10 +104,53 @@ h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-hei
 .empty{text-align:center;color:var(--tx3);font-size:14px;padding:60px 0}
 footer{margin-top:56px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:12px;color:var(--tx3);line-height:1.7}
 footer a{color:var(--tx2);text-decoration:underline}
+body.has-tray{padding-bottom:70px}
+
+/* ---- compare tray & modal ---- */
+.cmptray{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surf2);box-shadow:var(--sh-hv);padding:12px 20px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;flex-wrap:wrap;transform:translateY(110%);transition:transform .25s;max-width:1360px;margin:0 auto;border-radius:12px 12px 0 0}
+.cmptray.show{transform:translateY(0)}
+.cmptray .chips{display:flex;gap:6px;flex-wrap:wrap;flex:1;min-width:0}
+.cmpchip{display:inline-flex;align-items:center;gap:6px;background:var(--card);color:var(--tx);font-size:12px;font-weight:700;padding:6px 8px 6px 12px;border-radius:9999px;max-width:180px}
+.cmpchip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cmpchip button{flex:none;background:transparent;border:0;color:var(--tx2);cursor:pointer;font-size:12px;line-height:1;padding:4px}
+.cmpchip button:hover{color:var(--tx)}
+.cmptray .cmpactions{display:flex;gap:8px;flex:none}
+.cmpmodal{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center}
+.cmpmodal.hidden{display:none}
+.cmppanel{background:var(--surf);width:100%;max-width:900px;max-height:86vh;overflow-y:auto;border-radius:16px 16px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom))}
+@media(min-width:720px){.cmpmodal{align-items:center}.cmppanel{border-radius:16px;max-height:80vh}}
+.cmphead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.cmphead h2{font-size:18px;margin:0;font-weight:900}
+.cmpclose{flex:none;background:var(--surf2);border:0;color:var(--tx2);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:15px}
+.cmpclose:hover{background:var(--card);color:var(--tx)}
+.cmptable{display:flex;flex-direction:column;gap:16px}
+.cmprow .lbl{display:block;font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px}
+.cmpbars{display:flex;flex-direction:column;gap:6px}
+.cmpbaritem{display:grid;grid-template-columns:96px 1fr 32px;gap:8px;align-items:center}
+.cmpbaritem .gname{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmpbaritem .trk{height:6px;border-radius:3px;background:#3a3a3a;overflow:hidden}
+.cmpbaritem .fil{display:block;height:6px;border-radius:3px}
+.cmpbaritem .val{font-size:11.5px;font-weight:700;color:var(--tx2);text-align:right;font-variant-numeric:tabular-nums}
+
 @media(max-width:560px){
   header{padding:32px 0 16px}
   .grid{grid-template-columns:1fr}
   .wrap{padding:0 14px 48px}
+  .crow{gap:8px}
+  .rank{min-width:24px}
+  .pills{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+  .pills::-webkit-scrollbar{display:none}
+  .pill{flex:none}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .acts{gap:6px}
+  .cmptray{border-radius:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));flex-direction:column;align-items:stretch;gap:8px}
+  .cmptray .chips{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .cmptray .chips::-webkit-scrollbar{display:none}
+  .cmpchip{flex:none}
+  .cmptray .cmpactions{width:100%}
+  .cmptray .cmpactions .pill{flex:1;text-align:center}
+  .cmpbaritem{grid-template-columns:76px 1fr 28px}
+  body.has-tray{padding-bottom:112px}
 }
 </style>
 </head>
@@ -147,6 +196,20 @@ footer a{color:var(--tx2);text-decoration:underline}
 
 </div>
 
+<div class="cmptray" id="cmptray">
+  <div class="chips" id="cmpchips"></div>
+  <div class="cmpactions">
+    <button class="pill" id="cmpOpen" aria-pressed="true">비교 보기</button>
+    <button class="pill" id="cmpClear">초기화</button>
+  </div>
+</div>
+<div class="cmpmodal hidden" id="cmpmodal">
+  <div class="cmppanel">
+    <div class="cmphead"><h2>그룹 비교</h2><button class="cmpclose" id="cmpClose" aria-label="닫기">✕</button></div>
+    <div class="cmptable" id="cmptable"></div>
+  </div>
+</div>
+
 <script>
 const D=[["=LOVE",25,20,18,15,10,9,0],["乃木坂46",24,20,20,13,8,10,0],["FRUITS ZIPPER",24,20,18,14,10,8,0],["HANA",20,17,20,15,10,9,0],["NiziU",24,17,17,13,7,9,0],["CUTIE STREET",20,17,16,14,10,7,0],["櫻坂46",22,19,17,11,7,8,0],["日向坂46",21,18,17,10,7,8,0],["AKB48",18,18,20,9,6,9,0],["iLiFE!",22,17,12,13,9,7,0],["超ときめき♡宣伝部",21,16,16,12,8,7,0],["CANDY TUNE",17,15,15,15,9,7,0],["ME:I",18,17,16,12,8,7,0],["i☆Ris",20,16,14,11,7,8,2],["≠ME",18,17,14,11,8,7,0],["いぎなり東北産",20,15,14,8,9,8,2],["モーニング娘。'26",18,17,17,8,6,7,0],["ももいろクローバーZ",18,15,19,8,4,7,0],["Juice=Juice",18,16,14,8,7,7,0],["SWEET STEADY",14,13,12,12,9,7,0],["≒JOY",15,15,12,10,8,7,0],["HKT48",15,15,15,7,6,8,1],["高嶺のなでしこ",14,13,12,11,8,7,0],["PassCode",19,13,10,9,6,7,2],["アンジュルム",16,15,13,7,6,7,0],["WHITE SCORPION",16,12,9,9,9,8,1],["ファントムシータ",12,10,10,14,8,7,0],["MORE STAR",14,10,8,10,10,7,1],["Rain Tree",15,11,8,8,9,8,1],["SKE48",14,16,12,6,4,7,0],["わーすた",15,12,11,8,6,7,2],["私立恵比寿中学",15,13,12,7,5,7,0],["Merry BAD TUNE.",16,12,8,8,8,6,1],["つばきファクトリー",14,14,10,6,6,8,1],["Devil ANTHEM.",16,12,8,7,8,6,1],["Girls²",12,11,10,10,7,7,0],["可憐なアイボリー",13,11,9,9,8,7,1],["INUWASI",17,12,7,7,7,6,2],["Palette Parade",15,11,8,8,8,6,1],["JamsCollection",13,11,10,8,7,6,0],["NMB48",14,14,11,5,4,7,0],["OCHA NORMA",13,13,10,6,5,8,1],["@onefive",14,10,8,8,8,6,2],["AVAM",13,10,8,10,8,5,1],["ExWHYZ",12,10,10,8,7,7,0],["IS:SUE",11,11,8,9,8,7,0],["NGT48",13,13,12,5,4,7,2],["fav me",11,9,8,10,9,7,1],["きゅるりんってしてみて",12,10,9,10,7,6,0],["虹のコンキスタドール",13,11,10,8,5,7,1],["Appare!",13,10,10,8,6,6,0],["NANIMONO",14,11,7,8,8,5,1],["STU48",13,13,10,5,5,7,0],["ばってん少女隊",14,11,9,7,6,6,2],["タイトル未定",15,11,7,7,8,5,2],["僕が見たかった青空",12,12,8,7,7,7,0],["22/7",13,11,11,7,4,6,2],["のんふぃく！",13,11,7,9,7,5,1],["最終未来少女",12,9,8,10,8,5,2],["BEYOOOOONDS",12,12,10,5,5,7,0],["CYNHN",15,10,7,6,7,6,1],["GANG PARADE",14,10,10,7,4,6,2],["SUPER☆GiRLS",12,10,13,7,3,6,2],["夜光性アミューズ",13,10,8,9,6,5,1],["iScream",11,9,8,10,7,5,2],["yosugala",12,10,9,7,6,6,0],["UtaGe!",12,10,7,8,7,5,1],["アンスリューム",13,10,7,7,7,5,2],["フィロソフィーのダンス",11,9,10,8,5,6,2],["ラフ×ラフ",10,8,8,9,7,7,1],["手羽先センセーション",13,10,8,6,6,6,1],["FES☆TIVE",12,10,8,7,5,6,1],["MyDearDarlin'",12,10,8,7,6,5,1],["ロージークロニクル",10,10,8,6,8,6,2],["Task have Fun",12,10,9,6,4,6,1],["なみだ色の消しごむ",11,9,7,8,7,5,1],["#Mooove!",8,8,8,10,7,5,1],["AsIs",10,8,6,8,9,5,1],["衛星とカラテア",13,10,7,6,5,5,1],["NEO JAPONISM",12,10,8,6,4,5,1],["Peel the Apple",11,9,8,7,5,5,1],["ドラマチックレコード",11,9,7,7,7,4,2],["GILTY x GILTY",12,9,6,7,6,4,2],["MYERA",8,7,7,10,8,4,2],["THE ORCHESTRA TOKYO",12,9,6,6,6,5,2],["KiSS KiSS",11,9,7,6,5,5,2],["LinQ",10,9,9,6,4,5,2],["TENRIN",12,8,6,7,5,5,2],["#よーよーよー",8,8,8,10,4,4,1],["STAiNY",10,8,6,7,6,5,2],["THE ENCORE",11,8,6,7,6,4,2],["UN1CON",7,6,6,10,9,4,2],["ジエメイ",12,9,6,6,5,4,2],["純情のアフィリア",10,8,9,6,4,5,2],["SITUASION",11,8,6,6,6,4,2],["アップアップガールズ（仮）",11,8,9,5,3,5,2],["二丁目の魁カミングアウト",11,9,7,5,4,5,2],["CiON",10,8,6,6,5,5,1],["chuLa",10,8,6,7,5,4,2],["きのホ。",10,8,7,6,5,4,2],["カラフルスクリーム",10,8,7,6,5,4,2],["クマリデパート",10,8,7,6,4,5,1],["マジカル・パンチライン",9,8,8,7,3,5,2],["Ma'Scar'Piece",9,7,6,7,6,4,2],["PIGGS",10,8,7,6,4,4,2],["Sweet Alley",9,8,6,7,4,5,1],["fishbowl",9,8,7,6,4,5,1],["アップアップガールズ（2）",10,8,7,5,4,5,2],["キングサリ",11,8,5,6,5,4,2],["ハルニシオン",10,8,5,6,6,4,2],["君に、胸キュン。",9,8,7,6,5,4,2],["KRD8",9,8,7,5,4,5,2],["NUANCE",9,8,6,5,5,5,2],["さよならステイチューン",9,7,6,7,5,4,2],["透色ドロップ",10,8,6,5,4,5,1],["Gran☆Ciel",9,8,6,5,4,5,2],["かすみ草とステラ",10,8,6,5,4,4,1],["すーぱーぷーばぁー!!",9,7,5,6,6,4,2],["点染テンセイ少女。",9,7,5,6,6,4,2],["DREAMING MONSTER",9,8,6,5,4,4,2],["Kolokol",9,8,5,5,4,4,1],["PinkySpice",9,7,6,5,4,4,2],["Ringwanderung",9,8,6,5,3,4,1],["ルルネージュ",9,7,5,6,4,4,2],["SAI²Rium",8,7,5,6,4,4,2],["Bunny La Crew",8,7,5,5,4,4,2]];
 const LB=["공연","팬덤","인지도","SNS","기세","업계"],MX=[25,20,20,15,10,10],CF=["높음","중상","중간"];
@@ -170,6 +233,8 @@ sp.innerHTML='<button class="pill" data-s="-1" aria-pressed="true">총점</butto
 
 const ICN='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.6 14.4a.8.8 0 01-1.1.3c-3-1.8-6.7-2.2-11.1-1.2a.8.8 0 11-.3-1.5c4.8-1.1 8.9-.6 12.2 1.4.4.2.5.7.3 1zm1.2-2.7a1 1 0 01-1.3.3c-3.4-2.1-8.6-2.7-12.6-1.5a1 1 0 11-.6-1.9c4.6-1.4 10.3-.7 14.2 1.7.5.3.6.9.3 1.4zm.1-2.8C14 8.6 7.7 8.4 4.1 9.5a1.2 1.2 0 11-.7-2.3C7.6 5.9 14.5 6.2 19 8.8a1.2 1.2 0 01-1.2 2.1z"/></svg>';
 const AIC='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 00-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 002.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 001.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 001.76-1.77C22 15.2 22 12 22 12s0-3.2-.4-4.8zM10 15.1V8.9l5.2 3.1-5.2 3.1z"/></svg>';
+const CPAL=['#1ed760','#ffa42b','#539df5','#f3727f'];
+const cmp=new Set();
 
 function card(o){
   const nm=encodeURIComponent(o.n);
@@ -178,7 +243,8 @@ function card(o){
     return '<div class="br"><span>'+l+'</span><span class="trk"><span class="fil'+(p>=70?'':' lo')+'" style="width:'+p+'%"></span></span><span>'+v+'</span></div>';
   }).join('');
   const cc=o.c===0?'hi':o.c===2?'mid':'';
-  return '<article class="card"><div class="crow"><span class="rank">#'+o.r+'</span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
+  const cmpOn=cmp.has(o.n);
+  return '<article class="card"><div class="crow"><button class="cmpbtn'+(cmpOn?' on':'')+'" data-cmp="'+esc(o.n)+'" aria-pressed="'+cmpOn+'" aria-label="비교에 추가">'+(cmpOn?'✓':'+')+'</button><span class="rank">#'+o.r+'</span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
    +'<div class="meta"><span class="chip">'+T[ti(o.s)][0]+'</span><span class="chip '+cc+'">신뢰도 '+CF[o.c]+'</span></div>'
    +'<div class="bars">'+bars+'</div>'
    +'<div class="acts"><a class="btn grn" target="_blank" rel="noopener noreferrer" href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
@@ -210,6 +276,66 @@ sp.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;s
 const qi=document.getElementById('q'),cl=document.getElementById('clr');
 qi.addEventListener('input',()=>{qs=qi.value.trim().toLowerCase();cl.style.display=qs?'block':'none';render()});
 cl.addEventListener('click',()=>{qi.value='';qs='';cl.style.display='none';qi.focus();render()});
+
+/* ---- 그룹 비교 모드 ---- */
+function setCmpBtn(n,on){
+  document.querySelectorAll('.cmpbtn[data-cmp="'+CSS.escape(n)+'"]').forEach(x=>{
+    x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);x.textContent=on?'✓':'+';
+  });
+}
+function toggleCmp(n,btn){
+  if(cmp.has(n)){cmp.delete(n);setCmpBtn(n,false)}
+  else{
+    if(cmp.size>=4){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),300);return}
+    cmp.add(n);setCmpBtn(n,true);
+  }
+  renderTray();
+}
+function renderTray(){
+  const tray=document.getElementById('cmptray');
+  const list=[...cmp];
+  document.body.classList.toggle('has-tray',list.length>0);
+  tray.classList.toggle('show',list.length>0);
+  document.getElementById('cmpchips').innerHTML=list.map(n=>'<span class="cmpchip"><span>'+esc(n)+'</span><button data-rm="'+esc(n)+'" aria-label="제거">✕</button></span>').join('');
+  document.getElementById('cmpOpen').textContent=list.length?'비교 보기 ('+list.length+')':'비교 보기';
+  if(!list.length)document.getElementById('cmpmodal').classList.add('hidden');
+}
+function buildCmpTable(){
+  const groups=[...cmp].map(n=>A.find(o=>o.n===n)).filter(Boolean);
+  const rows=[['총점',null]].concat(LB.map((l,i)=>[l,i]));
+  document.getElementById('cmptable').innerHTML=rows.map(([label,idx])=>{
+    const mx=idx===null?100:MX[idx];
+    const bars=groups.map((g,gi)=>{
+      const v=idx===null?g.s:g.v[idx];
+      const p=Math.max(4,Math.round(v/mx*100));
+      const col=CPAL[gi%CPAL.length];
+      return '<div class="cmpbaritem"><span class="gname" style="color:'+col+'">'+esc(g.n)+'</span><span class="trk"><span class="fil" style="width:'+p+'%;background:'+col+'"></span></span><span class="val">'+v+'</span></div>';
+    }).join('');
+    return '<div class="cmprow"><span class="lbl">'+label+(idx===null?'':' / '+mx)+'</span><div class="cmpbars">'+bars+'</div></div>';
+  }).join('');
+}
+document.getElementById('board').addEventListener('click',e=>{
+  const b=e.target.closest('.cmpbtn');
+  if(!b)return;
+  toggleCmp(b.dataset.cmp,b);
+});
+document.getElementById('cmpchips').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-rm]');
+  if(!b)return;
+  cmp.delete(b.dataset.rm);setCmpBtn(b.dataset.rm,false);renderTray();
+});
+document.getElementById('cmpClear').addEventListener('click',()=>{
+  [...cmp].forEach(n=>setCmpBtn(n,false));cmp.clear();renderTray();
+});
+document.getElementById('cmpOpen').addEventListener('click',()=>{
+  if(!cmp.size)return;
+  buildCmpTable();
+  document.getElementById('cmpmodal').classList.remove('hidden');
+});
+document.getElementById('cmpClose').addEventListener('click',()=>document.getElementById('cmpmodal').classList.add('hidden'));
+document.getElementById('cmpmodal').addEventListener('click',e=>{if(e.target.id==='cmpmodal')e.currentTarget.classList.add('hidden')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('cmpmodal').classList.add('hidden')});
+
 render();
 </script>
 </body>
