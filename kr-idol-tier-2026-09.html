@@ -169,6 +169,11 @@ body.has-tray{padding-bottom:70px}
 
 /* ---- 상세 필터 ---- */
 .filters{margin-top:4px}
+.filtertoggle{display:inline-flex;align-items:center;gap:6px;background:transparent;border:0;color:var(--tx2);font-family:var(--fs);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;padding:4px 0;margin-top:2px}
+.filtertoggle:hover{color:var(--tx)}
+.filtertoggle .badge{background:var(--green);color:#000;font-size:10px;font-weight:800;padding:1px 7px;border-radius:9999px}
+.filtertoggle svg{width:12px;height:12px;fill:currentColor;transition:transform .2s}
+.filtertoggle[aria-expanded="true"] svg{transform:rotate(180deg)}
 
 /* ---- 그룹 상세 모달 ---- */
 .card{cursor:pointer}
@@ -240,9 +245,13 @@ body.has-tray{padding-bottom:70px}
     <input id="q" type="search" placeholder="그룹 이름 검색" autocomplete="off" aria-label="그룹 이름 검색">
     <button id="clr" aria-label="검색어 지우기">✕</button>
   </div>
+  <button class="filtertoggle" id="filterToggle" aria-expanded="false" aria-controls="filtersPanel">
+    상세 필터<span class="badge" id="filterBadge" hidden></span>
+    <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+  </button>
 </div>
 
-<div class="filters">
+<div class="filters" id="filtersPanel" hidden>
   <div class="pgroup">
     <span class="plabel">세대</span>
     <div class="pills" id="genpills"></div>
@@ -316,7 +325,7 @@ function statusBucket(s){
 const avg=k=>(A.reduce((a,o)=>a+(k<0?o.s:o.v[k]),0)/A.length).toFixed(1);
 document.getElementById('stats').innerHTML=[
   ['수록 그룹',A.length+'팀'],['평균 총점',avg(-1)],['평균 공연점수',avg(2)+' / 20'],
-  ['S+ 이상',A.filter(o=>o.s>=90).length+'팀'],['1차 검증완료',A.filter(o=>o.verify==='1차 검증완료').length+'팀']
+  ['S+ 이상',A.filter(o=>o.s>=90).length+'팀'],['소속사 수',new Set(A.map(o=>o.agency)).size+'곳']
 ].map(([k,v])=>'<div class="stat"><p class="k">'+k+'</p><p class="v">'+v+'</p></div>').join('');
 
 const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -359,12 +368,26 @@ function wireFacet(el,setter){
     setter(b.dataset.v);
     el.querySelectorAll('.pill').forEach(x=>x.setAttribute('aria-pressed',x===b));
     render();
+    updateFilterBadge();
   });
 }
 wireFacet(gp,v=>gf=v);
 wireFacet(stp,v=>stf=v);
 wireFacet(ap,v=>af=v);
 wireFacet(sap,v=>saf=v);
+
+const filterToggle=document.getElementById('filterToggle'),filtersPanel=document.getElementById('filtersPanel');
+filterToggle.addEventListener('click',()=>{
+  const open=filtersPanel.hidden;
+  filtersPanel.hidden=!open;
+  filterToggle.setAttribute('aria-expanded',open);
+});
+function updateFilterBadge(){
+  const n=[tf,gf,stf,af,saf].filter(v=>v!=='ALL').length;
+  const b=document.getElementById('filterBadge');
+  b.hidden=n===0;
+  b.textContent=n;
+}
 
 if(!REDUCE)document.querySelectorAll('.pill').forEach(b=>{
   b.addEventListener('mousemove',e=>{
@@ -388,11 +411,11 @@ function card(o){
     const v=o.v[i],p=Math.round(v/MX[i]*100);
     return '<div class="br"><span>'+l+'</span><span class="trk"><span class="fil'+(p>=70?'':' lo')+'" style="width:'+p+'%"></span></span><span>'+v+'</span></div>';
   }).join('');
-  const cc=o.verify==='1차 검증완료'?'hi':'mid';
+  const verifychip=o.verify==='1차 검증완료'?'':'<span class="chip mid">'+esc(o.verify)+'</span>';
   const stchip=o.status==='현역'?'':'<span class="chip">'+esc(o.status)+'</span>';
   const cmpOn=cmp.has(o.n);
   return '<article class="card" data-slug="'+esc(o.slug)+'"><div class="crow"><button class="cmpbtn'+(cmpOn?' on':'')+'" data-cmp="'+esc(o.n)+'" aria-pressed="'+cmpOn+'" aria-label="비교에 추가">'+(cmpOn?'✓':'+')+'</button><span class="rank">#'+o.r+'</span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
-   +'<div class="meta"><span class="chip">'+T[ti(o.s)][0]+'</span><span class="chip '+cc+'">'+esc(o.verify)+'</span>'+stchip+'</div>'
+   +'<div class="meta"><span class="chip">'+T[ti(o.s)][0]+'</span>'+verifychip+stchip+'</div>'
    +'<div class="bars">'+bars+'</div>'
    +'<div class="acts"><a class="btn grn"'+TGT+' href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
    +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
@@ -421,7 +444,7 @@ function render(){
   }).join('');
 }
 tp.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;tf=b.dataset.t;
-  tp.querySelectorAll('.pill').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+  tp.querySelectorAll('.pill').forEach(x=>x.setAttribute('aria-pressed',x===b));render();updateFilterBadge()});
 sp.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;sf=+b.dataset.s;
   sp.querySelectorAll('.pill').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
 const qi=document.getElementById('q'),cl=document.getElementById('clr');
@@ -438,7 +461,7 @@ function detailHTML(o){
     const v=o.v[i],p=Math.round(v/MX[i]*100);
     return '<div class="br"><span>'+l+'</span><span class="trk"><span class="fil'+(p>=70?'':' lo')+'" style="width:'+p+'%"></span></span><span>'+v+'</span></div>';
   }).join('');
-  const vc=o.verify==='1차 검증완료'?'hi':'mid';
+  const verifychip=o.verify==='1차 검증완료'?'':'<span class="chip mid">'+esc(o.verify)+'</span>';
   const info=[
     ['데뷔일',o.debut||'-'],['소속사',o.agency||'-'],
     ['멤버수',(o.members||o.members===0)?o.members+'명':'-'],['대표곡',o.songs||'-'],
@@ -450,7 +473,7 @@ function detailHTML(o){
   return '<div class="cmphead"><h2>그룹 상세</h2><button class="cmpclose" id="detailClose" aria-label="닫기">✕</button></div>'
     +'<div class="dphead">'+photo
     +'<div class="dpinfo"><h2>'+esc(o.n)+'</h2>'
-    +'<div class="dpmeta"><span class="chip">'+tier+'</span><span class="chip '+vc+'">'+esc(o.verify)+'</span></div>'
+    +'<div class="dpmeta"><span class="chip">'+tier+'</span>'+verifychip+'</div>'
     +'<div class="dpscore"><span class="n">'+o.s+'</span><span class="u">/ 100 · #'+o.r+'</span></div>'
     +(o.img?'<p class="dpsrc">사진 출처: <a href="https://namu.wiki/w/'+nm+'"'+TGT+'>나무위키</a></p>':'')
     +'</div></div>'
