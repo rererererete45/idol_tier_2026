@@ -135,13 +135,6 @@ footer a{color:var(--tx2);text-decoration:underline}
     <span class="plabel">정렬</span>
     <div class="pills" id="sortpills"></div>
   </div>
-  <div class="pgroup" id="appwrap" hidden>
-    <span class="plabel">열기</span>
-    <div class="pills">
-      <button class="pill" id="appmode" aria-pressed="true">앱으로 열기</button>
-      <button class="pill" id="webmode" aria-pressed="false">브라우저로 열기</button>
-    </div>
-  </div>
 </div>
 
 <main id="board"></main>
@@ -149,8 +142,7 @@ footer a{color:var(--tx2);text-decoration:underline}
 
 <footer>
   <p>점수는 공개 공연 규모·투어 회차·매진 여부, CD/특전·팬클럽 구매력, 대중 인지도, 스트리밍·SNS 화제량, 최근 12개월 성장세, 메이저 미디어 존재감을 교차 반영한 상대평가 지수입니다. 신뢰도 <b style="color:var(--green)">높음</b>은 복수 공개 지표가 확보된 메이저·중상위권, <b style="color:var(--warn)">중간</b>은 확장 전수조사군으로 지표 해상도가 낮습니다.</p>
-  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결됩니다. 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>
-  <p>모바일에서는 설치된 앱을 먼저 실행하고, 앱이 없으면 약 1.4초 뒤 웹 페이지로 넘어갑니다. 앱 전환이 막히는 환경이라면 상단의 <b style="color:var(--tx2)">브라우저로 열기</b>를 선택하세요.</p>
+  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결되며, 새 탭에서 열립니다. 해당 앱이 설치되어 있다면 기기 설정에 따라 앱으로 바로 열릴 수 있습니다. 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>
 </footer>
 
 </div>
@@ -189,8 +181,8 @@ function card(o){
   return '<article class="card"><div class="crow"><span class="rank">#'+o.r+'</span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
    +'<div class="meta"><span class="chip">'+T[ti(o.s)][0]+'</span><span class="chip '+cc+'">신뢰도 '+CF[o.c]+'</span></div>'
    +'<div class="bars">'+bars+'</div>'
-   +'<div class="acts"><a class="btn grn" data-app="spotify:search:'+nm+'" data-web="https://open.spotify.com/search/'+nm+'" target="_blank" rel="noopener noreferrer" href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
-   +'<a class="btn out" data-app="youtube://results?search_query='+nm+'" data-web="https://www.youtube.com/results?search_query='+nm+'" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
+   +'<div class="acts"><a class="btn grn" target="_blank" rel="noopener noreferrer" href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
+   +'<a class="btn out" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
    +'<a class="btn out" target="_blank" rel="noopener noreferrer" href="https://namu.wiki/w/'+nm+'">나무위키</a></div></article>';
 }
 function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -218,31 +210,6 @@ sp.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;s
 const qi=document.getElementById('q'),cl=document.getElementById('clr');
 qi.addEventListener('input',()=>{qs=qi.value.trim().toLowerCase();cl.style.display=qs?'block':'none';render()});
 cl.addEventListener('click',()=>{qi.value='';qs='';cl.style.display='none';qi.focus();render()});
-
-/* ---- 모바일: 설치된 앱으로 먼저 열고, 실패하면 웹으로 ---- */
-const UA=navigator.userAgent||'';
-const MOB=/Android|iPhone|iPad|iPod/i.test(UA)||(/Macintosh/.test(UA)&&navigator.maxTouchPoints>1);
-let appMode=true;
-if(MOB){
-  const aw=document.getElementById('appwrap');aw.hidden=false;
-  const am=document.getElementById('appmode'),wm=document.getElementById('webmode');
-  const set=v=>{appMode=v;am.setAttribute('aria-pressed',v);wm.setAttribute('aria-pressed',!v)};
-  am.addEventListener('click',()=>set(true));
-  wm.addEventListener('click',()=>set(false));
-  document.getElementById('board').addEventListener('click',e=>{
-    const a=e.target.closest('a[data-app]');
-    if(!a||!appMode)return;
-    e.preventDefault();
-    let gone=false;
-    const mark=()=>{if(document.hidden)gone=true};
-    document.addEventListener('visibilitychange',mark);
-    window.location.href=a.dataset.app;
-    setTimeout(()=>{
-      document.removeEventListener('visibilitychange',mark);
-      if(!gone&&!document.hidden)window.location.href=a.dataset.web;
-    },1400);
-  });
-}
 render();
 </script>
 </body>
