@@ -124,14 +124,18 @@ body.has-tray{padding-bottom:70px}
 .cmphead h2{font-size:18px;margin:0;font-weight:900}
 .cmpclose{flex:none;background:var(--surf2);border:0;color:var(--tx2);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:15px}
 .cmpclose:hover{background:var(--card);color:var(--tx)}
-.cmptable{display:flex;flex-direction:column;gap:16px}
-.cmprow .lbl{display:block;font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px}
-.cmpbars{display:flex;flex-direction:column;gap:6px}
-.cmpbaritem{display:grid;grid-template-columns:96px 1fr 32px;gap:8px;align-items:center}
-.cmpbaritem .gname{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cmpbaritem .trk{height:6px;border-radius:3px;background:#3a3a3a;overflow:hidden}
-.cmpbaritem .fil{display:block;height:6px;border-radius:3px}
-.cmpbaritem .val{font-size:11.5px;font-weight:700;color:var(--tx2);text-align:right;font-variant-numeric:tabular-nums}
+.cmptable{display:flex;flex-direction:column;gap:18px}
+.radarwrap{display:flex;justify-content:center}
+.radar{width:100%;max-width:420px;height:auto}
+.rgroup{transition:opacity .2s}
+.rgroup.dim{opacity:.1}
+.radarlegend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.legitem{display:inline-flex;align-items:center;gap:7px;background:var(--surf2);color:var(--tx2);border:0;border-radius:9999px;padding:6px 12px 6px 8px;font-size:12px;font-weight:700;cursor:pointer;transition:background .15s,color .15s,opacity .15s}
+.legitem .dot{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.legitem .sc{color:var(--tx3);font-weight:700}
+.legitem:hover{background:var(--card);color:var(--tx)}
+.legitem.active{background:var(--card);color:var(--tx);box-shadow:inset 0 0 0 1px var(--c)}
+.legitem.dim{opacity:.4}
 
 @media(max-width:560px){
   header{padding:32px 0 16px}
@@ -150,7 +154,8 @@ body.has-tray{padding-bottom:70px}
   .cmpchip{flex:none}
   .cmptray .cmpactions{width:100%}
   .cmptray .cmpactions .pill{flex:1;text-align:center}
-  .cmpbaritem{grid-template-columns:76px 1fr 28px}
+  .radar{max-width:300px}
+  .legitem{font-size:11px;padding:5px 10px 5px 6px}
   body.has-tray{padding-bottom:112px}
 }
 </style>
@@ -234,8 +239,9 @@ sp.innerHTML='<button class="pill" data-s="-1" aria-pressed="true">총점</butto
 
 const ICN='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.6 14.4a.8.8 0 01-1.1.3c-3-1.8-6.7-2.2-11.1-1.2a.8.8 0 11-.3-1.5c4.8-1.1 8.9-.6 12.2 1.4.4.2.5.7.3 1zm1.2-2.7a1 1 0 01-1.3.3c-3.4-2.1-8.6-2.7-12.6-1.5a1 1 0 11-.6-1.9c4.6-1.4 10.3-.7 14.2 1.7.5.3.6.9.3 1.4zm.1-2.8C14 8.6 7.7 8.4 4.1 9.5a1.2 1.2 0 11-.7-2.3C7.6 5.9 14.5 6.2 19 8.8a1.2 1.2 0 01-1.2 2.1z"/></svg>';
 const AIC='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 00-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 002.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 001.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 001.76-1.77C22 15.2 22 12 22 12s0-3.2-.4-4.8zM10 15.1V8.9l5.2 3.1-5.2 3.1z"/></svg>';
-const CPAL=['#1ed760','#ffa42b','#539df5','#f3727f'];
+const CPAL=['#1ed760','#ffa42b','#539df5','#f3727f','#a78bfa','#22d3ee'];
 const cmp=new Set();
+const CMPMAX=6;
 
 function card(o){
   const nm=encodeURIComponent(o.n);
@@ -288,7 +294,7 @@ function setCmpBtn(n,on){
 function toggleCmp(n,btn){
   if(cmp.has(n)){cmp.delete(n);setCmpBtn(n,false)}
   else{
-    if(cmp.size>=4){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),300);return}
+    if(cmp.size>=CMPMAX){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),300);return}
     cmp.add(n);setCmpBtn(n,true);
   }
   renderTray();
@@ -302,20 +308,51 @@ function renderTray(){
   document.getElementById('cmpOpen').textContent=list.length?'비교 보기 ('+list.length+')':'비교 보기';
   if(!list.length)document.getElementById('cmpmodal').classList.add('hidden');
 }
+let activeCmp=null;
+function polar(cx,cy,r,ang){return [cx+r*Math.cos(ang), cy+r*Math.sin(ang)]}
 function buildCmpTable(){
+  activeCmp=null;
   const groups=[...cmp].map(n=>A.find(o=>o.n===n)).filter(Boolean);
-  const rows=[['총점',null]].concat(LB.map((l,i)=>[l,i]));
-  document.getElementById('cmptable').innerHTML=rows.map(([label,idx])=>{
-    const mx=idx===null?100:MX[idx];
-    const bars=groups.map((g,gi)=>{
-      const v=idx===null?g.s:g.v[idx];
-      const p=Math.max(4,Math.round(v/mx*100));
-      const col=CPAL[gi%CPAL.length];
-      return '<div class="cmpbaritem"><span class="gname" style="color:'+col+'">'+esc(g.n)+'</span><span class="trk"><span class="fil" style="width:'+p+'%;background:'+col+'"></span></span><span class="val">'+v+'</span></div>';
-    }).join('');
-    return '<div class="cmprow"><span class="lbl">'+label+(idx===null?'':' / '+mx)+'</span><div class="cmpbars">'+bars+'</div></div>';
-  }).join('');
+  const N=LB.length,cx=160,cy=160,R=108;
+  const angFor=i=>i*(2*Math.PI/N)-Math.PI/2;
+  let svg='<svg class="radar" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">';
+  [0.25,0.5,0.75,1].forEach(f=>{
+    const pts=Array.from({length:N},(_,i)=>polar(cx,cy,R*f,angFor(i)).join(',')).join(' ');
+    svg+='<polygon points="'+pts+'" fill="none" stroke="var(--bd)" stroke-width="1"/>';
+  });
+  for(let i=0;i<N;i++){
+    const ang=angFor(i);
+    const [x2,y2]=polar(cx,cy,R,ang);
+    svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x2+'" y2="'+y2+'" stroke="var(--bd)" stroke-width="1"/>';
+    const [lx,ly]=polar(cx,cy,R+22,ang);
+    const cv=Math.cos(ang),sv=Math.sin(ang);
+    const anchor=Math.abs(cv)<0.001?'middle':(cv>0?'start':'end');
+    const dy=sv>0.5?10:(sv<-0.5?-4:4);
+    svg+='<text x="'+lx+'" y="'+(ly+dy)+'" text-anchor="'+anchor+'" font-size="11" font-weight="700" fill="var(--tx3)">'+esc(LB[i])+'</text>';
+  }
+  groups.forEach((g,gi)=>{
+    const col=CPAL[gi%CPAL.length];
+    const pts=LB.map((l,i)=>polar(cx,cy,R*Math.min(g.v[i]/MX[i],1),angFor(i)).join(',')).join(' ');
+    const dots=LB.map((l,i)=>{const [px,py]=polar(cx,cy,R*Math.min(g.v[i]/MX[i],1),angFor(i));return '<circle cx="'+px+'" cy="'+py+'" r="3" fill="'+col+'"/>'}).join('');
+    svg+='<g class="rgroup" data-n="'+esc(g.n)+'"><polygon points="'+pts+'" fill="'+col+'" fill-opacity="0.16" stroke="'+col+'" stroke-width="2.5"/>'+dots+'</g>';
+  });
+  svg+='</svg>';
+  const legend=groups.map((g,gi)=>'<button class="legitem" data-n="'+esc(g.n)+'" style="--c:'+CPAL[gi%CPAL.length]+'"><span class="dot"></span>'+esc(g.n)+'<span class="sc">'+g.s+'</span></button>').join('');
+  document.getElementById('cmptable').innerHTML='<div class="radarwrap">'+svg+'</div><div class="radarlegend">'+legend+'</div>';
 }
+function setActiveCmp(n){
+  activeCmp=activeCmp===n?null:n;
+  document.querySelectorAll('.rgroup').forEach(g=>g.classList.toggle('dim',!!activeCmp&&g.dataset.n!==activeCmp));
+  document.querySelectorAll('.legitem').forEach(b=>{
+    b.classList.toggle('active',b.dataset.n===activeCmp);
+    b.classList.toggle('dim',!!activeCmp&&b.dataset.n!==activeCmp);
+  });
+}
+document.getElementById('cmptable').addEventListener('click',e=>{
+  const t=e.target.closest('.rgroup, .legitem');
+  if(!t)return;
+  setActiveCmp(t.dataset.n);
+});
 document.getElementById('board').addEventListener('click',e=>{
   const b=e.target.closest('.cmpbtn');
   if(!b)return;
