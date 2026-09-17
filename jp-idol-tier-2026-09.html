@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 일본 여자아이돌 체급 점수표</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#121212; --surf:#181818; --surf2:#1f1f1f; --card:#252525; --card2:#272727;
+  --tx:#fff; --tx2:#b3b3b3; --tx3:#7c7c7c; --bd:#4d4d4d; --bdl:#7c7c7c;
+  --green:#1ed760; --green2:#1db954; --warn:#ffa42b; --neg:#f3727f;
+  --sh-md:rgba(0,0,0,.3) 0 8px 8px; --sh-hv:rgba(0,0,0,.5) 0 8px 24px;
+  --fs:"Figtree","Noto Sans JP","Helvetica Neue",helvetica,arial,"Hiragino Sans","Hiragino Kaku Gothic ProN",Meiryo,"MS Gothic",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#121212;color:var(--tx);font-family:var(--fs);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1360px;margin:0 auto;padding:0 20px 64px}
+
+/* ---- header ---- */
+header{padding:48px 0 20px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin:0 0 10px}
+h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin:0 0 12px}
+.sub{font-size:14px;color:var(--tx2);margin:0;max-width:62ch}
+.formula{margin:18px 0 0;display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;font-weight:700;padding:5px 12px;border-radius:9999px;background:var(--surf2);color:var(--tx2);white-space:nowrap}
+.tag b{color:var(--green);font-weight:700}
+.navlink{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--tx2);margin:16px 0 0}
+.navlink:hover{color:var(--tx)}
+
+/* ---- stats ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:28px 0 0}
+.stat{background:var(--surf);border-radius:8px;padding:14px 16px}
+.stat .k{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3);margin:0 0 6px}
+.stat .v{font-size:22px;font-weight:700;margin:0}
+
+/* ---- controls ---- */
+.controls{position:sticky;top:0;z-index:20;background:linear-gradient(#121212 72%,rgba(18,18,18,0));padding:18px 0 14px;margin-top:26px}
+.searchbox{position:relative;max-width:420px;margin:0 0 12px}
+.searchbox svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:var(--tx2);pointer-events:none}
+#q{width:100%;background:var(--surf2);color:var(--tx);border:0;border-radius:500px;padding:12px 44px 12px 46px;font-family:var(--fs);font-size:14px;font-weight:400;box-shadow:rgb(124,124,124) 0 0 0 1px inset;outline:0}
+#q::placeholder{color:var(--tx3)}
+#q:focus{box-shadow:var(--green) 0 0 0 1px inset}
+#clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;border:0;background:transparent;color:var(--tx2);cursor:pointer;font-size:16px;line-height:1;display:none}
+#clr:hover{background:var(--surf);color:var(--tx)}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-family:var(--fs);font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;padding:8px 16px;border-radius:9999px;border:1px solid transparent;background:var(--surf2);color:var(--tx2);cursor:pointer;transition:background .15s,color .15s}
+.pill:hover{background:var(--card);color:var(--tx)}
+.pill[aria-pressed="true"]{background:var(--green);color:#000}
+.pgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.plabel{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);margin-right:4px}
+
+/* ---- tier section ---- */
+.tsec{margin-top:40px}
+.thead{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.tbadge{font-size:18px;font-weight:900;padding:6px 16px;border-radius:9999px;line-height:1.1}
+.t0{background:var(--green);color:#000}
+.t1{background:transparent;color:var(--green);box-shadow:inset 0 0 0 1px var(--green2)}
+.t2{background:transparent;color:var(--tx);box-shadow:inset 0 0 0 1px var(--bdl)}
+.t3{background:transparent;color:var(--tx2);box-shadow:inset 0 0 0 1px var(--bd)}
+.t4,.t5,.t6{background:transparent;color:var(--tx3);box-shadow:inset 0 0 0 1px var(--bd)}
+.trange{font-size:13px;font-weight:400;color:var(--tx3)}
+.tcount{margin-left:auto;font-size:12px;font-weight:700;color:var(--tx2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
+
+/* ---- card ---- */
+.card{background:var(--surf);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;transition:background .2s,box-shadow .2s,transform .2s}
+.card:hover{background:var(--card2);box-shadow:var(--sh-md);transform:translateY(-2px)}
+.crow{display:flex;align-items:flex-start;gap:10px}
+.rank{font-size:12px;font-weight:700;color:var(--tx3);min-width:34px;padding-top:3px}
+.nm{font-size:16px;font-weight:700;line-height:1.25;margin:0;word-break:break-word;flex:1}
+.tot{text-align:right;line-height:1}
+.tot .n{font-size:26px;font-weight:900;letter-spacing:-.02em}
+.tot .u{font-size:10px;font-weight:600;color:var(--tx3);display:block;margin-top:3px}
+.meta{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:9999px;background:var(--surf2);color:var(--tx2)}
+.chip.hi{color:var(--green)}
+.chip.mid{color:var(--warn)}
+.bars{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}
+.br{display:grid;grid-template-columns:34px 1fr 22px;gap:6px;align-items:center}
+.br span:first-child{font-size:10px;font-weight:600;color:var(--tx3);letter-spacing:.02em}
+.trk{height:4px;border-radius:2px;background:#3a3a3a;overflow:hidden}
+.fil{display:block;height:4px;border-radius:2px;background:var(--green)}
+.fil.lo{background:var(--bdl)}
+.br span:last-child{font-size:10px;font-weight:700;color:var(--tx2);text-align:right;font-variant-numeric:tabular-nums}
+.acts{display:flex;gap:5px;margin-top:auto;padding-top:2px}
+.btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:9px 6px;border-radius:9999px;white-space:nowrap;transition:background .15s,color .15s,box-shadow .15s}
+.btn.out{color:var(--tx);box-shadow:inset 0 0 0 1px var(--bdl)}
+.btn.out:hover{box-shadow:inset 0 0 0 1px var(--tx);background:rgba(255,255,255,.06)}
+.btn.grn{background:var(--green);color:#000}
+.btn.grn:hover{background:#25e96b}
+.btn svg{width:13px;height:13px;flex:none}
+.empty{text-align:center;color:var(--tx3);font-size:14px;padding:60px 0}
+footer{margin-top:56px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:12px;color:var(--tx3);line-height:1.7}
+footer a{color:var(--tx2);text-decoration:underline}
+@media(max-width:560px){
+  header{padding:32px 0 16px}
+  .grid{grid-template-columns:1fr}
+  .wrap{padding:0 14px 48px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">2026.09.15 기준 · 126팀</p>
+  <h1>일본 여자아이돌<br>체급 점수표</h1>
+  <p class="sub">일본 시장 구조에 맞춰 현장 동원력에 가장 큰 배점을 둔 100점 환산 체급지수입니다. 공식 통계가 아니라 동일 기준 상대평가이므로 ±2~3점은 동급으로 봅니다.</p>
+  <div class="formula">
+    <span class="tag">공연·현장 <b>25</b></span>
+    <span class="tag">팬덤·구매력 <b>20</b></span>
+    <span class="tag">대중인지도 <b>20</b></span>
+    <span class="tag">스트리밍·SNS <b>15</b></span>
+    <span class="tag">현재 기세 <b>10</b></span>
+    <span class="tag">업계 영향력 <b>10</b></span>
+  </div>
+  <a class="navlink" href="./kr-idol-tier-2026-09.html">한국 여자아이돌 체급 점수표 보기 →</a>
+  <div class="stats" id="stats"></div>
+</header>
+
+<div class="controls">
+  <div class="searchbox">
+    <svg viewBox="0 0 24 24"><path d="M10 2a8 8 0 105.3 14l5.4 5.4 1.4-1.4-5.4-5.4A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/></svg>
+    <input id="q" type="search" placeholder="그룹 이름 검색" autocomplete="off" aria-label="그룹 이름 검색">
+    <button id="clr" aria-label="검색어 지우기">✕</button>
+  </div>
+  <div class="pills" id="tierpills"></div>
+  <div class="pgroup">
+    <span class="plabel">정렬</span>
+    <div class="pills" id="sortpills"></div>
+  </div>
+  <div class="pgroup" id="appwrap" hidden>
+    <span class="plabel">열기</span>
+    <div class="pills">
+      <button class="pill" id="appmode" aria-pressed="true">앱으로 열기</button>
+      <button class="pill" id="webmode" aria-pressed="false">브라우저로 열기</button>
+    </div>
+  </div>
+</div>
+
+<main id="board"></main>
+<p class="empty" id="empty" hidden>검색 결과가 없습니다.</p>
+
+<footer>
+  <p>점수는 공개 공연 규모·투어 회차·매진 여부, CD/특전·팬클럽 구매력, 대중 인지도, 스트리밍·SNS 화제량, 최근 12개월 성장세, 메이저 미디어 존재감을 교차 반영한 상대평가 지수입니다. 신뢰도 <b style="color:var(--green)">높음</b>은 복수 공개 지표가 확보된 메이저·중상위권, <b style="color:var(--warn)">중간</b>은 확장 전수조사군으로 지표 해상도가 낮습니다.</p>
+  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결됩니다. 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>
+  <p>모바일에서는 설치된 앱을 먼저 실행하고, 앱이 없으면 약 1.4초 뒤 웹 페이지로 넘어갑니다. 앱 전환이 막히는 환경이라면 상단의 <b style="color:var(--tx2)">브라우저로 열기</b>를 선택하세요.</p>
+</footer>
+
+</div>
+
+<script>
+const D=[["=LOVE",25,20,18,15,10,9,0],["乃木坂46",24,20,20,13,8,10,0],["FRUITS ZIPPER",24,20,18,14,10,8,0],["HANA",20,17,20,15,10,9,0],["NiziU",24,17,17,13,7,9,0],["CUTIE STREET",20,17,16,14,10,7,0],["櫻坂46",22,19,17,11,7,8,0],["日向坂46",21,18,17,10,7,8,0],["AKB48",18,18,20,9,6,9,0],["iLiFE!",22,17,12,13,9,7,0],["超ときめき♡宣伝部",21,16,16,12,8,7,0],["CANDY TUNE",17,15,15,15,9,7,0],["ME:I",18,17,16,12,8,7,0],["i☆Ris",20,16,14,11,7,8,2],["≠ME",18,17,14,11,8,7,0],["いぎなり東北産",20,15,14,8,9,8,2],["モーニング娘。'26",18,17,17,8,6,7,0],["ももいろクローバーZ",18,15,19,8,4,7,0],["Juice=Juice",18,16,14,8,7,7,0],["SWEET STEADY",14,13,12,12,9,7,0],["≒JOY",15,15,12,10,8,7,0],["HKT48",15,15,15,7,6,8,1],["高嶺のなでしこ",14,13,12,11,8,7,0],["PassCode",19,13,10,9,6,7,2],["アンジュルム",16,15,13,7,6,7,0],["WHITE SCORPION",16,12,9,9,9,8,1],["ファントムシータ",12,10,10,14,8,7,0],["MORE STAR",14,10,8,10,10,7,1],["Rain Tree",15,11,8,8,9,8,1],["SKE48",14,16,12,6,4,7,0],["わーすた",15,12,11,8,6,7,2],["私立恵比寿中学",15,13,12,7,5,7,0],["Merry BAD TUNE.",16,12,8,8,8,6,1],["つばきファクトリー",14,14,10,6,6,8,1],["Devil ANTHEM.",16,12,8,7,8,6,1],["Girls²",12,11,10,10,7,7,0],["可憐なアイボリー",13,11,9,9,8,7,1],["INUWASI",17,12,7,7,7,6,2],["Palette Parade",15,11,8,8,8,6,1],["JamsCollection",13,11,10,8,7,6,0],["NMB48",14,14,11,5,4,7,0],["OCHA NORMA",13,13,10,6,5,8,1],["@onefive",14,10,8,8,8,6,2],["AVAM",13,10,8,10,8,5,1],["ExWHYZ",12,10,10,8,7,7,0],["IS:SUE",11,11,8,9,8,7,0],["NGT48",13,13,12,5,4,7,2],["fav me",11,9,8,10,9,7,1],["きゅるりんってしてみて",12,10,9,10,7,6,0],["虹のコンキスタドール",13,11,10,8,5,7,1],["Appare!",13,10,10,8,6,6,0],["NANIMONO",14,11,7,8,8,5,1],["STU48",13,13,10,5,5,7,0],["ばってん少女隊",14,11,9,7,6,6,2],["タイトル未定",15,11,7,7,8,5,2],["僕が見たかった青空",12,12,8,7,7,7,0],["22/7",13,11,11,7,4,6,2],["のんふぃく！",13,11,7,9,7,5,1],["最終未来少女",12,9,8,10,8,5,2],["BEYOOOOONDS",12,12,10,5,5,7,0],["CYNHN",15,10,7,6,7,6,1],["GANG PARADE",14,10,10,7,4,6,2],["SUPER☆GiRLS",12,10,13,7,3,6,2],["夜光性アミューズ",13,10,8,9,6,5,1],["iScream",11,9,8,10,7,5,2],["yosugala",12,10,9,7,6,6,0],["UtaGe!",12,10,7,8,7,5,1],["アンスリューム",13,10,7,7,7,5,2],["フィロソフィーのダンス",11,9,10,8,5,6,2],["ラフ×ラフ",10,8,8,9,7,7,1],["手羽先センセーション",13,10,8,6,6,6,1],["FES☆TIVE",12,10,8,7,5,6,1],["MyDearDarlin'",12,10,8,7,6,5,1],["ロージークロニクル",10,10,8,6,8,6,2],["Task have Fun",12,10,9,6,4,6,1],["なみだ色の消しごむ",11,9,7,8,7,5,1],["#Mooove!",8,8,8,10,7,5,1],["AsIs",10,8,6,8,9,5,1],["衛星とカラテア",13,10,7,6,5,5,1],["NEO JAPONISM",12,10,8,6,4,5,1],["Peel the Apple",11,9,8,7,5,5,1],["ドラマチックレコード",11,9,7,7,7,4,2],["GILTY x GILTY",12,9,6,7,6,4,2],["MYERA",8,7,7,10,8,4,2],["THE ORCHESTRA TOKYO",12,9,6,6,6,5,2],["KiSS KiSS",11,9,7,6,5,5,2],["LinQ",10,9,9,6,4,5,2],["TENRIN",12,8,6,7,5,5,2],["#よーよーよー",8,8,8,10,4,4,1],["STAiNY",10,8,6,7,6,5,2],["THE ENCORE",11,8,6,7,6,4,2],["UN1CON",7,6,6,10,9,4,2],["ジエメイ",12,9,6,6,5,4,2],["純情のアフィリア",10,8,9,6,4,5,2],["SITUASION",11,8,6,6,6,4,2],["アップアップガールズ（仮）",11,8,9,5,3,5,2],["二丁目の魁カミングアウト",11,9,7,5,4,5,2],["CiON",10,8,6,6,5,5,1],["chuLa",10,8,6,7,5,4,2],["きのホ。",10,8,7,6,5,4,2],["カラフルスクリーム",10,8,7,6,5,4,2],["クマリデパート",10,8,7,6,4,5,1],["マジカル・パンチライン",9,8,8,7,3,5,2],["Ma'Scar'Piece",9,7,6,7,6,4,2],["PIGGS",10,8,7,6,4,4,2],["Sweet Alley",9,8,6,7,4,5,1],["fishbowl",9,8,7,6,4,5,1],["アップアップガールズ（2）",10,8,7,5,4,5,2],["キングサリ",11,8,5,6,5,4,2],["ハルニシオン",10,8,5,6,6,4,2],["君に、胸キュン。",9,8,7,6,5,4,2],["KRD8",9,8,7,5,4,5,2],["NUANCE",9,8,6,5,5,5,2],["さよならステイチューン",9,7,6,7,5,4,2],["透色ドロップ",10,8,6,5,4,5,1],["Gran☆Ciel",9,8,6,5,4,5,2],["かすみ草とステラ",10,8,6,5,4,4,1],["すーぱーぷーばぁー!!",9,7,5,6,6,4,2],["点染テンセイ少女。",9,7,5,6,6,4,2],["DREAMING MONSTER",9,8,6,5,4,4,2],["Kolokol",9,8,5,5,4,4,1],["PinkySpice",9,7,6,5,4,4,2],["Ringwanderung",9,8,6,5,3,4,1],["ルルネージュ",9,7,5,6,4,4,2],["SAI²Rium",8,7,5,6,4,4,2],["Bunny La Crew",8,7,5,5,4,4,2]];
+const LB=["공연","팬덤","인지도","SNS","기세","업계"],MX=[25,20,20,15,10,10],CF=["높음","중상","중간"];
+const T=[["S+",90,100],["S",80,89],["A+",70,79],["A",60,69],["B+",50,59],["B",40,49],["C+",30,39]];
+const A=D.map(r=>({n:r[0],v:r.slice(1,7),s:r[1]+r[2]+r[3]+r[4]+r[5]+r[6],c:r[7]}));
+A.sort((a,b)=>b.s-a.s);
+let pv=null,pr=0;A.forEach((o,i)=>{if(o.s!==pv){pr=i+1;pv=o.s}o.r=pr});
+const ti=s=>T.findIndex(t=>s>=t[1]);
+
+const avg=k=>(A.reduce((a,o)=>a+(k<0?o.s:o.v[k]),0)/A.length).toFixed(1);
+document.getElementById('stats').innerHTML=[
+  ['수록 그룹',A.length+'팀'],['평균 총점',avg(-1)],['평균 공연점수',avg(0)+' / 25'],
+  ['S+ 이상',A.filter(o=>o.s>=90).length+'팀'],['신뢰도 높음',A.filter(o=>o.c===0).length+'팀']
+].map(([k,v])=>'<div class="stat"><p class="k">'+k+'</p><p class="v">'+v+'</p></div>').join('');
+
+let tf='ALL',sf=-1,qs='';
+const tp=document.getElementById('tierpills');
+tp.innerHTML='<button class="pill" data-t="ALL" aria-pressed="true">전체</button>'+T.map(t=>'<button class="pill" data-t="'+t[0]+'" aria-pressed="false">'+t[0]+'</button>').join('');
+const sp=document.getElementById('sortpills');
+sp.innerHTML='<button class="pill" data-s="-1" aria-pressed="true">총점</button>'+LB.map((l,i)=>'<button class="pill" data-s="'+i+'" aria-pressed="false">'+l+'</button>').join('');
+
+const ICN='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.6 14.4a.8.8 0 01-1.1.3c-3-1.8-6.7-2.2-11.1-1.2a.8.8 0 11-.3-1.5c4.8-1.1 8.9-.6 12.2 1.4.4.2.5.7.3 1zm1.2-2.7a1 1 0 01-1.3.3c-3.4-2.1-8.6-2.7-12.6-1.5a1 1 0 11-.6-1.9c4.6-1.4 10.3-.7 14.2 1.7.5.3.6.9.3 1.4zm.1-2.8C14 8.6 7.7 8.4 4.1 9.5a1.2 1.2 0 11-.7-2.3C7.6 5.9 14.5 6.2 19 8.8a1.2 1.2 0 01-1.2 2.1z"/></svg>';
+const AIC='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 00-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 002.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 001.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 001.76-1.77C22 15.2 22 12 22 12s0-3.2-.4-4.8zM10 15.1V8.9l5.2 3.1-5.2 3.1z"/></svg>';
+
+function card(o){
+  const nm=encodeURIComponent(o.n);
+  const bars=LB.map((l,i)=>{
+    const v=o.v[i],p=Math.round(v/MX[i]*100);
+    return '<div class="br"><span>'+l+'</span><span class="trk"><span class="fil'+(p>=70?'':' lo')+'" style="width:'+p+'%"></span></span><span>'+v+'</span></div>';
+  }).join('');
+  const cc=o.c===0?'hi':o.c===2?'mid':'';
+  return '<article class="card"><div class="crow"><span class="rank">#'+o.r+'</span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
+   +'<div class="meta"><span class="chip">'+T[ti(o.s)][0]+'</span><span class="chip '+cc+'">신뢰도 '+CF[o.c]+'</span></div>'
+   +'<div class="bars">'+bars+'</div>'
+   +'<div class="acts"><a class="btn grn" data-app="spotify:search:'+nm+'" data-web="https://open.spotify.com/search/'+nm+'" target="_blank" rel="noopener noreferrer" href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
+   +'<a class="btn out" data-app="youtube://results?search_query='+nm+'" data-web="https://www.youtube.com/results?search_query='+nm+'" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
+   +'<a class="btn out" target="_blank" rel="noopener noreferrer" href="https://namu.wiki/w/'+nm+'">나무위키</a></div></article>';
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function render(){
+  let list=A.filter(o=>(tf==='ALL'||T[ti(o.s)][0]===tf)&&(!qs||o.n.toLowerCase().includes(qs)));
+  const board=document.getElementById('board');
+  if(!list.length){board.innerHTML='';document.getElementById('empty').hidden=false;return}
+  document.getElementById('empty').hidden=true;
+  if(sf>=0){
+    list=list.slice().sort((a,b)=>b.v[sf]-a.v[sf]||b.s-a.s);
+    board.innerHTML='<section class="tsec"><div class="thead"><span class="tbadge t1">'+LB[sf]+'</span><span class="trange">'+LB[sf]+' 점수 높은 순 · 만점 '+MX[sf]+'점</span><span class="tcount">'+list.length+'팀</span></div><div class="grid">'+list.map(card).join('')+'</div></section>';
+    return;
+  }
+  board.innerHTML=T.map((t,x)=>{
+    const m=list.filter(o=>ti(o.s)===x);
+    if(!m.length)return '';
+    return '<section class="tsec"><div class="thead"><span class="tbadge t'+x+'">'+t[0]+'</span><span class="trange">'+t[1]+'~'+t[2]+'점</span><span class="tcount">'+m.length+'팀</span></div><div class="grid">'+m.map(card).join('')+'</div></section>';
+  }).join('');
+}
+tp.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;tf=b.dataset.t;
+  tp.querySelectorAll('.pill').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+sp.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;sf=+b.dataset.s;
+  sp.querySelectorAll('.pill').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+const qi=document.getElementById('q'),cl=document.getElementById('clr');
+qi.addEventListener('input',()=>{qs=qi.value.trim().toLowerCase();cl.style.display=qs?'block':'none';render()});
+cl.addEventListener('click',()=>{qi.value='';qs='';cl.style.display='none';qi.focus();render()});
+
+/* ---- 모바일: 설치된 앱으로 먼저 열고, 실패하면 웹으로 ---- */
+const UA=navigator.userAgent||'';
+const MOB=/Android|iPhone|iPad|iPod/i.test(UA)||(/Macintosh/.test(UA)&&navigator.maxTouchPoints>1);
+let appMode=true;
+if(MOB){
+  const aw=document.getElementById('appwrap');aw.hidden=false;
+  const am=document.getElementById('appmode'),wm=document.getElementById('webmode');
+  const set=v=>{appMode=v;am.setAttribute('aria-pressed',v);wm.setAttribute('aria-pressed',!v)};
+  am.addEventListener('click',()=>set(true));
+  wm.addEventListener('click',()=>set(false));
+  document.getElementById('board').addEventListener('click',e=>{
+    const a=e.target.closest('a[data-app]');
+    if(!a||!appMode)return;
+    e.preventDefault();
+    let gone=false;
+    const mark=()=>{if(document.hidden)gone=true};
+    document.addEventListener('visibilitychange',mark);
+    window.location.href=a.dataset.app;
+    setTimeout(()=>{
+      document.removeEventListener('visibilitychange',mark);
+      if(!gone&&!document.hidden)window.location.href=a.dataset.web;
+    },1400);
+  });
+}
+render();
+</script>
+</body>
+</html>
