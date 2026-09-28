@@ -251,6 +251,9 @@ body.has-tray{padding-bottom:70px}
 .mradarwrap{padding-bottom:10px;text-align:center}
 .mradar{width:100%;max-width:280px;height:auto}
 .mleg{font-size:11.5px;font-weight:700;color:var(--tx2);margin:2px 0 4px}
+.mleglist{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:4px 0 6px}
+.mleg-me{width:100%;font-size:12px;font-weight:800;color:var(--tx);margin-bottom:2px}
+.mleglist .legitem{min-height:36px}
 .mrow{display:grid;grid-template-columns:64px 1fr 30px;gap:8px;align-items:center;font-size:12px;font-weight:600;color:var(--tx2);min-height:34px}
 .mrow input{accent-color:var(--green)}
 .mrow output{text-align:right;font-variant-numeric:tabular-nums;color:var(--tx)}
@@ -607,7 +610,8 @@ const setIncludeEnded=v=>{try{localStorage.setItem(INC_KEY,v?'1':'0')}catch(e){}
 const AXES=[['popularity','대중성'],['fandom','팬덤'],['live','라이브'],['digital','디지털'],['momentum','기세']];
 const WLABEL={style:'스타일',live:'라이브',fandom:'팬덤',popularity:'대중성',digital:'디지털',momentum:'기세',activity:'활동형태'};
 function matchUrl(name){return CFG.other.page+'?group='+encodeURIComponent(name)}
-function tasteRadar(a,b,an,bn){
+const MPAL=['#f3727f','#ffa42b','#539df5','#a78bfa','#22d3ee','#e879f9'];
+function tasteRadar(a,an,items){
   const N=AXES.length,cx=130,cy=126,R=78,ang=i=>i*(2*Math.PI/N)-Math.PI/2;
   let svg='<svg class="mradar" viewBox="0 0 260 252" role="img" aria-label="취향 프로필 비교 차트">';
   [0.5,1].forEach(f=>{svg+='<polygon points="'+AXES.map((_,i)=>polar(cx,cy,R*f,ang(i)).join(',')).join(' ')+'" fill="none" stroke="var(--bd)" stroke-width="1"/>'});
@@ -615,9 +619,21 @@ function tasteRadar(a,b,an,bn){
     const [x,y]=polar(cx,cy,R,ang(i)),[lx,ly]=polar(cx,cy,R+18,ang(i)),cv=Math.cos(ang(i));
     svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x+'" y2="'+y+'" stroke="var(--bd)" stroke-width="1"/><text x="'+lx+'" y="'+(ly+4)+'" text-anchor="'+(Math.abs(cv)<0.01?'middle':cv>0?'start':'end')+'" font-size="10.5" font-weight="700" fill="var(--tx3)">'+l+'</text>';
   });
-  const poly=(v,col)=>'<polygon points="'+AXES.map(([k],i)=>polar(cx,cy,R*Math.max(0.03,v[k]/100),ang(i)).join(',')).join(' ')+'" fill="'+col+'" fill-opacity="0.18" stroke="'+col+'" stroke-width="2.2"/>';
-  svg+=poly(b,'#f3727f')+poly(a,'#1ed760')+'</svg>';
-  return '<div class="mradarwrap">'+svg+'<p class="mleg"><span style="color:var(--green)">●</span> '+esc(an)+' <span style="color:#f3727f;margin-left:8px">●</span> '+esc(bn)+'</p></div>';
+  const pts=v=>AXES.map(([k],i)=>polar(cx,cy,R*Math.max(0.03,v[k]/100),ang(i)).join(',')).join(' ');
+  items.forEach((it,i)=>{const c=MPAL[i%MPAL.length];svg+='<g class="rgroup" data-i="'+i+'"><polygon points="'+pts(it.vec)+'" fill="'+c+'" fill-opacity="0.14" stroke="'+c+'" stroke-width="2"/></g>'});
+  svg+='<polygon points="'+pts(a)+'" fill="#1ed760" fill-opacity="0.22" stroke="#1ed760" stroke-width="3"/></svg>';
+  const leg='<span class="mleg-me"><span style="color:var(--green)">●</span> '+esc(an)+' (내 선택)</span>'
+    +items.map((it,i)=>'<button type="button" class="legitem" data-i="'+i+'" style="--c:'+MPAL[i%MPAL.length]+'" aria-pressed="false" aria-label="'+esc(it.name)+' 강조해서 보기"><span class="dot"></span>'+esc(it.name)+'<span class="sc">'+it.score+'%</span></button>').join('');
+  return '<div class="mradarwrap">'+svg+'<div class="mleglist">'+leg+'</div></div>';
+}
+function mprofHighlight(box,i){
+  const cur=box.dataset.hl===String(i)?'':String(i);
+  box.dataset.hl=cur;
+  box.querySelectorAll('.mradar .rgroup').forEach(g=>g.classList.toggle('dim',cur!==''&&g.dataset.i!==cur));
+  box.querySelectorAll('.mprof .legitem').forEach(b=>{
+    const on=b.dataset.i===cur;
+    b.classList.toggle('active',on);b.classList.toggle('dim',cur!==''&&!on);b.setAttribute('aria-pressed',on);
+  });
 }
 function matchCard(m,i){
   const g=m.group,label=esc(g.name);
@@ -639,8 +655,8 @@ function matchBody(o,r){
   let h='<div class="mctl"><label class="mchk"><input type="checkbox" id="incEnded"'+(includeEnded()?' checked':'')+'> 활동종료 그룹 포함</label><button class="mshare" type="button" id="shareBtn">결과 공유</button></div>'
     +'<div class="mlist">'+r.top.map(matchCard).join('')+'</div>';
   if(r.hidden.length)h+='<p class="mgemt">💎 숨은 취향 발견</p><div class="mlist">'+r.hidden.map(gemRow).join('')+'</div>';
-  const t1=r.top[0];
-  if(t1)h+='<details class="mprof"><summary>취향 프로필 비교 보기</summary>'+tasteRadar(r.source.vec,t1.group.vec,o.n,t1.group.name)+'<p class="mnote">각 축은 해당 나라 안에서의 상대 위치(백분위)예요.</p></details>';
+  const cmpItems=r.top.concat(r.hidden).map(m=>({name:m.group.name,vec:m.group.vec,score:m.score}));
+  if(cmpItems.length)h+='<details class="mprof"><summary>취향 프로필 비교 보기 ('+cmpItems.length+'팀)</summary>'+tasteRadar(r.source.vec,o.n,cmpItems)+'<p class="mnote">추천된 그룹(TOP 3 + 숨은 취향)을 모두 겹쳐 보여줘요. 이름을 누르면 그 그룹만 강조돼요. 각 축은 해당 나라 안에서의 상대 위치(백분위)예요.</p></details>';
   return h+'<p class="mnote">스타일·라이브·팬덤·대중성 성향을 각 시장 안에서의 상대 위치(백분위)로 비교한 취향 유사도이며, 점수나 체급 비교가 아닙니다.</p>';
 }
 function shareMatches(o,r,btn){
@@ -670,6 +686,8 @@ function renderMatchSection(o){
     box.addEventListener('click',e=>{
       const sh=e.target.closest('#shareBtn');
       if(sh&&last)shareMatches(o,last,sh);
+      const hl=e.target.closest('.mprof .legitem, .mprof .rgroup');
+      if(hl)mprofHighlight(box,hl.dataset.i);
       if(e.target.id==='tuneReset'){IdolMatch.resetWeights();box.querySelector('.mtune').outerHTML=tuneHTML();paint()}
     });
     box.addEventListener('input',e=>{
@@ -763,8 +781,8 @@ function buildCmpTable(){
 }
 function setActiveCmp(n){
   activeCmp=activeCmp===n?null:n;
-  document.querySelectorAll('.rgroup').forEach(g=>g.classList.toggle('dim',!!activeCmp&&g.dataset.n!==activeCmp));
-  document.querySelectorAll('.legitem').forEach(b=>{
+  document.querySelectorAll('#cmptable .rgroup').forEach(g=>g.classList.toggle('dim',!!activeCmp&&g.dataset.n!==activeCmp));
+  document.querySelectorAll('#cmptable .legitem').forEach(b=>{
     b.classList.toggle('active',b.dataset.n===activeCmp);
     b.classList.toggle('dim',!!activeCmp&&b.dataset.n!==activeCmp);
   });
