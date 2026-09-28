@@ -307,6 +307,7 @@
   }
   function writeFavorites(list) {
     try { global.localStorage.setItem(FAVORITE_KEY, JSON.stringify(list)); } catch (e) { /* 저장 불가 환경 */ }
+    try { global.dispatchEvent(new Event('idolfav')); } catch (e) { /* noop */ }
   }
   function isFavorite(country, name) {
     return getFavorites().some(function (f) { return f.country === country && f.group === name; });

@@ -189,6 +189,7 @@ function openDetailBySlug(slug){
   const o=A.find(x=>x.slug===slug);
   if(!o)return;
   document.getElementById('detailPanel').innerHTML=detailHTML(o);
+  document.body.setAttribute('data-nav-group',o.n);
   document.getElementById('detailModal').classList.remove('hidden');
   document.getElementById('detailClose').addEventListener('click',closeDetail);
   const fb=document.getElementById('favBtn');
@@ -201,17 +202,22 @@ function openDetailBySlug(slug){
   renderMatchSection(o);
 }
 function closeDetail(){
-  if(history.state&&history.state.slug){history.back()}
-  else{document.getElementById('detailModal').classList.add('hidden')}
+  // 카드를 눌러 우리가 push 한 기록이면 한 칸만 뒤로, 딥링크로 열었다면 기록을 건드리지 않고 닫는다.
+  if(history.state&&history.state.pushed){history.back()}
+  else{
+    document.getElementById('detailModal').classList.add('hidden');
+    document.body.removeAttribute('data-nav-group');
+    if(location.hash||QS.get('group'))history.replaceState(null,'',location.pathname);
+  }
 }
 function openDetail(slug){
   if(!A.some(x=>x.slug===slug))return;
-  history.pushState({slug:slug},'','#'+slug);
+  history.pushState({slug:slug,pushed:1},'','#'+slug);
   openDetailBySlug(slug);
 }
 window.addEventListener('popstate',e=>{
   if(e.state&&e.state.slug){openDetailBySlug(e.state.slug)}
-  else{document.getElementById('detailModal').classList.add('hidden')}
+  else{document.getElementById('detailModal').classList.add('hidden');document.body.removeAttribute('data-nav-group')}
 });
 document.getElementById('detailModal').addEventListener('click',e=>{if(e.target.id==='detailModal')closeDetail()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('detailModal').classList.contains('hidden'))closeDetail()});
