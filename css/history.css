@@ -48,6 +48,7 @@ h1{font-size:clamp(30px,5.2vw,50px);font-weight:900;letter-spacing:-.025em;line-
 .seg::-webkit-scrollbar{display:none}
 .pill{font-size:12.5px;font-weight:700;letter-spacing:.03em;padding:0 15px;min-height:40px;border-radius:9999px;border:0;background:transparent;color:var(--tx2);cursor:pointer;white-space:nowrap;transition:background .18s,color .18s,transform .12s}
 .pill:hover{color:var(--tx);background:rgba(255,255,255,.07)}
+.pill:disabled{opacity:.4;cursor:default;pointer-events:none}
 .pill:active{transform:scale(.96)}
 .pill[aria-pressed="true"]{background:var(--acc);color:#000;box-shadow:0 2px 14px rgba(30,215,96,.3)}
 body[data-country="JP"] .pill[aria-pressed="true"]{box-shadow:0 2px 14px rgba(243,114,127,.32)}
@@ -232,14 +233,23 @@ body[data-country="JP"] .grec{background:linear-gradient(160deg,rgba(243,114,127
 
 /* ---- MAP REPLAY ---- */
 .mr{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;margin-top:20px;align-items:start}
-.mr-stage{position:relative;border-radius:22px;background:var(--surf);box-shadow:inset 0 0 0 1px var(--rim);overflow:hidden;min-width:0}
-.mr-map{display:block;width:100%;height:auto;touch-action:manipulation}
+.mr-stage{user-select:none;-webkit-user-select:none;position:relative;border-radius:22px;background:var(--surf);box-shadow:inset 0 0 0 1px var(--rim);overflow:hidden;min-width:0}
+.mr-map{display:block;width:100%;height:auto;touch-action:pan-y}
+.mr-map.zoomed{touch-action:none;cursor:grab}
+.mr-map .cam{transform-origin:0 0}
+.mr-map circle,.mr-map line,.mr-map rect{vector-effect:non-scaling-stroke}
 .mr-load{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--tx3);background:rgba(24,24,24,.7);z-index:2}
 .mr-load[hidden]{display:none}
 .mr-tip{position:absolute;z-index:3;pointer-events:none;padding:8px 12px;border-radius:12px;background:#2a2a2a;font-size:12px;font-weight:700;line-height:1.5;box-shadow:rgba(0,0,0,.6) 0 8px 24px,inset 0 0 0 1px var(--rim2);white-space:nowrap;transform:translate(-50%,-120%)}
 .mr-tip[hidden]{display:none}
 .mr-tip b{font-size:13px}
 .mr-tip small{display:block;color:var(--tx2);font-weight:600}
+.mr-zoom{position:absolute;top:10px;right:10px;z-index:2;display:grid;gap:6px}
+.mr-zoom button{width:44px;height:44px;border:0;border-radius:50%;background:rgba(37,37,37,.92);color:#fff;font:700 20px var(--fs);line-height:1;cursor:pointer;box-shadow:inset 0 0 0 1px var(--rim2),rgba(0,0,0,.4) 0 4px 12px}
+.mr-zoom button:hover:not(:disabled){background:#333}
+.mr-zoom button:disabled{opacity:.35;cursor:default}
+.mr-hud{position:absolute;left:12px;top:12px;z-index:2;max-width:calc(100% - 84px);padding:8px 14px;border-radius:9999px;background:rgba(37,37,37,.92);font-size:12px;font-weight:700;color:var(--tx2);box-shadow:inset 0 0 0 1px var(--rim2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mr-hud b{color:var(--tx)}
 .mr-side{display:grid;gap:10px;min-width:0}
 .mr-card{padding:16px;border-radius:18px;background:var(--surf);box-shadow:inset 0 0 0 1px var(--rim)}
 .mr-card h3{margin:0 0 10px;font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--tx3);text-transform:uppercase}
@@ -278,8 +288,9 @@ body[data-country="JP"] .playbtn{box-shadow:0 4px 18px rgba(243,114,127,.3)}
 /* svg */
 .mr-map .gridl{stroke:rgba(255,255,255,.055);stroke-width:1}
 .mr-map .axis{stroke:rgba(255,255,255,.22);stroke-width:1.2;stroke-dasharray:4 5}
-.mr-map .zt{font:800 10.5px var(--fs);letter-spacing:.14em;text-transform:uppercase;pointer-events:none}
-.mr-map .al{font:700 11px var(--fs);fill:var(--tx3);pointer-events:none}
+.mr-map .zt{font:800 10.5px var(--fs);font-size:calc(10.5px*var(--ts,1));letter-spacing:.14em;text-transform:uppercase;pointer-events:none}
+.mr-map .al{font:700 11px var(--fs);font-size:calc(11px*var(--ts,1));fill:var(--tx3);pointer-events:none}
+.mr-map .tl{font:800 10px var(--fs);font-size:calc(10px*var(--ts,1));fill:#fff;paint-order:stroke;stroke:#121212;stroke-width:calc(3px*var(--ts,1));pointer-events:none}
 .mr-map .pt{cursor:pointer;transition:transform var(--dur,.8s) cubic-bezier(.4,0,.2,1),opacity var(--dur,.8s) ease}
 .mr-map .pt circle{stroke:rgba(0,0,0,.55);stroke-width:1.2;transition:r var(--dur,.8s) ease}
 .mr-map .pt.enter{opacity:0}
@@ -288,7 +299,7 @@ body[data-country="JP"] .playbtn{box-shadow:0 4px 18px rgba(243,114,127,.3)}
 .mr-map.focus .pt.sel circle{stroke:#fff;stroke-width:3;filter:drop-shadow(0 0 8px rgba(255,255,255,.55))}
 .mr-map .pt.sel circle{stroke:#fff;stroke-width:2.4}
 .mr-map .pt:hover circle{stroke:#fff;stroke-width:2}
-.mr-map .pt text{font:800 11px var(--fs);fill:#fff;paint-order:stroke;stroke:#121212;stroke-width:3px;pointer-events:none}
+.mr-map .pt text{font:800 11px var(--fs);font-size:calc(11px*var(--ts,1));fill:#fff;paint-order:stroke;stroke:#121212;stroke-width:calc(3px*var(--ts,1));pointer-events:none}
 .mr-map .trail-l{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 0}
 .mr-map .trail-p{stroke:#121212;stroke-width:1.5;cursor:pointer}
 .mr-map .trail-p.cur{stroke:#fff;stroke-width:2.4}

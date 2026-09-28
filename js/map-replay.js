@@ -18,6 +18,7 @@
   var reduced = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var M = null; // 현재 마운트된 인스턴스
+  var MAXK = 6, FOLLOW_K = 3, EASE = 'cubic-bezier(.4,0,.2,1)';
 
   function el(name, attrs, parent) {
     var n = document.createElementNS(NS, name);
@@ -54,6 +55,57 @@
     return m.everyP;
   }
 
+  /* ---------- 카메라 (확대 · 이동 · 그룹 따라가기) ----------
+   * 모든 그림은 <g class="cam"> 안에 있고 카메라는 그 그룹의 transform(translate+scale) 하나다.
+   * 점 크기·글자는 확대할수록 덜 커지게 보정해 화면에서 겹침이 덜하다(반지름 k^-0.65, 글자 1/k).
+   * 따라가기: 점의 이동과 카메라 이동을 같은 시간·같은 곡선으로 움직이므로, 고른 그룹은 화면 가운데 고정되고 배경이 흐른다. */
+  function rs() { return Math.pow(M.cam.k, -0.65); }
+  function ts() { return 1 / M.cam.k; }
+  function clampCam() {
+    var c = M.cam;
+    c.k = Math.max(1, Math.min(MAXK, c.k));
+    if (!M.follow) { c.tx = Math.max(M.W * (1 - c.k), Math.min(0, c.tx)); c.ty = Math.max(M.H * (1 - c.k), Math.min(0, c.ty)); }
+  }
+  function applyCam(ms) {
+    var c = M.cam, t = reduced ? 0 : ms;
+    M.camG.style.transition = t ? 'transform ' + t + 'ms ' + EASE : 'none';
+    M.camG.style.transform = 'translate(' + c.tx.toFixed(2) + 'px,' + c.ty.toFixed(2) + 'px) scale(' + c.k.toFixed(4) + ')';
+    M.svg.style.setProperty('--ts', ts().toFixed(4));
+    M.svg.classList.toggle('zoomed', c.k > 1.01);
+  }
+  function centerOnPin(ms) { // 고른 그룹을 화면 가운데에 둔다
+    var p = M.pin && M.cur && M.cur.by[M.pin]; if (!p) return false;
+    var pos = xy(p), k = M.followK;
+    M.cam = { k: k, tx: M.W / 2 - k * pos.x, ty: M.H / 2 - k * pos.y };
+    applyCam(ms); return true;
+  }
+  function resizeNodes() { // 확대 배율이 바뀌면 점·궤적 점 크기를 다시 맞춘다(이름표 위치는 잠시 뒤 render 에서)
+    Object.keys(M.nodes).forEach(function (id) { var n = M.nodes[id]; if (n._r0) n.querySelector('circle').setAttribute('r', (n._r0 * rs()).toFixed(2)); });
+    Array.prototype.forEach.call(M.trailG.querySelectorAll('[data-r0]'), function (c) { c.setAttribute('r', (Number(c.getAttribute('data-r0')) * rs()).toFixed(2)); });
+  }
+  function afterCam() { resizeNodes(); clearTimeout(M.camT); M.camT = setTimeout(function () { if (M && M.cur) render(M.cur, false); }, 140); syncCtl(); }
+  function zoomBy(f, pt, ms) {
+    var c = M.cam, k2 = Math.max(1, Math.min(MAXK, c.k * f)); if (k2 === c.k) return;
+    if (M.follow && M.pin) { M.followK = k2; M.cam.k = k2; if (!centerOnPin(ms || 0)) applyCam(0); afterCam(); return; }
+    var lx = (pt.x - c.tx) / c.k, ly = (pt.y - c.ty) / c.k;
+    c.k = k2; c.tx = pt.x - lx * k2; c.ty = pt.y - ly * k2; clampCam(); applyCam(ms || 0); afterCam();
+  }
+  function resetCam(ms) {
+    M.follow = false; M.cam = { k: 1, tx: 0, ty: 0 }; applyCam(ms); afterCam(); drawHud();
+  }
+  function startFollow(ms) { // 줌인하면서 고른 그룹을 따라가기 시작
+    if (!M.pin || !M.cur || !M.cur.by[M.pin]) return false;
+    M.follow = true; M.followK = M.cam.k >= 2 ? M.cam.k : FOLLOW_K; M.cam.k = M.followK;
+    render(M.cur, false, ms); return true;
+  }
+  function breakFollow() { if (M.follow) { M.follow = false; syncCtl(); drawHud(); } }
+  function drawHud() {
+    var h = $('mrHud'); if (!h) return;
+    var p = M.follow && M.pin && M.cur && M.cur.by[M.pin], ent = p && HA.entryById(M.cur.snap, M.pin);
+    h.hidden = !ent;
+    if (ent) h.innerHTML = '<b>' + M.ctx.esc(ent.group) + '</b> 따라가는 중 · ' + fp(M.cur.period) + ' · #' + ent.rank + ' · <span style="color:' + ZONES[p.zone].color + '">' + p.zone + '</span>';
+  }
+
   /* ---------- 레이아웃 ---------- */
   var PAD = { l: 38, r: 22, t: 30, b: 40 };
   function measure() {
@@ -87,30 +139,31 @@
 
   /* ---------- 점 ---------- */
   function labelIds(d) { // 고정한 그룹 + 점수 상위 몇 팀에 이름을 붙이되, 이미 놓인 라벨과 겹치면 숨긴다
-    var n = M.W < 520 ? 5 : 10, ids = {}, placed = [];
+    var n = M.W < 520 ? 5 : 10, ids = {}, placed = [], T = ts(), RS = rs();
     var order = d.L.points.slice().sort(function (a, b) { return (b.id === M.pin) - (a.id === M.pin) || b.totalScore - a.totalScore || (a.id < b.id ? -1 : 1); });
     var cand = order.filter(function (p) { return p.id === M.pin; });
     if (!M.pin) cand = order.slice(0, n); // 고른 그룹이 없을 때만 점수 상위 팀에 이름을 붙인다
     cand.forEach(function (p) {
-      var pos = xy(p), r = radiusOf(p), w = String(p.group).length * 6.4 + 8, right = pos.x > M.W - 110;
-      var box = { x1: right ? pos.x - r - 5 - w : pos.x + r + 5, y1: pos.y - 8, x2: 0, y2: pos.y + 8 }; box.x2 = box.x1 + w;
+      var pos = xy(p), r = radiusOf(p) * RS, w = (String(p.group).length * 6.4 + 8) * T, right = M.cam.tx + M.cam.k * pos.x > M.W - 110;
+      var box = { x1: right ? pos.x - r - 5 * T - w : pos.x + r + 5 * T, y1: pos.y - 8 * T, x2: 0, y2: pos.y + 8 * T }; box.x2 = box.x1 + w;
       var hit = placed.some(function (b) { return box.x1 < b.x2 && box.x2 > b.x1 && box.y1 < b.y2 && box.y2 > b.y1; });
       if (!hit || p.id === M.pin) { ids[p.id] = 1; placed.push(box); }
     });
     return ids;
   }
   function styleNode(node, p, pos, labeled) {
-    var r = radiusOf(p), c = node.querySelector('circle'), t = node.querySelector('text');
+    var r0 = radiusOf(p), r = r0 * rs(), T = ts(), c = node.querySelector('circle'), t = node.querySelector('text');
+    node._r0 = r0;
     node.style.transform = 'translate(' + pos.x.toFixed(1) + 'px,' + pos.y.toFixed(1) + 'px)';
     c.setAttribute('r', r.toFixed(1)); c.setAttribute('fill', M.ctx.tierColors[p.tier] || '#7c7c7c'); c.setAttribute('fill-opacity', 0.86);
     node.setAttribute('data-z', p.zone);
     node.setAttribute('aria-label', p.group + ' ' + p.tier + ' ' + p.totalScore + '점 ' + p.zone);
     if (labeled) {
-      var right = pos.x > M.W - 110; t.textContent = p.group; t.setAttribute('x', right ? -(r + 5) : r + 5); t.setAttribute('y', 4); t.setAttribute('text-anchor', right ? 'end' : 'start'); t.style.display = '';
+      var right = M.cam.tx + M.cam.k * pos.x > M.W - 110; t.textContent = p.group; t.setAttribute('x', right ? -(r + 5 * T) : r + 5 * T); t.setAttribute('y', 4 * T); t.setAttribute('text-anchor', right ? 'end' : 'start'); t.style.display = '';
     } else t.style.display = 'none';
   }
   function dur(animate) { return reduced || !animate ? 0 : Math.round(BASE_STEP / M.speed * 0.82); }
-  function render(d, animate) {
+  function render(d, animate, camMs) {
     M.cur = d; M.period = d.period;
     M.svg.style.setProperty('--dur', dur(animate) + 'ms');
     var lab = labelIds(d), seen = {}, order = d.L.points.slice().sort(function (a, b) { return a.totalScore - b.totalScore || (a.id < b.id ? -1 : 1); });
@@ -135,7 +188,8 @@
       var node = M.nodes[id];
       if (!node._gone) { node.classList.add('enter'); node._gone = setTimeout(function () { if (node.parentNode) node.parentNode.removeChild(node); if (M && M.nodes[id] === node) delete M.nodes[id]; }, dur(animate) + 60); }
     });
-    applyHighlight(); drawPin(); drawZones(); drawTrail(); syncCtl();
+    if (M.follow && M.pin) centerOnPin(camMs !== undefined ? camMs : dur(animate)); // 점과 같은 시간·곡선으로 카메라도 이동
+    applyHighlight(); drawPin(); drawZones(); drawTrail(); syncCtl(); drawHud();
     var bk = (M.ctx.breaks || []).filter(function (x) { return x.to === d.period; })[0], bn = $('mrBreak');
     if (bn) { bn.hidden = !bk; if (bk) bn.innerHTML = '<b>주의 · 이 달 지도 이동은 참고만 하세요</b><br>' + fp(bk.from) + ' → ' + fp(bk.to) + ' · ' + M.ctx.esc(bk.reason); }
     if (M.live) M.live.textContent = fp(d.period) + ' ' + M.ctx.ko[M.country] + ' 시장 지도, ' + d.L.population + '팀';
@@ -173,11 +227,12 @@
       var prevZone = null;
       pts.forEach(function (q, i) {
         var last = i === pts.length - 1;
-        var c = el('circle', { cx: q.pos.x, cy: q.pos.y, r: last ? 7 : 4.2, fill: ZONES[q.p.zone].color, class: 'trail-p' + (last ? ' cur' : ''), 'fill-opacity': last ? 1 : (0.45 + 0.5 * i / pts.length).toFixed(2), tabindex: -1 }, g);
+        var r0 = last ? 7 : 4.2;
+        var c = el('circle', { cx: q.pos.x, cy: q.pos.y, r: (r0 * rs()).toFixed(2), 'data-r0': r0, fill: ZONES[q.p.zone].color, class: 'trail-p' + (last ? ' cur' : ''), 'fill-opacity': last ? 1 : (0.45 + 0.5 * i / pts.length).toFixed(2), tabindex: -1 }, g);
         c.setAttribute('data-tip', fp(q.h.period) + '|#' + q.h.rank + ' · ' + q.h.score + '점 · ' + q.h.tier + '|' + q.p.zone);
         c.setAttribute('aria-label', fp(q.h.period) + ' #' + q.h.rank + ' ' + q.h.score + '점 ' + q.p.zone);
         if (i === 0 || q.p.zone !== prevZone) { // 처음 점과 영역이 바뀐 점에 달을 표시
-          var t = el('text', { x: q.pos.x, y: q.pos.y - 10, 'text-anchor': 'middle', class: 'al', fill: '#fff' }, g); t.textContent = fp(q.h.period).slice(2); t.style.fill = '#fff'; t.style.fontSize = '10px';
+          var t = el('text', { x: q.pos.x, y: q.pos.y - 10 * ts(), 'text-anchor': 'middle', class: 'tl' }, g); t.textContent = fp(q.h.period).slice(2);
         }
         prevZone = q.p.zone;
       });
@@ -197,7 +252,7 @@
   function drawPin() {
     var box = $('mrPin'), d = M.cur, id = M.pin, e = M.ctx.esc;
     if (!id) {
-      box.innerHTML = '<h3>FOLLOW A GROUP</h3><p class="mr-help">점을 누르면 그 그룹만 또렷하게 남고 나머지는 흐려져요. 지나온 자리(<b style="color:var(--tx)">TRAIL</b>)도 같이 그려져요. 아래 칸에서 이름으로 찾아도 돼요.</p>';
+      box.innerHTML = '<h3>FOLLOW A GROUP</h3><p class="mr-help">점을 누르면 그 그룹만 또렷하게 남고 나머지는 흐려져요. 그 상태에서 <b style="color:var(--tx)">PLAY</b>를 누르면 카메라가 확대해서 그룹을 따라가요. 확대는 + − 버튼이나 Ctrl+휠로, 확대한 뒤에는 드래그로 옮길 수 있어요.</p>';
       return;
     }
     var p = d.by[id], ent = HA.entryById(d.snap, id), name = ent ? ent.group : (p ? p.group : id);
@@ -231,6 +286,9 @@
     $('mrPrev').disabled = i <= 0; $('mrNext').disabled = i >= ps.length - 1;
     Array.prototype.forEach.call(document.querySelectorAll('[data-speed]'), function (b) { b.setAttribute('aria-pressed', Number(b.getAttribute('data-speed')) === M.speed); });
     Array.prototype.forEach.call(document.querySelectorAll('[data-trail]'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-trail') === M.trail); });
+    var fb = $('mrFollow'); if (fb) { fb.disabled = !M.pin; fb.setAttribute('aria-pressed', !!M.follow); }
+    var zi = $('mrZin'), zo = $('mrZout'), zr = $('mrZreset');
+    if (zi) { zi.disabled = M.cam.k >= MAXK - 0.01; zo.disabled = M.cam.k <= 1.01; zr.disabled = M.cam.k <= 1.01 && !M.follow; }
     var pb = $('mrPlay'); pb.textContent = M.playing ? '❚❚ PAUSE' : (i >= ps.length - 1 ? '↺ REPLAY' : '▶ PLAY'); pb.setAttribute('aria-pressed', !!M.playing);
   }
   function goPeriod(p, animate, fromUser) {
@@ -252,8 +310,10 @@
     loadEvery().then(function () {
       if (!M) return; pb.disabled = false;
       if (ps.indexOf(M.period) >= ps.length - 1) goPeriod(ps[0], false, true); // 끝에서 다시 누르면 처음부터
+      var lead = reduced ? 900 : 350;
+      if (M.pin && startFollow(reduced ? 0 : 750)) lead = 900; // 먼저 확대해서 그룹을 가운데에 고정한 뒤 출발
       M.playing = true; syncCtl();
-      M.timer = setTimeout(step, reduced ? 900 : 350);
+      M.timer = setTimeout(step, lead);
     }).catch(function () { if (M) { pb.disabled = false; syncCtl(); if (global.__toast) global.__toast('기록을 불러오지 못해서 재생할 수 없어요'); } });
   }
   function step() {
@@ -265,7 +325,8 @@
   function pinGroup(id) {
     M.pin = id || null; M.ctx.setState({ pin: M.pin });
     M.svg.classList.toggle('focus', !!M.pin);
-    if (M.cur) render(M.cur, false); // 이름표(고른 그룹만)·강조·궤적을 한 번에 다시 그린다
+    if (!M.pin && (M.follow || M.cam.k > 1.01)) { M.follow = false; M.cam = { k: 1, tx: 0, ty: 0 }; applyCam(450); } // 선택을 풀면 전체 보기로
+    if (M.cur) render(M.cur, false, M.follow && M.pin ? 600 : undefined); // 이름표(고른 그룹만)·강조·궤적을 한 번에 다시 그린다
     var pick = $('mrPick'); if (pick && !id) pick.value = '';
   }
 
@@ -292,6 +353,8 @@
     M = { ctx: ctx, root: root, country: S.country, cache: {}, nodes: {}, pin: S.pin || null, trail: S.trail, speed: S.speed, zone: null, playing: false, goTok: 0, trailTok: 0, timer: 0, everyP: null };
     var ps = ctx.periods, e = ctx.esc;
     root.innerHTML = '<div class="mr"><div class="mr-stage" id="mrStage"><svg class="mr-map" id="mrSvg" role="group" aria-label="' + e(ctx.ko[S.country]) + ' 아이돌 시장 포지셔닝 지도(월별)"></svg>'
+      + '<div class="mr-zoom" role="group" aria-label="지도 확대"><button type="button" id="mrZin" aria-label="확대" title="확대">+</button><button type="button" id="mrZout" aria-label="축소" title="축소">−</button><button type="button" id="mrZreset" aria-label="전체 보기" title="전체 보기">⤢</button></div>'
+      + '<div class="mr-hud" id="mrHud" hidden></div>'
       + '<div class="mr-load" id="mrLoad">지도를 계산하는 중…</div><div class="mr-tip" id="mrTip" hidden></div></div>'
       + '<aside class="mr-side"><div class="mr-card wide" id="mrPin"></div><div class="mr-card"><h3>MARKET POSITION <small id="mrZoneH" style="text-transform:none;letter-spacing:0;margin-left:6px"></small></h3><ul class="zlist" id="mrZones"></ul></div></aside></div>'
       + '<div class="mr-ctl" id="mrCtl" role="group" aria-label="지도 재생 컨트롤">'
@@ -300,13 +363,16 @@
       + '</div><div class="mr-opts" id="mrOpts">'
       + '<span class="g"><span class="lab">SPEED</span><span class="seg" role="group" aria-label="재생 속도">' + SPEEDS.map(function (s) { return '<button class="pill" type="button" data-speed="' + s + '" aria-pressed="false">' + s + 'x</button>'; }).join('') + '</span></span>'
       + '<span class="g"><span class="lab">TRAIL</span><span class="seg" role="group" aria-label="궤적 범위">' + TRAILS.map(function (t) { return '<button class="pill" type="button" data-trail="' + t[0] + '" aria-pressed="false">' + t[1] + '</button>'; }).join('') + '</span></span>'
+      + '<span class="g"><span class="lab">CAMERA</span><button class="pill" type="button" id="mrFollow" aria-pressed="false" disabled title="그룹을 고른 뒤 눌러 보세요">따라가기</button></span>'
       + '<input class="mr-pick" id="mrPick" list="mrGroups" placeholder="그룹 이름으로 따라가기" autocomplete="off" aria-label="그룹 찾아 따라가기"><datalist id="mrGroups"></datalist></div>'
       + '<div class="verbanner" id="mrBreak" role="note" hidden></div>'
       + '<p class="mr-disc"><b>이 지도는 그 달 자국 시장 안에서의 상대 위치예요.</b> 같은 점수여도 그 달 전체 분포가 다르면 위치가 달라질 수 있어요. 가로는 코어 팬덤 ↔ 대중, 세로는 디지털·음원 ↔ 라이브·공연이고, 위치는 우열이 아니라 성향이에요. 버블 크기는 그 달 총점이 시장에서 어느 정도인지를 뜻해요. 한국과 일본은 따로 봐요.</p>'
       + '<p class="sr" id="mrLive" aria-live="polite"></p>';
     M.stage = $('mrStage'); M.svg = $('mrSvg'); M.tip = $('mrTip'); M.live = $('mrLive');
     M.svg.classList.toggle('focus', !!M.pin);
-    M.bg = el('g', null, M.svg); M.trailG = el('g', null, M.svg); M.layer = el('g', null, M.svg);
+    M.cam = { k: 1, tx: 0, ty: 0 }; M.follow = false; M.followK = FOLLOW_K;
+    M.camG = el('g', { class: 'cam' }, M.svg);
+    M.bg = el('g', null, M.camG); M.trailG = el('g', null, M.camG); M.layer = el('g', null, M.camG);
     measure(); drawBg();
     bindEvents();
     setLoad(true, '지도를 계산하는 중…');
@@ -336,6 +402,10 @@
       if ((b = t.closest('[data-trail]'))) { M.trail = b.getAttribute('data-trail'); ctx.setState({ trail: M.trail }); syncCtl(); drawTrail(); return; }
       if ((b = t.closest('[data-zone]'))) { var z = b.getAttribute('data-zone'); M.zone = M.zone === z ? null : z; applyHighlight(); drawZones(); return; }
       if (t.closest('[data-unpin]')) { pinGroup(null); return; }
+      if (t.closest('#mrZin')) { zoomBy(1.6, { x: M.W / 2, y: M.H / 2 }, 260); return; }
+      if (t.closest('#mrZout')) { zoomBy(1 / 1.6, { x: M.W / 2, y: M.H / 2 }, 260); return; }
+      if (t.closest('#mrZreset')) { resetCam(450); return; }
+      if (t.closest('#mrFollow')) { if (M.follow) { breakFollow(); } else startFollow(700); return; }
       if ((b = t.closest('[data-detail]'))) { e.preventDefault(); e.stopPropagation(); ctx.openDetail(b.getAttribute('data-detail')); return; }
     });
     $('mrPick').addEventListener('change', function () {
@@ -344,8 +414,10 @@
       if (hit) { pinGroup(hit.id); this.value = hit.group; }
       else if (global.__toast) global.__toast('이 달 평가에서 ‘' + this.value + '’ 그룹을 찾지 못했어요');
     });
+    bindCamera(svg);
     // 점 클릭: 고정/해제 · 마우스 hover 툴팁
     svg.addEventListener('click', function (e) {
+      if (M.dragged) { M.dragged = false; return; } // 끌어서 옮긴 직후의 클릭은 무시
       var n = e.target.closest('.pt'), tp = e.target.closest('.trail-p');
       if (tp) { showTrailTip(tp); clearTimeout(M.tipT); M.tipT = setTimeout(function () { M.tip.hidden = true; }, 2600); return; }
       if (n) { var id = n.getAttribute('data-id'); pinGroup(M.pin === id ? null : id); showNodeTip(n); clearTimeout(M.tipT); M.tipT = setTimeout(function () { M.tip.hidden = true; }, 2200); return; }
@@ -360,18 +432,59 @@
     if (global.ResizeObserver) {
       M.ro = new ResizeObserver(function () {
         clearTimeout(M.rt);
-        M.rt = setTimeout(function () { if (!M) return; var w = Math.round(M.stage.clientWidth); if (w === M.W) return; measure(); drawBg(); if (M.cur) render(M.cur, false); }, 120);
+        M.rt = setTimeout(function () { if (!M) return; var w = Math.round(M.stage.clientWidth); if (w === M.W) return; measure(); drawBg(); M.cam = { k: M.follow ? M.followK : 1, tx: 0, ty: 0 }; applyCam(0); if (M.cur) render(M.cur, false, 0); }, 120);
       });
       M.ro.observe(M.stage);
     }
     M.vis = function () { if (document.hidden && M && M.playing) pause(); };
     document.addEventListener('visibilitychange', M.vis);
   }
+  /* 휠(Ctrl 또는 이미 확대 중) · 드래그 이동 · 두 손가락 확대 */
+  function bindCamera(svg) {
+    var ptrs = {}, start = null;
+    function rel(e) { var r = svg.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+    function snapshot() { var o = {}; Object.keys(ptrs).forEach(function (k) { o[k] = { x: ptrs[k].x, y: ptrs[k].y }; }); start = { cam: { k: M.cam.k, tx: M.cam.tx, ty: M.cam.ty }, pts: o }; }
+    svg.addEventListener('wheel', function (e) {
+      if (!(e.ctrlKey || e.metaKey || M.cam.k > 1.01)) return; // 처음엔 일반 휠이 페이지 스크롤을 막지 않게 한다
+      e.preventDefault(); zoomBy(Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0015)), rel(e), 0);
+    }, { passive: false });
+    svg.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      ptrs[e.pointerId] = rel(e); M.dragged = false; snapshot();
+    });
+    M.onMove = function (e) {
+      if (!M || !ptrs[e.pointerId] || !start) return;
+      var ids = Object.keys(ptrs), p = rel(e);
+      if (ids.length === 1) {
+        if (M.cam.k <= 1.01) return;
+        var s0 = start.pts[e.pointerId]; if (!s0) return;
+        var dx = p.x - s0.x, dy = p.y - s0.y;
+        if (!M.dragged && Math.hypot(dx, dy) < 5) return;
+        M.dragged = true; breakFollow();
+        M.cam.tx = start.cam.tx + dx; M.cam.ty = start.cam.ty + dy; clampCam(); applyCam(0);
+      } else if (ids.length === 2) {
+        ptrs[e.pointerId] = p;
+        var a = ptrs[ids[0]], b = ptrs[ids[1]], sa = start.pts[ids[0]], sb = start.pts[ids[1]]; if (!sa || !sb) return;
+        var d1 = Math.hypot(a.x - b.x, a.y - b.y), d0 = Math.hypot(sa.x - sb.x, sa.y - sb.y) || 1;
+        var k2 = Math.max(1, Math.min(MAXK, start.cam.k * d1 / d0)), m0 = { x: (sa.x + sb.x) / 2, y: (sa.y + sb.y) / 2 }, m1 = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+        var lx = (m0.x - start.cam.tx) / start.cam.k, ly = (m0.y - start.cam.ty) / start.cam.k;
+        M.dragged = true; breakFollow(); M.cam.k = k2; M.cam.tx = m1.x - lx * k2; M.cam.ty = m1.y - ly * k2; clampCam(); applyCam(0); resizeNodes();
+      }
+    };
+    M.onUp = function (e) {
+      if (!ptrs[e.pointerId]) return;
+      delete ptrs[e.pointerId]; if (Object.keys(ptrs).length) snapshot();
+      if (M && M.dragged) afterCam();
+    };
+    window.addEventListener('pointermove', M.onMove); window.addEventListener('pointerup', M.onUp); window.addEventListener('pointercancel', M.onUp);
+  }
   function destroy() {
     if (!M) return;
     clearTimeout(M.timer); clearTimeout(M.rt); clearTimeout(M.tipT);
     if (M.ro) M.ro.disconnect();
     document.removeEventListener('visibilitychange', M.vis);
+    window.removeEventListener('pointermove', M.onMove); window.removeEventListener('pointerup', M.onUp); window.removeEventListener('pointercancel', M.onUp);
+    clearTimeout(M.camT);
     M.playing = false; M = null;
   }
   function setPeriod(p) { // 상단 월 선택기·화살표 키에서 온 변경
