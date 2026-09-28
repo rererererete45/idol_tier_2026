@@ -152,8 +152,8 @@
     if (!discP) {
       var p = Promise.resolve();
       if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260929'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260929'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260929'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260931'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260931'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); });
@@ -162,7 +162,8 @@
     var qp = new URLSearchParams(location.search);
     if (!qp.has('discover')) return;
     var v = qp.get('discover');
-    var go = function () { window.openDiscover({ id: v && v !== '1' ? v : null, mode: qp.get('mode') || undefined, scope: qp.get('scope') || undefined }); };
+    var view = v === 'collection' || v === 'report' ? v : undefined;
+    var go = function () { window.openDiscover({ id: v && v !== '1' && !view ? v : null, view: view, mode: qp.get('mode') || undefined, scope: qp.get('scope') || undefined }); };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
   })();
 

@@ -265,10 +265,10 @@
     },
     hiddenGem: function (ctx) {
       // 스펙 기준(총점 하위 65% 미만 & 한 축 80 이상). 후보가 4팀 미만이면 조금 완화(75/75)해 반복을 막는다.
-      var c = ctx.pool.filter(function (e) { return e.totalPercentile < 65 && maxAxis(e) >= 80; });
-      if (c.length < 4) c = ctx.pool.filter(function (e) { return e.totalPercentile < 75 && maxAxis(e) >= 75; });
+      var c = ctx.pool.filter(function (e) { return e.totalPercentile < 65 && maxAxis(e) >= 80; }), relaxed = false;
+      if (c.length < 4) { c = ctx.pool.filter(function (e) { return e.totalPercentile < 75 && maxAxis(e) >= 75; }); relaxed = true; }
       var g = weightedRandom(c, function (e) { return (maxAxis(e) / 100) * (1.2 - e.totalPercentile / 100); }, ctx.rng);
-      return g && { ent: g };
+      return g && { ent: g, relaxed: relaxed };
     },
     expand: function (ctx) {
       if (!ctx.profile || ctx.favs.length < 2) return null;
@@ -345,7 +345,7 @@
   }
   function finish(r, used, requested, actual) {
     var e = r.ent || r.group;
-    return { ent: e, mode: used, requested: requested, fellBack: used !== actual, breakdown: r.breakdown || null, score: r.score, reason: generateDiscoveryReason(used, e, r) };
+    return { ent: e, mode: used, requested: requested, fellBack: used !== actual, relaxed: !!r.relaxed, breakdown: r.breakdown || null, score: r.score, reason: generateDiscoveryReason(used, e, r) };
   }
   function dailyDiscovery(scope) {
     var d = new Date(), seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
@@ -359,6 +359,58 @@
     var found = null;
     ['KR', 'JP'].forEach(function (c) { entitiesOf(c).forEach(function (e) { if (e.id === id) found = e; }); });
     return found && { ent: found, mode: mode || 'random', requested: mode || 'random', fellBack: false, breakdown: null, reason: generateDiscoveryReason(mode || 'random', found) };
+  }
+
+
+  /* ---------- 발견 컬렉션 · 월간 리포트 · 최애 빠른 추가 ---------- */
+  function entityById(id) {
+    var f = null;
+    ['KR', 'JP'].forEach(function (c) { entitiesOf(c).forEach(function (e) { if (e.id === id) f = e; }); });
+    return f;
+  }
+  // 발견한 그룹(중복 제거, 최신순): {ent, mode, last, count}
+  function getDiscoveryCollection() {
+    var seen = {}, out = [];
+    loadDiscoveryHistory().forEach(function (h) {
+      var e = entityById(h.id); if (!e) return;
+      if (seen[h.id]) { seen[h.id].count++; return; }
+      seen[h.id] = { ent: e, mode: h.mode, last: h.timestamp, count: 1 };
+      out.push(seen[h.id]);
+    });
+    return out;
+  }
+  // year/month(0~11) 의 발견 기록 요약. 기록은 최근 50개까지만 남으므로 그 범위 안에서 집계한다.
+  function getMonthlyReport(year, month) {
+    var rows = loadDiscoveryHistory().filter(function (h) {
+      var d = new Date(h.timestamp); return d.getFullYear() === year && d.getMonth() === month;
+    });
+    var uniq = {}, modes = {}, countries = { KR: 0, JP: 0 }, tags = {}, gems = [], hots = [];
+    rows.forEach(function (h) {
+      modes[h.mode] = (modes[h.mode] || 0) + 1;
+      var e = entityById(h.id); if (!e || uniq[h.id]) return;
+      uniq[h.id] = e; countries[e.country]++;
+      e.styleTags.forEach(function (t) { if (t !== '세련됨') tags[t] = (tags[t] || 0) + 1; });
+      if (h.mode === 'hiddenGem') gems.push(e);
+      if (h.mode === 'hot') hots.push(e);
+    });
+    var topTags = Object.keys(tags).sort(function (a, b) { return tags[b] - tags[a]; }).slice(0, 5).map(function (t) { return { tag: t, n: tags[t] }; });
+    var ids = Object.keys(uniq);
+    var avg = function (k) { return ids.length ? ids.reduce(function (a, id) { return a + uniq[id][k]; }, 0) / ids.length : 0; };
+    return {
+      year: year, month: month, total: rows.length, unique: ids.length, modes: modes, countries: countries, topTags: topTags,
+      gems: gems.slice(0, 5), hots: hots.slice(0, 5), avg: { live: avg('live'), fandom: avg('fandom'), digital: avg('digital'), popularity: avg('popularity') },
+      favorites: IM.getFavorites().length
+    };
+  }
+  // 최애가 부족할 때 고르기 쉬운 후보(국가별 체급 상위, 최애 제외)
+  function getFavoriteSuggestions(scope, perCountry) {
+    var favs = {}; IM.getFavorites().forEach(function (f) { favs[f.country + '|' + f.group] = 1; });
+    var out = [];
+    (scope === 'KR' ? ['KR'] : scope === 'JP' ? ['JP'] : ['KR', 'JP']).forEach(function (c) {
+      entitiesOf(c).filter(function (e) { return isActive(e) && !favs[e.key]; })
+        .sort(function (a, b) { return b.total - a.total; }).slice(0, perCountry || 4).forEach(function (e) { out.push(e); });
+    });
+    return out;
   }
 
   global.IdolRec = {
@@ -375,7 +427,7 @@
     getRandomDiscovery: getRandomDiscovery, getTasteDiscovery: getTasteDiscovery, getHiddenGemDiscovery: getHiddenGemDiscovery,
     getExpansionDiscovery: getExpansionDiscovery, getHotDiscovery: getHotDiscovery, chooseDiscoveryMode: chooseDiscoveryMode,
     weightedRandom: weightedRandom, pickDiscovery: pickDiscovery, discoveryFor: discoveryFor, generateDiscoveryReason: generateDiscoveryReason,
-    describeStyle: describeStyle,
+    describeStyle: describeStyle, entityById: entityById, getDiscoveryCollection: getDiscoveryCollection, getMonthlyReport: getMonthlyReport, getFavoriteSuggestions: getFavoriteSuggestions,
     loadRecentDiscoveries: loadRecentDiscoveries, saveRecentDiscovery: saveRecentDiscovery,
     loadDiscoveryHistory: loadDiscoveryHistory, saveDiscoveryHistory: saveDiscoveryHistory, clearDiscoveryHistory: clearDiscoveryHistory,
     _internals: { PICK: PICK, scoreVsProfile: scoreVsProfile, rankScene: rankScene, SCENE_W: SCENE_W }

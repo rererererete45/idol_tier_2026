@@ -439,7 +439,7 @@
     if (S.compare && S.cmp.length === 2) { renderComparePanel(); return; }
     var expl = generatePositionExplanation(p).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
     var topTotal = Math.max(1, Math.round(100 - p.totalPercentile)), topMom = Math.max(1, Math.round(100 - p.mom));
-    var html = '<div class="sh-hero"><div class="av">' + esc(p.group.charAt(0)) + '<img alt="" src="img/' + esc(p.id) + '.webp" onerror="this.remove()" style="position:absolute;inset:0"></div>'
+    var html = '<div class="sh-hero"><div class="av">' + esc(p.group.charAt(0)) + imgHtml(p) + '</div>'
       + '<div class="sh-id"><h2>' + esc(p.group) + ' ' + flag(p.country) + '</h2>'
       + '<p class="sh-sub">' + tierChip(p) + '<span>' + (p.status ? esc(p.status) : '') + '</span></p></div>'
       + '<button class="x" id="shClose" aria-label="닫기">✕</button></div>'
@@ -465,6 +465,15 @@
     animateSheet(sh);
   }
 
+  // 사진이 있는 그룹만 <img> 를 만든다(data/namu_images.json) — 없는 파일 요청으로 404 가 나지 않게.
+  var IMGS = {};
+  function loadImgs() {
+    return fetch('data/namu_images.json').then(function (r) { return r.json(); }).catch(function () { return {}; }).then(function (j) { IMGS = j || {}; });
+  }
+  function imgHtml(p) {
+    var r = IMGS[p.country] && IMGS[p.country][p.group];
+    return r && r.img ? '<img alt="" src="' + esc(r.img) + '" onerror="this.remove()" style="position:absolute;inset:0">' : '';
+  }
   function showSheet() { el.sheet.hidden = false; document.body.classList.add('sheet-open'); }
   // 막대 채우기 + 숫자 카운트업 (Count Up)
   function animateSheet(root) {
@@ -802,7 +811,7 @@
   /* ---------- 초기화 ---------- */
   function init() {
     el.wrap = $('mapwrap'); el.svg = $('map'); el.sheet = $('sheet'); el.zoomval = $('zoomval'); el.zones = $('zones'); el.sideEmpty = $('sideEmpty'); el.tip = $('tip');
-    IM.ready.then(function () {
+    Promise.all([IM.ready, loadImgs()]).then(function () {
       DATA.KR = buildPoints('KR'); DATA.JP = buildPoints('JP');
       $('excl').textContent = (DATA.KR.excluded + DATA.JP.excluded) ? 'MAP DATA 부족으로 제외: ' + (DATA.KR.excluded + DATA.JP.excluded) + '팀' : '';
       var mode = (Q.get('country') || 'KR').toUpperCase();
