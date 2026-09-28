@@ -14,7 +14,16 @@
     KR: { pub: [['국내음원', 0.55], ['국내인지도', 0.45]], fan: [['음반·팬덤', 1]], live: [['공연', 1]], dig: [['국내음원', 0.55], ['글로벌', 0.45]], mom: '현재기세' },
     JP: { pub: [['대중인지도', 0.60], ['스트리밍·SNS', 0.40]], fan: [['팬덤·구매력', 1]], live: [['공연·현장', 1]], dig: [['스트리밍·SNS', 1]], mom: '현재기세' }
   };
-  var TIER_COLORS = { 'S+': '#1ed760', 'S': '#a3e635', 'A+': '#facc15', 'A': '#fb923c', 'B+': '#f87171', 'B': '#e879f9', 'C+': '#a78bfa', 'C': '#60a5fa', 'D+': '#94a3b8', 'D': '#64748b' };
+  // 티어 색은 초록(강함) → 청록 → 파랑 → 보라 → 회색(약함)으로 이어지는 한 줄 팔레트
+  var TIER_COLORS = { 'S+': '#1ed760', 'S': '#36e0a0', 'A+': '#22d3ee', 'A': '#38a8f8', 'B+': '#5b8def', 'B': '#7c7cf0', 'C+': '#a78bfa', 'C': '#b592e8', 'D+': '#8b95a7', 'D': '#5f6b7d' };
+  var ZONE_META = {
+    'CORE LIVE': { color: '#f3727f', text: '팬덤 중심 · 라이브 강세' },
+    'STAGE STAR': { color: '#ffa42b', text: '대중 확장 · 라이브 강세' },
+    'PUBLIC HIT': { color: '#539df5', text: '대중 확장 · 디지털 강세' },
+    'CORE DIGITAL': { color: '#a78bfa', text: '팬덤 중심 · 디지털 강세' },
+    'BALANCED': { color: '#b3b3b3', text: '중앙 균형형' }
+  };
+  var ZONE_ORDER = ['CORE LIVE', 'STAGE STAR', 'PUBLIC HIT', 'CORE DIGITAL', 'BALANCED'];
   var TIER_ORDER = ['S+', 'S', 'A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D'];
   var STYLE_CATS = [
     { key: 'POP_ROYAL', label: 'POP / 왕도', color: '#1ed760', tags: { '팝': 1, '왕도': 1, '청춘': 1, '글로벌': 0.5, '세련됨': 0.5, '레트로': 0.4 } },
@@ -146,10 +155,12 @@
   var DATA = { KR: null, JP: null };
   var S = {
     mode: 'KR', preset: 'ALL', color: 'tier', sel: null, hover: null, compare: false, cmp: [], match: null,
-    scale: 1, tx: 0, ty: 0, W: 0, H: 0, sf: 1, query: ''
+    scale: 1, tx: 0, ty: 0, W: 0, H: 0, sf: 1, query: '', zone: null, enter: true, vis: [], lab: {}
   };
+  var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var FINE = window.matchMedia && matchMedia('(pointer:fine)').matches;
   var el = {};
-  var PAD = { l: 34, r: 34, t: 34, b: 38 };
+  var PAD = { l: 34, r: 34, t: 48, b: 38 };
 
   function $(id) { return document.getElementById(id); }
   function svgEl(name, attrs, parent) {
@@ -181,7 +192,8 @@
     return true;
   }
   function passesQuery(p) { return !S.query || p.group.toLowerCase().indexOf(S.query) !== -1; }
-  function isVisible(p, favs) { return passesPreset(p, favs) && passesQuery(p); }
+  function passesZone(p) { return !S.zone || p.zone === S.zone; }
+  function isVisible(p, favs) { return passesPreset(p, favs) && passesQuery(p) && passesZone(p); }
   function colorOf(p) { return S.color === 'style' ? catOf(p.styleCategory).color : (TIER_COLORS[p.tier] || '#7c7c7c'); }
 
   /* ---------- 렌더 ---------- */
@@ -193,7 +205,7 @@
 
   function measure() {
     var w = el.wrap.clientWidth || 360;
-    S.W = w; S.H = Math.max(520, Math.min(Math.round(w * 0.9), 760));
+    S.W = w; S.H = Math.max(520, Math.min(Math.round(w * (w > 700 ? 0.74 : 0.9)), 720));
     S.sf = Math.max(0.62, Math.min(1, w / 720)); // 좁은 화면에서는 버블을 줄여 겹침 완화
     el.svg.setAttribute('viewBox', '0 0 ' + S.W + ' ' + S.H);
     el.svg.style.height = S.H + 'px';
@@ -210,68 +222,142 @@
     var n = el.vp.querySelectorAll('.mi');
     for (var i = 0; i < n.length; i++) n[i].setAttribute('transform', inv);
     el.zoomval.textContent = Math.round(S.scale * 100) + '%';
+    scheduleLabels();
+  }
+
+  // 데이터가 중앙에 몰려 있으면(통합/일본) 점들이 화면을 채우도록 처음 보기를 자동으로 맞춘다.
+  function fitView() {
+    var pts = activePoints();
+    S.scale = 1; S.tx = 0; S.ty = 0;
+    if (pts.length && pts[0].px) {
+      var x1 = 1e9, y1 = 1e9, x2 = -1e9, y2 = -1e9;
+      pts.forEach(function (p) { x1 = Math.min(x1, p.px.x); x2 = Math.max(x2, p.px.x); y1 = Math.min(y1, p.px.y); y2 = Math.max(y2, p.px.y); });
+      var bw = Math.max(x2 - x1 + 70, 120), bh = Math.max(y2 - y1 + 70, 120);
+      var sc = Math.min(2.6, Math.min(S.W / bw, S.H / bh));
+      if (sc >= 1.2) {
+        S.scale = sc;
+        S.tx = S.W / 2 - (x1 + x2) / 2 * sc; S.ty = S.H / 2 - (y1 + y2) / 2 * sc;
+      }
+    }
+    applyView();
+  }
+
+  function shade(hex, amt) {
+    var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+    function f(c) { return Math.round(amt >= 0 ? c + (255 - c) * amt : c * (1 + amt)); }
+    return 'rgb(' + f(r) + ',' + f(g) + ',' + f(b) + ')';
+  }
+  function gradId(col) { return 'rg' + col.slice(1); }
+
+  function buildDefs(svg, pts) {
+    var defs = svgEl('defs', {}, svg), seen = {};
+    pts.forEach(function (p) {
+      var col = colorOf(p);
+      if (seen[col]) return; seen[col] = 1;
+      var g = svgEl('radialGradient', { id: gradId(col), cx: '.36', cy: '.3', r: '.85' }, defs);
+      svgEl('stop', { offset: '0', 'stop-color': shade(col, 0.55) }, g);
+      svgEl('stop', { offset: '.55', 'stop-color': col }, g);
+      svgEl('stop', { offset: '1', 'stop-color': shade(col, -0.32) }, g);
+    });
+    // 사분면 틴트: 바깥 모서리에서 안쪽으로 옅게 번지는 그라데이션
+    [['zgCL', ZONE_META['CORE LIVE'].color, 0, 0], ['zgSS', ZONE_META['STAGE STAR'].color, 1, 0],
+     ['zgCD', ZONE_META['CORE DIGITAL'].color, 0, 1], ['zgPH', ZONE_META['PUBLIC HIT'].color, 1, 1]].forEach(function (z) {
+      var g = svgEl('radialGradient', { id: z[0], cx: z[2], cy: z[3], r: '1.05' }, defs);
+      svgEl('stop', { offset: '0', 'stop-color': z[1], 'stop-opacity': '.2' }, g);
+      svgEl('stop', { offset: '1', 'stop-color': z[1], 'stop-opacity': '0' }, g);
+    });
   }
 
   function renderIdolMap() {
     measure();
     var svg = el.svg;
     while (svg.firstChild) svg.removeChild(svg.firstChild);
+    svg.setAttribute('class', S.enter && !REDUCED ? 'enter' : '');
     var pl = plot();
+    var pts = activePoints().slice().sort(function (a, b) { return b.radius - a.radius; }); // 작은 점이 위
+    buildDefs(svg, pts);
+
+    // 고정 레이어(줌해도 크기 유지): 사분면 이름
+    var fx = svgEl('g', { id: 'fx', 'pointer-events': 'none' }, svg);
+    var big = S.W >= 520;
+    [['CORE LIVE', 0, 0], ['STAGE STAR', 1, 0], ['CORE DIGITAL', 0, 1], ['PUBLIC HIT', 1, 1]].forEach(function (z) {
+      var right = z[1] === 1, bottom = z[2] === 1, x = PAD.l + (right ? pl.w - 12 : 12), y0 = PAD.t + (bottom ? pl.h - (big ? 30 : 14) : 20);
+      var t = svgEl('text', { class: 'zc-t', x: x, y: y0, 'text-anchor': right ? 'end' : 'start', fill: ZONE_META[z[0]].color }, fx);
+      t.textContent = z[0];
+      if (big) {
+        var st = svgEl('text', { class: 'zc-s', x: x, y: y0 + (bottom ? 14 : 14), 'text-anchor': right ? 'end' : 'start' }, fx);
+        st.textContent = ZONE_META[z[0]].text;
+      }
+    });
+
     var vp = svgEl('g', { id: 'vp' }, svg);
     el.vp = vp;
-    // 축 / 그리드 (은은하게: 중심선 + 25/75 점선)
-    var cx = PAD.l + pl.w / 2, cy = PAD.t + pl.h / 2;
-    [25, 75].forEach(function (v) {
-      svgEl('line', { class: 'grid', x1: PAD.l + pl.w * v / 100, y1: PAD.t, x2: PAD.l + pl.w * v / 100, y2: PAD.t + pl.h, 'stroke-dasharray': '2 6' }, vp);
-      svgEl('line', { class: 'grid', y1: PAD.t + pl.h * v / 100, x1: PAD.l, y2: PAD.t + pl.h * v / 100, x2: PAD.l + pl.w, 'stroke-dasharray': '2 6' }, vp);
+    var cx = PAD.l + pl.w / 2, cy = PAD.t + pl.h / 2, hw = pl.w / 2, hh = pl.h / 2;
+    // 사분면 틴트 + 플롯 테두리
+    svgEl('rect', { class: 'plot-bg', x: PAD.l, y: PAD.t, width: pl.w, height: pl.h, rx: 14 }, vp);
+    [['zgCL', PAD.l, PAD.t], ['zgSS', cx, PAD.t], ['zgCD', PAD.l, cy], ['zgPH', cx, cy]].forEach(function (q) {
+      svgEl('rect', { x: q[1], y: q[2], width: hw, height: hh, fill: 'url(#' + q[0] + ')' }, vp);
     });
-    svgEl('line', { class: 'axis', x1: cx, y1: PAD.t, x2: cx, y2: PAD.t + pl.h }, vp);
-    svgEl('line', { class: 'axis', x1: PAD.l, y1: cy, x2: PAD.l + pl.w, y2: cy }, vp);
-    [['CORE LIVE', 0.02, 0.02, 'start'], ['STAGE STAR', 0.98, 0.02, 'end'], ['CORE DIGITAL', 0.02, 0.98, 'start'], ['PUBLIC HIT', 0.98, 0.98, 'end']].forEach(function (z) {
-      var t = svgEl('text', { class: 'zone-t', x: PAD.l + pl.w * z[1], y: PAD.t + pl.h * z[2] + (z[2] > 0.5 ? -6 : 14), 'text-anchor': z[3] }, vp);
-      t.textContent = z[0];
+    // 동심 타원(레이더 느낌) + 중심축
+    [[0.25, 'd'], [0.47, '']].forEach(function (r) {
+      svgEl('ellipse', { class: 'ring-l ' + r[1], cx: cx, cy: cy, rx: pl.w * r[0], ry: pl.h * r[0] }, vp);
     });
+    svgEl('line', { class: 'axis', x1: cx, y1: PAD.t + 4, x2: cx, y2: PAD.t + pl.h - 4 }, vp);
+    svgEl('line', { class: 'axis', x1: PAD.l + 4, y1: cy, x2: PAD.l + pl.w - 4, y2: cy }, vp);
+    // BALANCED 영역(중앙 ±CENTER_TOLERANCE)
+    svgEl('rect', { class: 'bal', x: cx - pl.w * CENTER_TOLERANCE / 100, y: cy - pl.h * CENTER_TOLERANCE / 100, width: pl.w * CENTER_TOLERANCE / 50, height: pl.h * CENTER_TOLERANCE / 50, rx: 12 }, vp);
+    var bw = svgEl('g', { transform: 'translate(' + cx + ',' + (cy - pl.h * CENTER_TOLERANCE / 100 + 13) + ')' }, vp);
+    var bmi = svgEl('g', { class: 'mi' }, bw);
+    var bt = svgEl('text', { class: 'bal-t' }, bmi); bt.textContent = 'BALANCED';
+
     el.compareLine = svgEl('line', { class: 'cmp-line', 'vector-effect': 'non-scaling-stroke', visibility: 'hidden' }, vp);
     el.layer = svgEl('g', { id: 'pts' }, vp);
+    el.lbls = svgEl('g', { id: 'lbls', 'pointer-events': 'none' }, vp);
 
-    var favs = favSet();
-    var pts = activePoints().slice().sort(function (a, b) { return b.radius - a.radius; }); // 작은 점이 위
     var coarse = window.matchMedia && matchMedia('(pointer:coarse)').matches;
     var multi = S.mode === 'ALL';
     byKey = {};
     pts.forEach(function (p) {
       byKey[p.key] = p;
-      var px = toPx(p);
+      var px = toPx(p); p.px = px;
       var g = svgEl('g', { class: 'mp', tabindex: 0, role: 'button', 'data-k': p.key, transform: 'translate(' + px.x.toFixed(1) + ',' + px.y.toFixed(1) + ')' }, el.layer);
       g.setAttribute('aria-label', p.group + ', ' + p.tier + '티어, ' + p.zone);
+      g.style.setProperty('--d', Math.round(Math.hypot(p.screenX - 50, p.screenY - 50) * 9));
       var mi = svgEl('g', { class: 'mi' }, g);
+      var pop = svgEl('g', { class: 'pop' }, mi);
       p.node = g;
-      var pr = p.radius * S.sf;
-      svgEl('circle', { class: 'hit', r: coarse ? 22 : Math.max(pr + 3, 13) }, mi);
-      svgEl('circle', { class: 'ring-g', r: pr + 8 }, mi);
-      svgEl('circle', { class: 'ring', r: pr + 4.5 }, mi);
+      var pr = p.radius * S.sf; p.pr = pr;
       var col = colorOf(p);
+      g.style.color = col;
+      svgEl('circle', { class: 'hit', r: coarse ? 22 : Math.max(pr + 3, 13) }, pop);
+      if (p.glow > 0) svgEl('circle', { class: 'halo', r: pr + 3 + p.glow * 2.4 }, pop);
+      svgEl('circle', { class: 'rip', r: pr + 2 }, pop);
+      svgEl('circle', { class: 'ring-g', r: pr + 9 }, pop);
+      svgEl('circle', { class: 'ring', r: pr + 4.5 }, pop);
       var shape;
       if (multi && p.country === 'JP') {
-        var d = pr * 1.15;
-        shape = svgEl('polygon', { class: 'dot', points: '0,' + (-d) + ' ' + d + ',0 0,' + d + ' ' + (-d) + ',0' }, mi);
-      } else shape = svgEl('circle', { class: 'dot', r: pr }, mi);
-      shape.style.fill = col; g.style.color = col;
-      var lbl = svgEl('text', { class: 'lbl', x: pr + 6, y: 4 }, mi);
-      lbl.textContent = p.group;
-      var ti = svgEl('title', {}, g);
-      ti.textContent = p.group + ' · ' + p.tier + ' · ' + p.zone;
+        var d = pr * 1.18;
+        shape = svgEl('polygon', { class: 'dot', points: '0,' + (-d) + ' ' + d + ',0 0,' + d + ' ' + (-d) + ',0' }, pop);
+      } else shape = svgEl('circle', { class: 'dot', r: pr }, pop);
+      shape.setAttribute('fill', 'url(#' + gradId(col) + ')');
+      // 라벨은 모든 버블 위에 그려지도록 별도 레이어에 둔다
+      var lb = svgEl('g', { class: 'lb', transform: 'translate(' + px.x.toFixed(1) + ',' + px.y.toFixed(1) + ')' }, el.lbls);
+      var lbl = svgEl('text', { class: 'lbl', x: pr + 6, y: 4 }, svgEl('g', { class: 'mi' }, lb));
+      lbl.textContent = p.group; p.lblNode = lbl; p.lbNode = lb;
       g.setAttribute('data-glow', p.glow);
     });
+    S.enter = false;
     applyView();
     refreshStates();
+    renderZones();
+    drawDots();
   }
 
   function labelSet(vis) {
     var set = {};
     var byCountry = { KR: [], JP: [] };
     vis.forEach(function (p) { byCountry[p.country].push(p); });
-    var per = S.mode === 'ALL' ? 6 : 10;
+    var per = S.match ? 0 : (S.mode === 'ALL' ? 6 : 10); // 매칭 중에는 추천 그룹 라벨에 집중
     ['KR', 'JP'].forEach(function (c) {
       byCountry[c].sort(function (a, b) { return b.totalScore - a.totalScore; }).slice(0, per).forEach(function (p) { set[p.key] = 1; });
     });
@@ -283,9 +369,66 @@
     return set;
   }
 
+  /* ---------- 라벨 배치: 겹치면 반대편으로 옮기고, 그래도 안 되면 숨긴다 ---------- */
+  var labelRaf = 0;
+  function scheduleLabels() {
+    if (labelRaf) return;
+    labelRaf = requestAnimationFrame(function () { labelRaf = 0; layoutLabels(); });
+  }
+  function textW(str) {
+    var w = 0;
+    for (var i = 0; i < str.length; i++) w += str.charCodeAt(i) > 0x2e7f ? 11.5 : 6.4;
+    return w + 4;
+  }
+  function hitRect(a, b) { return a.x1 < b.x2 && a.x2 > b.x1 && a.y1 < b.y2 && a.y2 > b.y1; }
+  function layoutLabels() {
+    var vis = S.vis || [], lab = S.lab || {};
+    var forced = {};
+    if (S.sel) forced[S.sel] = 1;
+    if (S.hover) forced[S.hover] = 1;
+    S.cmp.forEach(function (k) { forced[k] = 1; });
+    if (S.match) { forced[S.match.src] = 1; S.match.items.forEach(function (m) { forced[m.key] = 1; }); }
+    var extra = S.scale >= 1.8 ? 1 : (S.scale >= 1.3 ? 0.5 : 0);
+    var cand = vis.filter(function (p) { return lab[p.key] || forced[p.key] || extra === 1 || (extra > 0 && p.totalPercentile >= 55); });
+    cand.sort(function (a, b) { return (forced[b.key] ? 1e6 : 0) + b.totalScore - ((forced[a.key] ? 1e6 : 0) + a.totalScore); });
+    var scr = function (p) { return { x: S.tx + S.scale * p.px.x, y: S.ty + S.scale * p.px.y }; };
+    var obst = vis.map(function (p) { var s = scr(p); return { k: p.key, x: s.x, y: s.y, r: p.pr + 2 }; });
+    var placed = [], done = {};
+    cand.forEach(function (p) {
+      var s = scr(p), w = textW(p.group), h = 13, pr = p.pr, chosen = null;
+      if (s.x < -20 || s.y < -20 || s.x > S.W + 20 || s.y > S.H + 20) return;
+      var opts = [
+        { ax: 'start', x: pr + 6, y: 4, box: { x1: s.x + pr + 4, x2: s.x + pr + 8 + w, y1: s.y - 9, y2: s.y + 5 } },
+        { ax: 'end', x: -(pr + 6), y: 4, box: { x1: s.x - pr - 8 - w, x2: s.x - pr - 4, y1: s.y - 9, y2: s.y + 5 } },
+        { ax: 'middle', x: 0, y: -(pr + 7), box: { x1: s.x - w / 2, x2: s.x + w / 2, y1: s.y - pr - 7 - h + 2, y2: s.y - pr - 5 } },
+        { ax: 'middle', x: 0, y: pr + 16, box: { x1: s.x - w / 2, x2: s.x + w / 2, y1: s.y + pr + 4, y2: s.y + pr + 16 + 3 } }
+      ];
+      // 1차: 다른 라벨·버블과 모두 안 겹치는 자리 / 2차(상위 그룹만): 라벨끼리만 안 겹치면 버블 위에도 허용
+      for (var pass = 0; pass < 2 && !chosen; pass++) {
+        if (pass === 1 && !(lab[p.key] || forced[p.key])) break;
+        for (var i = 0; i < opts.length && !chosen; i++) {
+          var o = opts[i], b = o.box;
+          if (b.x1 < 2 || b.x2 > S.W - 2 || b.y1 < 2 || b.y2 > S.H - 2) continue;
+          var bad = placed.some(function (q) { return hitRect(b, q); });
+          if (!bad && pass === 0) bad = obst.some(function (c) { return c.k !== p.key && c.x + c.r > b.x1 && c.x - c.r < b.x2 && c.y + c.r > b.y1 && c.y - c.r < b.y2; });
+          if (!bad) chosen = o;
+        }
+      }
+      if (!chosen && forced[p.key]) chosen = opts[0];
+      if (chosen) { placed.push(chosen.box); done[p.key] = chosen; }
+    });
+    activePoints().forEach(function (p) {
+      var n = p.lbNode, l = p.lblNode; if (!n || !l) return;
+      var o = done[p.key];
+      if (o) { l.setAttribute('x', o.x); l.setAttribute('y', o.y); l.setAttribute('text-anchor', o.ax); }
+      n.classList.toggle('show', !!o);
+    });
+  }
+
   function refreshStates() {
     var favs = favSet(), pts = activePoints(), vis = pts.filter(function (p) { return isVisible(p, favs); });
     var lab = labelSet(vis);
+    S.vis = vis; S.lab = lab;
     var mm = {};
     if (S.match) S.match.items.forEach(function (m) { mm[m.key] = m.type; });
     pts.forEach(function (p) {
@@ -293,7 +436,6 @@
       var v = isVisible(p, favs);
       g.classList.toggle('off', !v);
       g.setAttribute('tabindex', v ? 0 : -1);
-      g.classList.toggle('showlbl', !!lab[p.key] && v);
       g.classList.toggle('sel', S.sel === p.key || S.cmp.indexOf(p.key) !== -1);
       var hl = '';
       if (S.match) hl = S.match.src === p.key ? 'src' : (mm[p.key] || '');
@@ -302,6 +444,7 @@
     });
     $('count').textContent = vis.length + '팀 표시 중';
     drawCompareLine();
+    layoutLabels();
   }
 
   function drawCompareLine() {
@@ -314,37 +457,70 @@
   }
 
   /* ---------- 상세 시트 ---------- */
-  function bar(label, v, cls) {
-    return '<div class="mrow2"><span>' + label + '</span><div class="bar"><i class="' + (cls || '') + '" style="width:' + Math.round(v) + '%"></i></div><b>' + Math.round(v) + '</b></div>';
+  function bar(label, v) {
+    return '<div class="mrow2"><span>' + label + '</span><div class="bar"><i data-w="' + Math.round(v) + '"></i></div><b>' + Math.round(v) + '</b></div>';
   }
   function flag(c) { return '<span class="flagb flag-' + c.toLowerCase() + '">' + c + '</span>'; }
-  function pubLabel(p) { return p.country === 'KR' ? '대중 확장력' : '대중 확장력'; }
   function digLabel(p) { return p.country === 'KR' ? '디지털·글로벌' : '디지털·SNS'; }
+  function zc(p) { return ZONE_META[p.zone].color; }
+  function tierChip(p) { return '<span class="chip tier" style="background:' + (TIER_COLORS[p.tier] || '#777') + '">' + esc(p.tier) + '</span>'; }
+
+  function miniMap(p) {
+    var c = zc(p), x = Math.max(9, Math.min(87, p.screenX / 100 * 96)), y = Math.max(9, Math.min(87, p.screenY / 100 * 96));
+    var t = function (col, px, py) { return '<rect x="' + px + '" y="' + py + '" width="48" height="48" fill="' + col + '" opacity=".16"/>'; };
+    return '<svg viewBox="0 0 96 96" aria-hidden="true"><rect width="96" height="96" rx="12" fill="#1a1a1a"/>'
+      + '<g clip-path="inset(0 round 12px)">' + t(ZONE_META['CORE LIVE'].color, 0, 0) + t(ZONE_META['STAGE STAR'].color, 48, 0) + t(ZONE_META['CORE DIGITAL'].color, 0, 48) + t(ZONE_META['PUBLIC HIT'].color, 48, 48) + '</g>'
+      + '<path d="M48 4v88M4 48h88" stroke="rgba(255,255,255,.22)" stroke-width="1"/>'
+      + '<rect x="' + (48 - 11.5) + '" y="' + (48 - 11.5) + '" width="23" height="23" rx="5" fill="none" stroke="rgba(255,255,255,.28)" stroke-dasharray="2 3"/>'
+      + '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="11" fill="' + c + '" opacity=".28"/>'
+      + '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="5" fill="' + c + '" stroke="#fff" stroke-width="1.5"/></svg>';
+  }
 
   function openMapDetail(p) {
     var sh = el.sheet;
     if (S.compare && S.cmp.length === 2) { renderComparePanel(); return; }
     var expl = generatePositionExplanation(p).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
-    var top = Math.max(1, Math.round(100 - p.mom));
-    var html = '<div class="sh-head"><h2>' + esc(p.group) + ' ' + flag(p.country) + '</h2><button class="x" id="shClose" aria-label="닫기">✕</button></div>'
-      + '<p class="sh-sub"><span class="chip">' + esc(p.tier) + '</span> ' + p.totalScore + '점 · 체급 상위 ' + Math.max(1, Math.round(100 - p.totalPercentile)) + '%</p>'
+    var topTotal = Math.max(1, Math.round(100 - p.totalPercentile)), topMom = Math.max(1, Math.round(100 - p.mom));
+    var html = '<div class="sh-hero"><div class="av">' + esc(p.group.charAt(0)) + '<img alt="" src="img/' + esc(p.id) + '.webp" onerror="this.remove()" style="position:absolute;inset:0"></div>'
+      + '<div class="sh-id"><h2>' + esc(p.group) + ' ' + flag(p.country) + '</h2>'
+      + '<p class="sh-sub">' + tierChip(p) + '<span>' + (p.status ? esc(p.status) : '') + '</span></p></div>'
+      + '<button class="x" id="shClose" aria-label="닫기">✕</button></div>'
+      + '<div class="sh-zone"><i></i><b>' + esc(p.zone) + '</b><span>' + ZONE_META[p.zone].text + '</span></div>'
+      + '<div class="kpis"><div class="kpi"><small>총점</small><b data-count="' + p.totalScore + '">' + p.totalScore + '</b></div>'
+      + '<div class="kpi"><small>체급 상위</small><b><span data-count="' + topTotal + '">' + topTotal + '</span><u>%</u></b></div>'
+      + '<div class="kpi"><small>기세 상위</small><b><span data-count="' + topMom + '">' + topMom + '</span><u>%</u></b></div></div>'
       + '<p class="sh-k">MARKET POSITION <small>(자국 시장 내 백분위)</small></p>'
-      + bar(pubLabel(p), p.pub) + bar('코어 팬덤력', p.fan) + bar('라이브', p.live) + bar(digLabel(p), p.dig)
-      + '<p class="sh-k">TYPE</p><p class="type">' + esc(p.zone) + ' <small>' + ZONE_TEXT[p.zone] + '</small></p>'
+      + '<div class="pos">' + miniMap(p) + '<div>' + bar('대중 확장력', p.pub) + bar('코어 팬덤력', p.fan) + bar('라이브', p.live) + bar(digLabel(p), p.dig) + '</div></div>'
       + '<p class="sh-k">왜 이 위치인가?</p><div class="expl">' + expl + '</div>'
-      + '<p class="mom">🔥 현재기세 상위 ' + top + '%</p>'
       + (DEBUG ? '<pre class="dbg">rawX ' + p.xRaw.toFixed(1) + '  rawY ' + p.yRaw.toFixed(1) + '\nzX ' + p.zX.toFixed(2) + '  zY ' + p.zY.toFixed(2) + '\nscreen ' + p.screenX.toFixed(1) + ', ' + p.screenY.toFixed(1) + ' (base ' + p.baseX.toFixed(1) + ', ' + p.baseY.toFixed(1) + ')\npublic ' + p.pub.toFixed(1) + '  fandom ' + p.fan.toFixed(1) + '  live ' + p.live.toFixed(1) + '  digital ' + p.dig.toFixed(1) + '  momentum ' + p.mom.toFixed(1) + '</pre>' : '')
       + matchList()
       + '<div class="sh-act"><a class="btn out" href="' + detailUrl(p) + '">상세보기</a>'
       + (p.spotify ? '<a class="btn grn" target="_blank" rel="noopener noreferrer" href="' + esc(p.spotify) + '" aria-label="' + esc(p.group) + ' Spotify에서 듣기">Spotify ▶</a>' : '')
       + '<button class="btn out" id="btnMatch">' + (S.match && S.match.src === p.key ? '매칭 해제' : '비슷한 그룹') + '</button></div>';
     sh.innerHTML = html;
-    sh.hidden = false; document.body.classList.add('sheet-open');
+    sh.style.setProperty('--zc', zc(p));
+    showSheet();
     $('shClose').addEventListener('click', clearSelection);
     $('btnMatch').addEventListener('click', function () { if (S.match && S.match.src === p.key) clearMatch(); else runMatch(p); });
-    Array.prototype.forEach.call(sh.querySelectorAll('[data-go]'), function (b) {
-      b.addEventListener('click', function () { selectGroup(b.getAttribute('data-go'), true); });
+    animateSheet(sh);
+  }
+
+  function showSheet() { el.sheet.hidden = false; document.body.classList.add('sheet-open'); }
+  // 막대 채우기 + 숫자 카운트업 (Count Up)
+  function animateSheet(root) {
+    requestAnimationFrame(function () {
+      Array.prototype.forEach.call(root.querySelectorAll('.bar i'), function (i) { i.style.width = i.getAttribute('data-w') + '%'; });
     });
+    Array.prototype.forEach.call(root.querySelectorAll('[data-count]'), function (n) { countUp(n, Number(n.getAttribute('data-count'))); });
+  }
+  function countUp(node, to) {
+    if (REDUCED) { node.textContent = to; return; }
+    var t0 = performance.now(), dur = 650;
+    (function step(now) {
+      var k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      node.textContent = Math.round(to * e);
+      if (k < 1) requestAnimationFrame(step);
+    })(t0);
   }
 
   function matchList() {
@@ -367,14 +543,14 @@
     var xt = xd < 8 ? '팬덤/대중 포지션이 거의 같아요' : (xa > xb ? a.group : b.group) + '이(가) 더 대중 쪽, ' + (xa > xb ? b.group : a.group) + '이(가) 더 팬덤 쪽이에요';
     var yt = yd < 8 ? '라이브/디지털 포지션이 거의 같아요' : (ya > yb ? a.group : b.group) + '이(가) 더 라이브 쪽, ' + (ya > yb ? b.group : a.group) + '이(가) 더 디지털 쪽이에요';
     var same = a.country === b.country;
-    el.sheet.innerHTML = '<div class="sh-head"><h2>포지션 비교</h2><button class="x" id="shClose" aria-label="닫기">✕</button></div>'
+    el.sheet.innerHTML = '<div class="sh-hero"><div class="sh-id"><h2>포지션 비교</h2></div><button class="x" id="shClose" aria-label="닫기">✕</button></div>'
       + '<p class="sh-sub">' + esc(a.group) + ' ' + flag(a.country) + ' ↔ ' + esc(b.group) + ' ' + flag(b.country) + '</p>'
       + '<div class="expl"><p><b>팬덤 ↔ 대중</b> 차이 ' + xd + ' · ' + esc(xt) + '</p><p><b>디지털 ↔ 라이브</b> 차이 ' + yd + ' · ' + esc(yt) + '</p></div>'
       + '<p class="mnote2">위치 차이는 성향의 차이일 뿐 우열이 아니에요.' + (same ? '' : ' 서로 다른 시장의 그룹은 각 시장 안의 상대 위치로만 비교해요.') + '</p>'
       + '<div class="sh-act">' + (same ? '<a class="btn grn" href="' + pageOf(a.country) + '?compare=' + encodeURIComponent(a.group + ',' + b.group) + '">상세 비교하기</a>'
         : '<a class="btn out" href="' + detailUrl(a) + '">' + esc(a.group) + ' 상세</a><a class="btn out" href="' + detailUrl(b) + '">' + esc(b.group) + ' 상세</a>')
       + '<button class="btn out" id="cmpReset">선택 초기화</button></div>';
-    el.sheet.hidden = false; document.body.classList.add('sheet-open');
+    el.sheet.style.setProperty('--zc', '#1ed760'); showSheet();
     $('shClose').addEventListener('click', clearSelection);
     $('cmpReset').addEventListener('click', function () { S.cmp = []; refreshStates(); closeSheet(); });
   }
@@ -404,14 +580,18 @@
     }
     // 선택한 그룹이 현재 지도에 없으면 지도 모드를 맞춘다.
     if (!byKey[key]) setMode('ALL', true);
-    S.sel = key; refreshStates(); openMapDetail(p); focusMapGroup(p); setUrl();
+    S.sel = key; refreshStates(); openMapDetail(p); focusMapGroup(p); sparkAt(p); setUrl();
   }
   function clearSelection() { S.sel = null; S.cmp = []; closeSheet(); refreshStates(); setUrl(); }
 
   function focusMapGroup(p) {
     if (S.scale <= 1) return;
-    var px = toPx(p);
-    S.tx = S.W / 2 - px.x * S.scale; S.ty = S.H / 2 - px.y * S.scale; applyView();
+    var px = toPx(p), ty = S.H / 2;
+    if (window.innerWidth < 1000) { // 하단 시트가 지도를 가리므로 보이는 영역의 가운데로 맞춘다
+      var r = el.svg.getBoundingClientRect(), vis = window.innerHeight * 0.54 - r.top;
+      if (vis > 120 && vis < S.H) ty = vis / 2;
+    }
+    S.tx = S.W / 2 - px.x * S.scale; S.ty = ty - px.y * S.scale; applyView();
   }
 
   function runMatch(p) {
@@ -430,10 +610,9 @@
 
   /* ---------- 툴바 ---------- */
   function setMode(m, keepSel) {
-    S.mode = m;
+    S.mode = m; S.zone = null; S.enter = true; hideTipNow();
     if (!keepSel) { S.sel = null; S.cmp = []; S.match = null; closeSheet(); }
-    S.scale = 1; S.tx = 0; S.ty = 0;
-    renderIdolMap(); syncToolbar();
+    renderIdolMap(); fitView(); syncToolbar(); renderSideEmpty();
     $('notice').hidden = m !== 'ALL';
     setUrl();
   }
@@ -449,11 +628,143 @@
     var items;
     if (S.color === 'style') items = STYLE_CATS.map(function (c) { return '<span class="lg"><i style="background:' + c.color + '"></i>' + c.label + '</span>'; });
     else items = TIER_ORDER.map(function (t) { return '<span class="lg"><i style="background:' + TIER_COLORS[t] + '"></i>' + t + '</span>'; });
-    var extra = '<span class="lg2">크기 = 전체 체급(자국 백분위) · 빛 = 현재기세</span>'
-      + (S.mode === 'ALL' ? '<span class="lg2">● 한국 · ◆ 일본</span>' : '')
-      + (S.match ? '<span class="lg2"><b class="ringkey src"></b> 선택 그룹 <b class="ringkey match"></b> 추천 <b class="ringkey gem"></b> 숨은 취향</span>' : '');
-    $('legend').innerHTML = items.join('') + '<div class="lgrow">' + extra + '</div>';
+    var html = '<div class="lgb"><span class="lgt">' + (S.color === 'style' ? '스타일' : '티어') + '</span>' + items.join('') + '</div>'
+      + '<div class="lgb"><span class="lgt">크기</span><span class="lgsz"><i style="width:9px;height:9px"></i><i style="width:13px;height:13px"></i><i style="width:18px;height:18px"></i></span><span>전체 체급</span></div>'
+      + '<div class="lgb"><span class="lgt">빛</span><span class="lgglow"><i class="g0"></i><i class="g1"></i><i class="g3"></i></span><span>현재기세</span></div>'
+      + (S.mode === 'ALL' ? '<div class="lgb"><span class="lgt">모양</span><span>● 한국 · ◆ 일본</span></div>' : '')
+      + (S.match ? '<div class="lgb"><span class="lgt">매칭</span><span><b class="ringkey src"></b>선택 그룹 <b class="ringkey match"></b>추천 <b class="ringkey gem"></b>숨은 취향</span></div>' : '');
+    $('legend').innerHTML = html;
   }
+
+  /* ---------- 영역 칩 (Spotlight Card) ---------- */
+  function renderZones() {
+    var pts = activePoints(), cnt = {};
+    ZONE_ORDER.forEach(function (z) { cnt[z] = 0; });
+    pts.forEach(function (p) { cnt[p.zone]++; });
+    var sig = S.mode + ':' + ZONE_ORDER.map(function (z) { return cnt[z]; }).join(',');
+    if (el.zones.getAttribute('data-sig') !== sig) {
+      el.zones.setAttribute('data-sig', sig);
+      el.zones.innerHTML = ZONE_ORDER.map(function (z) {
+        return '<button class="zchip" data-zone="' + z + '" style="--zc:' + ZONE_META[z].color + '" aria-pressed="false">'
+          + '<span class="zt"><i></i>' + z + '</span><span class="zn"><span data-count="' + cnt[z] + '">' + cnt[z] + '</span><small>팀</small></span>'
+          + '<span class="zd">' + ZONE_META[z].text + '</span></button>';
+      }).join('');
+      Array.prototype.forEach.call(el.zones.querySelectorAll('[data-count]'), function (n) { countUp(n, Number(n.getAttribute('data-count'))); });
+    }
+    syncZones();
+  }
+  function syncZones() {
+    Array.prototype.forEach.call(el.zones.querySelectorAll('.zchip'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-zone') === S.zone); });
+  }
+
+  /* ---------- 빈 상태 사이드 패널 ---------- */
+  function renderSideEmpty() {
+    var lists = (S.mode === 'ALL' ? ['KR', 'JP'] : [S.mode]).map(function (c) {
+      var top = DATA[c].points.slice().sort(function (a, b) { return b.totalScore - a.totalScore; }).slice(0, S.mode === 'ALL' ? 3 : 5);
+      return top.map(function (p, i) {
+        return '<button class="rk" data-go="' + esc(p.key) + '"><span class="n">' + (i + 1) + '</span><span class="dt" style="background:' + (TIER_COLORS[p.tier] || '#777') + '"></span><span class="nm">' + esc(p.group) + '</span><small>' + p.tier + ' · ' + p.totalScore + '</small></button>';
+      }).join('');
+    }).join('');
+    el.sideEmpty.innerHTML = '<p class="se-t">HOW TO READ</p><ul class="se-how">'
+      + '<li><span class="se-ic">↔</span><span><b>가로</b> 왼쪽일수록 코어 팬덤형, 오른쪽일수록 대중 확장형이에요.</span></li>'
+      + '<li><span class="se-ic">↕</span><span><b>세로</b> 위쪽일수록 라이브·공연형, 아래쪽일수록 디지털·음원형이에요.</span></li>'
+      + '<li><span class="se-ic">◉</span><span><b>크기·빛</b> 버블이 클수록 체급, 빛이 강할수록 현재기세가 높아요.</span></li>'
+      + '<li><span class="se-ic">☝</span><span><b>버블을 눌러</b> 위치의 이유와 비슷한 그룹을 확인하고, 휠·핀치로 확대해 보세요.</span></li></ul>'
+      + '<p class="se-t">체급 TOP' + (S.mode === 'ALL' ? ' (국가별)' : '') + '</p><div class="se-list">' + lists + '</div>';
+  }
+
+  /* ---------- DotGrid 배경 (React Bits DotGrid 스타일) ---------- */
+  var DG = { ctx: null, dpr: 1, w: 0, h: 0, mx: -999, my: -999, cx: -999, cy: -999, raf: 0 };
+  function drawDots() {
+    var c = $('dots'), box = $('mapbox');
+    if (!c || !box) return;
+    DG.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    DG.w = box.clientWidth; DG.h = box.clientHeight;
+    c.width = Math.round(DG.w * DG.dpr); c.height = Math.round(DG.h * DG.dpr);
+    DG.ctx = c.getContext('2d');
+    paintDots();
+  }
+  function paintDots() {
+    var ctx = DG.ctx; if (!ctx) return;
+    ctx.setTransform(DG.dpr, 0, 0, DG.dpr, 0, 0);
+    ctx.clearRect(0, 0, DG.w, DG.h);
+    var gap = DG.w < 520 ? 22 : 26, R = 120;
+    for (var x = gap / 2; x < DG.w; x += gap) {
+      for (var y = gap / 2; y < DG.h; y += gap) {
+        var t = 0;
+        if (DG.cx > -900) { var d = Math.hypot(x - DG.cx, y - DG.cy); t = d < R ? Math.pow(1 - d / R, 1.6) : 0; }
+        ctx.beginPath();
+        ctx.arc(x, y, 1.2 + t * 2.8, 0, 6.2832);
+        ctx.fillStyle = t > 0.01 ? 'rgba(30,215,96,' + (0.1 + 0.75 * t).toFixed(3) + ')' : 'rgba(255,255,255,0.075)';
+        ctx.fill();
+      }
+    }
+  }
+  function dotLoop() {
+    DG.cx += (DG.mx - DG.cx) * 0.22; DG.cy += (DG.my - DG.cy) * 0.22;
+    paintDots();
+    if (Math.abs(DG.mx - DG.cx) + Math.abs(DG.my - DG.cy) > 0.6) DG.raf = requestAnimationFrame(dotLoop);
+    else { DG.raf = 0; if (DG.mx < -900) { DG.cx = -999; paintDots(); } }
+  }
+  function bindMapFx() {
+    var box = $('mapbox');
+    if (!FINE || REDUCED) return;
+    box.addEventListener('pointermove', function (e) {
+      if (e.pointerType && e.pointerType !== 'mouse') return;
+      var r = box.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      box.style.setProperty('--mx', x + 'px'); box.style.setProperty('--my', y + 'px'); box.classList.add('hov');
+      if (DG.cx < -900) { DG.cx = x; DG.cy = y; }
+      DG.mx = x; DG.my = y;
+      if (!DG.raf) DG.raf = requestAnimationFrame(dotLoop);
+    });
+    box.addEventListener('pointerleave', function () {
+      box.classList.remove('hov'); DG.mx = -999; DG.my = -999;
+      if (!DG.raf) DG.raf = requestAnimationFrame(dotLoop);
+    });
+  }
+  // 영역 칩 스포트라이트 + 필터 토글
+  function bindSpotlight() {
+    el.zones.addEventListener('pointermove', function (e) {
+      var b = e.target.closest && e.target.closest('.zchip'); if (!b) return;
+      var r = b.getBoundingClientRect();
+      b.style.setProperty('--mx', (e.clientX - r.left) + 'px'); b.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+    el.zones.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('.zchip'); if (!b) return;
+      var z = b.getAttribute('data-zone');
+      S.zone = S.zone === z ? null : z;
+      syncZones(); refreshStates();
+    });
+  }
+
+  /* ---------- 툴팁 / 스파크 ---------- */
+  function hideTipNow() { if (el.tip) el.tip.hidden = true; }
+  function showTip(p) {
+    var tip = el.tip;
+    if (!p || !p.node || !FINE || p.node.classList.contains('off')) { tip.hidden = true; return; }
+    var box = $('mapbox').getBoundingClientRect(), r = p.node.getBoundingClientRect();
+    var cxp = r.left + r.width / 2 - box.left, top = r.top - box.top - 8, below = top < 90;
+    tip.innerHTML = '<div class="tn">' + esc(p.group) + flag(p.country) + '</div><div class="tm">' + tierChip(p) + ' ' + p.totalScore + '점 · 체급 상위 ' + Math.max(1, Math.round(100 - p.totalPercentile)) + '%</div>'
+      + '<div class="tz" style="--zc:' + zc(p) + '"><i></i>' + esc(p.zone) + '</div>';
+    tip.hidden = false;
+    var half = tip.offsetWidth / 2;
+    cxp = Math.max(half + 6, Math.min(box.width - half - 6, cxp));
+    tip.style.left = cxp + 'px';
+    if (below) { tip.style.top = (r.bottom - box.top + 10) + 'px'; tip.style.transform = 'translate(-50%,0)'; }
+    else { tip.style.top = top + 'px'; tip.style.transform = 'translate(-50%,-100%)'; }
+  }
+  function sparkAt(p) {
+    if (REDUCED || !p || !p.node) return;
+    var r = p.node.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2, col = colorOf(p);
+    for (var i = 0; i < 9; i++) {
+      var s = document.createElement('span'), a = (i / 9) * 6.283 + Math.random() * 0.5, d = 26 + Math.random() * 22;
+      s.className = 'spark'; s.style.left = x + 'px'; s.style.top = y + 'px'; s.style.background = col;
+      s.style.setProperty('--dx', Math.cos(a) * d + 'px'); s.style.setProperty('--dy', Math.sin(a) * d + 'px');
+      document.body.appendChild(s);
+      setTimeout(removeNode.bind(null, s), 600);
+    }
+  }
+  function removeNode(n) { if (n.parentNode) n.parentNode.removeChild(n); }
 
   /* ---------- 줌 / 팬 ---------- */
   function zoomAt(f, cx, cy) {
@@ -499,16 +810,16 @@
     });
     svg.addEventListener('pointerover', function (e) {
       var g = e.target.closest && e.target.closest('.mp'); var k = g ? g.getAttribute('data-k') : null;
-      if (k !== S.hover) { S.hover = k; refreshStates(); }
+      if (k !== S.hover) { S.hover = k; refreshStates(); showTip(k ? byKey[k] : null); }
     });
     svg.addEventListener('focusin', function (e) { var g = e.target.closest && e.target.closest('.mp'); if (g) { S.hover = g.getAttribute('data-k'); refreshStates(); } });
     svg.addEventListener('focusout', function () { S.hover = null; refreshStates(); });
-    svg.addEventListener('pointerleave', function () { if (S.hover) { S.hover = null; refreshStates(); } });
+    svg.addEventListener('pointerleave', function () { if (S.hover) { S.hover = null; refreshStates(); } hideTipNow(); });
   }
 
   /* ---------- 초기화 ---------- */
   function init() {
-    el.wrap = $('mapwrap'); el.svg = $('map'); el.sheet = $('sheet'); el.zoomval = $('zoomval');
+    el.wrap = $('mapwrap'); el.svg = $('map'); el.sheet = $('sheet'); el.zoomval = $('zoomval'); el.zones = $('zones'); el.sideEmpty = $('sideEmpty'); el.tip = $('tip');
     IM.ready.then(function () {
       DATA.KR = buildPoints('KR'); DATA.JP = buildPoints('JP');
       $('excl').textContent = (DATA.KR.excluded + DATA.JP.excluded) ? 'MAP DATA 부족으로 제외: ' + (DATA.KR.excluded + DATA.JP.excluded) + '팀' : '';
@@ -516,8 +827,8 @@
       S.mode = ['KR', 'JP', 'ALL'].indexOf(mode) >= 0 ? mode : 'KR';
       if (Q.get('color') === 'style') S.color = 'style';
       if (['HOT', 'GEM', 'MINE'].indexOf(Q.get('preset')) >= 0) S.preset = Q.get('preset');
-      bindUi(); bindPointer();
-      renderIdolMap(); syncToolbar();
+      bindUi(); bindPointer(); bindMapFx(); bindSpotlight();
+      renderIdolMap(); fitView(); syncToolbar(); renderSideEmpty();
       $('notice').hidden = S.mode !== 'ALL';
       var g = Q.get('group');
       if (g) {
@@ -528,7 +839,7 @@
           else selectGroup(key);
         }
       }
-      window.addEventListener('resize', debounce(function () { renderIdolMap(); }, 150));
+      window.addEventListener('resize', debounce(function () { S.enter = false; renderIdolMap(); fitView(); }, 150));
       window.__IDOL_MAP__ = { S: S, DATA: DATA, buildPoints: buildPoints, robustZ: robustZ, classifyMapZone: classifyMapZone };
     }).catch(function () { $('excl').textContent = '데이터를 불러오지 못했어요.'; });
   }
@@ -541,11 +852,15 @@
     $('cmpToggle').addEventListener('click', function () { S.compare = !S.compare; S.cmp = []; if (!S.compare) closeSheet(); syncToolbar(); refreshStates(); });
     $('zin').addEventListener('click', function () { zoomAt(1.4, S.W / 2, S.H / 2); });
     $('zout').addEventListener('click', function () { zoomAt(1 / 1.4, S.W / 2, S.H / 2); });
-    $('zreset').addEventListener('click', function () { S.scale = 1; S.tx = 0; S.ty = 0; applyView(); });
+    $('zreset').addEventListener('click', fitView);
     $('q').addEventListener('input', function (e) {
       S.query = e.target.value.trim().toLowerCase(); refreshStates();
       var f = activePoints().filter(function (p) { return passesQuery(p); });
       if (S.query && f.length === 1) selectGroup(f[0].key);
+    });
+    $('side').addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('[data-go]');
+      if (b) selectGroup(b.getAttribute('data-go'), true);
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') clearSelection(); });
   }
