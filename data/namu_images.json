@@ -1,0 +1,626 @@
+{
+ "KR": {
+  "BLACKPINK": {
+   "img": "img/KR-001.webp",
+   "wiki": ""
+  },
+  "TWICE": {
+   "img": "img/KR-002.webp",
+   "wiki": ""
+  },
+  "aespa": {
+   "img": "img/KR-003.webp",
+   "wiki": ""
+  },
+  "IVE": {
+   "img": "img/KR-004.webp",
+   "wiki": ""
+  },
+  "LE SSERAFIM": {
+   "img": "img/KR-005.webp",
+   "wiki": ""
+  },
+  "i-dle": {
+   "img": "img/KR-006.webp",
+   "wiki": ""
+  },
+  "BABYMONSTER": {
+   "img": "img/KR-007.webp",
+   "wiki": ""
+  },
+  "NewJeans": {
+   "img": "img/KR-008.webp",
+   "wiki": ""
+  },
+  "ILLIT": {
+   "img": "img/KR-009.webp",
+   "wiki": ""
+  },
+  "NMIXX": {
+   "img": "img/KR-010.webp",
+   "wiki": ""
+  },
+  "Red Velvet": {
+   "img": "img/KR-011.webp",
+   "wiki": ""
+  },
+  "Hearts2Hearts": {
+   "img": "img/KR-012.webp",
+   "wiki": ""
+  },
+  "KiiiKiii": {
+   "img": "img/KR-013.webp",
+   "wiki": ""
+  },
+  "KATSEYE": {
+   "img": "img/KR-014.webp",
+   "wiki": ""
+  },
+  "QWER": {
+   "img": "img/KR-015.webp",
+   "wiki": ""
+  },
+  "ITZY": {
+   "img": "img/KR-016.webp",
+   "wiki": ""
+  },
+  "MAMAMOO": {
+   "img": "img/KR-017.webp",
+   "wiki": ""
+  },
+  "KISS OF LIFE": {
+   "img": "img/KR-018.webp",
+   "wiki": ""
+  },
+  "tripleS": {
+   "img": "img/KR-019.webp",
+   "wiki": ""
+  },
+  "RESCENE": {
+   "img": "img/KR-020.webp",
+   "wiki": ""
+  },
+  "MEOVV": {
+   "img": "img/KR-021.webp",
+   "wiki": ""
+  },
+  "fromis_9": {
+   "img": "img/KR-022.webp",
+   "wiki": ""
+  },
+  "I.O.I": {
+   "img": "img/KR-023.webp",
+   "wiki": ""
+  },
+  "izna": {
+   "img": "img/KR-024.webp",
+   "wiki": ""
+  },
+  "STAYC": {
+   "img": "img/KR-025.webp",
+   "wiki": ""
+  },
+  "FIFTY FIFTY": {
+   "img": "img/KR-026.webp",
+   "wiki": ""
+  },
+  "ARTMS": {
+   "img": "img/KR-027.webp",
+   "wiki": ""
+  },
+  "Apink": {
+   "img": "img/KR-028.webp",
+   "wiki": ""
+  },
+  "Kep1er": {
+   "img": "img/KR-029.webp",
+   "wiki": ""
+  },
+  "Dreamcatcher": {
+   "img": "img/KR-030.webp",
+   "wiki": ""
+  },
+  "VIVIZ": {
+   "img": "img/KR-031.webp",
+   "wiki": ""
+  },
+  "Girls' Generation": {
+   "img": "img/KR-032.webp",
+   "wiki": ""
+  },
+  "OH MY GIRL": {
+   "img": "img/KR-033.webp",
+   "wiki": ""
+  },
+  "KARA": {
+   "img": "img/KR-034.webp",
+   "wiki": ""
+  },
+  "Billlie": {
+   "img": "img/KR-035.webp",
+   "wiki": ""
+  },
+  "H1-KEY": {
+   "img": "img/KR-036.webp",
+   "wiki": ""
+  },
+  "TUIDE": {
+   "img": "img/KR-037.webp",
+   "wiki": ""
+  },
+  "UNIS": {
+   "img": "img/KR-038.webp",
+   "wiki": ""
+  },
+  "EVERGLOW": {
+   "img": "img/KR-040.webp",
+   "wiki": ""
+  },
+  "ifeye": {
+   "img": "img/KR-041.webp",
+   "wiki": ""
+  },
+  "AtHeart": {
+   "img": "img/KR-042.webp",
+   "wiki": ""
+  },
+  "YOUNG POSSE": {
+   "img": "img/KR-043.webp",
+   "wiki": ""
+  },
+  "BBGIRLS": {
+   "img": "img/KR-044.webp",
+   "wiki": ""
+  },
+  "BADVILLAIN": {
+   "img": "img/KR-045.webp",
+   "wiki": ""
+  },
+  "Baby DONT Cry": {
+   "img": "img/KR-046.webp",
+   "wiki": ""
+  },
+  "LIGHTSUM": {
+   "img": "img/KR-047.webp",
+   "wiki": ""
+  },
+  "MADEIN": {
+   "img": "img/KR-048.webp",
+   "wiki": ""
+  },
+  "Secret": {
+   "img": "img/KR-049.webp",
+   "wiki": "시크릿(아이돌)"
+  },
+  "WOOAH": {
+   "img": "img/KR-050.webp",
+   "wiki": ""
+  },
+  "CLASS:y": {
+   "img": "img/KR-051.webp",
+   "wiki": ""
+  },
+  "WJSN": {
+   "img": "img/KR-052.webp",
+   "wiki": ""
+  },
+  "BLACKSWAN": {
+   "img": "img/KR-053.webp",
+   "wiki": ""
+  },
+  "HITGS": {
+   "img": "img/KR-054.webp",
+   "wiki": ""
+  },
+  "USPEER": {
+   "img": "img/KR-055.webp",
+   "wiki": ""
+  },
+  "ODD YOUTH": {
+   "img": "img/KR-056.webp",
+   "wiki": ""
+  },
+  "VVUP": {
+   "img": "img/KR-057.webp",
+   "wiki": ""
+  },
+  "EXID": {
+   "img": "img/KR-058.webp",
+   "wiki": ""
+  },
+  "SECRET NUMBER": {
+   "img": "img/KR-059.webp",
+   "wiki": ""
+  },
+  "ICHILLIN'": {
+   "img": "img/KR-060.webp",
+   "wiki": ""
+  },
+  "KIIRAS": {
+   "img": "img/KR-062.webp",
+   "wiki": ""
+  },
+  "Keyveatz": {
+   "img": "img/KR-063.webp",
+   "wiki": ""
+  },
+  "ablume": {
+   "img": "img/KR-064.webp",
+   "wiki": ""
+  },
+  "H//PE Princess": {
+   "img": "img/KR-065.webp",
+   "wiki": ""
+  },
+  "VVS": {
+   "img": "img/KR-066.webp",
+   "wiki": ""
+  },
+  "GENBLUE": {
+   "img": "img/KR-067.webp",
+   "wiki": ""
+  },
+  "Girl's Day": {
+   "img": "img/KR-068.webp",
+   "wiki": ""
+  },
+  "OURBIRTHDAY": {
+   "img": "img/KR-069.webp",
+   "wiki": ""
+  },
+  "UDTT": {
+   "img": "img/KR-070.webp",
+   "wiki": ""
+  },
+  "Queenz Eye": {
+   "img": "img/KR-072.webp",
+   "wiki": ""
+  },
+  "PRIMROSE": {
+   "img": "img/KR-073.webp",
+   "wiki": ""
+  },
+  "SPIA": {
+   "img": "img/KR-074.webp",
+   "wiki": ""
+  },
+  "X:IN": {
+   "img": "img/KR-075.webp",
+   "wiki": ""
+  },
+  "eite": {
+   "img": "img/KR-076.webp",
+   "wiki": ""
+  },
+  "HEART OF WOMAN": {
+   "img": "img/KR-077.webp",
+   "wiki": ""
+  },
+  "ILY:1": {
+   "img": "img/KR-078.webp",
+   "wiki": ""
+  },
+  "UNCHILD": {
+   "img": "img/KR-079.webp",
+   "wiki": ""
+  },
+  "NAVILLERA": {
+   "img": "img/KR-080.webp",
+   "wiki": ""
+  },
+  "BEWAVE": {
+   "img": "img/KR-081.webp",
+   "wiki": ""
+  },
+  "CrazAngel": {
+   "img": "img/KR-082.webp",
+   "wiki": ""
+  },
+  "Geenius": {
+   "img": "img/KR-084.webp",
+   "wiki": ""
+  },
+  "Kandis": {
+   "img": "img/KR-085.webp",
+   "wiki": ""
+  },
+  "dodree": {
+   "img": "img/KR-086.webp",
+   "wiki": ""
+  },
+  "CSR": {
+   "img": "img/KR-071.webp",
+   "wiki": "첫사랑(아이돌)"
+  },
+  "Candy Shop": {
+   "img": "img/KR-061.webp",
+   "wiki": "Candy Shop(아이돌)"
+  }
+ },
+ "JP": {
+  "=LOVE": {
+   "img": "img/JP-001.webp",
+   "wiki": "=LOVE"
+  },
+  "乃木坂46": {
+   "img": "img/JP-002.webp",
+   "wiki": "노기자카46"
+  },
+  "FRUITS ZIPPER": {
+   "img": "img/JP-003.webp",
+   "wiki": "FRUITS ZIPPER"
+  },
+  "HANA": {
+   "img": "img/JP-004.webp",
+   "wiki": "HANA(아이돌)"
+  },
+  "NiziU": {
+   "img": "img/JP-005.webp",
+   "wiki": "NiziU"
+  },
+  "CUTIE STREET": {
+   "img": "img/JP-006.webp",
+   "wiki": "CUTIE STREET"
+  },
+  "櫻坂46": {
+   "img": "img/JP-007.webp",
+   "wiki": "사쿠라자카46"
+  },
+  "日向坂46": {
+   "img": "img/JP-008.webp",
+   "wiki": "히나타자카46"
+  },
+  "AKB48": {
+   "img": "img/JP-009.webp",
+   "wiki": "AKB48"
+  },
+  "iLiFE!": {
+   "img": "img/JP-010.jpg",
+   "wiki": "iLiFE!"
+  },
+  "超ときめき♡宣伝部": {
+   "img": "img/JP-011.webp",
+   "wiki": "초 도키메키 센덴부"
+  },
+  "CANDY TUNE": {
+   "img": "img/JP-012.webp",
+   "wiki": "CANDY TUNE"
+  },
+  "ME:I": {
+   "img": "img/JP-013.webp",
+   "wiki": "ME:I"
+  },
+  "i☆Ris": {
+   "img": "img/JP-014.webp",
+   "wiki": "i☆Ris"
+  },
+  "≠ME": {
+   "img": "img/JP-015.webp",
+   "wiki": "≠ME"
+  },
+  "Juice=Juice": {
+   "img": "img/JP-019.webp",
+   "wiki": "Juice=Juice"
+  },
+  "SWEET STEADY": {
+   "img": "img/JP-020.webp",
+   "wiki": "SWEET STEADY"
+  },
+  "≒JOY": {
+   "img": "img/JP-021.webp",
+   "wiki": "≒JOY"
+  },
+  "HKT48": {
+   "img": "img/JP-022.webp",
+   "wiki": "HKT48"
+  },
+  "高嶺のなでしこ": {
+   "img": "img/JP-023.webp",
+   "wiki": "타카네노 나데시코"
+  },
+  "PassCode": {
+   "img": "img/JP-024.webp",
+   "wiki": "PassCode"
+  },
+  "WHITE SCORPION": {
+   "img": "img/JP-026.webp",
+   "wiki": "WHITE SCORPION"
+  },
+  "ファントムシータ": {
+   "img": "img/JP-027.webp",
+   "wiki": "팬텀 시타"
+  },
+  "MORE STAR": {
+   "img": "img/JP-028.webp",
+   "wiki": "MORE STAR"
+  },
+  "Rain Tree": {
+   "img": "img/JP-029.webp",
+   "wiki": "Rain Tree"
+  },
+  "SKE48": {
+   "img": "img/JP-030.webp",
+   "wiki": "SKE48"
+  },
+  "わーすた": {
+   "img": "img/JP-031.webp",
+   "wiki": "와스타"
+  },
+  "私立恵比寿中学": {
+   "img": "img/JP-032.webp",
+   "wiki": "사립에비스중학"
+  },
+  "Girls²": {
+   "img": "img/JP-036.webp",
+   "wiki": "Girls²"
+  },
+  "可憐なアイボリー": {
+   "img": "img/JP-037.webp",
+   "wiki": "카렌나 아이보리"
+  },
+  "Palette Parade": {
+   "img": "img/JP-039.webp",
+   "wiki": "Palette Parade"
+  },
+  "JamsCollection": {
+   "img": "img/JP-040.webp",
+   "wiki": "Jams Collection"
+  },
+  "NMB48": {
+   "img": "img/JP-041.webp",
+   "wiki": "NMB48"
+  },
+  "OCHA NORMA": {
+   "img": "img/JP-042.webp",
+   "wiki": "OCHA NORMA"
+  },
+  "@onefive": {
+   "img": "img/JP-043.webp",
+   "wiki": "@onefive"
+  },
+  "ExWHYZ": {
+   "img": "img/JP-045.webp",
+   "wiki": "ExWHYZ"
+  },
+  "IS:SUE": {
+   "img": "img/JP-046.webp",
+   "wiki": "IS:SUE"
+  },
+  "NGT48": {
+   "img": "img/JP-047.webp",
+   "wiki": "NGT48"
+  },
+  "fav me": {
+   "img": "img/JP-048.webp",
+   "wiki": "fav me"
+  },
+  "きゅるりんってしてみて": {
+   "img": "img/JP-049.webp",
+   "wiki": "큐루링테시테미테"
+  },
+  "虹のコンキスタドール": {
+   "img": "img/JP-050.webp",
+   "wiki": "虹のコンキスタドール"
+  },
+  "Appare!": {
+   "img": "img/JP-051.webp",
+   "wiki": "Appare!"
+  },
+  "STU48": {
+   "img": "img/JP-053.webp",
+   "wiki": "STU48"
+  },
+  "僕が見たかった青空": {
+   "img": "img/JP-056.webp",
+   "wiki": "보쿠가 미타캇타 아오조라"
+  },
+  "22/7": {
+   "img": "img/JP-057.webp",
+   "wiki": "22/7"
+  },
+  "のんふぃく！": {
+   "img": "img/JP-058.webp",
+   "wiki": "논픽!"
+  },
+  "BEYOOOOONDS": {
+   "img": "img/JP-060.webp",
+   "wiki": "BEYOOOOONDS"
+  },
+  "GANG PARADE": {
+   "img": "img/JP-062.webp",
+   "wiki": "GANG PARADE"
+  },
+  "SUPER☆GiRLS": {
+   "img": "img/JP-063.webp",
+   "wiki": "SUPER☆GiRLS"
+  },
+  "夜光性アミューズ": {
+   "img": "img/JP-064.jpg",
+   "wiki": "야광성 아뮤즈"
+  },
+  "UtaGe!": {
+   "img": "img/JP-067.webp",
+   "wiki": "UtaGe!"
+  },
+  "アンスリューム": {
+   "img": "img/JP-068.webp",
+   "wiki": "アンスリューム"
+  },
+  "FES☆TIVE": {
+   "img": "img/JP-072.webp",
+   "wiki": "FES☆TIVE"
+  },
+  "MyDearDarlin'": {
+   "img": "img/JP-073.webp",
+   "wiki": "MyDearDarlin'"
+  },
+  "ロージークロニクル": {
+   "img": "img/JP-074.webp",
+   "wiki": "로지 크로니클"
+  },
+  "#Mooove!": {
+   "img": "img/JP-077.webp",
+   "wiki": "#Mooove!"
+  },
+  "Peel the Apple": {
+   "img": "img/JP-081.webp",
+   "wiki": "Peel the Apple"
+  },
+  "MYERA": {
+   "img": "img/JP-084.webp",
+   "wiki": "MYERA"
+  },
+  "KiSS KiSS": {
+   "img": "img/JP-086.webp",
+   "wiki": "KiSS KiSS(일본 아이돌)"
+  },
+  "LinQ": {
+   "img": "img/JP-087.webp",
+   "wiki": "LinQ"
+  },
+  "TENRIN": {
+   "img": "img/JP-088.webp",
+   "wiki": "TENRIN"
+  },
+  "STAiNY": {
+   "img": "img/JP-090.webp",
+   "wiki": "STAiNY"
+  },
+  "UN1CON": {
+   "img": "img/JP-092.webp",
+   "wiki": "UN1CON"
+  },
+  "chuLa": {
+   "img": "img/JP-099.webp",
+   "wiki": "chuLa"
+  },
+  "Ma'Scar'Piece": {
+   "img": "img/JP-104.webp",
+   "wiki": "Ma'Scar'Piece"
+  },
+  "Sweet Alley": {
+   "img": "img/JP-106.webp",
+   "wiki": "Sweet Alley"
+  },
+  "Gran☆Ciel": {
+   "img": "img/JP-116.webp",
+   "wiki": "Gran☆Ciel"
+  },
+  "点染テンセイ少女。": {
+   "img": "img/JP-119.webp",
+   "wiki": "点染テンセイ少女。"
+  },
+  "DREAMING MONSTER": {
+   "img": "img/JP-120.webp",
+   "wiki": "DREAMING MONSTER"
+  },
+  "PinkySpice": {
+   "img": "img/JP-122.webp",
+   "wiki": "PinkySpice"
+  },
+  "Bunny La Crew": {
+   "img": "img/JP-126.webp",
+   "wiki": "Bunny La Crew"
+  }
+ }
+}

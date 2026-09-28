@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "한국 여자아이돌 상세페이지 DB 86팀",
-    "as_of": "2026-09-17",
+    "as_of": "2026-09-28",
     "groups": 86,
     "filter_order": [
       "세대",
@@ -17,10 +17,15 @@
       "5세대": "2023~"
     },
     "verification": {
-      "1차 검증완료": 76,
-      "부분검증": 10
+      "1차 검증완료": 61,
+      "공식확인(2026-09-28)": 8,
+      "공식/보도확인(2026-09-28)": 11,
+      "부분검증": 5,
+      "부분검증(2026-09-28)": 1
     },
-    "note": "현재 활동 인원/상태를 우선 기록. 공식 공지 또는 최신 공식 프로필이 불명확한 일부 그룹은 부분검증으로 표기."
+    "note": "2026-09-28 기준 최신 공식 사이트·소속사 공지·신뢰도 높은 보도를 우선 반영. 순위·티어·평가점수는 기존 2026년 9월 평가 스냅샷을 유지. 멤버수는 공식 재적 인원을 우선하며, 활동휴지/활동중단 인원은 활동상태·메모에 별도 표기.",
+    "updated_groups": 20,
+    "updated_fields": 88
   },
   "korea": [
     {
@@ -58,8 +63,8 @@
       "총점": 91,
       "세대": "3세대",
       "스타일": "팝/카와이",
-      "소속사": "JYP Entertainment",
-      "활동상태": "현역",
+      "소속사": "JYP Entertainment (그룹 활동) / 일부 멤버 개별 소속",
+      "활동상태": "현역(9인 그룹 활동 유지)",
       "데뷔일": "2015-10-20",
       "멤버수": 9,
       "대표곡": "CHEER UP; TT; FANCY",
@@ -70,8 +75,8 @@
       "글로벌": 15,
       "국내인지도": 15,
       "현재기세": 9,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.twicejapan.com/feature/profile"
+      "검증상태": "공식확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1861518wpp/twices-jeongyeon-personally-confirms-departure-from-jyp-signs-with-varo-entertainment | https://www.soompi.com/article/1862658wpp/twices-chaeyoung-announces-departure-from-jyp | 정연은 VARO와 계약, 채영은 JYP와 계약 종료. 두 사람 모두 TWICE 그룹 활동은 계속."
     },
     {
       "id": "KR-003",
@@ -209,7 +214,7 @@
       "세대": "4세대",
       "스타일": "이지리스닝/Y2K",
       "소속사": "ADOR",
-      "활동상태": "특수상태/복귀",
+      "활동상태": "복귀 준비/4인 체제",
       "데뷔일": "2022-07-22",
       "멤버수": 4,
       "대표곡": "Attention; Hype Boy; Ditto",
@@ -220,8 +225,8 @@
       "글로벌": 15,
       "국내인지도": 15,
       "현재기세": 5,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.newjeans.jp/profile"
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1856451wpp/watch-newjeans-announces-return-as-4-member-group-with-2026-summer-of-newjeans-films | 2026-07 공개된 공식 콘텐츠에서 4인 체제 복귀 신호 확인."
     },
     {
       "id": "KR-009",
@@ -283,11 +288,11 @@
       "총점": 74,
       "세대": "3세대",
       "스타일": "팝/R&B",
-      "소속사": "SM Entertainment",
-      "활동상태": "현역/완전체 컴백",
+      "소속사": "SM Entertainment (그룹 활동) / 멤버별 개별 소속",
+      "활동상태": "현역(5인 완전체 활동)",
       "데뷔일": "2014-08-01",
       "멤버수": 5,
-      "대표곡": "Red Flavor; Psycho; Feel My Rhythm",
+      "대표곡": "Red Flavor; Psycho; Feel My Rhythm; Surfin' Boy",
       "공식링크/SNS": "https://www.smentertainment.com/",
       "국내음원": 14,
       "음반·팬덤": 10,
@@ -295,8 +300,8 @@
       "글로벌": 11,
       "국내인지도": 15,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.smentertainment.com/"
+      "검증상태": "공식확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1734948wpp/red | https://en.yna.co.kr/view/AEN20260803003400315 | Wendy·Yeri는 SM과 개인 전속계약 종료 후에도 Red Velvet 그룹 활동 유지. 2026-08 5인 완전체 컴백."
     },
     {
       "id": "KR-012",
@@ -359,19 +364,19 @@
       "세대": "5세대",
       "스타일": "글로벌 팝/퍼포먼스",
       "소속사": "HYBE x Geffen Records",
-      "활동상태": "글로벌 그룹 참고군",
+      "활동상태": "현역(6인 공식 멤버 / Manon·Sophia 활동휴지)",
       "데뷔일": "2024-06-28",
       "멤버수": 6,
       "대표곡": "Debut; Touch; Gnarly",
-      "공식링크/SNS": "https://www.katseye.world/",
+      "공식링크/SNS": "https://www.katseye.world/the-members/",
       "국내음원": 7,
       "음반·팬덤": 11,
       "공연": 16,
       "글로벌": 15,
       "국내인지도": 11,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.katseye.world/"
+      "검증상태": "공식확인(2026-09-28)",
+      "대표출처/메모": "https://www.katseye.world/the-members/ | https://weverse.io/katseye/notice/33860 | https://weverse.io/katseye/notice/38739 | 6인 공식 멤버 유지. 2026-09-28 기준 Manon·Sophia는 일시 활동휴지 상태."
     },
     {
       "id": "KR-015",
@@ -609,19 +614,19 @@
       "세대": "5세대",
       "스타일": "퍼포먼스/팝",
       "소속사": "WAKEONE",
-      "활동상태": "현역",
+      "활동상태": "현역(6인 체제)",
       "데뷔일": "2024-11-25",
-      "멤버수": 7,
+      "멤버수": 6,
       "대표곡": "IZNA; SIGN; BEEP",
-      "공식링크/SNS": "https://wake-one.com/",
+      "공식링크/SNS": "https://wake-one.com/artists/izna/",
       "국내음원": 9,
       "음반·팬덤": 10,
       "공연": 8,
       "글로벌": 10,
       "국내인지도": 12,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://wake-one.com/"
+      "검증상태": "공식확인(2026-09-28)",
+      "대표출처/메모": "https://wake-one.com/artists/izna/ | WAKEONE 공식 프로필 기준 MAI·방지민·KOKO·유사랑·최정은·정세비 6인."
     },
     {
       "id": "KR-025",
@@ -708,8 +713,8 @@
       "총점": 53,
       "세대": "2세대",
       "스타일": "청순/팝",
-      "소속사": "Choi Creative Lab / With Us",
-      "활동상태": "현역/아시아 투어",
+      "소속사": "WITH US Entertainment (4인) / Choi Creative Lab 등 멤버별 소속",
+      "활동상태": "현역/비정기 완전체 활동",
       "데뷔일": "2011-04-19",
       "멤버수": 5,
       "대표곡": "NoNoNo; Mr. Chu; Dumhdurum",
@@ -720,8 +725,8 @@
       "글로벌": 5,
       "국내인지도": 15,
       "현재기세": 9,
-      "검증상태": "부분검증",
-      "대표출처/메모": "https://apink-japan.com/profiles | 현 5인 프로필 확인. 그룹 단일 소속 표기는 멤버별 매니지먼트 구조 때문에 부분검증."
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1750878wpp/apinks-park-chorong-yoon-bomi-kim-namjoo-and-oh-hayoung-sign-with-new-agency | 초롱·보미·남주·하영은 WITH US Entertainment에서 관리. Apink 그룹 활동은 지속."
     },
     {
       "id": "KR-029",
@@ -733,20 +738,20 @@
       "총점": 53,
       "세대": "4세대",
       "스타일": "퍼포먼스/팝",
-      "소속사": "WAKEONE",
-      "활동상태": "현역",
+      "소속사": "WAKEONE / KLAP Entertainment",
+      "활동상태": "현역(6인 체제)",
       "데뷔일": "2022-01-03",
-      "멤버수": 7,
+      "멤버수": 6,
       "대표곡": "WA DA DA; Up!; Shooting Star",
-      "공식링크/SNS": "https://wake-one.com/",
+      "공식링크/SNS": "https://wake-one.com/artists/kep1er/",
       "국내음원": 6,
       "음반·팬덤": 6,
       "공연": 11,
       "글로벌": 8,
       "국내인지도": 12,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://wake-one.com/"
+      "검증상태": "공식확인(2026-09-28)",
+      "대표출처/메모": "https://wake-one.com/artists/kep1er/ | https://www.soompi.com/article/1823330wpp/kep1er-announces-youngeuns-departure-from-group | 2026-03 서영은 탈퇴 후 6인 체제로 활동."
     },
     {
       "id": "KR-030",
@@ -808,8 +813,8 @@
       "총점": 48,
       "세대": "2세대",
       "스타일": "레거시/팝",
-      "소속사": "SM Entertainment",
-      "활동상태": "비정기/완전체 활동",
+      "소속사": "SM Entertainment (그룹 협업) / 멤버별 개별 소속",
+      "활동상태": "비정기/그룹·유닛 활동",
       "데뷔일": "2007-08-05",
       "멤버수": 8,
       "대표곡": "Gee; Genie; Into the New World",
@@ -820,8 +825,8 @@
       "글로벌": 6,
       "국내인지도": 15,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.smentertainment.com/"
+      "검증상태": "공식확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1858906wpp/girls-generations-yuri-parts-ways-with-sm-entertainment-after-19-years | Yuri는 2026-08-31 SM 전속계약 종료 후에도 소녀시대 활동 유지."
     },
     {
       "id": "KR-033",
@@ -833,8 +838,8 @@
       "총점": 48,
       "세대": "3세대",
       "스타일": "청순/몽환",
-      "소속사": "WM Entertainment",
-      "활동상태": "현역",
+      "소속사": "DSP Media (그룹 관리) / 멤버별 개별 소속",
+      "활동상태": "현역(6인 그룹 활동)",
       "데뷔일": "2015-04-21",
       "멤버수": 6,
       "대표곡": "Secret Garden; Dolphin; Dun Dun Dance",
@@ -845,8 +850,8 @@
       "글로벌": 5,
       "국내인지도": 15,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.wment.co.kr/"
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1861923wpp/oh-my-girl-transfers-to-dsp-xlovs-agency-announces-name-change-following-rbws-structural-changes | 2026-08 RBW 구조개편에 따라 OH MY GIRL 그룹 관리가 WM에서 DSP Media로 이관."
     },
     {
       "id": "KR-034",
@@ -934,10 +939,10 @@
       "세대": "5세대",
       "스타일": "소울트로닉/팝",
       "소속사": "ABD (HYBE)",
-      "활동상태": "2026 신인",
+      "활동상태": "현역(2026-08-24 데뷔)",
       "데뷔일": "2026-08-24",
       "멤버수": 7,
-      "대표곡": "Sun Kiss",
+      "대표곡": "SUN KISS; ABD; Echo",
       "공식링크/SNS": "https://en.yna.co.kr/view/AEN20260824010400315",
       "국내음원": 9,
       "음반·팬덤": 6,
@@ -945,8 +950,8 @@
       "글로벌": 9,
       "국내인지도": 8,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://en.yna.co.kr/view/AEN20260824010400315"
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://en.yna.co.kr/view/AEN20260824010400315 | HYBE 산하 ABD의 첫 걸그룹. 2026-08-24 7인조로 공식 데뷔."
     },
     {
       "id": "KR-038",
@@ -958,11 +963,11 @@
       "총점": 44,
       "세대": "5세대",
       "스타일": "하이틴/팝",
-      "소속사": "F&F Entertainment",
-      "활동상태": "현역",
+      "소속사": "전 F&F Entertainment (계약 종료 2026-09-26)",
+      "활동상태": "활동종료(2026-09-26 완전체 공식 활동 종료)",
       "데뷔일": "2024-03-27",
       "멤버수": 8,
-      "대표곡": "SUPERWOMAN; Curious; SWICY",
+      "대표곡": "SUPERWOMAN; SWICY; Milky Way",
       "공식링크/SNS": "https://www.youtube.com/@UNIS_offcl",
       "국내음원": 5,
       "음반·팬덤": 8,
@@ -970,8 +975,8 @@
       "글로벌": 7,
       "국내인지도": 8,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.youtube.com/@UNIS_offcl"
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1872516wpp/unis-to-conclude-group-activities-following-end-of-contract | F&F 전속계약이 2026-09-26 종료되며 UNIS 완전체 공식 활동도 종료."
     },
     {
       "id": "KR-039",
@@ -984,7 +989,7 @@
       "세대": "5세대",
       "스타일": "청량/청순 팝",
       "소속사": "iNKODE Entertainment",
-      "활동상태": "현역(8인 체제)",
+      "활동상태": "현역(8인 공식 멤버 / Shuie 활동휴지, 7인 활동)",
       "데뷔일": "2024-10-16",
       "멤버수": 8,
       "대표곡": "WaveWay; Be a Star",
@@ -995,8 +1000,8 @@
       "글로벌": 4,
       "국내인지도": 9,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.in-kode.com/say_my_name.html | SHUIE 합류 후 8인 체제."
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1858910wpp/say-my-names-shuie-to-temporarily-halt-activities-due-to-health | Shuie는 2026-07-31부터 일시 활동휴지. 그룹은 당분간 7인으로 활동."
     },
     {
       "id": "KR-040",
@@ -1008,20 +1013,20 @@
       "총점": 42,
       "세대": "4세대",
       "스타일": "걸크러시/EDM",
-      "소속사": "Yuehua Entertainment",
-      "활동상태": "4인조 활동 재개",
+      "소속사": "CHXXTA Company",
+      "활동상태": "현역(4인 체제)",
       "데뷔일": "2019-03-18",
-      "멤버수": 6,
-      "대표곡": "Bon Bon Chocolat; DUN DUN; LA DI DA",
-      "공식링크/SNS": "https://www.yhfamily.co.kr/",
+      "멤버수": 4,
+      "대표곡": "Bon Bon Chocolat; DUN DUN; LA DI DA; CODE",
+      "공식링크/SNS": "https://www.youtube.com/@EVERGLOWOFFICIAL",
       "국내음원": 4,
       "음반·팬덤": 4,
       "공연": 8,
       "글로벌": 8,
       "국내인지도": 8,
       "현재기세": 10,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.yhfamily.co.kr/"
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1772760wpp/everglow-to-continue-activities-as-4-members-under-new-agency | https://www.soompi.com/article/1818880wpp/everglow-announces-comeback-date-for-return-under-new-agency | 시현·E:U·온다·아샤 4인이 CHXXTA Company에서 활동. 2026-03 미니앨범 CODE 발매."
     },
     {
       "id": "KR-041",
@@ -1209,19 +1214,19 @@
       "세대": "5세대",
       "스타일": "글로벌/팝",
       "소속사": "143 Entertainment / B ZONE (Japan)",
-      "활동상태": "현역(4인 활동 / 2인 활동중단)",
+      "활동상태": "현역(공식 명단 6인 / 현재 4인 활동, Yeseo·Suhye 활동중단)",
       "데뷔일": "2024-09-03",
-      "멤버수": 4,
+      "멤버수": 6,
       "대표곡": "UNO; SATURN; Girl Meets Boy",
-      "공식링크/SNS": "https://madein-official.net/",
+      "공식링크/SNS": "https://madein-official.net/profile/",
       "국내음원": 4,
       "음반·팬덤": 5,
       "공연": 5,
       "글로벌": 6,
       "국내인지도": 8,
       "현재기세": 8,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.soompi.com/article/1807827wpp/madeins-yeseo-and-suhye-to-suspend-group-activities-as-group-continues-as-4-members | 예서·수혜 활동중단, 마시로·미유·세리나·나고미 4인 활동."
+      "검증상태": "공식확인(2026-09-28)",
+      "대표출처/메모": "https://madein-official.net/profile/ | https://www.soompi.com/article/1807827wpp/madeins-yeseo-and-suhye-to-suspend-group-activities-as-group-continues-as-4-members | 공식 프로필에는 Mashiro·MiU·Suhye·Yeseo·Serina·Nagomi 6인. 활동은 당분간 4인."
     },
     {
       "id": "KR-049",
@@ -1308,8 +1313,8 @@
       "총점": 33,
       "세대": "3세대",
       "스타일": "몽환/팝",
-      "소속사": "STARSHIP Entertainment",
-      "활동상태": "레거시/비정기",
+      "소속사": "STARSHIP Entertainment (그룹 활동) / 일부 멤버 개별 소속",
+      "활동상태": "비정기/10인 그룹 유지·소속 변동",
       "데뷔일": "2016-02-25",
       "멤버수": 10,
       "대표곡": "Secret; As You Wish; UNNATURAL",
@@ -1320,8 +1325,8 @@
       "글로벌": 4,
       "국내인지도": 13,
       "현재기세": 5,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://www.starship-ent.com/"
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1871345wpp/wjsns-eunseo-and-seola-part-ways-with-starship-entertainment | 2026-09-17 설아·은서가 STARSHIP과 전속계약 종료. 그룹 탈퇴 발표는 확인되지 않아 10인 멤버수 유지."
     },
     {
       "id": "KR-053",
@@ -1384,7 +1389,7 @@
       "세대": "5세대",
       "스타일": "퍼포먼스/힙합",
       "소속사": "MW Entertainment",
-      "활동상태": "현역",
+      "활동상태": "현역(6인 체제)",
       "데뷔일": "2025-06-04",
       "멤버수": 6,
       "대표곡": "ZOOM; Telepathy; WICKED GAME",
@@ -1395,8 +1400,8 @@
       "글로벌": 3,
       "국내인지도": 5,
       "현재기세": 8,
-      "검증상태": "1차 검증완료",
-      "대표출처/메모": "https://mwenter.co.kr/artist/USPEER/"
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://www.soompi.com/article/1838648wpp/uspeers-yeowon-to-leave-the-group | Yeowon은 2026-05 그룹 탈퇴. 이후 6인 체제로 활동."
     },
     {
       "id": "KR-056",
@@ -1683,20 +1688,20 @@
       "총점": 25,
       "세대": "5세대",
       "스타일": "글로벌/팝",
-      "소속사": "Ten Entertainment / Stone Music",
-      "활동상태": "한국 활동 다국적",
+      "소속사": "Ten Entertainment",
+      "활동상태": "현역(6인 / 한국·대만 활동)",
       "데뷔일": "2024-09-02",
       "멤버수": 6,
       "대표곡": "COCOCO; ACT LIKE THAT",
-      "공식링크/SNS": "https://www.instagram.com/genblue_official/",
+      "공식링크/SNS": "https://www.tenentcorp.com/pages/genblue",
       "국내음원": 3,
       "음반·팬덤": 4,
       "공연": 4,
       "글로벌": 4,
       "국내인지도": 6,
       "현재기세": 4,
-      "검증상태": "부분검증",
-      "대표출처/메모": "2024-09-02 한국 데뷔 6인 기준. 2026-09 공식 라인업 추가 확인 권장."
+      "검증상태": "공식확인(2026-09-28)",
+      "대표출처/메모": "https://www.tenentcorp.com/pages/genblue | 공식 페이지 기준 XXIN·AYEON·YUAN·LILI·AYAKO·NICO 6인."
     },
     {
       "id": "KR-068",
@@ -1783,20 +1788,20 @@
       "총점": 24,
       "세대": "4세대",
       "스타일": "청순/팝",
-      "소속사": "A2Z Entertainment",
-      "활동상태": "현역",
+      "소속사": "CSR E&M",
+      "활동상태": "현역(7인)",
       "데뷔일": "2022-07-27",
       "멤버수": 7,
-      "대표곡": "Pop? Pop!; Loveticon; Shining Bright",
-      "공식링크/SNS": "https://www.instagram.com/csr.offcl/",
+      "대표곡": "Pop? Pop!; Shining Bright; 숨길 수 없는 맘인걸",
+      "공식링크/SNS": "https://csrofficial.jp/",
       "국내음원": 4,
       "음반·팬덤": 4,
       "공연": 4,
       "글로벌": 3,
       "국내인지도": 7,
       "현재기세": 2,
-      "검증상태": "부분검증",
-      "대표출처/메모": "7인 구성/2022-07-27 데뷔 기준. 2026-09 최신 공식 프로필 재확인 권장."
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://csrofficial.jp/ | https://www.edaily.co.kr/News/Read?mediaCodeNo=257&newsId=03201286645387256 | 2026-03 국내 신곡 활동 확인. 금희·시현·서연·유나·두나·수아·예함 7인."
     },
     {
       "id": "KR-072",
@@ -1959,7 +1964,7 @@
       "세대": "4세대",
       "스타일": "청순/팝",
       "소속사": "FC ENM",
-      "활동상태": "현역",
+      "활동상태": "현역/재정비",
       "데뷔일": "2022-04-04",
       "멤버수": 6,
       "대표곡": "Love in Bloom; Que Sera Sera; Twinkle, Twinkle",
@@ -1970,8 +1975,8 @@
       "글로벌": 3,
       "국내인지도": 6,
       "현재기세": 4,
-      "검증상태": "부분검증",
-      "대표출처/메모": "6인/2022-04-04 데뷔 기준. 2026-09 최신 공식 프로필 추가 확인 권장."
+      "검증상태": "공식/보도확인(2026-09-28)",
+      "대표출처/메모": "https://sports.khan.co.kr/article/202506251356003 | 소속사는 해체·활동중단설을 부인하고 팀 활동 지속 및 재정비를 공식 안내. 이후 6인 명단 유지."
     },
     {
       "id": "KR-079",
@@ -2133,8 +2138,8 @@
       "총점": 18,
       "세대": "5세대",
       "스타일": "R&B/네오소울/힙합",
-      "소속사": "60DGRS",
-      "활동상태": "현역(라인업 변동 주의)",
+      "소속사": "SXTYDGRS (60DGRS)",
+      "활동상태": "현역(4인 체제 유지 / Nine 활동휴지)",
       "데뷔일": "2025-01-14",
       "멤버수": 4,
       "대표곡": "Playground; BF; Snowflake",
@@ -2145,8 +2150,8 @@
       "글로벌": 2,
       "국내인지도": 4,
       "현재기세": 5,
-      "검증상태": "부분검증",
-      "대표출처/메모": "https://prtimes.jp/main/html/rd/p/000000004.000170607.html | 4인 공식 프로필 기준. 2026-06 신규멤버/휴식 관련 2차 자료가 있어 현 활동 인원은 공식 업데이트 재확인 권장."
+      "검증상태": "부분검증(2026-09-28)",
+      "대표출처/메모": "https://enews.imbc.com/News/RetrieveNewsInfo/508025 | 2026-06 Nine 활동휴지와 신규 멤버 투입을 공식 발표해 4인 체제 유지. 최신 멤버 표기는 공식 SNS 재확인 권장."
     },
     {
       "id": "KR-086",
