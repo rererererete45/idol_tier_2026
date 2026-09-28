@@ -53,6 +53,8 @@
     + '.sn-links{display:flex;gap:2px;min-width:0;overflow-x:auto;scrollbar-width:none}'
     + '.sn-links::-webkit-scrollbar{display:none}'
     + '.sn-sp{flex:1}'
+    + '.sn-disc{background:linear-gradient(135deg,rgba(30,215,96,.22),rgba(83,157,245,.22));color:#fff;box-shadow:inset 0 0 0 1px rgba(30,215,96,.4)}'
+    + '.sn-disc:hover{background:linear-gradient(135deg,rgba(30,215,96,.34),rgba(83,157,245,.34))}'
     + '.sn-fav b{font-weight:800;font-variant-numeric:tabular-nums}'
     + '.sn-fav .h{color:#f3727f}'
     + '.sn-sr{display:none;border-top:1px solid rgba(255,255,255,.07);background:#181818;padding:10px 14px 14px}'
@@ -70,7 +72,7 @@
     + '.sn-res .act{background:transparent;box-shadow:inset 0 0 0 1px #333}'
     + '.sn-top{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:35;width:44px;height:44px;border-radius:50%;border:0;background:#252525;color:#fff;font-size:18px;cursor:pointer;box-shadow:rgba(0,0,0,.5) 0 6px 18px;opacity:0;pointer-events:none;transition:opacity .2s,transform .15s}'
     + '.sn-top.on{opacity:1;pointer-events:auto}.sn-top:hover{background:#333}.sn-top:active{transform:scale(.92)}'
-    + '@media(max-width:560px){.sn-in{padding:0 8px;gap:2px}.sn-b{padding:0 10px;font-size:12.5px}.sn-home span{display:none}.sn-back{padding:0 10px}.sn-back span{display:none}.sn-b .sm{display:inline}.sn-b .lg{display:none}.sn-fav .t{display:none}}'
+    + '@media(max-width:560px){.sn-disc .t{display:none}.sn-in{padding:0 8px;gap:2px}.sn-b{padding:0 10px;font-size:12.5px}.sn-home span{display:none}.sn-back{padding:0 10px}.sn-back span{display:none}.sn-b .sm{display:inline}.sn-b .lg{display:none}.sn-fav .t{display:none}}'
     + '@media(prefers-reduced-motion:reduce){.sn-b,.sn-top{transition:none}}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -87,6 +89,7 @@
     + link('home', HOUSE + '<span>홈</span>', 'sn-home')
     + '<div class="sn-links">' + link('kr', '🇰🇷 한국') + link('jp', '🇯🇵 일본') + link('map', '<span class="lg">IDOL MAP</span><span class="sm">지도</span>') + '</div>'
     + '<span class="sn-sp"></span>'
+    + '<button class="sn-b sn-disc" id="snDisc" type="button" data-discover aria-label="DISCOVER 아이돌 발견하기">🎲<span class="t">DISCOVER</span></button>'
     + '<button class="sn-b" id="snSearch" type="button" aria-label="그룹 검색" aria-expanded="false">' + SEARCH + '</button>'
     + '<a class="sn-b sn-fav" href="' + base + PAGES.map + '?country=ALL&preset=MINE" aria-label="내 최애 보기"><span class="h">♥</span><b id="snFav">0</b><span class="t">최애</span></a>'
     + '</div>'
@@ -126,6 +129,7 @@
   /* ---------- 사이트 안 링크는 기록을 쌓지 않고 이동 ---------- */
   document.addEventListener('click', function (e) {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (e.target.closest && e.target.closest('[data-discover]')) { e.preventDefault(); window.openDiscover(); return; }
     var a = e.target.closest && e.target.closest('a[href]');
     if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
     var u; try { u = new URL(a.href, location.href); } catch (err) { return; }
@@ -136,6 +140,31 @@
     pushHere();
     go(u.href);
   });
+
+  /* ---------- DISCOVER: 필요한 스크립트를 처음 눌렀을 때만 불러온다 ---------- */
+  function loadScript(src) {
+    return new Promise(function (res, rej) {
+      var s = document.createElement('script'); s.src = base + src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
+    });
+  }
+  var discP = null;
+  window.openDiscover = function (opts) {
+    if (!discP) {
+      var p = Promise.resolve();
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260929'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260929'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260929'); });
+      discP = p;
+    }
+    discP.then(function () { window.Discover.open(opts); });
+  };
+  (function autoOpen() {
+    var qp = new URLSearchParams(location.search);
+    if (!qp.has('discover')) return;
+    var v = qp.get('discover');
+    var go = function () { window.openDiscover({ id: v && v !== '1' ? v : null, mode: qp.get('mode') || undefined, scope: qp.get('scope') || undefined }); };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+  })();
 
   /* ---------- 그룹 검색 ---------- */
   var sr = document.getElementById('snSr'), q = document.getElementById('snQ'), res = document.getElementById('snRes'), sBtn = document.getElementById('snSearch');

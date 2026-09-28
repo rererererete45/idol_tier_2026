@@ -5,16 +5,11 @@
 (function () {
   'use strict';
   var IM = window.IdolMatch;
+  var R = window.IdolRec; // 논리 좌표·통계는 idol-recommendation-core.js 와 공유
   var Q = new URLSearchParams(location.search);
   var DEBUG = Q.get('debugMap') === '1';
-  var CENTER_TOLERANCE = 12;
   var SVGNS = 'http://www.w3.org/2000/svg';
 
-  var KEYS = {
-    KR: { pub: [['국내음원', 0.55], ['국내인지도', 0.45]], fan: [['음반·팬덤', 1]], live: [['공연', 1]], dig: [['국내음원', 0.55], ['글로벌', 0.45]], mom: '현재기세' },
-    JP: { pub: [['대중인지도', 0.60], ['스트리밍·SNS', 0.40]], fan: [['팬덤·구매력', 1]], live: [['공연·현장', 1]], dig: [['스트리밍·SNS', 1]], mom: '현재기세' }
-  };
-  // 티어 색은 초록(강함) → 청록 → 파랑 → 보라 → 회색(약함)으로 이어지는 한 줄 팔레트
   var TIER_COLORS = { 'S+': '#1ed760', 'S': '#36e0a0', 'A+': '#22d3ee', 'A': '#38a8f8', 'B+': '#5b8def', 'B': '#7c7cf0', 'C+': '#a78bfa', 'C': '#b592e8', 'D+': '#8b95a7', 'D': '#5f6b7d' };
   var ZONE_META = {
     'CORE LIVE': { color: '#f3727f', text: '팬덤 중심 · 라이브 강세' },
@@ -40,27 +35,6 @@
   };
 
   /* ---------- 통계/좌표 ---------- */
-  function median(v) {
-    var a = v.slice().sort(function (x, y) { return x - y; });
-    if (!a.length) return 0;
-    var m = Math.floor(a.length / 2);
-    return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
-  }
-  function mad(v) { var med = median(v); return median(v.map(function (x) { return Math.abs(x - med); })); }
-  function robustZ(value, values) {
-    var m = mad(values);
-    return m ? (value - median(values)) / (1.4826 * m) : 0;
-  }
-  function toScreenPosition(zX, zY) {
-    var x = 50 + 44 * Math.tanh(zX / 1.4), y = 50 - 44 * Math.tanh(zY / 1.4);
-    return { x: Math.max(6, Math.min(94, x)), y: Math.max(6, Math.min(94, y)) };
-  }
-  function classifyMapZone(x, y) {
-    var dx = x - 50, dy = 50 - y; // dy>0 = 위(라이브)
-    if (Math.abs(dx) <= CENTER_TOLERANCE && Math.abs(dy) <= CENTER_TOLERANCE) return 'BALANCED';
-    if (dy >= 0) return dx >= 0 ? 'STAGE STAR' : 'CORE LIVE';
-    return dx >= 0 ? 'PUBLIC HIT' : 'CORE DIGITAL';
-  }
   function bubbleRadius(totalPct) { return Math.max(7, Math.min(16, 7 + totalPct * 0.09)); }
   function momentumGlow(p) { return p < 40 ? 0 : p < 70 ? 1 : p < 90 ? 2 : 3; }
   function hashString(str) {
@@ -79,38 +53,21 @@
   }
   function catOf(key) { return STYLE_CATS.filter(function (c) { return c.key === key; })[0] || { key: 'ETC', label: '기타', color: '#7c7c7c' }; }
 
-  function weighted(pairs, P) { return pairs.reduce(function (a, p) { return a + P(p[0]) * p[1]; }, 0); }
-
+  // 논리 좌표(baseX/baseY)는 IdolRec.logicalPoints 에서 오고, 여기서는 표시용 지터·충돌 보정만 얹는다.
   function buildPoints(country) {
-    var rows = IM.getRaw(country), cfg = KEYS[country], need = [];
-    ['pub', 'fan', 'live', 'dig'].forEach(function (k) { cfg[k].forEach(function (p) { if (need.indexOf(p[0]) === -1) need.push(p[0]); }); });
-    need.push(cfg.mom, '총점');
-    var valid = rows.filter(function (r) { return need.every(function (k) { return Number.isFinite(Number(r[k])) && r[k] !== null && r[k] !== ''; }); });
-    var maps = {};
-    need.forEach(function (k) { maps[k] = valid.map(function (r) { return Number(r[k]); }); });
-    var pts = valid.map(function (r) {
-      var P = function (k) { return IM.percentileRank(Number(r[k]), maps[k]); };
-      var g = IM.getGroup(country, r['그룹']);
-      var pub = weighted(cfg.pub, P), fan = weighted(cfg.fan, P), live = weighted(cfg.live, P), dig = weighted(cfg.dig, P);
-      var mom = P(cfg.mom), totPct = P('총점');
-      return {
-        id: r.id, key: country + '|' + r['그룹'], group: r['그룹'], country: country, tier: r['티어'], totalScore: Number(r['총점']),
-        pub: pub, fan: fan, live: live, dig: dig, mom: mom, xRaw: pub - fan, yRaw: live - dig,
-        totalPercentile: totPct, radius: bubbleRadius(totPct), glow: momentumGlow(mom),
-        styleCategory: styleCategory(g && g.styleTags), status: r['활동상태'] || '', spotify: g ? g.spotify : '', slug: g ? g.slug : ''
-      };
-    });
-    var xs = pts.map(function (p) { return p.xRaw; }), ys = pts.map(function (p) { return p.yRaw; });
-    pts.forEach(function (p) {
-      p.zX = robustZ(p.xRaw, xs); p.zY = robustZ(p.yRaw, ys);
-      var s = toScreenPosition(p.zX, p.zY);
-      p.baseX = s.x; p.baseY = s.y;
+    var L = R.logicalPoints(country);
+    var pts = L.points.map(function (l) {
+      var g = IM.getGroup(country, l.group);
+      var p = Object.assign({}, l, {
+        radius: bubbleRadius(l.totalPercentile), glow: momentumGlow(l.mom),
+        styleCategory: styleCategory(g && g.styleTags), status: g ? g.status : '', spotify: g ? g.spotify : '', slug: g ? g.slug : ''
+      });
       var h = hashString(p.key), jx = ((h & 0xffff) / 0xffff * 2 - 1) * 1.2, jy = (((h >>> 16) & 0xffff) / 0xffff * 2 - 1) * 1.2;
-      p.screenX = Math.max(6, Math.min(94, s.x + jx)); p.screenY = Math.max(6, Math.min(94, s.y + jy));
-      p.zone = classifyMapZone(s.x, s.y);
+      p.screenX = Math.max(6, Math.min(94, p.baseX + jx)); p.screenY = Math.max(6, Math.min(94, p.baseY + jy));
+      return p;
     });
     resolveCollisions(pts);
-    return { points: pts, excluded: rows.length - valid.length };
+    return { points: pts, excluded: L.excluded };
   }
 
   // 초기 배치 때 한 번만: 겹침을 줄이되 데이터 좌표(baseX/Y)에서 3.5%p 이상 벗어나지 않게 한다.
@@ -154,7 +111,7 @@
   /* ---------- 상태 ---------- */
   var DATA = { KR: null, JP: null };
   var S = {
-    mode: 'KR', preset: 'ALL', color: 'tier', sel: null, hover: null, compare: false, cmp: [], match: null,
+    mode: 'KR', preset: 'ALL', color: 'tier', sel: null, hover: null, compare: false, cmp: [], match: null, scene: null,
     scale: 1, tx: 0, ty: 0, W: 0, H: 0, sf: 1, query: '', zone: null, enter: true, vis: [], lab: {}
   };
   var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -192,6 +149,7 @@
     return true;
   }
   function passesQuery(p) { return !S.query || p.group.toLowerCase().indexOf(S.query) !== -1; }
+  function curSet() { return S.match || S.scene; }
   function passesZone(p) { return !S.zone || p.zone === S.zone; }
   function isVisible(p, favs) { return passesPreset(p, favs) && passesQuery(p) && passesZone(p); }
   function colorOf(p) { return S.color === 'style' ? catOf(p.styleCategory).color : (TIER_COLORS[p.tier] || '#7c7c7c'); }
@@ -304,9 +262,9 @@
     });
     svgEl('line', { class: 'axis', x1: cx, y1: PAD.t + 4, x2: cx, y2: PAD.t + pl.h - 4 }, vp);
     svgEl('line', { class: 'axis', x1: PAD.l + 4, y1: cy, x2: PAD.l + pl.w - 4, y2: cy }, vp);
-    // BALANCED 영역(중앙 ±CENTER_TOLERANCE)
-    svgEl('rect', { class: 'bal', x: cx - pl.w * CENTER_TOLERANCE / 100, y: cy - pl.h * CENTER_TOLERANCE / 100, width: pl.w * CENTER_TOLERANCE / 50, height: pl.h * CENTER_TOLERANCE / 50, rx: 12 }, vp);
-    var bw = svgEl('g', { transform: 'translate(' + cx + ',' + (cy - pl.h * CENTER_TOLERANCE / 100 + 13) + ')' }, vp);
+    // BALANCED 영역(중앙 ±R.CENTER_TOLERANCE)
+    svgEl('rect', { class: 'bal', x: cx - pl.w * R.CENTER_TOLERANCE / 100, y: cy - pl.h * R.CENTER_TOLERANCE / 100, width: pl.w * R.CENTER_TOLERANCE / 50, height: pl.h * R.CENTER_TOLERANCE / 50, rx: 12 }, vp);
+    var bw = svgEl('g', { transform: 'translate(' + cx + ',' + (cy - pl.h * R.CENTER_TOLERANCE / 100 + 13) + ')' }, vp);
     var bmi = svgEl('g', { class: 'mi' }, bw);
     var bt = svgEl('text', { class: 'bal-t' }, bmi); bt.textContent = 'BALANCED';
 
@@ -357,7 +315,7 @@
     var set = {};
     var byCountry = { KR: [], JP: [] };
     vis.forEach(function (p) { byCountry[p.country].push(p); });
-    var per = S.match ? 0 : (S.mode === 'ALL' ? 6 : 10); // 매칭 중에는 추천 그룹 라벨에 집중
+    var per = curSet() ? 0 : (S.mode === 'ALL' ? 6 : 10); // 매칭 중에는 추천 그룹 라벨에 집중
     ['KR', 'JP'].forEach(function (c) {
       byCountry[c].sort(function (a, b) { return b.totalScore - a.totalScore; }).slice(0, per).forEach(function (p) { set[p.key] = 1; });
     });
@@ -365,7 +323,7 @@
     if (S.sel) set[S.sel] = 1;
     if (S.hover) set[S.hover] = 1;
     S.cmp.forEach(function (k) { set[k] = 1; });
-    if (S.match) { set[S.match.src] = 1; S.match.items.forEach(function (m) { set[m.key] = 1; }); }
+    if (curSet()) { set[curSet().src] = 1; curSet().items.forEach(function (m) { set[m.key] = 1; }); }
     return set;
   }
 
@@ -387,7 +345,7 @@
     if (S.sel) forced[S.sel] = 1;
     if (S.hover) forced[S.hover] = 1;
     S.cmp.forEach(function (k) { forced[k] = 1; });
-    if (S.match) { forced[S.match.src] = 1; S.match.items.forEach(function (m) { forced[m.key] = 1; }); }
+    if (curSet()) { forced[curSet().src] = 1; curSet().items.forEach(function (m) { forced[m.key] = 1; }); }
     var extra = S.scale >= 1.8 ? 1 : (S.scale >= 1.3 ? 0.5 : 0);
     var cand = vis.filter(function (p) { return lab[p.key] || forced[p.key] || extra === 1 || (extra > 0 && p.totalPercentile >= 55); });
     cand.sort(function (a, b) { return (forced[b.key] ? 1e6 : 0) + b.totalScore - ((forced[a.key] ? 1e6 : 0) + a.totalScore); });
@@ -430,7 +388,7 @@
     var lab = labelSet(vis);
     S.vis = vis; S.lab = lab;
     var mm = {};
-    if (S.match) S.match.items.forEach(function (m) { mm[m.key] = m.type; });
+    if (curSet()) curSet().items.forEach(function (m) { mm[m.key] = m.type; });
     pts.forEach(function (p) {
       var g = p.node; if (!g) return;
       var v = isVisible(p, favs);
@@ -438,9 +396,9 @@
       g.setAttribute('tabindex', v ? 0 : -1);
       g.classList.toggle('sel', S.sel === p.key || S.cmp.indexOf(p.key) !== -1);
       var hl = '';
-      if (S.match) hl = S.match.src === p.key ? 'src' : (mm[p.key] || '');
+      if (curSet()) hl = curSet().src === p.key ? 'src' : (mm[p.key] || '');
       if (hl) g.setAttribute('data-hl', hl); else g.removeAttribute('data-hl');
-      g.classList.toggle('dimmed', !!S.match && !hl && S.sel !== p.key);
+      g.classList.toggle('dimmed', !!curSet() && !hl && S.sel !== p.key);
     });
     $('count').textContent = vis.length + '팀 표시 중';
     drawCompareLine();
@@ -493,15 +451,17 @@
       + '<div class="pos">' + miniMap(p) + '<div>' + bar('대중 확장력', p.pub) + bar('코어 팬덤력', p.fan) + bar('라이브', p.live) + bar(digLabel(p), p.dig) + '</div></div>'
       + '<p class="sh-k">왜 이 위치인가?</p><div class="expl">' + expl + '</div>'
       + (DEBUG ? '<pre class="dbg">rawX ' + p.xRaw.toFixed(1) + '  rawY ' + p.yRaw.toFixed(1) + '\nzX ' + p.zX.toFixed(2) + '  zY ' + p.zY.toFixed(2) + '\nscreen ' + p.screenX.toFixed(1) + ', ' + p.screenY.toFixed(1) + ' (base ' + p.baseX.toFixed(1) + ', ' + p.baseY.toFixed(1) + ')\npublic ' + p.pub.toFixed(1) + '  fandom ' + p.fan.toFixed(1) + '  live ' + p.live.toFixed(1) + '  digital ' + p.dig.toFixed(1) + '  momentum ' + p.mom.toFixed(1) + '</pre>' : '')
-      + matchList()
+      + matchList() + sceneList()
       + '<div class="sh-act"><a class="btn out" href="' + detailUrl(p) + '">상세보기</a>'
       + (p.spotify ? '<a class="btn grn" target="_blank" rel="noopener noreferrer" href="' + esc(p.spotify) + '" aria-label="' + esc(p.group) + ' Spotify에서 듣기">Spotify ▶</a>' : '')
-      + '<button class="btn out" id="btnMatch">' + (S.match && S.match.src === p.key ? '매칭 해제' : '비슷한 그룹') + '</button></div>';
+      + '<button class="btn out" id="btnScene">' + (S.scene && S.scene.src === p.key ? '🧬 SAME SCENE 해제' : '🧬 같은 나라 비슷한 그룹') + '</button>'
+      + '<button class="btn out" id="btnMatch">' + (S.match && S.match.src === p.key ? '🇰🇷↔🇯🇵 매칭 해제' : '🇰🇷↔🇯🇵 IDOL MATCH') + '</button></div>';
     sh.innerHTML = html;
     sh.style.setProperty('--zc', zc(p));
     showSheet();
     $('shClose').addEventListener('click', clearSelection);
     $('btnMatch').addEventListener('click', function () { if (S.match && S.match.src === p.key) clearMatch(); else runMatch(p); });
+    $('btnScene').addEventListener('click', function () { if (S.scene && S.scene.src === p.key) clearScene(); else runScene(p); });
     animateSheet(sh);
   }
 
@@ -530,6 +490,14 @@
       return '<button class="mi-row" data-go="' + esc(m.key) + '"><span class="mk ' + m.type + '"></span><span class="nm">' + esc(p ? p.group : m.key) + '</span><b>' + m.score + '%</b></button>';
     }).join('');
     return '<p class="sh-k">IDOL MATCH <small>핑크 링 = 추천, 점선 다이아 = 숨은 취향</small></p><div class="mlist2">' + rows + '</div>';
+  }
+  function sceneList() {
+    if (!S.scene) return '';
+    var rows = S.scene.items.map(function (m) {
+      var p = findPoint(m.key);
+      return '<button class="mi-row" data-go="' + esc(m.key) + '"><span class="mk ' + m.type + '"></span><span class="nm">' + esc(p ? p.group : m.key) + '</span><b>' + m.score + '%</b></button>';
+    }).join('');
+    return '<p class="sh-k">🧬 SAME SCENE <small>금색 링 = 가장 비슷, 점선 = 취향 확장</small></p><div class="mlist2">' + rows + '</div>';
   }
   function findPoint(key) {
     var c = key.split('|')[0];
@@ -563,6 +531,7 @@
     u.set('country', S.mode);
     if (S.sel) { var p = findPoint(S.sel); if (p) u.set('group', p.group); }
     if (S.match) u.set('match', '1');
+    if (S.scene) u.set('scene', '1');
     if (S.color === 'style') u.set('color', 'style');
     if (S.preset !== 'ALL') u.set('preset', S.preset);
     if (DEBUG) u.set('debugMap', '1');
@@ -601,17 +570,29 @@
     var tc = r.target;
     r.top.forEach(function (m) { items.push({ key: tc + '|' + m.group.name, score: m.score, type: 'match' }); });
     r.hidden.forEach(function (m) { items.push({ key: tc + '|' + m.group.name, score: m.score, type: 'gem' }); });
-    S.match = { src: p.key, items: items };
+    S.match = { src: p.key, items: items }; S.scene = null;
     S.preset = 'ALL'; syncToolbar();
     setMode('ALL', true);
     S.sel = p.key; refreshStates(); openMapDetail(p); setUrl();
   }
-  function clearMatch() { S.match = null; refreshStates(); var p = S.sel && findPoint(S.sel); if (p) openMapDetail(p); setUrl(); }
+  function runScene(p) {
+    var r = R.getSameSceneMatches(p.country, p.group, { limit: 3, expandLimit: 3 });
+    if (!r) return;
+    var items = [];
+    r.top.forEach(function (m) { items.push({ key: p.country + '|' + m.group.name, score: m.score, type: 'scene' }); });
+    r.expand.forEach(function (m) { items.push({ key: p.country + '|' + m.group.name, score: m.score, type: 'expand' }); });
+    S.scene = { src: p.key, items: items }; S.match = null;
+    S.preset = 'ALL'; syncToolbar();
+    if (S.mode !== 'ALL' && S.mode !== p.country) setMode(p.country, true); else if (!byKey[p.key]) setMode('ALL', true);
+    S.sel = p.key; refreshStates(); openMapDetail(p); setUrl();
+  }
+  function clearScene() { S.scene = null; syncToolbar(); refreshStates(); var p = S.sel && findPoint(S.sel); if (p) openMapDetail(p); setUrl(); }
+  function clearMatch() { S.match = null; syncToolbar(); refreshStates(); var p = S.sel && findPoint(S.sel); if (p) openMapDetail(p); setUrl(); }
 
   /* ---------- 툴바 ---------- */
   function setMode(m, keepSel) {
     S.mode = m; S.zone = null; S.enter = true; hideTipNow();
-    if (!keepSel) { S.sel = null; S.cmp = []; S.match = null; closeSheet(); }
+    if (!keepSel) { S.sel = null; S.cmp = []; S.match = null; S.scene = null; closeSheet(); }
     renderIdolMap(); fitView(); syncToolbar(); renderSideEmpty();
     $('notice').hidden = m !== 'ALL';
     setUrl();
@@ -632,6 +613,7 @@
       + '<div class="lgb"><span class="lgt">크기</span><span class="lgsz"><i style="width:9px;height:9px"></i><i style="width:13px;height:13px"></i><i style="width:18px;height:18px"></i></span><span>전체 체급</span></div>'
       + '<div class="lgb"><span class="lgt">빛</span><span class="lgglow"><i class="g0"></i><i class="g1"></i><i class="g3"></i></span><span>현재기세</span></div>'
       + (S.mode === 'ALL' ? '<div class="lgb"><span class="lgt">모양</span><span>● 한국 · ◆ 일본</span></div>' : '')
+      + (S.scene ? '<div class="lgb"><span class="lgt">SAME SCENE</span><span><b class="ringkey src"></b>선택 그룹 <b class="ringkey scene"></b>가장 비슷 <b class="ringkey expand"></b>취향 확장</span></div>' : '')
       + (S.match ? '<div class="lgb"><span class="lgt">매칭</span><span><b class="ringkey src"></b>선택 그룹 <b class="ringkey match"></b>추천 <b class="ringkey gem"></b>숨은 취향</span></div>' : '');
     $('legend').innerHTML = html;
   }
@@ -836,11 +818,12 @@
         var key = cand.filter(function (k) { return k.indexOf(S.mode) === 0; })[0] || cand[0];
         if (key) {
           if (Q.get('match') === '1') { var pp = findPoint(key); if (pp) runMatch(pp); }
+          else if (Q.get('scene') === '1') { var ps = findPoint(key); if (ps) runScene(ps); }
           else selectGroup(key);
         }
       }
       window.addEventListener('resize', debounce(function () { S.enter = false; renderIdolMap(); fitView(); }, 150));
-      window.__IDOL_MAP__ = { S: S, DATA: DATA, buildPoints: buildPoints, robustZ: robustZ, classifyMapZone: classifyMapZone };
+      window.__IDOL_MAP__ = { S: S, DATA: DATA, buildPoints: buildPoints, robustZ: R.robustZ, classifyMapZone: R.classifyMapZone };
     }).catch(function () { $('excl').textContent = '데이터를 불러오지 못했어요.'; });
   }
   function debounce(fn, ms) { var t; return function () { clearTimeout(t); t = setTimeout(fn, ms); }; }

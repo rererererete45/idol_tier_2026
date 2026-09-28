@@ -426,6 +426,8 @@
     getGroup: function (c, n) { return state.byKey[c + '|' + n]; }, percentileRank: percentileRank,
     setWeights: setWeights, getWeights: getWeights, resetWeights: resetWeights, defaultWeights: DEFAULT_WEIGHTS,
     getFavorites: getFavorites, saveFavorite: saveFavorite, isFavorite: isFavorite, clearFavorites: clearFavorites,
+    // SAME SCENE / DISCOVER 가 재사용하는 공통 유틸
+    util: { calculateNumericSimilarity: calculateNumericSimilarity, calculateStyleSimilarity: calculateStyleSimilarity, isActive: isActive, buildFavoriteTasteProfile: buildFavoriteTasteProfile, describeGroup: describeGroup },
     // 테스트/검증용
     _internals: {
       percentileRank: percentileRank, extractStyleTags: extractStyleTags, calculateStyleSimilarity: calculateStyleSimilarity,

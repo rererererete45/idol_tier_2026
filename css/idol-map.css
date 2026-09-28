@@ -138,6 +138,9 @@ h1 .w{display:inline-block;animation:blurIn .7s cubic-bezier(.2,.7,.2,1) both;an
 .mp[data-hl="match"] .ring{stroke:var(--sakura);stroke-width:3}
 .mp[data-hl="match"] .ring-g{stroke:rgba(243,114,127,.35);stroke-width:5}
 .mp[data-hl="gem"] .ring{stroke:var(--sakura);stroke-width:2.5;stroke-dasharray:3 4}
+.mp[data-hl="scene"] .ring{stroke:#ffd166;stroke-width:3}
+.mp[data-hl="scene"] .ring-g{stroke:rgba(255,209,102,.3);stroke-width:5}
+.mp[data-hl="expand"] .ring{stroke:#ffd166;stroke-width:2.5;stroke-dasharray:1 4.5;stroke-linecap:round}
 .mp[data-hl]{opacity:1}
 .cmp-line{stroke:#fff;stroke-width:1.6;stroke-dasharray:5 5;opacity:.75;animation:dash 1.2s linear infinite}
 @keyframes dash{to{stroke-dashoffset:-20}}
@@ -168,6 +171,8 @@ h1 .w{display:inline-block;animation:blurIn .7s cubic-bezier(.2,.7,.2,1) both;an
 .ringkey.src{border-color:var(--green)}
 .ringkey.match{border-color:var(--sakura)}
 .ringkey.gem{border:2px dotted var(--sakura)}
+.ringkey.scene{border-color:#ffd166}
+.ringkey.expand{border:2px dotted #ffd166}
 .notice{margin:12px 0 0;padding:12px 14px;background:var(--surf2);border-radius:12px;font-size:12px;line-height:1.7;color:var(--tx2)}
 .foot{margin-top:28px;padding-top:18px;border-top:1px solid #2a2a2a;font-size:11.5px;line-height:1.75;color:var(--tx3)}
 
@@ -232,6 +237,8 @@ body.sheet-open .side-empty{display:none}
 .mi-row b{color:var(--green)}
 .mk{width:12px;height:12px;border-radius:50%;border:2.5px solid var(--sakura);flex:none}
 .mk.gem{border:2px dotted var(--sakura)}
+.mk.scene{border-color:#ffd166}
+.mk.expand{border:2px dotted #ffd166}
 .sh-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .btn{flex:1;min-width:104px;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border-radius:9999px;border:0;font-family:var(--fs);font-size:12px;font-weight:700;letter-spacing:.04em;cursor:pointer;color:var(--tx);background:transparent;box-shadow:inset 0 0 0 1px var(--bdl);transition:background .15s,transform .12s}
 .btn:hover{background:rgba(255,255,255,.07)}

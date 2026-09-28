@@ -183,6 +183,7 @@ function detailHTML(o){
     +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
     +'<a class="btn out"'+TGT+' href="'+namuUrl(o)+'">나무위키</a></div>'
     +(noteText?'<p class="dpnote">'+esc(noteText)+'</p>':'')
+    +'<section class="scenebox" id="scenebox" data-n="'+esc(o.n)+'"></section>'
     +'<section class="matchbox" id="matchbox" data-n="'+esc(o.n)+'"><h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><p class="mnote">불러오는 중…</p></section>';
 }
 function openDetailBySlug(slug){
@@ -200,6 +201,16 @@ function openDetailBySlug(slug){
     updateFavbar();
   });
   renderMatchSection(o);
+  if(window.SameScene)SameScene.render(document.getElementById('scenebox'),{country:CFG.country,name:o.n,onOpen:sceneOpen});
+}
+// SAME SCENE 카드에서 다른 그룹 상세로: 기록을 쌓지 않고 모달 내용만 바꾼다.
+function sceneOpen(name){
+  const t=A.find(x=>x.n===name);
+  if(!t)return;
+  history.replaceState({slug:t.slug,pushed:history.state&&history.state.pushed?1:0},'','#'+t.slug);
+  openDetailBySlug(t.slug);
+  let n=document.getElementById('detailPanel');
+  while(n){if(n.scrollHeight>n.clientHeight+1&&getComputedStyle(n).overflowY!=='visible'){n.scrollTop=0;break}n=n.parentElement}
 }
 function closeDetail(){
   // 카드를 눌러 우리가 push 한 기록이면 한 칸만 뒤로, 딥링크로 열었다면 기록을 건드리지 않고 닫는다.
