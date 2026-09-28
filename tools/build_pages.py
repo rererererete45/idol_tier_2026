@@ -76,7 +76,7 @@ def jp_rows(rows):
 
 
 KR = dict(
-    file="kr-idol-tier-2026-09.html",
+    file="kr-idol-tier-2026-09.html", icon="kr",
     title="2026 한국 여자아이돌 체급 점수표",
     eyebrow="2026.09.28 기준 · {n}팀",
     h1="한국 여자아이돌<br>체급 점수표",
@@ -107,7 +107,7 @@ KR = dict(
     ),
 )
 JP = dict(
-    file="jp-idol-tier-2026-09.html",
+    file="jp-idol-tier-2026-09.html", icon="jp",
     title="2026 일본 여자아이돌 체급 점수표",
     eyebrow="2026.09.28 기준 · {n}팀",
     h1="일본 여자아이돌<br>체급 점수표",
@@ -140,6 +140,15 @@ JP = dict(
 )
 
 
+def icons(k):
+    return chr(10).join([
+        '<link rel="icon" type="image/png" sizes="32x32" href="icons/%s-32.png">' % k,
+        '<link rel="icon" type="image/png" sizes="192x192" href="icons/%s-192.png">' % k,
+        '<link rel="apple-touch-icon" href="icons/%s-180.png">' % k,
+        '<meta name="theme-color" content="#121212">',
+    ])
+
+
 def dumps(o):
     return json.dumps(o, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
@@ -147,7 +156,7 @@ def dumps(o):
 def build(page, data):
     h = HEAD
     rep = {
-        "@@TITLE@@": page["title"], "@@FONTLINK@@": page["font"], "@@FSVAR@@": page["fs"],
+        "@@TITLE@@": page["title"], "@@ICONS@@": icons(page["icon"]), "@@FONTLINK@@": page["font"], "@@FSVAR@@": page["fs"],
         "@@EYEBROW@@": page["eyebrow"].format(n=len(data)), "@@H1@@": page["h1"], "@@SUB@@": page["sub"],
         "@@FORMULA@@": page["formula"], "@@NAVHREF@@": page["navhref"], "@@NAVTEXT@@": page["navtext"],
         "@@FOOTER@@": "\n  " + page["footer"] + "\n",
