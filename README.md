@@ -13,8 +13,9 @@
 | SAME SCENE | 그룹 상세 안 | 같은 나라에서 비슷한 그룹 TOP 3 + 취향 확장 |
 | IDOL MAP | `/map` (`map.html`) | 팬덤↔대중 / 디지털↔라이브 두 축의 시장 포지셔닝 지도 |
 | DISCOVER | 상단 🎲 버튼 | 랜덤·내 취향·숨은 보석·취향 확장·HOT·자동·오늘의 아이돌, 컬렉션, 월간 리포트, 공유 카드 |
-| 월별 순위 변동 | 점수표 카드·그룹 상세 하단 | 전월 대비 ▲▼–/NEW 배지, 순위·점수 시계열 차트(3·6·12개월·전체), 최고/최저 순위, 같은 국가 그룹 순위 추이 비교 |
-| 상단 내비게이션 | 모든 페이지 | 홈·한국·일본·지도·검색·최애·이전 화면 (사이트 안 이동은 브라우저 기록을 쌓지 않음) |
+| 월별 순위 변동 | 점수표 카드·그룹 상세 하단 | 전월 대비 ▲▼–/NEW 배지, 순위·점수 시계열 차트(3·6·12개월·전체), 최고/최저 순위, 같은 국가 그룹 순위 추이 비교, **왜 움직였나(평가항목상 주요 변화)**·최근 3개월·최고 점수·연속 상승 |
+| **HISTORY** | `/history` (`history.html`) | **TIME MACHINE**(그 달의 순위를 당시 snapshot 그대로) · **MOVERS**(두 달 사이 변화·평가항목 변화·EDITOR'S WATCH) · **RECORD BOOK**(누적 기록 자동 집계) · **MAP REPLAY**(월별 시장 포지션 이동 재생·궤적). 선택 상태는 주소에 저장돼 공유·새로고침·뒤로가기가 됩니다 |
+| 상단 내비게이션 | 모든 페이지 | 홈·한국·일본·지도·HISTORY·검색·최애·이전 화면 (사이트 안 이동은 브라우저 기록을 쌓지 않음) |
 
 ## 파일 구조
 
@@ -22,6 +23,7 @@
 index.html                     홈 (/)
 kr.html, jp.html               점수표 (/kr, /jp — tools/build_pages.py 가 생성)
 map.html                       IDOL MAP (/map)
+history.html                   HISTORY (/history) — 월별 아카이브·변화·기록·지도 재생
 kr-idol-tier-2026-09.html 등    예전 주소 → 새 주소 리다이렉트(쿼리·해시 유지)
 404.html, manifest.webmanifest
 
@@ -30,15 +32,19 @@ js/
   idol-match.js                데이터 로드, percentile 정규화, 스타일 태그, IDOL MATCH, 최애 저장
   idol-recommendation-core.js  IDOL MAP 논리 좌표 + SAME SCENE + DISCOVER 공통 엔진 (window.IdolRec)
   same-scene.js                SAME SCENE 카드 UI
-  rank-history.js              월별 순위 변동·시계열 (window.RankHistory)
+  rank-history.js              월별 snapshot 로딩·캐시·순위 변동·시계열 (window.RankHistory)
+  history-analytics.js         변동·기록·MOVERS·EDITOR'S WATCH 순수 계산 + 무결성 검사 (window.HistoryAnalytics, UI 없음)
+  history-explorer.js          HISTORY 화면(상태·URL·TIME MACHINE·MOVERS·RECORD BOOK)
+  map-replay.js                MAP REPLAY (월별 지도 재생, 궤적)
   discover.js                  DISCOVER 모달 UI
   idol-map.js                  IDOL MAP 렌더링
-css/idol-map.css
-data/history/                  월별 순위 snapshot (index.json, kr/YYYY-MM.json, jp/YYYY-MM.json)
+css/idol-map.css, css/history.css
+data/history/                  월별 순위 snapshot (index.json, kr/YYYY-MM.json, jp/YYYY-MM.json) + breaks.json(구간 경계)
+data/style_tags_review.csv     styleTags·활동형태 검수용 표 (자동 추출 결과 + 검수 사유)
 data/                          kr_db.json, jp_db.json (+ file:// 폴백용 *_db.js), namu_images.json
 img/                           그룹 프로필 썸네일 (KR-###.webp / JP-###.webp)
 icons/                         파비콘·홈 화면 아이콘
-tools/                         페이지 빌더, 이미지 수집 스크립트, 엔진 테스트(tests.html)
+tools/                         페이지 빌더, 월간 파이프라인(monthly_update.py), 무결성 검사(validate_history.py), 엑셀 가져오기, 엔진 테스트(tests.html · history-tests.html)
 *_SPEC.md                      IDOL MATCH / IDOL MAP / SAME SCENE·DISCOVER 설계서
 ```
 
@@ -56,30 +62,50 @@ tools/                         페이지 빌더, 이미지 수집 스크립트, 
 
 ## 다음 달 순위 데이터 추가 (월간 업데이트)
 
-기존 달의 snapshot은 덮어쓰지 않고 새 달을 **추가**합니다. 순위(`rank`)는 DB의 `순위` 값을 그대로 저장하므로 동점 순위도 유지됩니다.
+**9월 = 기준점, 10월부터 변화**가 쌓입니다. 기존 달의 snapshot은 덮어쓰지 않고 새 달을 **추가**하며, 순위(`rank`)는 DB의 `순위` 값을 그대로 저장하므로 동점 순위도 유지됩니다. 과거 snapshot은 **당시 알고리즘 결과 그대로** 보존하고 새 공식으로 다시 계산하지 않습니다(“진짜 변한 것인지 알고리즘 때문인지”를 구분하기 위해).
 
-1. 새 평가 결과로 `data/kr_db.json`, `data/jp_db.json`을 갱신합니다.
-2. 이번 달 snapshot을 만들고 `data/history/index.json`에 달을 추가합니다.
+`data/kr_db.json`, `data/jp_db.json`을 새 평가 결과로 갱신한 뒤, 매달 이 한 줄을 실행합니다.
 
-   ```bash
-   python tools/build_history.py 2026-10 data/kr_db.json data/jp_db.json --published 2026-10-28
-   ```
+```bash
+python tools/monthly_update.py 2026-10 --published 2026-10-28 --expect-kr 86 --expect-jp 126 --bump
+```
 
-3. 페이지를 다시 빌드합니다 (`python tools/build_pages.py data/kr_db.json data/jp_db.json`). 카드의 ▲▼NEW는 페이지가 열릴 때 마지막 두 달 snapshot으로 자동 계산됩니다.
-4. 과거 달의 값을 정정할 때는 `--correct "사유"`를 붙입니다. `revision`이 올라가고 `corrected_at`/`correction_note`가 기록됩니다.
+| 순서 | 하는 일 |
+|---|---|
+| 1 | DB 확인 (팀 수 · id 중복) — 기대 팀 수와 다르면 중단 |
+| 2 | 이번 달 snapshot 을 **메모리에서** 만들어 무결성 검사 — 오류가 있으면 파일을 쓰기 전에 중단 |
+| 3 | `data/history/{kr,jp}/2026-10.json` 생성 + `index.json` 등록 (`algorithm_version` · `map_version` 자동 기록) |
+| 4 | 전월과 비교한 요약 출력: 순위 상승/하락 · 티어 상승 · 신규 진입 · 시장 내 위치 지수 이동 + **구간 경계 후보 점검** |
+| 5 | 전체 history 무결성 검사 (`tools/validate_history.py`) |
+| 6 | (`--bump`) 캐시 버전 `?v=` 올리기 |
+| 7 | `kr.html` / `jp.html` 다시 빌드 |
 
-- **월말 평가 엑셀에서 여러 달을 한 번에** 넣을 수도 있습니다 (시트 이름이 `YYYY-MM`인 월별 점수표). 그룹 이름 매칭·지표 합계=총점을 먼저 검증하고, 이미 있는 달은 건너뜁니다. `--dry-run`으로 검증만 할 수 있습니다.
+먼저 `--dry-run`으로 쓰지 않고 검증·요약만 볼 수 있습니다. 끝나면 `tools/history-tests.html`, `tools/tests.html`이 전부 통과하는지 확인하고 커밋합니다.
 
-  ```bash
-  python tools/import_monthly_xlsx.py 한국_여자아이돌_월말평가_2025-01_12.xlsx 일본_여자아이돌_월말평가_2025-01_12.xlsx
-  ```
+새 snapshot이 `index.json`에 등록되면 **코드 수정 없이** 카드의 ▲▼NEW, HOT, 그룹 상세의 “왜 움직였나”, HISTORY(TIME MACHINE · MOVERS · RECORD BOOK · MAP REPLAY)에 자동 반영됩니다.
 
-  현재 이력: 2025-01 ~ 2026-09 (21개월, 후향적 평가는 각 월 말일까지 공개된 자료만 반영).
+### 구간 경계 (`data/history/breaks.json`)
+
+두 달 사이에 **다수 그룹의 점수·순위가 한꺼번에 크게 바뀐 구간**(평가 기준·자료 갱신 등)은 월간 변화로 읽으면 오해가 생깁니다. 이 구간은 값을 고치지 않고 `breaks.json`에 등록해 두면 RECORD BOOK의 단월 기록(최대 점수 하락 등)에서 제외되고, MOVERS·상세·지도에 이유가 표시됩니다. 월간 파이프라인의 4단계가 후보를 알려 줍니다.
+현재 등록: **2025-12 → 2026-01** (KR·JP). 근거 수치는 파일의 `evidence`에 있고, 운영자 확인 후 삭제하면 다시 일반 월간 변화로 취급됩니다.
+
+### 기타 도구
+
+- 이미 있는 달에 버전 표기만 추가: `python tools/build_history.py --stamp 2026-09` (순위·점수는 그대로)
+- 이미 있는 달을 정정: `python tools/build_history.py 2026-09 data/kr_db.json data/jp_db.json --correct "사유"` — `revision`이 올라가고 `corrected_at`/`correction_note`가 기록됩니다.
+- 월말 평가 엑셀(시트 이름이 `YYYY-MM`)에서 여러 달을 한 번에: `python tools/import_monthly_xlsx.py <xlsx...>` (`--dry-run`으로 검증만). 이미 있는 달은 건너뜁니다.
+- 전체 검사: `python tools/validate_history.py` (`--strict`는 경고도 실패로 취급)
+
+현재 이력: 2025-01 ~ 2026-09 (21개월, 후향적 평가는 각 월 말일까지 공개된 자료만 반영).
+
 - 그룹 연결은 `id` 기준이라 이름이 바뀌어도 시계열이 이어집니다. 전월에 없던 id는 `NEW`, 누락된 달은 보간하지 않습니다.
 - 한국/일본 snapshot은 metric 키가 달라 파일을 분리했습니다. 두 나라 점수를 직접 비교하는 차트는 없습니다.
+- snapshot `meta`의 버전: `normalization_version`(percentile 의미 — 직접 비교 가능 여부), `algorithm_version`(이 달을 낸 알고리즘, 현재 **Algorithm v2.1**), `map_version`(지도 좌표 공식). 좌표는 저장하지 않고 `metrics`에서 같은 함수(`IdolRec.logicalPointsFromRows`)로 다시 계산합니다 — 그 달 자국 시장의 분포 기준이라 과거 지도는 현재 좌표를 재사용하지 않습니다. 과거 snapshot에 없는 버전 값은 억지로 채우지 않습니다.
 - history 로딩이 실패해도 랭킹·검색·필터·상세·비교는 그대로 동작하고 history 영역만 숨겨집니다.
 
-## 추천 알고리즘 V2 (IDOL_ALGORITHM_V2_SPEC.md)
+## 추천 알고리즘 V2 · Algorithm v2.1 (IDOL_ALGORITHM_V2_SPEC.md)
+
+> **Algorithm v2.1** = V2 알고리즘 그대로 + snapshot 버전 기록(`algorithm_version`/`map_version`) + HISTORY 지원 + 월간 파이프라인 고정. 점수 공식은 V2와 같습니다. `IDOL_MATCH_SPEC.md` 맨 앞의 표가 실제 구현 값입니다.
 
 - **결측은 50점이 아니다**: 데이터가 없는 항목(스타일 태그, 활동형태, 지표)은 계산에서 빼고 남은 가중치를 다시 정규화합니다. 사용 가능한 가중치 비율이 `coverage`이고, coverage < 0.55인 후보는 TOP 추천에서 제외, 0.55~0.70은 "데이터 제한" 배지를 붙입니다.
 - **유사도와 신뢰도 분리**: 화면에는 `MATCH 91`(상대 유사도 점수, 확률 아님)과 `신뢰도 높음/보통/낮음`을 따로 보여줍니다. 정렬만 `점수 × (0.85 + 0.15 × 신뢰도)`로 약하게 보정합니다. 신뢰도 = coverage × √(두 그룹 데이터신뢰도), 데이터신뢰도 = 완성도 × 검증상태(공식 1.0 / 1차 검증완료 0.95 / 부분검증 0.8 / 추가검증필요 0.6 / 확인필요 0.4).
@@ -95,7 +121,8 @@ tools/                         페이지 빌더, 이미지 수집 스크립트, 
 ### 디버그 · 재현
 
 - `?debugMatch=1`(MATCH·SAME SCENE 구성요소/가중치/결측/coverage/confidence/다양성 감점), `?debugDiscover=1`(발견 사유·노출 페널티·후보 수), `?debugMap=1`(스케일 방식·logical/screen 좌표), `?seed=1234`(DISCOVER 재현).
-- 스타일 태그는 DB에 `styleTags` 배열을 넣으면 그것을 우선 사용하고, 없으면 `스타일` 문자열 파싱으로 대체합니다. 브라우저 콘솔의 `IdolMatch.exportStyleTags()`로 현재 태그를 JSON으로 뽑아 DB에 저장할 수 있습니다.
+- 스타일 태그는 DB에 `styleTags` 배열을 넣으면 그것을 우선 사용하고, 없으면 `스타일` 문자열 파싱으로 대체합니다. 브라우저 콘솔의 `IdolMatch.exportStyleTags()`로 현재 태그를 JSON으로 뽑아 DB에 저장할 수 있고, 212팀 전체의 자동 추출 결과와 검수가 필요한 그룹(태그 1개 이하 · 스타일 일부 미반영 · 소개글로 보충)은 `data/style_tags_review.csv`에 정리돼 있습니다.
+- `?debugHistory=1`(HISTORY: snapshot 무결성 검사 결과, 순위 방향과 위치 지수 부호 불일치 수, 평가항목 합 불일치 수를 콘솔·화면에 표시).
 - 한국 DB에는 활동형태 필드가 없어 `unknown`으로 처리합니다(가정하지 않음). `활동형태` 필드를 추가하면 자동으로 반영됩니다.
 
 ## 로컬 실행 · 테스트
@@ -108,6 +135,7 @@ python tools/serve.py 8770
 
 - 사이트: http://localhost:8770/
 - 엔진 자체 테스트: http://localhost:8770/tools/tests.html (SAME SCENE·DISCOVER·지도 좌표 불변식 검사, 전부 통과해야 함)
+- HISTORY 엔진 테스트: http://localhost:8770/tools/history-tests.html (변동·기록·MOVERS·EDITOR'S WATCH·구간 경계·과거 지도 좌표·실제 21개월 데이터 무결성, 전부 통과해야 함. 특히 2026-09 snapshot 으로 계산한 좌표 = 현재 IDOL MAP 좌표를 검증)
 
 ## localStorage 키
 
@@ -118,6 +146,7 @@ python tools/serve.py 8770
 | `idolTierDiscoveryHistory` | 발견 기록 50개 (컬렉션·월간 리포트) |
 | `idolMatchIncludeEnded` | MATCH 결과에 활동종료 그룹 포함 여부 |
 | `idolNavStack` (sessionStorage) | 상단 바 "이전 화면" 목록 |
+| `idolHistoryCountry` | HISTORY 에서 마지막으로 본 국가(주소에 국가가 없을 때만 사용) |
 
 ## 설계 원칙
 

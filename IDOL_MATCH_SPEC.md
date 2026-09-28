@@ -1,4 +1,42 @@
 # IDOL MATCH 🇰🇷↔🇯🇵
+
+> ## ⚠ 현재 구현 기준 (Algorithm v2.1 · 2026-09-28 동기화)
+>
+> 이 문서는 **최초 설계서(V1)** 예요. 실제 코드(`js/idol-match.js`, `js/idol-recommendation-core.js`)는 [IDOL_ALGORITHM_V2_SPEC.md](IDOL_ALGORITHM_V2_SPEC.md)로 개정되었고,
+> 아래 표가 **지금 동작하는 값**입니다. 본문 예시 코드나 수치가 표와 다르면 **표가 우선**합니다. (본문은 설계 의도와 배경으로 남겨 두었어요.)
+>
+> | 항목 | 최초 설계 (본문) | 현재 구현 (v2.1) | 코드 위치 |
+> |---|---|---|---|
+> | 최종 가중치 | style .40 · live .15 · fandom .12 · popularity .12 · digital .10 · momentum .06 · activity .05 | style **.45** · live .13 · fandom .12 · popularity **.10** · digital .10 · momentum **.05** · activity .05 (합 1.0) | `DEFAULT_WEIGHTS` |
+> | 결측값 | 없음(암묵적 50 취급 가능) | 결측 dimension 은 **제외하고 남은 weight 를 재정규화**. 50 으로 채우지 않음. `coverage`(관측 비율)·`confidence`(완성도×검증상태 가중치)를 함께 계산 | `scoreMatch` |
+> | 점수 표기 | "N% 매칭" | **점수(0~100)** 로만 표기. 확률·일치율이 아니라는 툴팁 포함 | `page.script.js` MATCH UI |
+> | 정렬 | matchScore 내림차순 | `rankingScore = raw × (0.85 + 0.15 × confidence)` → 신뢰도 → 스타일 → id 순의 **결정적 tie-break** | `compareResults` |
+> | 추천 최소 품질 | 없음(TOP N 을 항상 채움) | score ≥ 58 · style ≥ 40 · coverage ≥ 0.55. 미달이면 완화 기준(50 / 30)으로 한 번 더 찾고 `notice` 를 붙임. 그래도 없으면 **빈 결과 + 안내**(억지로 채우지 않음). `coverage < 0.70` 또는 `confidence < 0.6` 이면 "데이터 제한" 표시 | `QUALITY` |
+> | 스타일 유사도 | 태그 겹침 + 관련 관계표 | **3단계**: 동일 태그 1.0 / 같은 스타일 카테고리 0.72 / 관련 태그 관계표. 흔한 태그는 IDF 로 가중치를 낮춤. 태그는 캐노니컬 형태로 정규화 | `calculateStyleSimilarity` |
+> | 다양성 | 없음 | 상위 후보 pool 12 에서 재정렬: 같은 계열 −2.5, 거의 같은 스타일 −2 | `RERANK`, `diversify` |
+> | 활동종료 필터 | `활동종료`·`해산` 포함 시 제외 | `활동종료` 와 **`해산예정`이 아닌** `해산` 제외. `해산예정`은 유지 | `isActive` |
+> | 숨은 취향 | style ≥ 70, score ≥ 65, `+ (75 − popularity) × 0.20` | style ≥ 60, score ≥ 62, popularity ≤ 65, `gemScore = score + max(0, 70 − popularity) × 0.35` | `GEM` |
+> | 최애 저장 | 그룹 이름 | `{country, id, slug}` **id 기반**. 예전 이름 저장은 한 번만 자동 마이그레이션 | `migrateFavorites` |
+> | 최애 기반 추천 | 평균 벡터·태그 빈도 | 그룹별 점수를 `best × 0.55 + top2 평균 × 0.45` 로 합산, 최애 5팀 이상이면 2개 취향 클러스터로 나눔 | `clusterFavorites`, `profileMatch` |
+> | 활동형태 | KR 은 일괄 `메이저` | 아래 **활동형태 확정 규칙** | `calculateActivityTypeSimilarity` |
+> | 오늘의 아이돌 / DISCOVER 전체 | (없음) | 범위 "전체"는 팀 수(KR 86 · JP 126)와 무관하게 **국가를 먼저 50:50** 으로 고른 뒤 그 안에서 그룹을 고름 | `IdolRec.pickDiscovery` |
+> | 캐시 버전 | (없음) | `?v=YYYYNNNN` 한 값을 `index.html · map.html · history.html · js/* · tools/*` 에 함께 쓴다. `tools/monthly_update.py --bump` 가 한 번에 올린다 | — |
+>
+> ### 활동형태(activityType) 확정 규칙
+>
+> 1. **일본**: DB `활동형태` 값을 그대로 쓴다 — `메이저 · 라이브 · 라이브 아이돌 · 로컬 · 성우·2.5D`. `/` 로 여러 값이 있으면 가장 비슷한 쌍의 유사도를 쓴다.
+> 2. **한국**: DB 에 `활동형태` 열이 **없다**. 값을 추측해 채우지 않고 `unknown` 으로 두며, 이 dimension(가중치 5%)은 **결측으로 제외**되어 나머지 가중치가 재정규화된다. (일괄 `메이저` 가정은 근거 없는 값 입력이라 채택하지 않음.)
+> 3. DB 에 값이 채워지면 **코드 수정 없이** 바로 사용된다. 채울 때는 위 다섯 가지 값을 쓴다. (한국 그룹의 활동형태를 채우려면 `data/style_tags_review.csv` 의 `확정 활동형태` 열을 검수해 DB 에 반영)
+> 4. 유사도: 같은 값 100 · 메이저↔라이브 75 · 메이저↔라이브 아이돌 75 · 메이저↔로컬 55 · 메이저↔성우·2.5D 65 · 라이브↔로컬 75 · 라이브 아이돌↔로컬 75 · 라이브↔라이브 아이돌 95 · 그 외 조합 60. 비중이 5%라 정교함보다 안정성을 우선한다.
+>
+> ### styleTags
+>
+> DB 에는 `스타일` 열(예: `보컬/힙합/퍼포먼스`)이 있고, `styleTags` 는 여기서 **런타임에 추출**한다(태그가 3개 미만이면 소개글 키워드로 보조). 212팀 전체에 대한 자동 추출 결과와 검수가 필요한 그룹은 `data/style_tags_review.csv` 에 정리되어 있다. 검수 후 확정 태그를 DB 의 `styleTags` 필드로 넣으면 그 값을 우선 쓴다(`IdolMatch.exportStyleTags()` 로 현재 추출 결과 내보내기).
+>
+> 관련 문서: [IDOL_ALGORITHM_V2_SPEC.md](IDOL_ALGORITHM_V2_SPEC.md) · [SAME_SCENE_DISCOVER_SPEC.md](SAME_SCENE_DISCOVER_SPEC.md) · [IDOL_RANK_HISTORY_SPEC.md](IDOL_RANK_HISTORY_SPEC.md) · [IDOL_HISTORY_SUITE_V3_SPEC.md](IDOL_HISTORY_SUITE_V3_SPEC.md)
+
+---
+
 ## 한국 ↔ 일본 여자아이돌 취향 매칭 기능 설계서
 
 **버전:** 1.0  

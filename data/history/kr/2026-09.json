@@ -6,7 +6,10 @@
     "revision": 1,
     "population_count": 86,
     "normalization_version": "v2",
-    "percentile_scope": "same-country, same-period relative position"
+    "percentile_scope": "same-country, same-period relative position",
+    "algorithm_version": "v2.1",
+    "map_version": "v1",
+    "versions_stamped_at": "2026-09-28"
   },
   "groups": [
     {

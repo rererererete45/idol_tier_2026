@@ -4,6 +4,9 @@
   # 새 달 추가: data/history/kr/<period>.json, jp/<period>.json 생성 + index.json 갱신
   python tools/build_history.py 2026-10 data/kr_db.json data/jp_db.json --published 2026-10-28
 
+  # 이미 있는 달에 버전 표기만 추가 (algorithm_version / map_version, 순위·점수는 그대로)
+  python tools/build_history.py --stamp 2026-09
+
   # 이미 있는 달 정정: revision 을 올리고 corrected_at / correction_note 를 남긴다 (과거 snapshot 은 덮어쓰기 전에 revision 으로만 구분)
   python tools/build_history.py 2026-09 data/kr_db.json data/jp_db.json --correct "동점 순위 입력 오류 수정"
 
@@ -21,6 +24,14 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HIST = os.path.join(ROOT, "data", "history")
+
+# snapshot 메타에 남기는 버전. 알고리즘/정규화/지도 공식이 바뀌면 여기 값을 올리고, 과거 snapshot 은 고치지 않는다.
+#  - normalization_version: percentile 등 정규화의 의미가 같은가 (직접 비교 가능 여부)
+#  - algorithm_version:     이 달의 점수/순위를 낸 사이트 알고리즘 버전 (Algorithm v2.1 = V2 + snapshot 버전 기록·HISTORY 지원)
+#  - map_version:           IDOL MAP 좌표 공식 버전 (좌표는 저장하지 않고 metrics 에서 같은 함수로 다시 계산한다)
+NORMALIZATION_VERSION = "v2"
+ALGORITHM_VERSION = "v2.1"
+MAP_VERSION = "v1"
 
 # DB 컬럼 -> snapshot metric 키 (한국/일본은 통합하지 않는다)
 KR_METRICS = [("국내음원", "domestic_digital"), ("음반·팬덤", "album_fandom"), ("공연", "performance"),
@@ -67,7 +78,8 @@ def build_snapshot(rows, country, period, published, revision=1, extra_meta=None
         raise SystemExit("%s: 중복 id 가 있습니다" % country)
     # percentile 은 '해당 월, 자국 시장 안에서의 상대 위치'다. 팀 수(population)와 정규화 버전을 함께 기록한다.
     meta = {"country": country, "period": period, "published_at": published, "revision": revision,
-            "population_count": len(groups), "normalization_version": "v2", "percentile_scope": "same-country, same-period relative position"}
+            "population_count": len(groups), "normalization_version": NORMALIZATION_VERSION, "algorithm_version": ALGORITHM_VERSION, "map_version": MAP_VERSION,
+            "percentile_scope": "same-country, same-period relative position"}
     meta.update(extra_meta or {})
     return {"meta": meta, "groups": groups}
 
@@ -88,7 +100,26 @@ def update_index(country, period):
     write_json(p, idx)
 
 
+def stamp_versions(period):
+    """이미 있는 달의 meta 에 algorithm_version / map_version 이 비어 있으면 채운다. groups(순위·점수·metrics)는 그대로 둔다."""
+    for country in ("kr", "jp"):
+        path = os.path.join(HIST, country, period + ".json")
+        if not os.path.exists(path):
+            sys.exit("%s 가 없습니다" % path)
+        snap = json.load(open(path, encoding="utf-8"))
+        meta, changed = snap["meta"], False
+        for k, v in (("algorithm_version", ALGORITHM_VERSION), ("map_version", MAP_VERSION)):
+            if k not in meta:
+                meta[k], changed = v, True
+        if changed:
+            meta["versions_stamped_at"] = datetime.date.today().isoformat()
+            write_json(path, snap)
+        print("%s %s: algorithm_version=%s map_version=%s%s" % (country.upper(), period, meta.get("algorithm_version"), meta.get("map_version"), " (표기됨)" if changed else " (이미 있음)"))
+
+
 def main():
+    if len(sys.argv) >= 3 and sys.argv[1] == "--stamp":
+        return stamp_versions(sys.argv[2])
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("period", help="YYYY-MM")
     ap.add_argument("kr_db")

@@ -86,9 +86,12 @@
   var logicalCache = {};
   // logicalX/logicalY: 0~100 (오른쪽=대중, 위=라이브). baseX/baseY 는 같은 위치의 지도 화면 %(y 아래로 증가).
   // screenX/screenY(지터·충돌 보정 후)는 idol-map.js 에서만 만들고 추천·시계열 계산에는 쓰지 않는다.
-  function logicalPoints(country) {
-    if (logicalCache[country]) return logicalCache[country];
-    var rows = IM.getRaw(country), cfg = MAP_KEYS[country], need = [];
+  function logicalPoints(country) { return logicalPointsFromRows(country, IM.getRaw(country), 'current:' + country); }
+  // 좌표 계산의 유일한 구현. 현재 DB 뿐 아니라 과거 월 snapshot(HistoryAnalytics.snapshotToMapRows)도 같은 함수로 계산해
+  // '그 달 자국 시장의 분포' 기준 좌표를 얻는다. cacheKey 가 없으면 캐시하지 않는다.
+  function logicalPointsFromRows(country, rows, cacheKey) {
+    if (cacheKey && logicalCache[cacheKey]) return logicalCache[cacheKey];
+    var cfg = MAP_KEYS[country], need = [];
     ['pub', 'fan', 'live', 'dig'].forEach(function (k) { cfg[k].forEach(function (p) { if (need.indexOf(p[0]) === -1) need.push(p[0]); }); });
     need.push(cfg.mom, '총점');
     var valid = rows.filter(function (r) { return need.every(function (k) { return U.toFiniteNumber(r[k]) !== null; }); });
@@ -110,8 +113,9 @@
       p.baseX = s.x; p.baseY = s.y; p.logicalX = s.x; p.logicalY = 100 - s.y; p.mapX = p.logicalX; p.mapY = p.logicalY;
       p.zone = classifyMapZone(s.x, s.y);
     });
-    logicalCache[country] = { points: pts, excluded: rows.length - valid.length, population: valid.length };
-    return logicalCache[country];
+    var out = { points: pts, excluded: rows.length - valid.length, population: valid.length };
+    if (cacheKey) logicalCache[cacheKey] = out;
+    return out;
   }
 
   /* ---------- 엔티티(그룹/최애 프로필 공통 입력 벡터) ---------- */
@@ -584,7 +588,7 @@
   global.IdolRec = {
     MODE_BADGE: MODE_BADGE,
     // 지도 논리 좌표 (idol-map.js 공유)
-    logicalPoints: logicalPoints, median: median, mad: mad, iqr: iqr, std: std, robustZ: robustZ, robustScale: robustScale, robustScaleInfo: robustScaleInfo, toScreenPosition: toScreenPosition,
+    logicalPoints: logicalPoints, logicalPointsFromRows: logicalPointsFromRows, median: median, mad: mad, iqr: iqr, std: std, robustZ: robustZ, robustScale: robustScale, robustScaleInfo: robustScaleInfo, toScreenPosition: toScreenPosition,
     classifyMapZone: classifyMapZone, CENTER_TOLERANCE: CENTER_TOLERANCE, MAP_KEYS: MAP_KEYS,
     // SAME SCENE
     entityOf: entityOf, entitiesOf: entitiesOf, mapSimilarity: mapSimilarity, numericSimilarity: numericSimilarity, profileSimilarity: profileSimilarity,

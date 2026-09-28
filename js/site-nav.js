@@ -4,15 +4,15 @@
  * - REPLACE_NAV=false 로 바꾸면 예전처럼 브라우저 기록에 쌓인다. */
 (function () {
   'use strict';
-  var SITE_V = '20260943', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
+  var SITE_V = '20260944', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
   var script = document.currentScript, base = '';
   if (script && script.src) base = script.src.replace(/js\/site-nav\.js.*$/, '');
 
-  var PAGES = { home: '', kr: 'kr', jp: 'jp', map: 'map' };
+  var PAGES = { home: '', kr: 'kr', jp: 'jp', map: 'map', history: 'history' };
   // 주소는 /kr, /jp, /map (확장자 없음). 예전 .html 주소로 들어와도 같은 페이지로 인식하고 주소창을 정리한다.
   function pageKey(path) {
     var seg = String(path).replace(/\/+$/, '').split('/').pop().replace(/\.html$/, '');
-    return seg === 'map' || seg === 'idol-map' ? 'map' : seg === 'kr' ? 'kr' : seg === 'jp' ? 'jp' : 'home';
+    return seg === 'map' || seg === 'idol-map' ? 'map' : seg === 'history' ? 'history' : seg === 'kr' ? 'kr' : seg === 'jp' ? 'jp' : 'home';
   }
   (function cleanUrl() {
     try {
@@ -21,7 +21,7 @@
       history.replaceState(history.state, '', p + location.search + location.hash);
     } catch (e) { /* noop */ }
   })();
-  var NAMES = { home: '홈', kr: '한국', jp: '일본', map: 'IDOL MAP' };
+  var NAMES = { home: '홈', kr: '한국', jp: '일본', map: 'IDOL MAP', history: 'HISTORY' };
   var here = pageKey(location.pathname);
 
   /* ---------- 이전 화면 스택 ---------- */
@@ -94,7 +94,7 @@
     + '.sn-fp .empty{padding:10px 4px;font-size:13px;line-height:1.7;color:#b3b3b3}'
     + '.sn-top{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:35;width:44px;height:44px;border-radius:50%;border:0;background:#252525;color:#fff;font-size:18px;cursor:pointer;box-shadow:rgba(0,0,0,.5) 0 6px 18px;opacity:0;pointer-events:none;transition:opacity .2s,transform .15s}'
     + '.sn-top.on{opacity:1;pointer-events:auto}.sn-top:hover{background:#333}.sn-top:active{transform:scale(.92)}'
-    + '@media(max-width:560px){.sn-disc .t{display:none}.sn-in{padding:0 8px;gap:2px}.sn-b{padding:0 10px;font-size:12.5px}.sn-home span{display:none}.sn-back{padding:0 10px}.sn-back span{display:none}.sn-b .sm{display:inline}.sn-b .lg{display:none}.sn-fav .t{display:none}}'
+    + '@media(max-width:560px){.sn-sp{display:none}.sn-links{flex:1;-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent);padding-right:10px}.sn-disc .t{display:none}.sn-in{padding:0 8px;gap:2px}.sn-b{padding:0 10px;font-size:12.5px}.sn-home span{display:none}.sn-back{padding:0 10px}.sn-back span{display:none}.sn-b .sm{display:inline}.sn-b .lg{display:none}.sn-fav .t{display:none}}'
     + '@media(prefers-reduced-motion:reduce){.sn-b,.sn-top{transition:none}}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -109,7 +109,7 @@
   nav.innerHTML = '<a class="sn-skip" href="#main">본문 바로가기</a><div class="sn-in">'
     + '<button class="sn-b sn-back" id="snBack" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5.4L14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg><span></span></button>'
     + link('home', HOUSE + '<span>홈</span>', 'sn-home')
-    + '<div class="sn-links">' + link('kr', '🇰🇷 한국') + link('jp', '🇯🇵 일본') + link('map', '<span class="lg">IDOL MAP</span><span class="sm">지도</span>') + '</div>'
+    + '<div class="sn-links">' + link('kr', '🇰🇷 한국') + link('jp', '🇯🇵 일본') + link('map', '<span class="lg">IDOL MAP</span><span class="sm">지도</span>') + link('history', '<span class="lg">HISTORY</span><span class="sm">기록</span>') + '</div>'
     + '<span class="sn-sp"></span>'
     + '<button class="sn-b sn-disc" id="snDisc" type="button" data-discover aria-label="DISCOVER 아이돌 발견하기">🎲<span class="t">DISCOVER</span></button>'
     + '<button class="sn-b" id="snSearch" type="button" aria-label="그룹 검색" aria-expanded="false">' + SEARCH + '</button>'
@@ -118,6 +118,12 @@
     + '<div class="sn-fp" id="snFp" role="dialog" aria-label="내 최애"></div>'
     + '<div class="sn-sr" id="snSr"><div class="sn-sr-in"><input id="snQ" type="search" placeholder="그룹 이름 검색 (한국·일본 전체)" autocomplete="off" aria-label="그룹 검색"><ul class="sn-res" id="snRes"></ul></div></div>';
   document.body.insertBefore(nav, document.body.firstChild);
+  (function revealCurrent() { // 좁은 화면에서 가려진 현재 페이지 링크를 보이게 가운데로 스크롤(글꼴이 로드된 뒤 폭이 바뀌므로 몇 번 맞춘다)
+    var box = nav.querySelector('.sn-links'), cur = box && box.querySelector('[aria-current]');
+    if (!cur) return;
+    var fit = function () { box.scrollLeft = cur.offsetLeft - box.clientWidth / 2 + cur.clientWidth / 2; };
+    fit(); window.addEventListener('load', fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  })();
   document.addEventListener('DOMContentLoaded', function () { var w = document.querySelector('.wrap'); if (w && !w.id) { w.id = 'main'; w.setAttribute('tabindex', '-1'); } });
   window.__toast = function (msg) {
     var t = document.createElement('div'); t.className = 'sn-toast'; t.setAttribute('role', 'status'); t.textContent = msg; document.body.appendChild(t);
@@ -190,10 +196,10 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260943'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260943'); });
-      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260943'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260943'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260944'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260944'); });
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260944'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260944'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });

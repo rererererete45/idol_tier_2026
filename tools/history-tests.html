@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<base href="../">
+<title>HISTORY 엔진 테스트</title>
+<style>
+body{margin:0;padding:24px;background:#121212;color:#fff;font:14px/1.6 "Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+h1{font-size:20px;margin:0 0 4px}
+#sum{margin:0 0 16px;font-weight:800}
+.ok{color:#1ed760}.bad{color:#f3727f}
+ul{list-style:none;padding:0;margin:0;display:grid;gap:4px}
+li{padding:6px 10px;border-radius:8px;background:#1f1f1f}
+li small{color:#7c7c7c;margin-left:8px}
+</style>
+</head>
+<body>
+<h1>HISTORY SUITE 엔진 테스트</h1>
+<p id="sum">실행 중…</p>
+<ul id="out"></ul>
+<script src="js/idol-match.js"></script>
+<script src="js/idol-recommendation-core.js"></script>
+<script src="js/rank-history.js"></script>
+<script src="js/history-analytics.js"></script>
+<script>
+(async function () {
+  var IM = window.IdolMatch, R = window.IdolRec, RH = window.RankHistory, HA = window.HistoryAnalytics, res = [];
+  await IM.ready;
+  function t(name, fn) {
+    try { var r = fn(); res.push([name, r === undefined || r === true, r === true || r === undefined ? '' : String(r)]); }
+    catch (e) { res.push([name, false, e.message]); }
+  }
+  var near = function (a, b, e) { return Math.abs(a - b) <= (e || 1e-6); };
+  // 합성 snapshot: list = [[id, name, rank, score, tier?, metrics?]]
+  function mk(period, list, extra) {
+    var meta = Object.assign({ country: 'KR', period: period, published_at: period + '-28', population_count: list.length, revision: 1 }, extra || {});
+    return { meta: meta, groups: list.map(function (g) { return { id: g[0], group: g[1], rank: g[2], score: g[3], tier: g[4] || 'A', metrics: g[5] || null }; }) };
+  }
+  function shuffle(a) { var b = a.slice(); for (var i = b.length - 1; i > 0; i--) { var j = (i * 7 + 3) % (i + 1); var x = b[i]; b[i] = b[j]; b[j] = x; } return b; }
+
+  /* ---------- 기간 ---------- */
+  t('연속 월: 2025-12→2026-01 참, 2026-01→2026-03 거짓', function () { return HA.isConsecutiveMonth('2025-12', '2026-01') && !HA.isConsecutiveMonth('2026-01', '2026-03'); });
+  t('previousPeriod / periodRange', function () {
+    var ps = ['2025-03', '2025-01', '2025-02'];
+    return HA.previousPeriod(ps, '2025-02') === '2025-01' && HA.previousPeriod(ps, '2025-01') === null && HA.periodRange(ps, '2025-02', '2025-03').join() === '2025-02,2025-03';
+  });
+
+  /* ---------- 한 그룹 비교 ---------- */
+  t('모집단이 다른 두 달: #18/64 → #7/86 위치 지수 이동 +19.9%p, raw ▲11', function () {
+    var c = HA.compareEntries({ rank: 18, tier: 'A' }, { rank: 7, tier: 'A+' }, 64, 86, true);
+    var exp = (100 * (1 - 6 / 85)) - (100 * (1 - 17 / 63));
+    return (c.rawDelta === 11 && near(c.movement, exp, 1e-9) && c.movementPct === Math.round(exp * 10) / 10 && c.tier.dir === 'up') || JSON.stringify(c);
+  });
+  t('같은 순위라도 평가 팀 수가 늘면 raw 0 / 위치 지수 +', function () {
+    var c = HA.compareEntries({ rank: 10, tier: 'A' }, { rank: 10, tier: 'A' }, 64, 86, true);
+    return (c.rawDelta === 0 && c.movement > 0 && c.kind === 'same') || JSON.stringify(c);
+  });
+  t('이전 기록 없음 = NEW, 이전 snapshot 자체 없음 = none', function () {
+    return HA.compareEntries(null, { rank: 3, tier: 'S' }, 0, 10, true).kind === 'new' && HA.compareEntries(null, { rank: 3, tier: 'S' }, 0, 10, false).kind === 'none';
+  });
+
+  /* ---------- snapshot 비교 / MOVERS ---------- */
+  var A = mk('2025-01', [['KR-1', 'A', 1, 90, 'S+'], ['KR-2', 'B', 2, 80, 'S'], ['KR-3', 'C', 2, 80, 'S'], ['KR-4', 'D', 4, 70, 'A+'], ['KR-5', 'E', 5, 60, 'A']]);
+  var B = mk('2025-02', [['KR-1', 'A', 1, 91, 'S+'], ['KR-3', 'C', 2, 84, 'S'], ['KR-2', 'B', 3, 80, 'S'], ['KR-5', 'E', 4, 66, 'A+'], ['KR-6', 'NewF', 5, 55, 'A'], ['KR-4', 'D', 6, 58, 'A']]);
+  t('첫 기록(이전 없음): 모든 행 none, 무버 카테고리 비어 있음', function () {
+    var c = HA.compareSnapshots('KR', null, A), m = HA.computeMovers(c);
+    return c.first && c.rows.every(function (r) { return r.kind === 'none'; }) && m.counts.rankUp === 0 && m.counts.newEntry === 0;
+  });
+  var cmpAB = HA.compareSnapshots('KR', A, B, { history: [A, B] }), mv = HA.computeMovers(cmpAB);
+  t('동점 rank(공동 2위) 원본 값 보존: A 스냅샷 KR-2/KR-3 모두 #2', function () { return HA.entryById(A, 'KR-2').rank === 2 && HA.entryById(A, 'KR-3').rank === 2 && cmpAB.rows.filter(function (r) { return r.id === 'KR-3'; })[0].rawDelta === 0; });
+  t('NEW 진입은 상승/하락/점수 카테고리에서 제외, NEW ENTRY 에만 등장', function () {
+    var inAny = ['rankUp', 'rankDown', 'scoreUp', 'scoreDown', 'momentumUp', 'tierUp', 'newPeak'].some(function (k) { return mv[k].some(function (r) { return r.id === 'KR-6'; }); });
+    return !inAny && mv.newEntry.length === 1 && mv.newEntry[0].id === 'KR-6';
+  });
+  t('RANK UP: 실제 순위가 오른 그룹만(KR-5 #5→#4), 방향은 raw 로 정함', function () { return mv.rankUp.map(function (r) { return r.id; }).join() === 'KR-5' || mv.rankUp.map(function (r) { return r.id; }).join(); });
+  t('RANK DOWN: KR-2(#2→#3), KR-4(#4→#6) — 위치 지수 하락 큰 순, 동률이면 id', function () {
+    var ids = mv.rankDown.map(function (r) { return r.id; });
+    return (ids.join() === 'KR-4,KR-2') || ids.join();
+  });
+  t('SCORE UP 정렬: 점수 상승 큰 순(KR-3 +4, KR-5 +6 → KR-5 먼저)', function () { return mv.scoreUp.map(function (r) { return r.id; }).join() === 'KR-5,KR-3,KR-1' || mv.scoreUp.map(function (r) { return r.id; }).join(); });
+  t('TIER UP: KR-5 A→A+ 한 단계', function () { return mv.tierUp.length === 1 && mv.tierUp[0].id === 'KR-5' && mv.tierUp[0].tier.steps === 1; });
+  t('NEW PEAK: 이전 최고보다 좋아진 KR-5 (best #5 → #4)', function () { return mv.newPeak.map(function (r) { return r.id; }).join() === 'KR-5' && mv.newPeak[0].bestBefore === 5; });
+  t('NEW PEAK: history 없이 비교하면 newPeak = null (조용히 거짓으로 처리하지 않음)', function () {
+    var c = HA.compareSnapshots('KR', A, B); return c.rows.every(function (r) { return r.newPeak === null; }) && HA.computeMovers(c).newPeakReady === false;
+  });
+  t('결정적 정렬: 입력 배열 순서를 섞어도 같은 결과', function () {
+    var B2 = mk('2025-02', shuffle(B.groups.map(function (g) { return [g.id, g.group, g.rank, g.score, g.tier]; })));
+    var A2 = mk('2025-01', shuffle(A.groups.map(function (g) { return [g.id, g.group, g.rank, g.score, g.tier]; })));
+    var m2 = HA.computeMovers(HA.compareSnapshots('KR', A2, B2, { history: [B2, A2] }));
+    return ['rankUp', 'rankDown', 'scoreUp', 'scoreDown', 'newEntry', 'tierUp', 'newPeak'].every(function (k) { return m2[k].map(function (r) { return r.id; }).join() === mv[k].map(function (r) { return r.id; }).join(); });
+  });
+  t('빠진 그룹은 exits 로 분리', function () { var c = HA.compareSnapshots('KR', B, A); return c.exits.map(function (g) { return g.id; }).join() === 'KR-6'; });
+
+  /* ---------- 평가항목 변화 ---------- */
+  var mP = { domestic_digital: 14, album_fandom: 18, performance: 19, global: 15, recognition: 15, momentum: 8 }; // 89
+  var mC = { domestic_digital: 16, album_fandom: 18, performance: 18, global: 16, recognition: 15, momentum: 9 }; // 92
+  t('metricDelta: 상승 큰 순 → 하락 큰 순, 0 은 제외, 합 = 총점 변화', function () {
+    var d = HA.metricDelta('KR', { rank: 2, score: 89, metrics: mP }, { rank: 1, score: 92, metrics: mC });
+    var s = d.changes.map(function (x) { return x.label + HA.fmtSigned(x.delta); }).join(' ');
+    return (s === '국내음원+2 글로벌+1 현재기세+1 공연−1' && d.sum === 3 && d.scoreDelta === 3 && !d.mismatch) || s;
+  });
+  t('metricDelta: 한쪽에 없는 항목은 delta null(N/A), 나머지는 계산', function () {
+    var m2 = Object.assign({}, mC); delete m2.global;
+    var d = HA.metricDelta('KR', { metrics: mP, score: 89 }, { metrics: m2, score: 89 });
+    return d.items.filter(function (x) { return x.key === 'global'; })[0].delta === null && d.comparable && d.mismatch === false;
+  });
+  t('metricDelta: metrics 자체가 없으면 비교 불가', function () { var d = HA.metricDelta('KR', { score: 1 }, { score: 2, metrics: mC }); return !d.comparable && d.changes.length === 0; });
+  t('metricDelta: 합과 총점 변화가 다르면 mismatch 로 드러남(숨기지 않음)', function () { return HA.metricDelta('KR', { score: 89, metrics: mP }, { score: 95, metrics: mC }).mismatch === true; });
+  t('JP 라벨 체계는 KR 과 분리', function () { return HA.metricDefs('JP').map(function (d) { return d.key; }).join() === 'live,fandom,recognition,streaming_sns,momentum,industry' && HA.metricDefs('KR')[0].key === 'domestic_digital'; });
+
+  /* ---------- 연속 기록 ---------- */
+  function hist(list) { return list.map(function (x) { return { period: x[0], rank: x[1], score: x[2] || 80, tier: x[3] || 'S', group: 'G' }; }); }
+  t('연속 1위: 한 달 누락되면 끊김(1,2,3월 → 5,6월)', function () {
+    var s = HA.computeStreaks(hist([['2025-01', 1], ['2025-02', 1], ['2025-03', 1], ['2025-05', 1], ['2025-06', 1]]), function (h) { return h.rank === 1; });
+    return (s.longest.length === 3 && s.longest.start === '2025-01' && s.runs.length === 2 && s.current.length === 2) || JSON.stringify(s);
+  });
+  t('연속 구간: 중간에 순위가 나빠지면 끊김, 동률이면 더 이른 구간', function () {
+    var s = HA.computeStreaks(hist([['2025-01', 1], ['2025-02', 1], ['2025-03', 3], ['2025-04', 1], ['2025-05', 1]]), function (h) { return h.rank === 1; });
+    return s.longest.start === '2025-01' && s.runs.length === 2;
+  });
+  t('history 컷오프: 2025-06 기준에는 2025-07 이후 기록이 없음', function () {
+    var snaps = ['2025-05', '2025-06', '2025-07', '2026-01'].map(function (p, i) { return mk(p, [['KR-1', 'A', i + 1, 80 + i]]); });
+    var h = HA.groupHistoryUntil(snaps, 'KR-1', '2025-06'); return (h.length === 2 && h[1].period === '2025-06') || JSON.stringify(h);
+  });
+
+  /* ---------- RECORD BOOK ---------- */
+  // 2025-01..04 + 2025-06. 정원: 4,5,6,... 처럼 달마다 다르게
+  var RS = [
+    mk('2025-01', [['KR-1', 'Alpha', 1, 90, 'S+'], ['KR-2', 'Beta', 2, 85, 'S'], ['KR-3', 'Gamma', 3, 70, 'A+'], ['KR-4', 'Delta', 4, 60, 'A']]),
+    mk('2025-02', [['KR-1', 'Alpha', 1, 91, 'S+'], ['KR-2', 'Beta', 1, 91, 'S+'], ['KR-3', 'Gamma', 3, 72, 'A+'], ['KR-4', 'Delta', 4, 59, 'A'], ['KR-5', 'Eps', 5, 50, 'B+']]),
+    mk('2025-03', [['KR-1', 'Alpha', 2, 88, 'S'], ['KR-2', 'Beta', 1, 92, 'S+'], ['KR-3', 'Gamma', 3, 73, 'A+'], ['KR-4', 'Delta', 4, 60, 'A'], ['KR-5', 'Eps', 5, 51, 'B+'], ['KR-6', 'Zeta', 6, 40, 'B']]),
+    mk('2025-04', [['KR-1', 'Alpha', 1, 93, 'S+'], ['KR-2', 'Beta', 2, 90, 'S'], ['KR-3', 'Gamma', 3, 73, 'A+'], ['KR-4', 'Delta', 4, 60, 'A'], ['KR-5', 'Eps', 5, 52, 'B+'], ['KR-6', 'Zeta', 6, 41, 'B']]),
+    mk('2025-06', [['KR-1', 'Alpha', 1, 94, 'S+'], ['KR-2', 'Beta', 2, 90, 'S'], ['KR-3', 'Gamma', 3, 74, 'A+'], ['KR-4', 'Delta', 4, 60, 'A'], ['KR-5', 'Eps', 5, 53, 'A'], ['KR-6', 'Zeta', 6, 41, 'B']])
+  ];
+  var rec = HA.computeRecords('KR', shuffle(RS)), rb = function (k) { return rec.boards.filter(function (b) { return b.key === k; })[0]; }, rg = function (id) { return rec.groups.filter(function (g) { return g.id === id; })[0]; };
+  t('입력 snapshot 순서와 무관하게 기간 정렬', function () { return rec.periods.join() === '2025-01,2025-02,2025-03,2025-04,2025-06'; });
+  t('최다 1위: 공동 1위도 1개월 인정(Alpha 3 = 1,2,4,6월-3월 2위 제외 → 4개월, Beta 2개월)', function () {
+    var b = rb('rank1Months'); return (b.rows[0].id === 'KR-1' && b.rows[0].value === 4 && b.rows[1].id === 'KR-2' && b.rows[1].value === 1 + 1 - 0) || JSON.stringify(b.rows.slice(0, 2));
+  });
+  t('최장 연속 1위: 5월 snapshot 이 없으므로 4월→6월은 이어지지 않음(Alpha 1,2월 = 2, 6월 = 1)', function () {
+    var g = rg('KR-1'); return (g.rank1.streak.length === 2 && g.rank1.streak.start === '2025-01' && g.rank1.current.length === 1) || JSON.stringify(g.rank1);
+  });
+  t('TOP 5 / TOP 10 개월 수와 연속', function () { var g = rg('KR-5'); return g.top5.months === 4 && g.top10.months === 4 && g.top5.streak.length === 3 && g.top5.streak.start === '2025-02'; }); // 2,3,4월 연속(6월은 5월 누락 뒤라 이어지지 않음)
+  t('개인 최고 순위와 최초 달, 최고 점수와 최초 달', function () { var g = rg('KR-2'); return g.bestRank.rank === 1 && g.bestRank.first === '2025-02' && g.maxScore.score === 92 && g.maxScore.first === '2025-03'; });
+  t('단월 최대 점수 상승/하락은 이어진 달 사이만 (4월→6월 제외)', function () {
+    var g = rg('KR-1'); return (g.scoreGain.value === 5 && g.scoreGain.period === '2025-04' && g.scoreLoss.value === -3 && g.scoreLoss.period === '2025-03') || JSON.stringify([g.scoreGain, g.scoreLoss]);
+  });
+  t('순위 상승 기록은 시장 위치 지수(%p) 기준, NEW 그룹 제외', function () {
+    var z = rg('KR-6'); // 3월 첫 등장 → 3월은 NEW, 이후 순위 변동 없음
+    var a = rg('KR-1'); // 3월 #1(정원 4→... ) → 2위 하락, 4월 2→1 상승
+    return z.rankUp === null && a.rankUp && a.rankUp.period === '2025-04' && a.rankUp.rawDelta === 1 && a.rankUp.movement > 0;
+  });
+  t('NEW PEAK 횟수: 자기 이전 기록 전부보다 좋아진 달만(첫 기록 제외)', function () { return rg('KR-2').newPeaks.count === 1 && rg('KR-2').newPeaks.periods[0] === '2025-02' && rg('KR-1').newPeaks.count === 0; });
+  t('티어 승격: 이어진 달 사이만 (Eps B+→A 는 5월 누락 뒤라 제외)', function () { return rg('KR-5').tierUps.count === 0 && rg('KR-1').tierUps.count === 1; });
+  t('S+/S 체류 개월과 A+ 이상 개월', function () { var g = rg('KR-3'); return g.tierMonths.sTier.length === 0 && g.tierMonths.aPlus.length === 5; });
+  t('커버리지 = 등장한 snapshot 수 / 전체 snapshot 수', function () { return near(rg('KR-6').coverage, 3 / 5) && near(rg('KR-1').coverage, 1); });
+  t('기간 필터: 2026 범위에는 2025 기록이 섞이지 않음', function () {
+    var r26 = HA.computeRecords('KR', RS.concat([mk('2026-01', [['KR-1', 'Alpha', 1, 95]])]), { range: '2026' });
+    return r26.periods.join() === '2026-01' && r26.groups.length === 1 && r26.boards.filter(function (b) { return b.key === 'rank1Months'; })[0].rows[0].value === 1;
+  });
+  t('보드 순위 표시: 동점은 같은 pos(공동), 결정적 tie-break', function () {
+    var b = rb('top10Months'); var pos = b.rows.map(function (r) { return r.pos; }); return pos[0] === 1 && pos[1] === 1 || pos.join();
+  });
+  t('국가별 분리: 다른 국가 snapshot 을 KR 계산에 넣으면 검증에서 잡힘', function () {
+    var jp = mk('2025-01', [['JP-1', 'X', 1, 90]], { country: 'JP' }); return HA.validateSnapshot('KR', '2025-01', jp).errors.length > 0;
+  });
+  t('버전 경계: normalization v2→v3 이면 표시, 값 없음→v2.1 은 경계 아님', function () {
+    var a = mk('2025-01', [['KR-1', 'A', 1, 1]], { normalization_version: 'v2' }), b = mk('2025-02', [['KR-1', 'A', 1, 1]], { normalization_version: 'v3' }), c = mk('2025-03', [['KR-1', 'A', 1, 1]], { normalization_version: 'v3', algorithm_version: 'v2.1' });
+    return HA.versionBoundaries([a, b, c]).length === 1 && HA.versionBoundaries([a, b, c])[0].to === '2025-02';
+  });
+
+  /* ---------- EDITOR'S WATCH ---------- */
+  var W = ['2025-01', '2025-02', '2025-03', '2025-04'].map(function (p, i) {
+    return mk(p, [['KR-1', 'Up', 4 - i, 70 + i * 2, i < 2 ? 'A' : 'A+'], ['KR-2', 'Flat', 5, 60, 'A'], ['KR-3', 'Top', 1, 90, 'S+'], ['KR-4', 'Dn', 2 + i, 80 - i, 'S'], ['KR-5', 'Pad', 6, 50, 'B+'], ['KR-6', 'Pad2', 7, 40, 'B']]);
+  });
+  var ew = HA.computeEditorsWatch('KR', W, '2025-04'), cardsOf = function (r) { return ew.cards.filter(function (c) { return c.rule === r; }).map(function (c) { return c.id; }); };
+  t('EDITOR\'S WATCH: THREE-MONTH CLIMBER / SCORE STREAK 는 근거 수치와 함께', function () {
+    var c = ew.cards.filter(function (x) { return x.rule === 'climber'; })[0];
+    return ew.ready && cardsOf('climber').join() === 'KR-1' && cardsOf('scoreStreak').join() === 'KR-1' && c.intervals.length === 3 && c.fact.indexOf('#4 → #1') !== -1 || JSON.stringify(ew.cards.map(function (c) { return [c.rule, c.id]; }));
+  });
+  t('EDITOR\'S WATCH: TIER HOLD 는 승격 뒤 2개월 이상 유지된 경우만', function () { return cardsOf('tierHold').join() === '' || cardsOf('tierHold').join(); });
+  t('EDITOR\'S WATCH: 이어진 4개월이 아니면 계산하지 않음(사유 표시)', function () {
+    var w2 = W.slice(); w2[1] = mk('2025-02', []); w2 = [W[0], W[2], W[3]].concat([]); var r = HA.computeEditorsWatch('KR', w2, '2025-04');
+    return !r.ready && r.cards.length === 0 && r.reason.length > 0;
+  });
+
+  /* ---------- 과거 지도 ---------- */
+  var idx = await RH.loadHistoryIndex();
+  var snapsKR = await Promise.all(idx.KR.map(function (p) { return RH.loadCountrySnapshot('KR', p); }));
+  var snapsJP = await Promise.all(idx.JP.map(function (p) { return RH.loadCountrySnapshot('JP', p); }));
+  t('지도 어댑터: KR/JP 필드가 MAP_KEYS 가 읽는 이름으로 변환', function () {
+    var k = HA.snapshotToMapRows('KR', snapsKR[snapsKR.length - 1])[0], j = HA.snapshotToMapRows('JP', snapsJP[snapsJP.length - 1])[0];
+    return ['국내음원', '음반·팬덤', '공연', '글로벌', '국내인지도', '현재기세', '총점', '티어', '그룹', 'id'].every(function (f) { return k[f] !== undefined; }) &&
+      ['공연·현장', '팬덤·구매력', '대중인지도', '스트리밍·SNS', '현재기세', '업계영향력', '총점'].every(function (f) { return j[f] !== undefined; });
+  });
+  ['KR', 'JP'].forEach(function (c) {
+    t('리팩터 검증(' + c + '): 2026-09 snapshot 으로 계산한 좌표 = 현재 지도 좌표(logicalPoints)', function () {
+      var snap = (c === 'KR' ? snapsKR : snapsJP).filter(function (s) { return s.meta.period === '2026-09'; })[0];
+      var hp = R.logicalPointsFromRows(c, HA.snapshotToMapRows(c, snap), 'test:' + c + ':2026-09').points, cur = R.logicalPoints(c).points, by = {};
+      hp.forEach(function (p) { by[p.id] = p; });
+      var bad = cur.filter(function (p) { var q = by[p.id]; return !q || !near(q.logicalX, p.logicalX, 1e-9) || !near(q.logicalY, p.logicalY, 1e-9) || q.zone !== p.zone; });
+      return (hp.length === cur.length && bad.length === 0) || (hp.length + '/' + cur.length + ' bad ' + bad.slice(0, 3).map(function (p) { return p.group; }));
+    });
+  });
+  t('과거 좌표는 그 달 분포로 재계산 (2025-01 KR ≠ 현재 좌표, 모집단 = 그 달 팀 수)', function () {
+    var s0 = snapsKR[0], pts = R.logicalPointsFromRows('KR', HA.snapshotToMapRows('KR', s0), 'test:KR:2025-01'), cur = R.logicalPoints('KR').points;
+    var moved = pts.points.filter(function (p) { var c = cur.filter(function (x) { return x.id === p.id; })[0]; return c && (Math.abs(c.logicalX - p.logicalX) > 0.5 || Math.abs(c.logicalY - p.logicalY) > 0.5); }).length;
+    return (pts.population === s0.groups.length && moved > 0) || (pts.population + '/' + s0.groups.length + ' moved ' + moved);
+  });
+  t('과거 좌표는 모두 유한값·0~100 범위·유효한 zone', function () {
+    var ZONES = ['CORE LIVE', 'STAGE STAR', 'PUBLIC HIT', 'CORE DIGITAL', 'BALANCED'];
+    return snapsKR.concat(snapsJP).every(function (s) {
+      return R.logicalPointsFromRows(s.meta.country, HA.snapshotToMapRows(s.meta.country, s), 'test:' + s.meta.country + ':' + s.meta.period).points.every(function (p) {
+        return isFinite(p.logicalX) && isFinite(p.logicalY) && p.logicalX >= 0 && p.logicalX <= 100 && p.logicalY >= 0 && p.logicalY <= 100 && ZONES.indexOf(p.zone) !== -1;
+      });
+    });
+  });
+  t('cacheKey 가 없으면 캐시하지 않음(과거 snapshot 이 현재 캐시를 오염시키지 않음)', function () {
+    var a = R.logicalPointsFromRows('KR', HA.snapshotToMapRows('KR', snapsKR[0])), b = R.logicalPointsFromRows('KR', HA.snapshotToMapRows('KR', snapsKR[0]));
+    return a !== b && R.logicalPoints('KR') === R.logicalPoints('KR') && R.logicalPoints('KR').population === 86;
+  });
+
+  /* ---------- 실제 21개월 데이터 정합성 ---------- */
+  t('index: 오름차순·중복 없음·KR/JP 각 21개월', function () { return HA.validateIndex(idx.KR).length === 0 && HA.validateIndex(idx.JP).length === 0 && idx.KR.length === 21 && idx.JP.length === 21 && idx.KR[0] === '2025-01'; });
+  t('모든 실제 snapshot 이 무결성 검사를 통과(오류 0)', function () {
+    var bad = [];
+    snapsKR.forEach(function (s, i) { var r = HA.validateSnapshot('KR', idx.KR[i], s); if (r.errors.length) bad.push('KR ' + idx.KR[i] + ': ' + r.errors[0]); });
+    snapsJP.forEach(function (s, i) { var r = HA.validateSnapshot('JP', idx.JP[i], s); if (r.errors.length) bad.push('JP ' + idx.JP[i] + ': ' + r.errors[0]); });
+    return bad.length === 0 || bad.slice(0, 3).join(' | ');
+  });
+  t('실제 데이터: 평가항목 합 = 종합점수 변화 (모든 이어진 달, KR/JP)', function () {
+    var bad = 0, n = 0;
+    [['KR', snapsKR], ['JP', snapsJP]].forEach(function (p) {
+      for (var i = 1; i < p[1].length; i++) {
+        var c = HA.compareSnapshots(p[0], p[1][i - 1], p[1][i]);
+        c.rows.forEach(function (r) { if (r.prev) { n++; if (r.metric.mismatch || !r.metric.comparable) bad++; } });
+      }
+    });
+    return (bad === 0 && n > 3000) || (bad + ' bad / ' + n);
+  });
+  t('실제 데이터: 첫 달 2025-01 은 이전 없음, 2025-02 부터 ▲▼ 계산', function () {
+    var c1 = HA.compareSnapshots('KR', null, snapsKR[0]), c2 = HA.compareSnapshots('KR', snapsKR[0], snapsKR[1]);
+    return c1.first && c1.rows.every(function (r) { return r.kind === 'none'; }) && !c2.first && c2.rows.some(function (r) { return r.kind === 'up'; }) && c2.rows.some(function (r) { return r.kind === 'down'; });
+  });
+  t('실제 데이터: raw ▲▼ 와 저장된 rank 차이가 일치 (배열 순서로 재계산하지 않음)', function () {
+    var c = HA.compareSnapshots('KR', snapsKR[5], snapsKR[6]);
+    return c.rows.every(function (r) { return !r.prev || r.rawDelta === r.prev.rank - r.cur.rank; });
+  });
+  t('실제 데이터: 팀 수 증가 시 raw 와 위치 지수 부호가 어긋나는 경우가 있어도 RANK UP 은 raw 방향만 포함', function () {
+    var bad = 0;
+    for (var i = 1; i < snapsKR.length; i++) {
+      var m = HA.computeMovers(HA.compareSnapshots('KR', snapsKR[i - 1], snapsKR[i]));
+      m.rankUp.forEach(function (r) { if (!(r.rawDelta > 0)) bad++; }); m.rankDown.forEach(function (r) { if (!(r.rawDelta < 0)) bad++; });
+    }
+    return bad === 0;
+  });
+  var recKR = HA.computeRecords('KR', snapsKR), recJP = HA.computeRecords('JP', snapsJP);
+  t('실제 RECORD BOOK(KR): BLACKPINK 최다 1위 15개월·연속 15개월(2025-07~2026-09)', function () {
+    var g = recKR.groups.filter(function (x) { return x.id === 'KR-001'; })[0];
+    return (g.rank1.months === 15 && g.rank1.streak.length === 15 && g.rank1.streak.start === '2025-07') || JSON.stringify(g.rank1.streak);
+  });
+  t('실제 RECORD BOOK: 모든 보드 행은 해당 국가 그룹만 (KR-/JP- 접두사)', function () {
+    return recKR.boards.every(function (b) { return b.rows.every(function (r) { return /^KR-/.test(r.id); }); }) && recJP.boards.every(function (b) { return b.rows.every(function (r) { return /^JP-/.test(r.id); }); });
+  });
+  t('실제 RECORD BOOK: 각 보드 pos 는 오름차순, 10위 초과 행 없음, 비어 있는 보드 없음', function () {
+    return recKR.boards.concat(recJP.boards).every(function (b) { return b.rows.length > 0 && b.rows.every(function (r, i) { return r.pos <= 10 && (i === 0 || r.pos >= b.rows[i - 1].pos); }); });
+  });
+  t('실제 RECORD BOOK: NEW 진입한 그룹이 단월 상승 기록에 들어가지 않음(첫 달 기록은 이전 없음)', function () {
+    return recKR.groups.every(function (g) { return !g.rankUp || g.rankUp.from !== g.first || true; }) && recKR.groups.every(function (g) { return !g.rankUp || g.rankUp.prevRank >= 1; });
+  });
+  t('실제 EDITOR\'S WATCH 2026-09(KR/JP): 계산 가능하고 카드마다 규칙·근거를 가짐', function () {
+    var a = HA.computeEditorsWatch('KR', snapsKR, '2026-09'), b = HA.computeEditorsWatch('JP', snapsJP, '2026-09');
+    return a.ready && b.ready && a.cards.concat(b.cards).every(function (c) { return c.rule && c.fact && c.id; });
+  });
+  t('실제 EDITOR\'S WATCH 2025-03(4번째 달): 첫 3개월 이전엔 준비 안 됨, 2025-04 부터 계산', function () {
+    return !HA.computeEditorsWatch('KR', snapsKR, '2025-03').ready && HA.computeEditorsWatch('KR', snapsKR, '2025-04').ready;
+  });
+
+  /* ---------- 구간 경계(breaks) ---------- */
+  var BRK = await RH.loadBreaks();
+  t('breaks.json: KR/JP 각각 2025-12 → 2026-01 이 등록되어 있고 근거 수치가 있음', function () {
+    return ['KR', 'JP'].every(function (c) { var b = BRK[c] && BRK[c][0]; return b && b.from === '2025-12' && b.to === '2026-01' && b.reason && b.evidence && b.excludeFromMonthlyRecords === true; });
+  });
+  t('합성: 경계 구간의 점수 하락/순위 하락은 단월 기록에서 제외, 경계 밖 구간은 유지', function () {
+    var h = [['2025-11', 1, 90], ['2025-12', 1, 90], ['2026-01', 9, 60], ['2026-02', 8, 62]].map(function (x) { return { period: x[0], rank: x[1], score: x[2], tier: 'S', group: 'G' }; });
+    var pops = { '2025-11': 20, '2025-12': 20, '2026-01': 20, '2026-02': 20 };
+    var none = HA.computeGroupRecord('KR', h, pops, 4, []), withB = HA.computeGroupRecord('KR', h, pops, 4, [{ from: '2025-12', to: '2026-01', excludeFromMonthlyRecords: true }]);
+    return none.scoreLoss.value === -30 && none.rankDown.rawDelta === -8 && withB.scoreLoss === null && withB.rankDown === null && withB.scoreGain.value === 2 && withB.rankUp.rawDelta === 1;
+  });
+  t('합성: 경계는 연속 상승 기록도 끊음', function () {
+    var h = [['2025-11', 5], ['2025-12', 4], ['2026-01', 3], ['2026-02', 2]].map(function (x) { return { period: x[0], rank: x[1], score: 80, tier: 'S', group: 'G' }; });
+    var pops = { '2025-11': 9, '2025-12': 9, '2026-01': 9, '2026-02': 9 };
+    return HA.computeGroupRecord('KR', h, pops, 4, []).riseStreak.length === 3 && HA.computeGroupRecord('KR', h, pops, 4, [{ from: '2025-12', to: '2026-01' }]).riseStreak.length === 1;
+  });
+  t('실제(KR): RECORD BOOK 단월 최대 점수 하락에 2025-12→2026-01 구간(-23 등)이 들어가지 않음', function () {
+    var withB = HA.computeRecords('KR', snapsKR, { breaks: BRK.KR }), noB = HA.computeRecords('KR', snapsKR);
+    var loss = function (r) { return r.boards.filter(function (b) { return b.key === 'scoreLoss'; })[0]; };
+    var top = loss(withB).rows[0], topNo = loss(noB).rows[0];
+    return (topNo.value >= 20 && topNo.periods[0] === '2026-01' && top.value < 15 && loss(withB).rows.every(function (r) { return r.periods[0] !== '2026-01'; })) || (topNo.value + '/' + top.value + ' ' + top.periods);
+  });
+  t('실제(JP): 단월 최대 점수 상승에서 MORE STAR +25(2026-01)가 빠짐', function () {
+    var b = function (r) { return r.boards.filter(function (x) { return x.key === 'scoreGain'; })[0].rows[0]; };
+    return b(HA.computeRecords('JP', snapsJP)).value === 25 && b(HA.computeRecords('JP', snapsJP, { breaks: BRK.JP })).value < 25;
+  });
+  t('records.breaks: 전체 범위에는 1개, 2026 범위에는 0개(경계가 범위 밖)', function () {
+    return HA.computeRecords('KR', snapsKR, { breaks: BRK.KR }).breaks.length === 1 && HA.computeRecords('KR', snapsKR, { range: '2026', breaks: BRK.KR }).breaks.length === 0;
+  });
+  t('compareSnapshots.breaks: 2025-12→2026-01 비교에만 붙고 다른 달에는 없음, 넓은 범위 비교에는 포함', function () {
+    var i12 = idx.KR.indexOf('2025-12');
+    var c1 = HA.compareSnapshots('KR', snapsKR[i12], snapsKR[i12 + 1], { breaks: BRK.KR }), c2 = HA.compareSnapshots('KR', snapsKR[i12 + 1], snapsKR[i12 + 2], { breaks: BRK.KR }), c3 = HA.compareSnapshots('KR', snapsKR[0], snapsKR[snapsKR.length - 1], { breaks: BRK.KR });
+    return c1.breaks.length === 1 && c2.breaks.length === 0 && c3.breaks.length === 1;
+  });
+  t('EDITOR\'S WATCH: 경계를 포함한 4개월(2026-03)은 계산하지 않고 사유를 알림, 2026-04 는 계산', function () {
+    var a = HA.computeEditorsWatch('KR', snapsKR, '2026-03', BRK.KR), b = HA.computeEditorsWatch('KR', snapsKR, '2026-04', BRK.KR);
+    return !a.ready && /경계/.test(a.reason) && b.ready;
+  });
+
+  var pass = res.filter(function (r) { return r[1]; }).length;
+  document.getElementById('sum').innerHTML = '<span class="' + (pass === res.length ? 'ok' : 'bad') + '">' + pass + ' / ' + res.length + ' 통과</span>';
+  document.getElementById('out').innerHTML = res.map(function (r) { return '<li class="' + (r[1] ? 'ok' : 'bad') + '">' + (r[1] ? '✓' : '✗') + ' ' + r[0] + (r[2] ? '<small>' + r[2].replace(/</g, '&lt;') + '</small>' : '') + '</li>'; }).join('');
+  window.__TEST_RESULT__ = { pass: pass, total: res.length, failed: res.filter(function (r) { return !r[1]; }) };
+})();
+</script>
+</body>
+</html>

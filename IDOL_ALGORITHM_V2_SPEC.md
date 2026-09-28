@@ -1,5 +1,8 @@
 # IDOL TIER Algorithm V2 — 알고리즘 감사 및 강화 설계
 
+> **Algorithm v2.1 (2026-09-28)** — 이 문서의 V2 공식을 그대로 유지하면서 snapshot 메타에 `algorithm_version`/`map_version`을 기록하고 HISTORY(월별 아카이브·변화·기록·지도 재생)와 월간 파이프라인(`tools/monthly_update.py`)을 추가한 안정화 버전이에요. 실제 구현 값의 요약은 `IDOL_MATCH_SPEC.md` 맨 앞 표를 보세요.
+
+
 ## 1. 감사 결론
 
 현재 구조의 방향은 좋다. 특히 한국/일본 raw score 직접 비교를 피하고 자국 percentile을 사용하는 점, 스타일을 추천의 핵심으로 둔 점, 지도에서 총점을 좌표에 사용하지 않는 점은 유지한다.

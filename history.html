@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HISTORY — 아이돌 체급 변화 아카이브</title>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/kr-32.png">
+<link rel="apple-touch-icon" href="icons/kr-180.png">
+<meta name="theme-color" content="#121212">
+<meta name="description" content="2025년부터 쌓인 월별 snapshot으로 한국·일본 여자아이돌의 그 달 순위, 변화, 역대 기록, 시장 위치의 이동을 다시 봅니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HISTORY — 아이돌 체급 변화 아카이브">
+<meta property="og:description" content="월별 순위 아카이브, 변화 분석(MOVERS), 기록실(RECORD BOOK), 시장 지도 재생(MAP REPLAY).">
+<meta property="og:image" content="https://rererererete45.github.io/idol_tier_2026/icons/kr-192.png">
+<meta property="og:url" content="https://rererererete45.github.io/idol_tier_2026/history">
+<meta name="twitter:card" content="summary">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/history.css?v=20260944">
+</head>
+<body data-country="KR">
+<noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">HISTORY는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
+<script src="js/site-nav.js?v=20260944"></script>
+<div class="wrap">
+<header class="hero">
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+  <p class="eyebrow"><span class="shiny" id="hxEyebrow">HISTORY</span></p>
+  <h1>누가 몇 위인가에서<br>어떻게 움직여 왔나로</h1>
+  <p class="sub">2025년부터 쌓인 월별 snapshot으로 <b>그 달의 순위</b>와 <b>변화</b>, <b>역대 기록</b>, <b>시장 위치의 이동</b>을 다시 봐요. 순위 변동은 실력의 우열이 아니라 그 달 자국 시장 안에서의 상대적인 위치예요.</p>
+</header>
+
+<div class="hx-bar" id="hxBar">
+  <div class="hx-row">
+    <div class="seg" role="group" aria-label="시장 선택">
+      <button class="pill" type="button" data-country="KR" aria-pressed="true">🇰🇷 한국</button>
+      <button class="pill" type="button" data-country="JP" aria-pressed="false">🇯🇵 일본</button>
+    </div>
+    <div class="mnav" id="hxMnav" role="group" aria-label="월 선택">
+      <button class="ibtn" type="button" id="hxPrev" aria-label="이전 달" title="이전 달 (←)">‹</button>
+      <select class="sel" id="hxPeriod" aria-label="기준 월"></select>
+      <button class="ibtn" type="button" id="hxNext" aria-label="다음 달" title="다음 달 (→)">›</button>
+      <button class="latest" type="button" id="hxLatest" hidden>최신</button>
+    </div>
+    <div class="tabs" role="tablist" aria-label="HISTORY 보기">
+      <button class="tab" type="button" role="tab" id="tab-timeline" data-view="timeline" aria-selected="true" aria-controls="hxMain">TIME MACHINE</button>
+      <button class="tab" type="button" role="tab" id="tab-movers" data-view="movers" aria-selected="false" aria-controls="hxMain">MOVERS</button>
+      <button class="tab" type="button" role="tab" id="tab-records" data-view="records" aria-selected="false" aria-controls="hxMain">RECORD BOOK</button>
+      <button class="tab" type="button" role="tab" id="tab-map" data-view="map" aria-selected="false" aria-controls="hxMain">MAP REPLAY</button>
+    </div>
+    <button class="share" type="button" id="hxShare" aria-label="현재 화면 링크 복사">🔗<span class="t"> 링크 복사</span></button>
+  </div>
+  <div class="rail" id="hxRail" role="group" aria-label="월 타임라인"></div>
+</div>
+
+<main id="hxMain" role="tabpanel" aria-live="polite" aria-busy="true" tabindex="-1">
+  <div class="skel" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+</main>
+</div>
+
+<div class="hx-modal" id="hxModal" hidden>
+  <div class="hx-sheet" role="dialog" aria-modal="true" aria-labelledby="hxDlgTitle" id="hxSheet"></div>
+</div>
+
+<script src="js/rank-history.js?v=20260944"></script>
+<script src="js/history-analytics.js?v=20260944"></script>
+<script src="js/history-explorer.js?v=20260944"></script>
+</body>
+</html>

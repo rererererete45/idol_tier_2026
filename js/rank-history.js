@@ -6,7 +6,7 @@
  * window.RankHistory 로만 노출한다. */
 (function (global) {
   'use strict';
-  var VERSION = '20260943';
+  var VERSION = '20260944';
   var script = document.currentScript, base = script && script.src ? script.src.replace(/js\/rank-history\.js.*$/, '') : '';
   var DIR = base + 'data/history/';
 
@@ -78,6 +78,12 @@
   function loadHistoryIndex() {
     if (!indexP) indexP = getJson(DIR + 'index.json').then(function (j) { return j && typeof j === 'object' ? j : null; });
     return indexP;
+  }
+  // data/history/breaks.json — 실패하면 빈 목록(기록 계산은 경계 없이 진행)
+  var breaksP = null;
+  function loadBreaks() {
+    if (!breaksP) breaksP = getJson(DIR + 'breaks.json').then(function (j) { return j && typeof j === 'object' ? { KR: Array.isArray(j.KR) ? j.KR : [], JP: Array.isArray(j.JP) ? j.JP : [] } : { KR: [], JP: [] }; });
+    return breaksP;
   }
   function periodsOf(idx, country) {
     var l = idx && Array.isArray(idx[country]) ? idx[country].filter(function (p) { return !isNaN(monthIndex(p)); }) : [];
@@ -203,6 +209,40 @@
       + '</div>';
   }
 
+  // HistoryAnalytics 가 있으면(history-analytics.js) 최근 3개월·최고 점수·연속 상승과 '평가항목상 주요 변화'를 붙인다.
+  // 없으면 아무것도 그리지 않는다(기존 화면 그대로).
+  function renderExtra(hist, snaps, ci, prevSnap, country, id, brk) {
+    var HA = global.HistoryAnalytics; if (!HA || hist.length < 2) return '';
+    var cur = hist[hist.length - 1], back3 = null;
+    hist.forEach(function (h) { if (monthIndex(cur.period) - monthIndex(h.period) === 3) back3 = h; });
+    var d3 = back3 ? cur.rank - back3.rank : null; // 음수 = 3개월 전보다 순위가 오름
+    var t3 = back3 ? (d3 < 0 ? '<span class="rkd up">▲' + (-d3) + '</span>' : d3 > 0 ? '<span class="rkd down">▼' + d3 + '</span>' : '<span class="rkd same">–</span>') : '–';
+    var maxS = Math.max.apply(null, hist.map(function (h) { return h.score; })), maxP = hist.filter(function (h) { return h.score === maxS; })[0].period;
+    var st = HA.computeStreaks(hist, function (h, p) { return !!(p && h.rank < p.rank); }).current;
+    var h = '<div class="rh-stats rh-stats3">'
+      + '<div><small>최근 3개월</small><b>' + t3 + '</b><em>' + (back3 ? '#' + back3.rank + ' → #' + cur.rank : '3개월 전 기록 없음') + '</em></div>'
+      + '<div><small>최고 점수</small><b>' + maxS + '</b><em>' + fmtPeriod(maxP) + (maxP === cur.period ? ' · 이번 달' : '') + '</em></div>'
+      + '<div><small>연속 상승</small><b>' + (st ? st.length + '개월' : '–') + '</b><em>' + (st ? fmtPeriod(st.start) + ' ~ ' + fmtPeriod(st.end) : '이어진 상승 없음') + '</em></div></div>';
+    if (prevSnap) {
+      var pe = entryOf(prevSnap, id), ce = entryOf(snaps[ci], id);
+      if (pe && ce) {
+        var md = HA.metricDelta(country, pe, ce), cmp = HA.compareEntries(pe, ce, prevSnap.groups.length, snaps[ci].groups.length, true);
+        var chips = !md.comparable ? '<p class="rh-note" style="margin:0">비교 가능한 세부 평가항목이 없습니다.</p>'
+          : !md.changes.length ? '<p class="rh-note" style="margin:0">세부 평가항목 점수는 전월과 같아요.</p>'
+          : '<ul class="rh-wy">' + md.changes.map(function (c) { return '<li class="' + (c.delta > 0 ? 'up' : 'dn') + '">' + (c.delta > 0 ? '▲' : '▼') + ' ' + esc(c.label) + ' ' + HA.fmtSigned(c.delta) + '</li>'; }).join('') + '</ul>';
+        h += '<div class="rh-why"><h4>왜 움직였나 <small>평가항목상 주요 변화 · ' + fmtPeriod(prevSnap.meta.period) + ' → ' + fmtPeriod(curPeriodOf(snaps[ci])) + '</small></h4>'
+          + '<p class="rh-sum">종합점수 <b>' + pe.score + ' → ' + ce.score + '</b> (' + HA.fmtSigned(cmp.scoreDelta) + ') · 순위 <b>#' + pe.rank + ' → #' + ce.rank + '</b>'
+          + (cmp.movementPct !== null ? ' · 시장 내 위치 <b>' + HA.fmtSigned(cmp.movementPct, 1) + '%p</b>' : '') + '</p>' + chips
+          + (HA.isBreakInterval(brk, prevSnap.meta.period, curPeriodOf(snaps[ci])) ? '<p class="rh-note" style="color:#ffd7a0">⚠ 이 구간(' + fmtPeriod(prevSnap.meta.period) + ' → ' + fmtPeriod(curPeriodOf(snaps[ci])) + ')은 다수 그룹의 점수가 한꺼번에 크게 바뀐 구간이라 월간 변화로 읽기 어려워요. HISTORY의 안내를 참고해 주세요.</p>' : '')
+          + '<p class="rh-note">평가항목 점수의 차이일 뿐 실제 사건의 원인을 뜻하지 않아요.</p></div>';
+      }
+    }
+    h += '<div class="rh-cta"><a href="history?country=' + country + '&period=' + cur.period + '&view=timeline&group=' + encodeURIComponent(id) + '">' + fmtPeriod(cur.period) + ' 기록 보기</a>'
+      + '<a href="history?country=' + country + '&period=' + cur.period + '&view=movers">이달의 MOVERS</a></div>';
+    return h;
+  }
+  function curPeriodOf(snap) { return snap.meta.period; }
+
   var RANGES = [[3, '3개월'], [6, '6개월'], [12, '12개월'], [0, '전체']];
   function renderGroupTimeline(hist, months) {
     var h = sliceRange(hist, months);
@@ -224,6 +264,12 @@
     + '.rh-stats b{display:block;margin-top:2px;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}'
     + '.rh-stats b .up{color:#1ed760;font-size:14px}.rh-stats b .down{color:#f3727f;font-size:14px}'
     + '.rh-stats em{display:block;margin-top:2px;font-style:normal;font-size:11px;font-weight:600;color:var(--tx3,#7c7c7c)}'
+    + '.rh-stats3{grid-template-columns:repeat(3,1fr);margin-top:8px}.rh-stats3 b{font-size:17px}.rh-stats3 em{font-size:10.5px}'
+    + '.rh-why{margin-top:12px;padding:14px;border-radius:14px;background:var(--surf2,#1f1f1f)}.rh-why h4{margin:0 0 8px;font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--tx3,#7c7c7c);text-transform:uppercase}.rh-why h4 small{letter-spacing:0;text-transform:none;font-weight:600;margin-left:6px}'
+    + '.rh-sum{margin:0 0 8px;font-size:13px;line-height:1.7;color:var(--tx2,#b3b3b3)}.rh-sum b{color:#fff;font-variant-numeric:tabular-nums}'
+    + '.rh-wy{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}.rh-wy li{padding:4px 10px;border-radius:9999px;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}'
+    + '.rh-wy li.up{color:#1ed760;background:rgba(30,215,96,.12)}.rh-wy li.dn{color:#f3727f;background:rgba(243,114,127,.12)}'
+    + '.rh-cta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.rh-cta a{flex:1 1 150px;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border-radius:9999px;font-size:12.5px;font-weight:800;color:#fff;text-decoration:none;box-shadow:inset 0 0 0 1px #4d4d4d}.rh-cta a:hover{box-shadow:inset 0 0 0 1px #fff}'
     + '.rh-range{display:flex;gap:6px;margin:14px 0 0;flex-wrap:wrap}'
     + '.rh-range button{min-height:44px;padding:0 14px;border:0;border-radius:9999px;background:var(--surf2,#1f1f1f);color:var(--tx2,#b3b3b3);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer}'
     + '.rh-range button:hover{color:#fff}.rh-range button[aria-pressed="true"]{background:#1ed760;color:#000}'
@@ -247,7 +293,8 @@
     if (!box) return;
     box.classList.add('histbox');
     box.innerHTML = '<h3 class="mtitle">📈 순위 추이</h3><p class="mnote" style="margin:0">불러오는 중…</p>';
-    loadAll(opts.country).then(function (snaps) {
+    Promise.all([loadAll(opts.country), loadBreaks()]).then(function (res) {
+      var snaps = res[0], brk = res[1][opts.country] || [];
       if (!box.isConnected || box.dataset.id !== opts.id) return;
       var hist = extractGroupHistory(snaps, opts.id);
       if (!snaps.length || !hist.length) { box.innerHTML = ''; box.hidden = true; return; } // 로딩 실패/기록 없음: 섹션만 숨김
@@ -257,7 +304,7 @@
       snaps.forEach(function (s, i) { if (s.meta.period === curP) ci = i; });
       var prevSnap = ci > 0 ? snaps[ci - 1] : null;
       var title = '<h3 class="mtitle">📈 순위 추이<span class="sub2">' + fmtPeriod(hist[0].period) + (hist.length > 1 ? ' ~ ' + fmtPeriod(hist[hist.length - 1].period) : '') + '</span></h3>';
-      var stats = renderHistoryStats(hist, prevSnap, opts.id);
+      var stats = renderHistoryStats(hist, prevSnap, opts.id) + renderExtra(hist, snaps, ci, prevSnap, opts.country, opts.id, brk);
       if (snaps.length < 2 || hist.length < 2) {
         var only = snaps.length < 2
           ? '<div class="rh-first"><b>📈 ' + fmtPeriod(latest.meta.period) + ' 첫 기록</b><br>다음 월 평가부터 순위 변동이 표시됩니다.</div>'
@@ -306,7 +353,7 @@
     getRankDelta: getRankDelta, getScoreDelta: getScoreDelta, getRankPositionPercentile: getRankPositionPercentile, getBestRank: getBestRank, getWorstRank: getWorstRank,
     extractGroupHistory: extractGroupHistory, sliceRange: sliceRange, deltasFromSnapshots: deltasFromSnapshots, monthIndex: monthIndex,
     // 로딩
-    loadHistoryIndex: loadHistoryIndex, loadCountrySnapshot: loadCountrySnapshot, loadRecent: loadRecent, loadAll: loadAll, getGroupHistory: getGroupHistory, loadDeltas: loadDeltas,
+    loadHistoryIndex: loadHistoryIndex, loadBreaks: loadBreaks, loadCountrySnapshot: loadCountrySnapshot, loadRecent: loadRecent, loadAll: loadAll, getGroupHistory: getGroupHistory, loadDeltas: loadDeltas,
     // 렌더
     fmtPeriod: fmtPeriod, renderRankDeltaBadge: renderRankDeltaBadge, renderGroupTimeline: renderGroupTimeline, renderHistoryStats: renderHistoryStats,
     renderDetail: renderDetail, renderCompareTrend: renderCompareTrend, lineChart: lineChart
