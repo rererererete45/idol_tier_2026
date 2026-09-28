@@ -60,6 +60,10 @@
     '메이저|라이브': 75, '메이저|라이브 아이돌': 75, '메이저|로컬': 55, '메이저|성우·2.5D': 65,
     '라이브|로컬': 75, '라이브 아이돌|로컬': 75, '라이브|라이브 아이돌': 95
   };
+  var DEFAULT_WEIGHTS = { style: 0.40, live: 0.15, fandom: 0.12, popularity: 0.12, digital: 0.10, momentum: 0.06, activity: 0.05 };
+  var weights = Object.assign({}, DEFAULT_WEIGHTS);
+  // 숨은 취향 발견 기준 (스펙 70/65에서 완화: 후보가 너무 적고 유명 팀이 섞이던 문제 보완)
+  var GEM = { minStyle: 60, minScore: 62, maxPopularity: 65, bonusFrom: 70, bonusRate: 0.35 };
   var KR_ACTIVITY_OVERRIDES = { 'QWER': '밴드/메이저', 'Dreamcatcher': '메이저/라이브', 'KATSEYE': '글로벌/메이저' };
 
   /* ---------- 유틸 ---------- */
@@ -80,7 +84,28 @@
     return m;
   }
 
-  function extractStyleTags(styleText) {
+  // 스타일 필드에서 태그가 3개 미만인 그룹만, 소개글 키워드로 최대 2개까지 보조 태그를 추가한다.
+  var DESC_KEYWORDS = [
+    ['청순', '청순'], ['청춘', '청춘'], ['카와이', '카와이'], ['귀여', '카와이'], ['퍼포먼스', '퍼포먼스'], ['댄스', '퍼포먼스'],
+    ['걸크러시', '걸크러시'], ['쿨', '쿨'], ['밴드', '밴드'], ['록', '록'], ['힙합', '힙합'], ['R&B', 'R&B'],
+    ['일렉트로', '일렉트로'], ['EDM', '일렉트로'], ['몽환', '몽환'], ['다크', '다크'], ['레트로', '레트로'],
+    ['실험', '실험적'], ['서브컬처', '서브컬처'], ['보컬', '보컬'], ['시티팝', '레트로']
+  ];
+  function enrichTags(tags, desc) {
+    if (tags.length >= 3 || !desc) return tags;
+    var hits = [];
+    DESC_KEYWORDS.forEach(function (k) {
+      var n = desc.split(k[0]).length - 1;
+      if (n > 0 && tags.indexOf(k[1]) === -1) {
+        var e = hits.filter(function (h) { return h.t === k[1]; })[0];
+        if (e) e.n += n; else hits.push({ t: k[1], n: n });
+      }
+    });
+    hits.sort(function (a, b) { return b.n - a.n; });
+    return tags.concat(hits.slice(0, 3 - tags.length > 2 ? 2 : 3 - tags.length).map(function (h) { return h.t; }));
+  }
+
+  function extractStyleTags(styleText, desc) {
     var tags = [];
     String(styleText || '').split('/').forEach(function (tok) {
       tok = tok.trim();
@@ -90,7 +115,7 @@
         }
       });
     });
-    return tags;
+    return enrichTags(tags, desc);
   }
 
   function getRelatedStyleWeight(a, b) {
@@ -143,13 +168,15 @@
   function normalizeKoreanGroup(r, maps) {
     var P = function (k) { return percentileRank(Number(r[k]), maps[k]); };
     var music = P('국내음원');
+    var popularity = music * 0.60 + P('국내인지도') * 0.40;
     return {
       country: 'KR', name: r['그룹'], slug: r.slug, tier: r['티어'], status: r['활동상태'] || '',
-      styleRaw: r['스타일'], styleTags: extractStyleTags(r['스타일']),
-      activityType: KR_ACTIVITY_OVERRIDES[r['그룹']] || '메이저',
+      styleRaw: r['스타일'], styleTags: extractStyleTags(r['스타일'], r['소개글']),
+      // 한국은 활동형태 필드가 없어 대중성 백분위로 추정: 낮으면 소규모 라이브형(라이브 아이돌)으로 본다.
+      activityType: KR_ACTIVITY_OVERRIDES[r['그룹']] || (popularity >= 45 ? '메이저' : '라이브 아이돌'),
       spotify: firstSpotify(r),
       vec: {
-        popularity: music * 0.60 + P('국내인지도') * 0.40,
+        popularity: popularity,
         fandom: P('음반·팬덤'),
         live: P('공연'),
         digital: music * 0.40 + P('글로벌') * 0.60,
@@ -163,7 +190,7 @@
     var sns = P('스트리밍·SNS');
     return {
       country: 'JP', name: r['그룹'], slug: String(r.id || '').toLowerCase(), tier: r['티어'], status: r['활동상태'] || '',
-      styleRaw: r['스타일'], styleTags: extractStyleTags(r['스타일']),
+      styleRaw: r['스타일'], styleTags: extractStyleTags(r['스타일'], r['소개글']),
       activityType: r['활동형태'] || '메이저',
       spotify: firstSpotify(r),
       vec: {
@@ -202,9 +229,10 @@
   }
 
   function calculateMatchScore(b) {
+    var w = weights;
     return Math.round(
-      b.style * 0.40 + b.live * 0.15 + b.fandom * 0.12 + b.popularity * 0.12 +
-      b.digital * 0.10 + b.momentum * 0.06 + b.activity * 0.05
+      b.style * w.style + b.live * w.live + b.fandom * w.fandom + b.popularity * w.popularity +
+      b.digital * w.digital + b.momentum * w.momentum + b.activity * w.activity
     );
   }
 
@@ -260,15 +288,13 @@
   function getHiddenGems(src, targets, excludeNames, limit, includeEnded) {
     var ex = excludeNames || [];
     var c = rankTargets(src, targets, includeEnded).filter(function (m) {
-      return ex.indexOf(m.group.name) === -1 && m.breakdown.style >= 70 && m.score >= 65;
+      return ex.indexOf(m.group.name) === -1 && m.breakdown.style >= GEM.minStyle && m.score >= GEM.minScore &&
+        m.group.vec.popularity <= GEM.maxPopularity;
     }).map(function (m) {
-      m.gemScore = m.score + Math.max(0, 75 - m.group.vec.popularity) * 0.20;
+      m.gemScore = m.score + Math.max(0, GEM.bonusFrom - m.group.vec.popularity) * GEM.bonusRate;
       return m;
     });
-    c.sort(function (x, y) {
-      var px = x.group.vec.popularity <= 75 ? 0 : 1, py = y.group.vec.popularity <= 75 ? 0 : 1;
-      return px - py || y.gemScore - x.gemScore;
-    });
+    c.sort(function (x, y) { return y.gemScore - x.gemScore; });
     return c.slice(0, limit || 3).sort(function (x, y) { return y.score - x.score; }).map(decorate);
   }
 
@@ -330,7 +356,23 @@
     });
   }
 
-  var ready = Promise.all([fetchJson(COUNTRIES.KR.file), fetchJson(COUNTRIES.JP.file)]).then(function (res) {
+  // fetch가 막힌 환경(file:// 등)에서는 data/*.js(window.IDOL_DB_*)를 script 태그로 읽는다.
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      var t = document.createElement('script');
+      t.src = src + '?v=' + DATA_VERSION;
+      t.onload = resolve; t.onerror = function () { reject(new Error('script failed: ' + src)); };
+      document.head.appendChild(t);
+    });
+  }
+  function loadCountry(c) {
+    var info = COUNTRIES[c];
+    return fetchJson(info.file).catch(function () {
+      return loadScript(info.file.replace(/\.json$/, '.js')).then(function () { return global['IDOL_DB_' + c]; });
+    });
+  }
+
+  var ready = Promise.all([loadCountry('KR'), loadCountry('JP')]).then(function (res) {
     var kr = Array.isArray(res[0]) ? res[0] : res[0].korea;
     var jp = Array.isArray(res[1]) ? res[1] : (res[1].japan || res[1]);
     var krMaps = buildPercentileMaps(kr, KR_KEYS);
@@ -365,9 +407,20 @@
     return { profile: profile, groups: groups, matches: getCrossCountryMatches(profile, targets, limit || 5, includeEnded) };
   }
 
+  function setWeights(w) { // 합이 1이 되도록 정규화
+    var merged = Object.assign({}, weights, w || {}), sum = 0;
+    Object.keys(merged).forEach(function (k) { merged[k] = Math.max(0, Number(merged[k]) || 0); sum += merged[k]; });
+    if (!sum) return getWeights();
+    Object.keys(merged).forEach(function (k) { weights[k] = merged[k] / sum; });
+    return getWeights();
+  }
+  function getWeights() { return Object.assign({}, weights); }
+  function resetWeights() { weights = Object.assign({}, DEFAULT_WEIGHTS); return getWeights(); }
+
   global.IdolMatch = {
     version: DATA_VERSION, countries: COUNTRIES, ready: ready,
     getMatches: getMatches, getFavoriteMatches: getFavoriteMatches,
+    setWeights: setWeights, getWeights: getWeights, resetWeights: resetWeights, defaultWeights: DEFAULT_WEIGHTS,
     getFavorites: getFavorites, saveFavorite: saveFavorite, isFavorite: isFavorite, clearFavorites: clearFavorites,
     // 테스트/검증용
     _internals: {

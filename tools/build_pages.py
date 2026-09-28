@@ -94,7 +94,7 @@ KR = dict(
         "  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결됩니다. PC에서는 새 탭으로 열리고, 모바일에서는 현재 화면에서 바로 연결되어 해당 앱이 설치되어 있으면 자동으로 앱이 열립니다(앱이 없으면 웹페이지로 이동). 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>"
     ),
     cfg=dict(
-        country="KR", other={"page": "jp-idol-tier-2026-09.html", "label": "일본", "flag": "🇯🇵"}, LB=["음원", "팬덤", "공연", "글로벌", "인지도", "기세"], MX=[20, 20, 20, 15, 15, 10],
+        country="KR", other={"page": "jp-idol-tier-2026-09.html", "label": "일본", "code": "JP"}, LB=["음원", "팬덤", "공연", "글로벌", "인지도", "기세"], MX=[20, 20, 20, 15, 15, 10],
         facets=[
             {"key": "gen", "label": "세대", "order": ["1세대", "2세대", "3세대", "4세대", "5세대", "6세대"]},
             {"key": "tier", "label": "티어"},
@@ -125,7 +125,7 @@ JP = dict(
         "  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결됩니다. PC에서는 새 탭으로 열리고, 모바일에서는 현재 화면에서 바로 연결되어 해당 앱이 설치되어 있으면 자동으로 앱이 열립니다(앱이 없으면 웹페이지로 이동). 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>"
     ),
     cfg=dict(
-        country="JP", other={"page": "kr-idol-tier-2026-09.html", "label": "한국", "flag": "🇰🇷"}, LB=["공연", "팬덤", "인지도", "SNS", "기세", "업계"], MX=[25, 20, 20, 15, 10, 10],
+        country="JP", other={"page": "kr-idol-tier-2026-09.html", "label": "한국", "code": "KR"}, LB=["공연", "팬덤", "인지도", "SNS", "기세", "업계"], MX=[25, 20, 20, 15, 10, 10],
         facets=[
             {"key": "period", "label": "결성시기",
              "order": ["~2009", "2010~2014", "2015~2019", "2020~2022", "2023~현재", "확인필요"]},
@@ -178,3 +178,9 @@ if __name__ == "__main__":
     jp = json.load(open(sys.argv[2], encoding="utf-8"))
     build(KR, kr_rows(kr))
     build(JP, jp_rows(jp))
+    # file:// 등 fetch가 막힌 환경용 script 태그 로드 사본 (js/idol-match.js가 폴백으로 사용)
+    for code, rows in (("KR", kr), ("JP", jp)):
+        path = os.path.join(ROOT, "data", "%s_db.js" % code.lower())
+        text = "window.IDOL_DB_%s=%s;" % (code, dumps(rows))
+        open(path, "w", encoding="utf-8", newline=chr(10)).write(text + chr(10))
+        print(path, len(rows))

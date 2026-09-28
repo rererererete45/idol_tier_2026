@@ -1,3 +1,5 @@
+const QS=new URLSearchParams(location.search);
+const TUNE=QS.get('tune')==='1';
 const LB=CFG.LB,MX=CFG.MX;
 const T=[["S+",90,100],["S",80,89],["A+",70,79],["A",60,69],["B+",50,59],["B",40,49],["C+",30,39],["C",20,29],["D+",10,19],["D",0,9]];
 const ti=s=>T.findIndex(t=>s>=t[1]);
@@ -180,7 +182,7 @@ function detailHTML(o){
     +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
     +'<a class="btn out"'+TGT+' href="'+namuUrl(o)+'">나무위키</a></div>'
     +(noteText?'<p class="dpnote">'+esc(noteText)+'</p>':'')
-    +'<section class="matchbox" id="matchbox" data-n="'+esc(o.n)+'"><h3 class="mtitle">'+CFG.other.flag+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><p class="mnote">불러오는 중…</p></section>';
+    +'<section class="matchbox" id="matchbox" data-n="'+esc(o.n)+'"><h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><p class="mnote">불러오는 중…</p></section>';
 }
 function openDetailBySlug(slug){
   const o=A.find(x=>x.slug===slug);
@@ -218,7 +220,7 @@ document.getElementById('board').addEventListener('click',e=>{
   if(!c)return;
   openDetail(c.dataset.slug);
 });
-const qGroup=new URLSearchParams(location.search).get('group');
+const qGroup=QS.get('group');
 if(qGroup){
   const t=A.find(x=>x.n===qGroup||x.slug===qGroup);
   if(t){
@@ -235,21 +237,56 @@ if(qGroup){
 
 /* ---- IDOL MATCH ---- */
 const MEDALS=['🥇','🥈','🥉','4','5'];
+function flagB(c){return '<span class="flagb flag-'+c.toLowerCase()+'">'+c+'</span>'}
+const INC_KEY='idolMatchIncludeEnded';
+const includeEnded=()=>{try{return localStorage.getItem(INC_KEY)==='1'}catch(e){return false}};
+const setIncludeEnded=v=>{try{localStorage.setItem(INC_KEY,v?'1':'0')}catch(e){}};
+const AXES=[['popularity','대중성'],['fandom','팬덤'],['live','라이브'],['digital','디지털'],['momentum','기세']];
+const WLABEL={style:'스타일',live:'라이브',fandom:'팬덤',popularity:'대중성',digital:'디지털',momentum:'기세',activity:'활동형태'};
 function matchUrl(name){return CFG.other.page+'?group='+encodeURIComponent(name)}
+function tasteRadar(a,b,an,bn){
+  const N=AXES.length,cx=130,cy=126,R=78,ang=i=>i*(2*Math.PI/N)-Math.PI/2;
+  let svg='<svg class="mradar" viewBox="0 0 260 252" role="img" aria-label="취향 프로필 비교 차트">';
+  [0.5,1].forEach(f=>{svg+='<polygon points="'+AXES.map((_,i)=>polar(cx,cy,R*f,ang(i)).join(',')).join(' ')+'" fill="none" stroke="var(--bd)" stroke-width="1"/>'});
+  AXES.forEach(([k,l],i)=>{
+    const [x,y]=polar(cx,cy,R,ang(i)),[lx,ly]=polar(cx,cy,R+18,ang(i)),cv=Math.cos(ang(i));
+    svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x+'" y2="'+y+'" stroke="var(--bd)" stroke-width="1"/><text x="'+lx+'" y="'+(ly+4)+'" text-anchor="'+(Math.abs(cv)<0.01?'middle':cv>0?'start':'end')+'" font-size="10.5" font-weight="700" fill="var(--tx3)">'+l+'</text>';
+  });
+  const poly=(v,col)=>'<polygon points="'+AXES.map(([k],i)=>polar(cx,cy,R*Math.max(0.03,v[k]/100),ang(i)).join(',')).join(' ')+'" fill="'+col+'" fill-opacity="0.18" stroke="'+col+'" stroke-width="2.2"/>';
+  svg+=poly(b,'#f3727f')+poly(a,'#1ed760')+'</svg>';
+  return '<div class="mradarwrap">'+svg+'<p class="mleg"><span style="color:var(--green)">●</span> '+esc(an)+' <span style="color:#f3727f;margin-left:8px">●</span> '+esc(bn)+'</p></div>';
+}
 function matchCard(m,i){
   const g=m.group,label=esc(g.name);
   const sp=g.spotify?'<a class="btn grn"'+TGT+' href="'+esc(g.spotify)+'" aria-label="'+label+' Spotify에서 듣기">Spotify ▶</a>':'';
+  const bd=TUNE?'<p class="mlog">'+Object.keys(m.breakdown).map(k=>k+' '+Math.round(m.breakdown[k])).join(' · ')+'</p>':'';
   return '<article class="mcard"><div class="mtop"><span class="mmedal" aria-hidden="true">'+MEDALS[i]+'</span><div class="mname">'+label+'</div><div class="mpct" aria-label="매치율 '+m.score+' 퍼센트"><b>'+m.score+'%</b><span>MATCH</span></div></div>'
-    +'<p class="mtags">'+esc(m.tags.join(' · '))+'</p><p class="mreason">'+esc(m.reasons.join('. '))+'</p>'
+    +'<p class="mtags">'+esc(m.tags.join(' · '))+'</p><p class="mreason">'+esc(m.reasons.join('. '))+'</p>'+bd
     +'<div class="mact"><a class="btn out" href="'+matchUrl(g.name)+'" aria-label="'+label+' 상세보기">상세보기</a>'+sp+'</div></article>';
 }
 function gemRow(m){
   return '<div class="mgem"><div class="mname">'+esc(m.group.name)+'</div><div class="gp">'+m.score+'%<small>MATCH</small></div><a class="mlink" href="'+matchUrl(m.group.name)+'" aria-label="'+esc(m.group.name)+' 상세보기">상세보기</a></div>';
 }
-function matchHTML(r){
-  let h='<h3 class="mtitle">'+CFG.other.flag+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><div class="mlist">'+r.top.map(matchCard).join('')+'</div>';
+function tuneHTML(){
+  const w=IdolMatch.getWeights();
+  return '<details class="mtune" open><summary>튜닝 (관리용)</summary>'+Object.keys(WLABEL).map(k=>'<label class="mrow">'+WLABEL[k]+'<input type="range" min="0" max="100" value="'+Math.round(w[k]*100)+'" data-w="'+k+'"><output>'+Math.round(w[k]*100)+'</output></label>').join('')
+    +'<button class="mshare" type="button" id="tuneReset">기본값으로</button><p class="mnote">가중치는 합이 100%가 되도록 자동 정규화되며, 각 카드 아래에 항목별 유사도 로그가 표시됩니다(콘솔에도 출력).</p></details>';
+}
+function matchBody(o,r){
+  let h='<div class="mctl"><label class="mchk"><input type="checkbox" id="incEnded"'+(includeEnded()?' checked':'')+'> 활동종료 그룹 포함</label><button class="mshare" type="button" id="shareBtn">결과 공유</button></div>'
+    +'<div class="mlist">'+r.top.map(matchCard).join('')+'</div>';
   if(r.hidden.length)h+='<p class="mgemt">💎 숨은 취향 발견</p><div class="mlist">'+r.hidden.map(gemRow).join('')+'</div>';
+  const t1=r.top[0];
+  if(t1)h+='<details class="mprof"><summary>취향 프로필 비교 보기</summary>'+tasteRadar(r.source.vec,t1.group.vec,o.n,t1.group.name)+'<p class="mnote">각 축은 해당 나라 안에서의 상대 위치(백분위)예요.</p></details>';
   return h+'<p class="mnote">스타일·라이브·팬덤·대중성 성향을 각 시장 안에서의 상대 위치(백분위)로 비교한 취향 유사도이며, 점수나 체급 비교가 아닙니다.</p>';
+}
+function shareMatches(o,r,btn){
+  const base=location.href.split(/[?#]/)[0],url=base+'?group='+encodeURIComponent(o.n);
+  const text=o.n+'와(과) 비슷한 '+CFG.other.label+' 아이돌: '+r.top.map(m=>m.group.name+' '+m.score+'%').join(', ');
+  if(navigator.share){navigator.share({title:'IDOL MATCH',text:text,url:url}).catch(()=>{});return}
+  const done=()=>{const t=btn.textContent;btn.textContent='링크 복사됨 ✓';setTimeout(()=>{btn.textContent=t},1600)};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text+'\n'+url).then(done).catch(()=>window.prompt('복사해서 공유하세요',text+' '+url));
+  else window.prompt('복사해서 공유하세요',text+' '+url);
 }
 function renderMatchSection(o){
   const box=document.getElementById('matchbox');
@@ -257,8 +294,27 @@ function renderMatchSection(o){
   if(!window.IdolMatch){box.innerHTML='';return}
   IdolMatch.ready.then(()=>{
     if(!box.isConnected||box.dataset.n!==o.n)return;
-    const r=IdolMatch.getMatches(CFG.country,o.n);
-    box.innerHTML=r&&r.top.length?matchHTML(r):'';
+    box.innerHTML='<h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3>'+(TUNE?tuneHTML():'')+'<div id="mbody"></div>';
+    let last=null;
+    const paint=()=>{
+      const r=IdolMatch.getMatches(CFG.country,o.n,{includeEnded:includeEnded()});
+      last=r;
+      box.querySelector('#mbody').innerHTML=r&&r.top.length?matchBody(o,r):'<p class="mnote">추천 결과가 없어요.</p>';
+      if(TUNE&&r)console.table(r.top.map(m=>Object.assign({group:m.group.name,score:m.score},m.breakdown)));
+    };
+    paint();
+    box.addEventListener('change',e=>{if(e.target.id==='incEnded'){setIncludeEnded(e.target.checked);paint()}});
+    box.addEventListener('click',e=>{
+      const sh=e.target.closest('#shareBtn');
+      if(sh&&last)shareMatches(o,last,sh);
+      if(e.target.id==='tuneReset'){IdolMatch.resetWeights();box.querySelector('.mtune').outerHTML=tuneHTML();paint()}
+    });
+    box.addEventListener('input',e=>{
+      if(!e.target.dataset.w)return;
+      const w={};
+      box.querySelectorAll('input[data-w]').forEach(i=>{w[i.dataset.w]=+i.value;i.nextElementSibling.textContent=i.value});
+      IdolMatch.setWeights(w);paint();
+    });
   }).catch(()=>{if(box.isConnected)box.innerHTML='<p class="mnote">추천 데이터를 불러오지 못했어요.</p>'});
 }
 function myFavs(){return window.IdolMatch?IdolMatch.getFavorites().filter(f=>f.country===CFG.country):[]}
@@ -273,12 +329,12 @@ document.getElementById('favGo').addEventListener('click',()=>{
   const f=myFavs();
   if(f.length<2)return;
   IdolMatch.ready.then(()=>{
-    const r=IdolMatch.getFavoriteMatches(f,CFG.country==='KR'?'JP':'KR',5);
+    const r=IdolMatch.getFavoriteMatches(f,CFG.other.code,5,includeEnded());
     if(!r)return;
     document.getElementById('detailPanel').innerHTML='<div class="cmphead"><h2>내 취향으로 찾기</h2><div class="headact"><button class="cmpclose" id="detailClose" aria-label="닫기">✕</button></div></div>'
       +'<div class="favchips">'+r.groups.map(g=>'<span class="chip">♥ '+esc(g.name)+'</span>').join('')+'</div>'
-      +'<h3 class="mtitle">'+CFG.other.flag+' '+CFG.other.label+' 아이돌 TOP 5</h3><div class="mlist">'+r.matches.map(matchCard).join('')+'</div>'
-      +'<p class="mnote">최애들의 평균 성향(백분위)과 스타일 태그 빈도로 계산한 결과예요.</p>';
+      +'<h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+' 아이돌 TOP 5</h3><div class="mlist">'+r.matches.map(matchCard).join('')+'</div>'
+      +'<p class="mnote">최애들의 평균 성향(백분위)과 스타일 태그 빈도로 계산한 결과예요.'+(includeEnded()?'':' (활동종료 그룹 제외)')+'</p>';
     document.getElementById('detailModal').classList.remove('hidden');
     document.getElementById('detailClose').addEventListener('click',()=>document.getElementById('detailModal').classList.add('hidden'));
   });
