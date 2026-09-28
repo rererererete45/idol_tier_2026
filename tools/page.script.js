@@ -119,8 +119,9 @@ function card(o){
   const verifychip=VCHIP.test(o.verify)?'<span class="chip mid">'+esc(o.verify)+'</span>':'';
   const stchip=o.status==='현역'?'':'<span class="chip">'+esc(o.status)+'</span>';
   const cmpOn=cmp.has(o.n);
-  return '<article class="card" data-slug="'+esc(o.slug)+'"><div class="crow"><button class="cmpbtn'+(cmpOn?' on':'')+'" data-cmp="'+esc(o.n)+'" aria-pressed="'+cmpOn+'" aria-label="비교에 추가">'+(cmpOn?'✓':'+')+'</button><span class="rankcol"><span class="rank">#'+o.r+'</span><span class="rkslot">'+rkBadge(o)+'</span></span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
-   +'<div class="meta"><span class="chip">'+o.tier+'</span>'+verifychip+stchip+'</div>'
+  const fav=!!(window.IdolMatch&&IdolMatch.isFavorite(CFG.country,o.id));
+  return '<article class="card" tabindex="0" data-slug="'+esc(o.slug)+'"><div class="crow"><button class="cmpbtn'+(cmpOn?' on':'')+'" data-cmp="'+esc(o.n)+'" aria-pressed="'+cmpOn+'" aria-label="비교에 추가">'+(cmpOn?'✓':'+')+'</button><span class="rankcol"><span class="rank">#'+o.r+'</span><span class="rkslot">'+rkBadge(o)+'</span></span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
+   +'<div class="meta"><span class="chip">'+o.tier+'</span>'+verifychip+stchip+(window.IdolMatch?'<button type="button" class="favmini" data-fav="'+esc(o.id)+'" aria-pressed="'+fav+'" aria-label="'+esc(o.n)+' 최애 '+(fav?'해제':'저장')+'">'+(fav?'♥':'♡')+'</button>':'')+'</div>'
    +'<div class="bars">'+barsHTML(o)+'</div>'
    +'<div class="acts"><a class="btn grn"'+TGT+' href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
    +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
@@ -169,7 +170,9 @@ function detailHTML(o){
   const noteText=noteParts.length>1?noteParts.slice(1).join(' | '):'';
   const officialBtn=(o.link&&o.link.startsWith('http'))?'<a class="btn out"'+TGT+' href="'+esc(o.link)+'">공식 링크</a>':'';
   const isFav=window.IdolMatch&&IdolMatch.isFavorite(CFG.country,o.n);
-  return '<div class="cmphead"><h2>그룹 상세</h2><div class="headact"><button class="favbtn" id="favBtn" aria-pressed="'+!!isFav+'" aria-label="'+esc(o.n)+' 최애로 저장">'+(isFav?'♥ 최애':'♡ 최애')+'</button><button class="cmpclose" id="detailClose" aria-label="닫기">✕</button></div></div>'
+  const order=[...document.querySelectorAll('#board .card')].map(c=>c.dataset.slug),oi=order.indexOf(o.slug);
+  const nav=oi>=0&&order.length>1?'<span class="dcount" aria-live="polite">'+(oi+1)+' / '+order.length+'</span><button class="cmpclose navbtn" id="dPrev" aria-label="이전 그룹" '+(oi<=0?'disabled':'')+' data-slug="'+esc(order[oi-1]||'')+'">‹</button><button class="cmpclose navbtn" id="dNext" aria-label="다음 그룹" '+(oi>=order.length-1?'disabled':'')+' data-slug="'+esc(order[oi+1]||'')+'">›</button>':'';
+  return '<div class="cmphead"><h2>그룹 상세</h2><div class="headact">'+nav+'<button class="favbtn" id="favBtn" aria-pressed="'+!!isFav+'" aria-label="'+esc(o.n)+' 최애로 저장">'+(isFav?'♥ 최애':'♡ 최애')+'</button><button class="cmpclose" id="dShare" aria-label="이 그룹 링크 공유">🔗</button><button class="cmpclose" id="detailClose" aria-label="닫기">✕</button></div></div>'
     +'<div class="dphead">'+photo
     +'<div class="dpinfo"><h2>'+esc(o.n)+'</h2>'
     +'<div class="dpmeta"><span class="chip">'+o.tier+'</span>'+verifychip+'</div>'
@@ -177,6 +180,7 @@ function detailHTML(o){
     +'<a class="maplink" href="idol-map.html?country='+CFG.country+'&group='+encodeURIComponent(o.n)+'">IDOL MAP에서 위치 보기 →</a>'
     +(o.img?'<p class="dpsrc">사진 출처: <a href="'+(o.imgpage?esc(o.imgpage):namuUrl(o))+'"'+TGT+'>'+(o.imgpage?'공식 사이트':'나무위키')+'</a></p>':'')
     +'</div></div>'
+    +'<nav class="djump" aria-label="상세 섹션 바로가기"><button type="button" data-jump="scenebox">🧬 비슷한 '+(CFG.country==='KR'?'한국':'일본')+' 그룹</button><button type="button" data-jump="matchbox">'+CFG.other.label+' 취향</button><button type="button" data-jump="histbox">📈 순위 추이</button></nav>'
     +(o.intro?'<p class="dpintro">'+esc(o.intro)+'</p>':'')
     +'<div class="bars">'+barsHTML(o)+'</div>'
     +'<div class="dpgrid">'+info+'</div>'
@@ -198,17 +202,39 @@ function openDetailBySlug(slug){
   document.getElementById('detailModal').classList.remove('hidden');
   document.getElementById('detailClose').addEventListener('click',closeDetail);
   const fb=document.getElementById('favBtn');
-  fb.addEventListener('click',()=>{
-    if(!window.IdolMatch)return;
-    const on=IdolMatch.saveFavorite(CFG.country,o.n);
-    fb.setAttribute('aria-pressed',on);fb.textContent=on?'♥ 최애':'♡ 최애';
-    updateFavbar();
-  });
+  fb.addEventListener('click',()=>{toggleFavById(o.id,o.n)});
+  ['dPrev','dNext'].forEach(id=>{const b=document.getElementById(id);if(b)b.addEventListener('click',()=>stepDetail(b.dataset.slug))});
+  document.getElementById('dShare').addEventListener('click',()=>shareGroup(o));
+  document.querySelector('.djump').addEventListener('click',e=>{const j=e.target.closest('[data-jump]');if(!j)return;const t=document.getElementById(j.dataset.jump);if(t&&!t.hidden)t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})});
   renderMatchSection(o);
   if(window.SameScene)SameScene.render(document.getElementById('scenebox'),{country:CFG.country,name:o.n,id:o.id,onOpen:sceneOpen});
   if(window.RankHistory)RankHistory.renderDetail(document.getElementById('histbox'),{country:CFG.country,id:o.id,name:o.n});
 }
 // SAME SCENE 카드에서 다른 그룹 상세로: 기록을 쌓지 않고 모달 내용만 바꾼다.
+function toggleFavById(id,name){
+  if(!window.IdolMatch)return;
+  const o=A.find(x=>x.id===id),on=IdolMatch.saveFavorite(CFG.country,id);
+  const nm=name||(o&&o.n)||id;
+  document.querySelectorAll('.favmini[data-fav="'+CSS.escape(id)+'"]').forEach(b=>{b.setAttribute('aria-pressed',on);b.textContent=on?'♥':'♡';b.setAttribute('aria-label',nm+' 최애 '+(on?'해제':'저장'))});
+  const fb=document.getElementById('favBtn');
+  if(fb&&document.querySelector('.dpinfo h2')&&document.querySelector('.dpinfo h2').textContent===nm){fb.setAttribute('aria-pressed',on);fb.textContent=on?'♥ 최애':'♡ 최애'}
+  updateFavbar();
+  if(window.__toast)window.__toast(on?'♥ '+nm+' 최애에 저장했어요':nm+' 최애에서 뺐어요');
+}
+function stepDetail(slug){
+  if(!slug)return;
+  history.replaceState({slug:slug,pushed:history.state&&history.state.pushed?1:0},'','#'+slug);
+  openDetailBySlug(slug);
+  let n=document.getElementById('detailPanel');
+  while(n){if(n.scrollHeight>n.clientHeight+1&&getComputedStyle(n).overflowY!=='visible'){n.scrollTop=0;break}n=n.parentElement}
+}
+function shareGroup(o){
+  const url=location.href.split(/[?#]/)[0]+'?id='+encodeURIComponent(o.id)+'&group='+encodeURIComponent(o.n),text=o.n+' · '+o.tier+' '+o.s+'점 (#'+o.r+')';
+  if(navigator.share){navigator.share({title:o.n,text:text,url:url}).catch(()=>{});return}
+  const done=()=>{if(window.__toast)window.__toast('링크를 복사했어요')};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(done).catch(()=>window.prompt('복사해서 공유하세요',url));
+  else window.prompt('복사해서 공유하세요',url);
+}
 function sceneOpen(name){
   const t=A.find(x=>x.n===name);
   if(!t)return;
@@ -224,20 +250,40 @@ function closeDetail(){
     document.getElementById('detailModal').classList.add('hidden');
     document.body.removeAttribute('data-nav-group');
     if(location.hash||QS.get('group'))history.replaceState(null,'',location.pathname);
+    restoreFocus();
   }
 }
+let lastCardSlug=null;
+function restoreFocus(){
+  if(!lastCardSlug)return;
+  const c=document.querySelector('#board .card[data-slug="'+CSS.escape(lastCardSlug)+'"]');
+  if(c)c.focus({preventScroll:true});
+}
 function openDetail(slug){
+  lastCardSlug=slug;
   if(!A.some(x=>x.slug===slug))return;
   history.pushState({slug:slug,pushed:1},'','#'+slug);
   openDetailBySlug(slug);
 }
 window.addEventListener('popstate',e=>{
   if(e.state&&e.state.slug){openDetailBySlug(e.state.slug)}
-  else{document.getElementById('detailModal').classList.add('hidden');document.body.removeAttribute('data-nav-group')}
+  else{document.getElementById('detailModal').classList.add('hidden');document.body.removeAttribute('data-nav-group');restoreFocus()}
 });
 document.getElementById('detailModal').addEventListener('click',e=>{if(e.target.id==='detailModal')closeDetail()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('detailModal').classList.contains('hidden'))closeDetail()});
+document.addEventListener('keydown',e=>{
+  const open=!document.getElementById('detailModal').classList.contains('hidden');
+  if(e.key==='Escape'&&open)closeDetail();
+  if(open&&(e.key==='ArrowLeft'||e.key==='ArrowRight')&&!/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||'')&&!e.altKey&&!e.ctrlKey&&!e.metaKey){
+    const b=document.getElementById(e.key==='ArrowLeft'?'dPrev':'dNext');
+    if(b&&!b.disabled){e.preventDefault();stepDetail(b.dataset.slug)}
+  }
+});
+document.getElementById('board').addEventListener('keydown',e=>{
+  if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('card')){e.preventDefault();lastCardSlug=e.target.dataset.slug;openDetail(e.target.dataset.slug)}
+});
 document.getElementById('board').addEventListener('click',e=>{
+  const fm=e.target.closest('.favmini');
+  if(fm){toggleFavById(fm.dataset.fav);return}
   if(e.target.closest('.cmpbtn')||e.target.closest('.acts'))return;
   const c=e.target.closest('.card');
   if(!c)return;
@@ -387,7 +433,11 @@ document.getElementById('favGo').addEventListener('click',()=>{
 });
 document.getElementById('favClear').addEventListener('click',()=>{IdolMatch.clearFavorites(CFG.country);updateFavbar()});
 window.addEventListener('storage',updateFavbar);
-window.addEventListener('idolfav',updateFavbar);
+window.addEventListener('idolfav',()=>{
+  updateFavbar();
+  document.querySelectorAll('.favmini').forEach(b=>{const on=IdolMatch.isFavorite(CFG.country,b.dataset.fav);b.setAttribute('aria-pressed',on);b.textContent=on?'♥':'♡'});
+});
+if(window.IdolMatch)IdolMatch.ready.then(()=>{document.querySelectorAll('.favmini').forEach(b=>{const on=IdolMatch.isFavorite(CFG.country,b.dataset.fav);b.setAttribute('aria-pressed',on);b.textContent=on?'♥':'♡'});updateFavbar()});
 updateFavbar();
 
 /* ---- 그룹 비교 모드 ---- */

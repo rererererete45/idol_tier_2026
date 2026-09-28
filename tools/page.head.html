@@ -291,6 +291,24 @@ a.mshare{display:inline-flex;align-items:center;justify-content:center}
   body.has-tray{padding-bottom:112px}
 }
 .navlink,.filtertoggle,#favClear{min-height:44px}
+.meta{align-items:center}
+.card:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.favmini{margin-left:auto;position:relative;width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:var(--tx3);font-size:17px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:color .15s,transform .15s,background .15s}
+.favmini::after{content:"";position:absolute;inset:-7px}
+.favmini:hover{color:#f3727f;background:rgba(243,114,127,.12)}
+.favmini[aria-pressed="true"]{color:#f3727f}
+.favmini:active{transform:scale(.85)}
+.favmini:focus-visible,.navbtn:focus-visible,.djump button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.dcount{font-size:11px;font-weight:700;color:var(--tx3);margin-right:2px;font-variant-numeric:tabular-nums}
+.navbtn{font-size:20px;line-height:1;padding-bottom:3px;width:36px;height:36px}
+.navbtn[disabled]{opacity:.3;cursor:default}
+.headact .cmpclose{width:36px;height:36px}
+.djump{display:flex;gap:6px;overflow-x:auto;margin:14px -2px 4px;padding:2px;scrollbar-width:none}
+.djump::-webkit-scrollbar{display:none}
+.djump button{flex:none;min-height:40px;padding:0 14px;border:0;border-radius:9999px;background:var(--surf2);color:var(--tx2);font-family:var(--fs);font-size:12px;font-weight:700;cursor:pointer;transition:background .15s,color .15s}
+.djump button:hover{color:var(--tx);background:var(--card)}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .mflags{margin:6px 0 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .mconf{font-size:10.5px;font-weight:700;color:var(--tx3)}
 .dbgm{white-space:pre-wrap;font-size:10.5px;line-height:1.5;color:var(--tx3);background:var(--bg);border-radius:8px;padding:8px;margin:8px 0 0;font-family:inherit}
@@ -303,7 +321,7 @@ a.mshare{display:inline-flex;align-items:center;justify-content:center}
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">점수표는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260936"></script>
+<script src="js/site-nav.js?v=20260938"></script>
 <div class="wrap">
 
 <header>

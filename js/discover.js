@@ -14,7 +14,7 @@
   var SCOPES = [['ALL', '전체'], ['KR', '🇰🇷 한국'], ['JP', '🇯🇵 일본']];
   var NEED_FAV = { taste: 1, expand: 1 };
 
-  var state = { mode: 'auto', scope: 'ALL', cur: null, opener: null, busy: false, view: 'find', colFilter: 'all', repOffset: 0, pending: null, quickList: [] };
+  var state = { mode: 'auto', scope: 'ALL', cur: null, opener: null, busy: false, stack: [], view: 'find', colFilter: 'all', repOffset: 0, pending: null, quickList: [] };
   var root = null, els = {};
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -80,7 +80,14 @@
     + '.dsc-act>*:last-child:nth-child(odd){grid-column:1/-1}'
     + '.dsc-act .grn{background:#1ed760;color:#000;box-shadow:none}.dsc-act .grn:hover{background:#3be477}'
     + '.dsc-act .fav[aria-pressed="true"]{background:rgba(243,114,127,.18);box-shadow:inset 0 0 0 1px #f3727f;color:#ffb3bb}'
-    + '.dsc-next{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;margin:12px 0 0;border:0;border-radius:9999px;background:#fff;color:#000;font:inherit;font-size:14px;font-weight:900;letter-spacing:.02em;cursor:pointer;transition:transform .12s,background .15s}'
+    + '.dsc-nextrow{display:flex;gap:8px;margin:12px 0 0}'
+    + '.dsc-prev{flex:none;width:52px;height:52px;border:0;border-radius:50%;background:#2a2a2a;color:#fff;font-size:18px;cursor:pointer;transition:background .15s,transform .12s}'
+    + '.dsc-prev:hover{background:#353535}.dsc-prev:active{transform:scale(.94)}.dsc-prev[disabled]{opacity:.35;cursor:default}'
+    + '.dsc-keys{display:none;margin:10px 0 0;text-align:center;font-size:11px;font-weight:600;color:#7c7c7c}'
+    + '@media(hover:hover) and (min-width:640px){.dsc-keys{display:block}}'
+    + '.dsc-grab{display:none;width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.22);margin:-6px auto 10px;touch-action:none}'
+    + '@media(max-width:639px){.dsc-grab{display:block}}'
+    + '.dsc-next{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;margin:0;flex:1;border:0;border-radius:9999px;background:#fff;color:#000;font:inherit;font-size:14px;font-weight:900;letter-spacing:.02em;cursor:pointer;transition:transform .12s,background .15s}'
     + '.dsc-next:hover{background:#e8e8e8}.dsc-next:active{transform:scale(.98)}.dsc-next[disabled]{opacity:.6;cursor:default}'
     + '.dsc-next i{font-style:normal;display:inline-block}.dsc-next.spin i{animation:dscSpin .5s linear infinite}'
     + '@keyframes dscSpin{to{transform:rotate(360deg)}}'
@@ -139,7 +146,7 @@
     root = document.createElement('div');
     root.className = 'dsc'; root.hidden = true; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-labelledby', 'dscT');
     root.innerHTML = '<div class="dsc-bg" data-close></div><div class="dsc-box" id="dscBox">'
-      + '<div class="dsc-head"><h2 id="dscT">🎲 DISCOVER</h2><button type="button" class="dsc-x" data-close aria-label="DISCOVER 닫기">✕</button></div>'
+      + '<div class="dsc-grab" aria-hidden="true"></div><div class="dsc-head"><h2 id="dscT">🎲 DISCOVER</h2><button type="button" class="dsc-x" data-close aria-label="DISCOVER 닫기">✕</button></div>'
       + '<div class="dsc-tabs" role="group" aria-label="화면 선택"><button type="button" data-view="find" aria-pressed="true">🎲 발견</button><button type="button" data-view="collection" aria-pressed="false">📚 컬렉션</button><button type="button" data-view="report" aria-pressed="false">📊 리포트</button></div>'
       + '<div id="dscFind"><div class="dsc-seg" role="group" aria-label="국가 범위">' + SCOPES.map(function (s) { return '<button type="button" data-scope="' + s[0] + '" aria-pressed="false">' + s[1] + '</button>'; }).join('') + '</div>'
       + '<div class="dsc-modes" role="group" aria-label="발견 방식">' + MODES.map(function (m) { return '<button type="button" data-mode="' + m[0] + '" style="--mc:' + m[2] + '" aria-pressed="false">' + m[1] + '</button>'; }).join('') + '</div>'
@@ -164,6 +171,7 @@
         state.pending = null; renderQuick();
         state.mode = m; syncControls(); next(); return;
       }
+      if (e.target.closest('[data-prev]')) { prev(); return; }
       var nx = e.target.closest('[data-next]'); if (nx) { if (state.mode === 'daily') { state.mode = 'auto'; syncControls(); } next(); return; }
       var fv = e.target.closest('[data-fav]'); if (fv && state.cur) { toggleFav(fv); return; }
       var sh = e.target.closest('[data-share]'); if (sh && state.cur) { share(sh); return; }
@@ -179,10 +187,26 @@
       var hs = e.target.closest('[data-hid]'); if (hs) { showById(hs.getAttribute('data-hid'), hs.getAttribute('data-hmode')); return; }
       if (e.target.closest('[data-clear]')) { R.clearDiscoveryHistory(); renderHist(); hint('발견 기록을 지웠어요. 이제 이전에 본 그룹도 다시 나올 수 있어요.'); return; }
     });
+    (function swipe() {
+      var box = els.box, y0 = null, dy = 0;
+      box.addEventListener('pointerdown', function (e) {
+        if (window.innerWidth >= 640 || box.scrollTop > 0) return;
+        if (!e.target.closest('.dsc-grab, .dsc-head') || e.target.closest('button')) return;
+        y0 = e.clientY; dy = 0; try { box.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+      });
+      box.addEventListener('pointermove', function (e) { if (y0 === null) return; dy = Math.max(0, e.clientY - y0); box.style.animation = 'none'; box.style.transform = 'translateY(' + dy + 'px)'; });
+      function end() { if (y0 === null) return; box.style.transform = ''; box.style.animation = ''; if (dy > 90) close(); y0 = null; dy = 0; }
+      box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
+    })();
     document.addEventListener('keydown', function (e) {
       if (root.hidden) return;
       if (e.key === 'Escape') { e.stopPropagation(); close(); }
       if (e.key === 'Tab') trapFocus(e);
+      var typing = /^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement || {}).tagName || '');
+      if (state.view === 'find' && !typing && !e.altKey && !e.ctrlKey && !e.metaKey) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+      }
     }, true);
   }
 
@@ -230,17 +254,19 @@
       + '<a href="' + mapUrl(e) + '" aria-label="' + esc(e.name) + ' 지도에서 보기">🗺 지도</a>'
       + '<button type="button" class="fav" data-fav aria-pressed="' + fav + '" aria-label="' + esc(e.name) + ' 최애 저장 토글">' + (fav ? '♥ 저장됨' : '♡ 저장') + '</button></div>'
       + '<div class="dsc-links"><a href="' + sceneUrl(e) + '" aria-label="' + esc(e.name) + '와 비슷한 그룹을 지도에서 보기">🧬 비슷한 그룹</a><button type="button" data-share aria-label="이 발견 링크 공유하기">🔗 링크 공유</button><button type="button" data-cardimg aria-label="발견 카드를 이미지로 저장하거나 공유하기">🖼 카드 이미지</button></div>'
-      + '<button type="button" class="dsc-next" data-next aria-label="다른 그룹 발견하기"><i aria-hidden="true">🔄</i> 다른 그룹</button></article>';
+      + '<div class="dsc-nextrow"><button type="button" class="dsc-prev" data-prev aria-label="이전에 본 그룹으로" ' + (state.stack.length ? '' : 'disabled') + '>↩</button>'
+      + '<button type="button" class="dsc-next" data-next aria-label="다른 그룹 발견하기"><i aria-hidden="true">🔄</i> 다른 그룹</button></div>'
+      + '<p class="dsc-keys">← 이전 · → 다른 그룹 · Esc 닫기</p></article>';
   }
   function fallbackText(res) {
     var name = { taste: '내 취향', hiddenGem: '숨은 보석', expand: '취향 확장', hot: 'HOT', random: '완전 랜덤' };
     return (name[res.requested === 'auto' ? res.mode : res.requested] || '선택한 방식') + ' 후보가 부족해 ' + name[res.mode] + ' 방식으로 골랐어요.';
   }
 
-  function paint(res, animate) {
+  function paint(res, noSave) {
     state.cur = res;
     els.wrap.innerHTML = res ? cardHtml(res) : '<div class="dsc-empty">보여줄 수 있는 그룹이 없어요.<br>국가 범위나 발견 기록을 확인해 주세요.</div>';
-    if (res) {
+    if (res && !noSave) {
       R.saveRecentDiscovery(res.ent.id);
       R.saveDiscoveryHistory({ id: res.ent.id, mode: res.mode, timestamp: Date.now() });
     }
@@ -266,7 +292,7 @@
   function next() {
     if (state.busy) return; // 굴리는 중에 모드/범위가 바뀌어도 마지막에 뽑을 때 현재 설정이 쓰인다
     hint('');
-    if (reduced() || !state.cur) { paint(R.pickDiscovery(state.mode, state.scope)); return; }
+    if (reduced() || !state.cur) { pushPrev(); paint(R.pickDiscovery(state.mode, state.scope)); return; }
     // 주사위 굴리는 느낌: 잠깐 이름이 바뀌다 결과가 나온다
     state.busy = true;
     var btn = root.querySelector('.dsc-next');
@@ -276,10 +302,16 @@
     if (card) card.classList.add('dsc-roll');
     var iv = setInterval(function () {
       if (h3 && pool.length) h3.firstChild.nodeValue = pool[Math.floor(Math.random() * pool.length)].name;
-      if (++n >= 6) { clearInterval(iv); state.busy = false; paint(R.pickDiscovery(state.mode, state.scope)); }
+      if (++n >= 6) { clearInterval(iv); state.busy = false; pushPrev(); paint(R.pickDiscovery(state.mode, state.scope)); }
     }, 70);
   }
 
+  function pushPrev() { if (state.cur) { state.stack.push(state.cur); if (state.stack.length > 20) state.stack.shift(); } }
+  function prev() {
+    if (state.busy || !state.stack.length) return;
+    hint('');
+    paint(state.stack.pop(), true); // 이미 기록된 카드를 다시 보여줄 뿐이라 기록/최근 목록은 건드리지 않는다
+  }
   function showById(id, mode) {
     var res = R.discoveryFor(id, mode);
     if (res) paint(res);
@@ -497,7 +529,7 @@
       if (opts.mode && MODE_COLOR[opts.mode]) state.mode = opts.mode;
       state.opener = document.activeElement;
       root.hidden = false; document.body.style.overflow = 'hidden';
-      state.pending = null; renderQuick(); setView(opts.view === 'collection' || opts.view === 'report' ? opts.view : 'find');
+      state.stack = []; state.pending = null; renderQuick(); setView(opts.view === 'collection' || opts.view === 'report' ? opts.view : 'find');
       syncControls();
       var res = null;
       if (opts.id) res = R.discoveryFor(opts.id, opts.mode && opts.mode !== 'auto' ? opts.mode : 'random');

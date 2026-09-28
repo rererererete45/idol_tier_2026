@@ -21,74 +21,250 @@
 <style>
 :root{
   --bg:#121212; --surf:#181818; --surf2:#1f1f1f; --card:#252525; --card2:#272727;
-  --tx:#fff; --tx2:#b3b3b3; --tx3:#7c7c7c; --bd:#4d4d4d; --bdl:#7c7c7c;
-  --green:#1ed760; --green2:#1db954;
+  --tx:#fff; --tx2:#b3b3b3; --tx3:#7c7c7c; --bd:#4d4d4d; --bdl:#7c7c7c; --rim:rgba(255,255,255,.08);
+  --green:#1ed760; --green2:#1db954; --sakura:#f3727f; --blue:#539df5; --violet:#a78bfa;
   --sh-md:rgba(0,0,0,.3) 0 8px 8px; --sh-hv:rgba(0,0,0,.5) 0 8px 24px;
-  --fs:"Figtree","Helvetica Neue",helvetica,arial,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --fs:"Figtree","Helvetica Neue",helvetica,arial,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans JP",sans-serif;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{background:#121212;color:var(--tx);font-family:var(--fs);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:920px;margin:0 auto;padding:0 20px 64px}
-header{padding:64px 0 8px}
-.eyebrow{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin:0 0 10px}
-h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin:0 0 12px}
-.sub{font-size:14px;color:var(--tx2);margin:0;max-width:62ch}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:36px}
-.card{background:var(--surf);border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:10px;transition:background .2s,box-shadow .2s,transform .2s}
-.card:hover{background:var(--card2);box-shadow:var(--sh-md);transform:translateY(-2px)}
-.flag{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--green)}
-.card h2{font-size:22px;font-weight:900;margin:0;letter-spacing:-.01em}
-.card p{font-size:13px;color:var(--tx2);margin:0;line-height:1.6}
-.card .cta{margin-top:auto;padding-top:10px;font-size:12px;font-weight:700;color:var(--tx2);display:inline-flex;align-items:center;gap:6px}
-.card:hover .cta{color:var(--green)}
-footer{margin-top:56px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:12px;color:var(--tx3);line-height:1.7}
-@media(max-width:560px){
-  header{padding:40px 0 8px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 64px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+
+/* hero */
+header{position:relative;overflow:hidden;padding:64px 0 30px}
+header>*:not(.aurora){position:relative;z-index:1}
+.aurora{position:absolute;inset:-60% -20%;z-index:0;pointer-events:none;filter:blur(70px);opacity:.38}
+.aurora span{position:absolute;border-radius:50%;mix-blend-mode:screen}
+.aurora span:nth-child(1){width:340px;height:340px;background:var(--green);top:0;left:10%;animation:a1 18s ease-in-out infinite}
+.aurora span:nth-child(2){width:280px;height:280px;background:var(--blue);top:20%;right:5%;animation:a2 22s ease-in-out infinite}
+.aurora span:nth-child(3){width:260px;height:260px;background:var(--violet);bottom:-10%;left:35%;animation:a3 26s ease-in-out infinite}
+@keyframes a1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
+@keyframes a2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,40px)}}
+@keyframes a3{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-30px)}}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;margin:0 0 12px}
+.shiny{background:linear-gradient(110deg,#1ed760 35%,#d9ffe6 50%,#1ed760 65%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:shine 3.6s linear infinite}
+@keyframes shine{from{background-position:120% 0}to{background-position:-120% 0}}
+h1{font-size:clamp(32px,6vw,56px);font-weight:900;letter-spacing:-.025em;line-height:1.08;margin:0 0 14px}
+h1 .w{display:inline-block;animation:blurIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i)*.09s + .05s)}
+@keyframes blurIn{from{opacity:0;filter:blur(10px);transform:translateY(12px)}to{opacity:1;filter:blur(0);transform:none}}
+.sub{font-size:14px;color:var(--tx2);margin:0;max-width:62ch;line-height:1.7}
+.hero-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.hbtn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 20px;border:0;border-radius:9999px;font-family:var(--fs);font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--tx);background:transparent;box-shadow:inset 0 0 0 1px var(--bdl);cursor:pointer;transition:background .15s,transform .12s,box-shadow .15s}
+.hbtn:hover{background:rgba(255,255,255,.07)}.hbtn:active{transform:scale(.97)}
+.hbtn.grn{background:var(--green);color:#000;box-shadow:none}.hbtn.grn:hover{background:#3be477}
+.hbtn kbd{font-family:var(--fs);font-size:11px;font-weight:800;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.1);color:var(--tx2)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 0}
+.stat{background:var(--surf);border-radius:14px;padding:14px 16px;box-shadow:inset 0 0 0 1px var(--rim)}
+.stat small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3)}
+.stat b{display:block;margin-top:4px;font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
+.stat b u{text-decoration:none;font-size:13px;color:var(--tx3);font-weight:700;margin-left:3px}
+
+/* section */
+.sec{margin-top:34px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 12px}
+.sec-h h2{font-size:18px;font-weight:900;letter-spacing:-.01em;margin:0}
+.sec-h a{font-size:12px;font-weight:700;color:var(--tx2);min-height:44px;display:inline-flex;align-items:center}
+.sec-h a:hover{color:var(--green)}
+
+/* today's idol */
+.today{position:relative;overflow:hidden;display:flex;gap:16px;align-items:center;padding:18px;border-radius:20px;background:linear-gradient(135deg,rgba(167,139,250,.18),#1b1b1b 55%);box-shadow:inset 0 0 0 1px rgba(167,139,250,.3);min-height:120px}
+.today .av{position:relative;flex:none;width:88px;height:88px;border-radius:22px;overflow:hidden;background:#2a2a2a;display:grid;place-items:center;font-size:32px;font-weight:900;color:var(--tx3);box-shadow:0 0 0 2px var(--violet),0 10px 24px rgba(0,0,0,.5)}
+.today .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.today .bd{min-width:0;flex:1}
+.today .bdg{display:inline-flex;align-items:center;min-height:26px;padding:0 12px;border-radius:9999px;background:var(--violet);color:#000;font-size:11.5px;font-weight:900}
+.today h3{margin:8px 0 2px;font-size:22px;font-weight:900;letter-spacing:-.02em;overflow-wrap:anywhere}
+.today .mt{margin:0;font-size:12.5px;font-weight:700;color:var(--tx2)}
+.today .tg{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.today .tg span{font-size:11px;font-weight:800;padding:3px 10px;border-radius:9999px;background:rgba(255,255,255,.08)}
+.today .ac{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.today .ac a,.today .ac button{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:0;border-radius:9999px;font-family:var(--fs);font-size:12px;font-weight:700;color:var(--tx);background:transparent;box-shadow:inset 0 0 0 1px var(--bdl);cursor:pointer}
+.today .ac .g{background:var(--green);color:#000;box-shadow:none}
+.today .ac a:hover,.today .ac button:hover{background:rgba(255,255,255,.07)}
+.sk{background:linear-gradient(90deg,#1f1f1f 25%,#2a2a2a 50%,#1f1f1f 75%);background-size:200% 100%;animation:sk 1.4s linear infinite;border-radius:10px}
+@keyframes sk{from{background-position:200% 0}to{background-position:-200% 0}}
+
+/* top lists */
+.tops{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.top{background:var(--surf);border-radius:18px;padding:14px;box-shadow:inset 0 0 0 1px var(--rim)}
+.top h3{display:flex;align-items:center;justify-content:space-between;margin:2px 4px 10px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)}
+.top h3 em{font-style:normal;font-weight:700;letter-spacing:0;text-transform:none;color:var(--tx3)}
+.top ol{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.top li a{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 10px;border-radius:12px;background:var(--surf2);transition:background .15s,transform .12s}
+.top li a:hover{background:var(--card);transform:translateX(2px)}
+.top .rk{width:22px;font-size:12px;font-weight:900;color:var(--tx3);font-variant-numeric:tabular-nums}
+.top li:nth-child(1) .rk{color:#ffd166}.top li:nth-child(2) .rk{color:#c8ccd4}.top li:nth-child(3) .rk{color:#e0a173}
+.top .nm{flex:1;min-width:0;font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .sc{font-size:14px;font-weight:900;font-variant-numeric:tabular-nums}
+.rkd{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:20px;padding:0 6px;border-radius:9999px;font-size:10.5px;font-weight:800;background:rgba(255,255,255,.08);color:var(--tx2)}
+.rkd.up{background:rgba(30,215,96,.16);color:#1ed760}.rkd.down{background:rgba(243,114,127,.16);color:#f3727f}.rkd.new{background:rgba(255,209,102,.16);color:#ffd166}
+.rkd.none,.rkd.same{background:transparent;color:var(--tx3);min-width:0;padding:0 2px}
+
+/* feature cards */
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{--mx:50%;--my:0%;position:relative;overflow:hidden;background:var(--surf);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px;box-shadow:inset 0 0 0 1px var(--rim);transition:background .2s,box-shadow .2s,transform .2s;animation:cardIn .5s ease backwards}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(240px circle at var(--mx) var(--my),color-mix(in srgb,var(--ac,#1ed760) 18%,transparent),transparent 70%);opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac,#1ed760) 40%,transparent),var(--sh-hv)}
+.card:hover::before{opacity:1}
+.card:nth-child(2){animation-delay:.06s}.card:nth-child(3){animation-delay:.12s}.card:nth-child(4){animation-delay:.18s}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:color-mix(in srgb,var(--ac,#1ed760) 18%,#1f1f1f);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac,#1ed760) 35%,transparent)}
+.flag{font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--ac,#1ed760)}
+.card h2{font-size:21px;font-weight:900;margin:0;letter-spacing:-.01em}
+.card p{font-size:13px;color:var(--tx2);margin:0;line-height:1.65}
+.card .cta{margin-top:auto;padding-top:8px;font-size:12px;font-weight:800;color:var(--tx2);display:inline-flex;align-items:center;gap:6px;min-height:44px}
+.card:hover .cta{color:var(--ac,#1ed760)}
+footer{margin-top:52px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:12px;color:var(--tx3);line-height:1.7}
+@media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}.tops{grid-template-columns:1fr}}
+@media(max-width:600px){
+  header{padding:36px 0 22px}
   .wrap{padding:0 14px 48px}
+  .cards{grid-template-columns:1fr}
+  .today{flex-direction:column;align-items:flex-start}
+  .hbtn{flex:1;justify-content:center;padding:0 14px}
+  .hbtn kbd{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .aurora span,.shiny,.sk{animation:none}
+  h1 .w,.card{animation:none}
 }
 </style>
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">이 사이트의 점수표·지도·추천 기능은 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260936"></script>
+<script src="js/site-nav.js?v=20260938"></script>
 <div class="wrap">
 <header>
-  <p class="eyebrow">2026.09 기준</p>
-  <h1>여자아이돌<br>체급 점수표</h1>
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+  <p class="eyebrow"><span class="shiny">2026.09 기준</span></p>
+  <h1 aria-label="여자아이돌 체급 점수표"><span class="w" style="--i:0">여자아이돌</span><br><span class="w" style="--i:1">체급</span> <span class="w" style="--i:2">점수표</span></h1>
   <p class="sub">시장별 구조에 맞춰 배점을 달리한 100점 환산 체급지수입니다. 공식 통계가 아니라 동일 기준 상대평가이므로 ±2~3점은 동급으로 봅니다.</p>
+  <div class="hero-act">
+    <a class="hbtn grn" href="./kr-idol-tier-2026-09.html">🇰🇷 한국 점수표</a>
+    <a class="hbtn" href="./jp-idol-tier-2026-09.html">🇯🇵 일본 점수표</a>
+    <button class="hbtn" type="button" id="hSearch" aria-label="그룹 검색 열기">🔍 그룹 찾기 <kbd>/</kbd></button>
+    <a class="hbtn" href="?discover=1" data-discover>🎲 발견하기</a>
+  </div>
 </header>
-<div class="cards">
-  <a class="card" href="./kr-idol-tier-2026-09.html">
-    <span class="flag">Korea · 86팀</span>
-    <h2>한국 여자아이돌</h2>
-    <p>국내음원·음반·팬덤, 공연, 글로벌 소비력, 국내인지도, 현재기세를 반영한 점수표.</p>
-    <span class="cta">점수표 보기 →</span>
-  </a>
-  <a class="card" href="./jp-idol-tier-2026-09.html">
-    <span class="flag">Japan · 126팀</span>
-    <h2>일본 여자아이돌</h2>
-    <p>공연·현장 동원력에 가장 큰 배점을 둔 일본 시장 구조 기준 점수표.</p>
-    <span class="cta">점수표 보기 →</span>
-  </a>
-  <a class="card" href="./idol-map.html">
-    <span class="flag">New · IDOL MAP</span>
-    <h2>시장 포지셔닝 지도</h2>
-    <p>코어 팬덤↔대중, 라이브↔디지털 두 축으로 한국·일본 아이돌의 성향을 지도에서 확인해요.</p>
-    <span class="cta">지도 보기 →</span>
-  </a>
-  <a class="card" href="?discover=1" data-discover>
-    <span class="flag">New · DISCOVER</span>
-    <h2>아이돌 발견하기</h2>
-    <p>랜덤·숨은 보석·내 취향·HOT으로 아직 모르는 그룹을 골라 보세요. 비슷한 그룹과 지도로 계속 이어서 탐색할 수 있어요.</p>
-    <span class="cta">🎲 발견하기 →</span>
-  </a>
+
+<div class="stats" id="stats">
+  <div class="stat"><small>한국</small><b><span data-n="86">86</span><u>팀</u></b></div>
+  <div class="stat"><small>일본</small><b><span data-n="126">126</span><u>팀</u></b></div>
+  <div class="stat"><small>월별 기록</small><b><span id="stMonths" data-n="1">1</span><u>개월</u></b></div>
+  <div class="stat"><small>탐색 기능</small><b><span data-n="4">4</span><u>가지</u></b></div>
 </div>
+
+<section class="sec" aria-labelledby="todayT">
+  <div class="sec-h"><h2 id="todayT">📅 오늘의 아이돌</h2><a href="?discover=1" data-discover>다른 그룹 발견하기 →</a></div>
+  <div class="today" id="today"><div class="sk" style="width:88px;height:88px;border-radius:22px"></div><div class="bd" style="flex:1"><div class="sk" style="height:22px;width:60%"></div><div class="sk" style="height:14px;width:40%;margin-top:10px"></div></div></div>
+</section>
+
+<section class="sec" aria-labelledby="topT">
+  <div class="sec-h"><h2 id="topT">🏆 이번 달 TOP 5</h2><a href="./idol-map.html">지도로 보기 →</a></div>
+  <div class="tops" id="tops">
+    <div class="top"><h3>Korea</h3><div class="sk" style="height:200px"></div></div>
+    <div class="top"><h3>Japan</h3><div class="sk" style="height:200px"></div></div>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="featT">
+  <div class="sec-h"><h2 id="featT">탐색 기능</h2></div>
+  <div class="cards">
+    <a class="card" href="./kr-idol-tier-2026-09.html" style="--ac:#1ed760">
+      <span class="ic" aria-hidden="true">🇰🇷</span><span class="flag">Korea · 86팀</span>
+      <h2>한국 여자아이돌</h2>
+      <p>국내음원·음반·팬덤, 공연, 글로벌 소비력, 국내인지도, 현재기세를 반영한 점수표. 상세 필터와 그룹 비교, 월별 순위 변동까지.</p>
+      <span class="cta">점수표 보기 →</span>
+    </a>
+    <a class="card" href="./jp-idol-tier-2026-09.html" style="--ac:#f3727f">
+      <span class="ic" aria-hidden="true">🇯🇵</span><span class="flag">Japan · 126팀</span>
+      <h2>일본 여자아이돌</h2>
+      <p>공연·현장 동원력에 가장 큰 배점을 둔 일본 시장 구조 기준 점수표. 계열·활동형태별로 골라 볼 수 있어요.</p>
+      <span class="cta">점수표 보기 →</span>
+    </a>
+    <a class="card" href="./idol-map.html" style="--ac:#539df5">
+      <span class="ic" aria-hidden="true">🗺</span><span class="flag">IDOL MAP</span>
+      <h2>시장 포지셔닝 지도</h2>
+      <p>코어 팬덤↔대중, 라이브↔디지털 두 축으로 한국·일본 아이돌의 성향을 지도에서 확인해요.</p>
+      <span class="cta">지도 보기 →</span>
+    </a>
+    <a class="card" href="?discover=1" data-discover style="--ac:#a78bfa">
+      <span class="ic" aria-hidden="true">🎲</span><span class="flag">DISCOVER</span>
+      <h2>아이돌 발견하기</h2>
+      <p>랜덤·숨은 보석·내 취향·HOT으로 아직 모르는 그룹을 골라 보세요. 비슷한 그룹과 지도로 계속 이어서 탐색할 수 있어요.</p>
+      <span class="cta">🎲 발견하기 →</span>
+    </a>
+  </div>
+</section>
+
 <footer>
-  <p>각 점수표의 배점 기준과 신뢰도 표기는 개별 페이지 하단에 설명되어 있습니다.</p>
+  <p>각 점수표의 배점 기준과 신뢰도 표기는 개별 페이지 하단에 설명되어 있습니다. 프로필 사진의 저작권은 각 권리자에게 있습니다.</p>
 </footer>
 </div>
+
+<script>
+(function () {
+  'use strict';
+  var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var vm = document.querySelector('script[src*="site-nav.js"]').src.match(/v=(\d+)/), V = vm ? vm[1] : '';
+  var PAGE = { KR: 'kr-idol-tier-2026-09.html', JP: 'jp-idol-tier-2026-09.html' };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function loadScript(src) { return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = src + '?v=' + V; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+  function count(n, to) {
+    if (REDUCED) { n.textContent = to; return; }
+    var t0 = performance.now();
+    (function step(now) { var k = Math.min(1, (now - t0) / 800); n.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); })(t0);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-n]'), function (n) { count(n, Number(n.getAttribute('data-n'))); });
+
+  // 카드 스포트라이트
+  Array.prototype.forEach.call(document.querySelectorAll('.card'), function (c) {
+    c.addEventListener('pointermove', function (e) { var r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
+  });
+  document.getElementById('hSearch').addEventListener('click', function () { document.getElementById('snSearch').click(); });
+
+  /* 이번 달 TOP 5 — history snapshot(현재월+이전월)만 읽는다. 실패하면 섹션을 숨긴다. */
+  var tops = document.getElementById('tops');
+  loadScript('js/rank-history.js').then(function () {
+    return Promise.all(['KR', 'JP'].map(function (c) { return RankHistory.loadRecent(c, 2); }));
+  }).then(function (all) {
+    var html = '', months = 0;
+    ['KR', 'JP'].forEach(function (c, i) {
+      var snaps = all[i]; if (!snaps.length) return;
+      var cur = snaps[snaps.length - 1], d = RankHistory.deltasFromSnapshots(snaps);
+      months = Math.max(months, 0);
+      var top = cur.groups.slice().sort(function (a, b) { return a.rank - b.rank || String(a.id).localeCompare(String(b.id)); }).slice(0, 5);
+      html += '<div class="top"><h3>' + (c === 'KR' ? '🇰🇷 Korea' : '🇯🇵 Japan') + '<em>' + RankHistory.fmtPeriod(cur.meta.period) + '</em></h3><ol>' + top.map(function (g) {
+        return '<li><a href="' + PAGE[c] + '?id=' + encodeURIComponent(g.id) + '&group=' + encodeURIComponent(g.group) + '"><span class="rk">' + g.rank + '</span><span class="nm">' + esc(g.group) + '</span>' + RankHistory.renderRankDeltaBadge(d[g.id]) + '<span class="sc">' + g.score + '</span></a></li>';
+      }).join('') + '</ol></div>';
+    });
+    if (!html) throw new Error('empty');
+    tops.innerHTML = html;
+    RankHistory.loadHistoryIndex().then(function (idx) { if (idx) { var m = Math.max((idx.KR || []).length, (idx.JP || []).length); if (m) count(document.getElementById('stMonths'), m); } });
+  }).catch(function () { var s = tops.closest('.sec'); if (s) s.hidden = true; });
+
+  /* 오늘의 아이돌 — 하루 동안 고정(날짜 기반). 실패하면 섹션을 숨긴다. */
+  var today = document.getElementById('today');
+  Promise.resolve().then(function () { return window.__ensureData(); }).then(function () { return window.IdolRec ? null : loadScript('js/idol-recommendation-core.js'); })
+    .then(function () { return fetch('data/namu_images.json').then(function (r) { return r.json(); }).catch(function () { return {}; }); })
+    .then(function (imgs) {
+      var r = IdolRec.pickDiscovery('daily', 'ALL'); if (!r) throw new Error('none');
+      var e = r.ent, im = imgs[e.country] && imgs[e.country][e.name], tags = IdolRec.describeStyle(e);
+      var page = PAGE[e.country] + '?id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name);
+      today.innerHTML = '<div class="av">' + esc(e.name.charAt(0)) + (im && im.img ? '<img alt="" src="' + esc(im.img) + '" onerror="this.remove()">' : '') + '</div>'
+        + '<div class="bd"><span class="bdg">📅 오늘의 아이돌</span><h3>' + esc(e.name) + '</h3><p class="mt">' + (e.country === 'KR' ? '🇰🇷 한국' : '🇯🇵 일본') + ' · ' + esc(e.tier) + ' · ' + e.total + '점</p>'
+        + '<div class="tg">' + tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>'
+        + '<div class="ac"><a class="g" href="' + page + '">상세보기</a>' + (e.spotify ? '<a target="_blank" rel="noopener noreferrer" href="' + esc(e.spotify) + '">Spotify ▶</a>' : '')
+        + '<a href="idol-map.html?country=' + e.country + '&id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name) + '">🗺 지도</a></div></div>';
+    }).catch(function () { var s = today.closest('.sec'); if (s) s.hidden = true; });
+})();
+</script>
 </body>
 </html>

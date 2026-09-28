@@ -4,7 +4,7 @@
  * - REPLACE_NAV=false 로 바꾸면 예전처럼 브라우저 기록에 쌓인다. */
 (function () {
   'use strict';
-  var REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
+  var SITE_V = '20260938', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
   var script = document.currentScript, base = '';
   if (script && script.src) base = script.src.replace(/js\/site-nav\.js.*$/, '');
 
@@ -73,6 +73,19 @@
     + '.sn-res small{margin-left:auto;color:#7c7c7c;font-weight:700;font-size:12px}'
     + '.sn-res .none{padding:12px 14px;color:#7c7c7c;font-size:13px}'
     + '.sn-res .act{background:transparent;box-shadow:inset 0 0 0 1px #333}'
+    + '.sn-fp{display:none;position:absolute;right:10px;top:54px;width:min(340px,calc(100vw - 20px));max-height:70vh;overflow-y:auto;background:#181818;border-radius:18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),rgba(0,0,0,.6) 0 18px 44px;padding:14px}'
+    + '.sn-fp.on{display:block;animation:snFp .18s ease-out}@keyframes snFp{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}'
+    + '.sn-fp h4{margin:0 0 10px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#7c7c7c}'
+    + '.sn-fp ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}'
+    + '.sn-fp li{display:flex;align-items:center;gap:8px;padding:0 4px 0 12px;min-height:48px;border-radius:12px;background:#1f1f1f}'
+    + '.sn-fp li a{flex:1;min-width:0;display:flex;align-items:center;gap:8px;min-height:48px;color:#fff;text-decoration:none;font-size:14px;font-weight:700}'
+    + '.sn-fp li a span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}'
+    + '.sn-fp li button{flex:none;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#7c7c7c;font-size:14px;cursor:pointer}.sn-fp li button:hover{color:#f3727f;background:rgba(243,114,127,.12)}'
+    + '.sn-fp .f{font-size:10px;font-weight:800;letter-spacing:.06em;padding:2px 6px;border-radius:4px;color:#000}.sn-fp .f.kr{background:#1ed760}.sn-fp .f.jp{background:#f3727f}'
+    + '.sn-fp .act{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}'
+    + '.sn-fp .act a,.sn-fp .act button{flex:1;min-width:120px;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 12px;border:0;border-radius:9999px;background:transparent;color:#fff;font:inherit;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;box-shadow:inset 0 0 0 1px #7c7c7c}'
+    + '.sn-fp .act .g{background:#1ed760;color:#000;box-shadow:none}'
+    + '.sn-fp .empty{padding:10px 4px;font-size:13px;line-height:1.7;color:#b3b3b3}'
     + '.sn-top{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:35;width:44px;height:44px;border-radius:50%;border:0;background:#252525;color:#fff;font-size:18px;cursor:pointer;box-shadow:rgba(0,0,0,.5) 0 6px 18px;opacity:0;pointer-events:none;transition:opacity .2s,transform .15s}'
     + '.sn-top.on{opacity:1;pointer-events:auto}.sn-top:hover{background:#333}.sn-top:active{transform:scale(.92)}'
     + '@media(max-width:560px){.sn-disc .t{display:none}.sn-in{padding:0 8px;gap:2px}.sn-b{padding:0 10px;font-size:12.5px}.sn-home span{display:none}.sn-back{padding:0 10px}.sn-back span{display:none}.sn-b .sm{display:inline}.sn-b .lg{display:none}.sn-fav .t{display:none}}'
@@ -94,8 +107,9 @@
     + '<span class="sn-sp"></span>'
     + '<button class="sn-b sn-disc" id="snDisc" type="button" data-discover aria-label="DISCOVER 아이돌 발견하기">🎲<span class="t">DISCOVER</span></button>'
     + '<button class="sn-b" id="snSearch" type="button" aria-label="그룹 검색" aria-expanded="false">' + SEARCH + '</button>'
-    + '<a class="sn-b sn-fav" href="' + base + PAGES.map + '?country=ALL&preset=MINE" aria-label="내 최애 보기"><span class="h">♥</span><b id="snFav">0</b><span class="t">최애</span></a>'
+    + '<button class="sn-b sn-fav" id="snFavBtn" type="button" aria-label="내 최애 목록 열기" aria-expanded="false" aria-controls="snFp"><span class="h">♥</span><b id="snFav">0</b><span class="t">최애</span></button>'
     + '</div>'
+    + '<div class="sn-fp" id="snFp" role="dialog" aria-label="내 최애"></div>'
     + '<div class="sn-sr" id="snSr"><div class="sn-sr-in"><input id="snQ" type="search" placeholder="그룹 이름 검색 (한국·일본 전체)" autocomplete="off" aria-label="그룹 검색"><ul class="sn-res" id="snRes"></ul></div></div>';
   document.body.insertBefore(nav, document.body.firstChild);
   document.addEventListener('DOMContentLoaded', function () { var w = document.querySelector('.wrap'); if (w && !w.id) { w.id = 'main'; w.setAttribute('tabindex', '-1'); } });
@@ -155,14 +169,24 @@
       var s = document.createElement('script'); s.src = base + src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
     });
   }
+  var coreP = null;
+  // 팝오버·홈 화면이 데이터(IdolMatch)만 필요할 때 쓰는 가벼운 로더
+  window.__ensureData = function () {
+    if (!coreP) {
+      var p = Promise.resolve();
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=' + SITE_V); });
+      coreP = p.then(function () { return window.IdolMatch.ready; }).catch(function (e) { coreP = null; throw e; });
+    }
+    return coreP;
+  };
   var discP = null;
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260936'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260936'); });
-      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260936'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260936'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260938'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260938'); });
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260938'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260938'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });
@@ -175,6 +199,44 @@
     var go = function () { window.openDiscover({ id: v && v !== '1' && !view ? v : null, view: view, mode: qp.get('mode') || undefined, scope: qp.get('scope') || undefined }); };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
   })();
+
+  /* ---------- 최애 팝오버 ---------- */
+  var fp = document.getElementById('snFp'), fpBtn = document.getElementById('snFavBtn');
+  function pageOfCountry(c) { return base + PAGES[c.toLowerCase()]; }
+  function renderFav() {
+    var raw; try { raw = JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); } catch (e) { raw = []; }
+    if (!Array.isArray(raw) || !raw.length) {
+      fp.innerHTML = '<h4>내 최애</h4><p class="empty">아직 저장한 최애가 없어요.<br>그룹 카드의 ♡를 누르거나 DISCOVER에서 마음에 드는 그룹을 저장해 보세요.</p><div class="act"><button type="button" class="g" data-discover>🎲 DISCOVER로 찾아보기</button></div>';
+      return;
+    }
+    window.__ensureData().then(function () {
+      var IM = window.IdolMatch, items = IM.getFavorites();
+      fp.innerHTML = '<h4>내 최애 ' + items.length + '팀</h4><ul>' + items.map(function (f) {
+        var g = IM.getGroupById(f.id), name = g ? g.name : f.group;
+        return '<li><a href="' + pageOfCountry(f.country) + '?id=' + encodeURIComponent(f.id) + '&group=' + encodeURIComponent(name) + '"><span class="f ' + f.country.toLowerCase() + '">' + f.country + '</span><span>' + String(name).replace(/[&<>]/g, '') + '</span></a>'
+          + '<button type="button" data-unfav="' + f.country + '|' + f.id + '" aria-label="' + String(name).replace(/[&<>"]/g, '') + ' 최애에서 빼기">✕</button></li>';
+      }).join('') + '</ul><div class="act"><a href="' + base + PAGES.map + '?country=ALL&preset=MINE">🗺 지도에서 보기</a>'
+        + '<button type="button" class="g" data-discover>' + (items.length >= 2 ? '🎲 내 취향으로 발견' : '🎲 DISCOVER') + '</button></div>';
+    }).catch(function () { fp.innerHTML = '<p class="empty">목록을 불러오지 못했어요. 잠시 뒤 다시 눌러 주세요.</p>'; });
+  }
+  function toggleFav(on) {
+    fp.classList.toggle('on', on); fpBtn.setAttribute('aria-expanded', on);
+    if (on) { toggleSearchIfOpen(); renderFav(); }
+  }
+  function toggleSearchIfOpen() { var s = document.getElementById('snSr'); if (s && s.classList.contains('on')) document.getElementById('snSearch').click(); }
+  fpBtn.addEventListener('click', function (e) { e.stopPropagation(); toggleFav(!fp.classList.contains('on')); });
+  fp.addEventListener('click', function (e) {
+    var u = e.target.closest('[data-unfav]');
+    if (u) {
+      var parts = u.getAttribute('data-unfav').split('|');
+      window.__ensureData().then(function () { window.IdolMatch.saveFavorite(parts[0], parts[1]); renderFav(); });
+      return;
+    }
+    if (e.target.closest('[data-discover]')) toggleFav(false);
+  });
+  window.addEventListener('idolfav', function () { if (fp.classList.contains('on')) renderFav(); });
+  document.addEventListener('click', function (e) { if (fp.classList.contains('on') && !fp.contains(e.target) && !fpBtn.contains(e.target)) toggleFav(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && fp.classList.contains('on')) { toggleFav(false); fpBtn.focus(); } });
 
   /* ---------- 그룹 검색 ---------- */
   var sr = document.getElementById('snSr'), q = document.getElementById('snQ'), res = document.getElementById('snRes'), sBtn = document.getElementById('snSearch');

@@ -6,7 +6,7 @@
  * window.RankHistory 로만 노출한다. */
 (function (global) {
   'use strict';
-  var VERSION = '20260936';
+  var VERSION = '20260938';
   var script = document.currentScript, base = script && script.src ? script.src.replace(/js\/rank-history\.js.*$/, '') : '';
   var DIR = base + 'data/history/';
 
@@ -308,7 +308,7 @@
     // 로딩
     loadHistoryIndex: loadHistoryIndex, loadCountrySnapshot: loadCountrySnapshot, loadRecent: loadRecent, loadAll: loadAll, getGroupHistory: getGroupHistory, loadDeltas: loadDeltas,
     // 렌더
-    renderRankDeltaBadge: renderRankDeltaBadge, renderGroupTimeline: renderGroupTimeline, renderHistoryStats: renderHistoryStats,
+    fmtPeriod: fmtPeriod, renderRankDeltaBadge: renderRankDeltaBadge, renderGroupTimeline: renderGroupTimeline, renderHistoryStats: renderHistoryStats,
     renderDetail: renderDetail, renderCompareTrend: renderCompareTrend, lineChart: lineChart
   };
 })(window);

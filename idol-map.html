@@ -18,21 +18,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/idol-map.css?v=20260936">
+<link rel="stylesheet" href="css/idol-map.css?v=20260938">
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">IDOL MAP은 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260936"></script>
+<script src="js/site-nav.js?v=20260938"></script>
 <div class="wrap">
 <header>
   <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
   <p class="eyebrow"><span class="shiny">IDOL MAP · 2026.09.28</span></p>
   <h1 aria-label="아이돌 시장 포지셔닝 지도"><span class="w" style="--i:0">아이돌</span> <span class="w" style="--i:1">시장</span><br><span class="w" style="--i:2">포지셔닝</span> <span class="w" style="--i:3">지도</span></h1>
-  <p class="sub">누가 더 높은지가 아니라 <b>어떤 방식으로 강한지</b>를 보여줘요. 가로축은 코어 팬덤형 ↔ 대중 확장형, 세로축은 디지털·음원형 ↔ 라이브·공연형이에요. 위치는 우열이 아닌 성향이고, 총점은 버블 크기에만 쓰여요.</p>
+  <p class="sub" id="mapSub" tabindex="0" role="button" aria-expanded="false" aria-label="설명 펼치기/접기">누가 더 높은지가 아니라 <b>어떤 방식으로 강한지</b>를 보여줘요. 가로축은 코어 팬덤형 ↔ 대중 확장형, 세로축은 디지털·음원형 ↔ 라이브·공연형이에요. 위치는 우열이 아닌 성향이고, 총점은 버블 크기에만 쓰여요.</p>
   <nav class="navs" aria-label="페이지 이동"><a href="kr-idol-tier-2026-09.html">한국 체급 점수표 →</a><a href="jp-idol-tier-2026-09.html">일본 체급 점수표 →</a></nav>
 </header>
 
-<div class="toolbar">
+<div class="toolbar" id="toolbar">
   <div class="tgroup">
     <span class="tlabel">시장</span>
     <div class="seg" role="group" aria-label="시장 선택">
@@ -41,7 +41,10 @@
       <button class="pill" data-mode="ALL" aria-pressed="false">통합</button>
     </div>
   </div>
-  <div class="tgroup">
+  <div class="tgroup tbtn">
+    <button class="pill tog" id="tbMore" type="button" aria-expanded="false" aria-controls="toolbar">⚙ 보기 설정 <span class="tbcar" aria-hidden="true">▾</span></button>
+  </div>
+  <div class="tgroup more">
     <span class="tlabel">보기</span>
     <div class="seg" role="group" aria-label="프리셋">
       <button class="pill" data-preset="ALL" aria-pressed="true">전체</button>
@@ -50,14 +53,14 @@
       <button class="pill" data-preset="MINE" aria-pressed="false">❤️ MY</button>
     </div>
   </div>
-  <div class="tgroup">
+  <div class="tgroup more">
     <span class="tlabel">색상</span>
     <div class="seg" role="group" aria-label="색상 기준">
       <button class="pill" data-color="tier" aria-pressed="true">티어</button>
       <button class="pill" data-color="style" aria-pressed="false">스타일</button>
     </div>
   </div>
-  <div class="tgroup">
+  <div class="tgroup more">
     <button class="pill tog" id="cmpToggle" aria-pressed="false">⇄ 두 그룹 비교</button>
   </div>
   <div class="tgroup grow">
@@ -75,6 +78,7 @@
       <canvas id="dots" aria-hidden="true"></canvas>
       <div id="mapwrap">
         <svg id="map" role="group" aria-label="아이돌 포지셔닝 지도"></svg>
+        <p class="map-loading" id="mapLoading">지도를 불러오는 중…</p>
         <span class="axl t"><i>▲</i> LIVE <em>라이브·공연형</em></span>
         <span class="axl b"><i>▼</i> DIGITAL <em>디지털·음원형</em></span>
         <span class="axl l"><i>◀</i> FANDOM <em>코어 팬덤형</em></span>
@@ -86,6 +90,7 @@
           <button class="zbtn" id="zreset" aria-label="보기 초기화" style="font-size:13px">1×</button>
         </div>
         <div id="tip" role="tooltip" hidden></div>
+        <div class="map-hint" id="mapHint" role="note" hidden><span>👆 버블을 눌러 자세히 · 휠/핀치로 확대 · 드래그로 이동</span><button type="button" id="mapHintX" aria-label="안내 닫기">✕</button></div>
       </div>
     </div>
     <div class="legend" id="legend"></div>
@@ -104,8 +109,8 @@
 </div>
 </div>
 
-<script src="js/idol-match.js?v=20260936"></script>
-<script src="js/idol-recommendation-core.js?v=20260936"></script>
-<script src="js/idol-map.js?v=20260936"></script>
+<script src="js/idol-match.js?v=20260938"></script>
+<script src="js/idol-recommendation-core.js?v=20260938"></script>
+<script src="js/idol-map.js?v=20260938"></script>
 </body>
 </html>

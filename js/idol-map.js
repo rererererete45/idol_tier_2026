@@ -448,7 +448,7 @@
     if (S.compare && S.cmp.length === 2) { renderComparePanel(); return; }
     var expl = generatePositionExplanation(p).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
     var topTotal = Math.max(1, Math.round(100 - p.totalPercentile)), topMom = Math.max(1, Math.round(100 - p.mom));
-    var html = '<div class="sh-hero"><div class="av">' + esc(p.group.charAt(0)) + imgHtml(p) + '</div>'
+    var html = '<div class="grab" aria-hidden="true"></div><div class="sh-hero"><div class="av">' + esc(p.group.charAt(0)) + imgHtml(p) + '</div>'
       + '<div class="sh-id"><h2>' + esc(p.group) + ' ' + flag(p.country) + '</h2>'
       + '<p class="sh-sub">' + tierChip(p) + '<span>' + (p.status ? esc(p.status) : '') + '</span></p></div>'
       + '<button class="x" id="shClose" aria-label="닫기">✕</button></div>'
@@ -463,6 +463,7 @@
       + matchList() + sceneList()
       + '<div class="sh-act"><a class="btn out" href="' + detailUrl(p) + '">상세보기</a>'
       + (p.spotify ? '<a class="btn grn" target="_blank" rel="noopener noreferrer" href="' + esc(p.spotify) + '" aria-label="' + esc(p.group) + ' Spotify에서 듣기">Spotify ▶</a>' : '')
+      + '<button class="btn out" id="btnFav" aria-pressed="' + IM.isFavorite(p.country, p.id) + '">' + (IM.isFavorite(p.country, p.id) ? '♥ 최애 해제' : '♡ 최애 저장') + '</button>'
       + '<button class="btn out" id="btnScene">' + (S.scene && S.scene.src === p.key ? '🧬 SAME SCENE 해제' : '🧬 같은 나라 비슷한 그룹') + '</button>'
       + '<button class="btn out" id="btnMatch">' + (S.match && S.match.src === p.key ? '🇰🇷↔🇯🇵 매칭 해제' : '🇰🇷↔🇯🇵 IDOL MATCH') + '</button></div>';
     sh.innerHTML = html;
@@ -470,6 +471,12 @@
     showSheet();
     $('shClose').addEventListener('click', clearSelection);
     $('btnMatch').addEventListener('click', function () { if (S.match && S.match.src === p.key) clearMatch(); else runMatch(p); });
+    $('btnFav').addEventListener('click', function () {
+      var on = IM.saveFavorite(p.country, p.id);
+      this.setAttribute('aria-pressed', on); this.textContent = on ? '♥ 최애 해제' : '♡ 최애 저장';
+      if (window.__toast) window.__toast(on ? '♥ ' + p.group + ' 최애에 저장했어요' : p.group + ' 최애에서 뺐어요');
+      if (S.preset === 'MINE') refreshStates();
+    });
     $('btnScene').addEventListener('click', function () { if (S.scene && S.scene.src === p.key) clearScene(); else runScene(p); });
     animateSheet(sh);
   }
@@ -557,6 +564,7 @@
   }
 
   function selectGroup(key, fromMatch) {
+    dismissHint();
     var p = findPoint(key); if (!p) return;
     if (S.compare) {
       var i = S.cmp.indexOf(key);
@@ -827,7 +835,9 @@
       S.mode = ['KR', 'JP', 'ALL'].indexOf(mode) >= 0 ? mode : 'KR';
       if (Q.get('color') === 'style') S.color = 'style';
       if (['HOT', 'GEM', 'MINE'].indexOf(Q.get('preset')) >= 0) S.preset = Q.get('preset');
-      bindUi(); bindPointer(); bindMapFx(); bindSpotlight();
+      var ml = $('mapLoading'); if (ml) ml.hidden = true;
+      var sub = $('mapSub'); if (sub) { var tg = function () { var o = sub.classList.toggle('open'); sub.setAttribute('aria-expanded', o); }; sub.addEventListener('click', tg); sub.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tg(); } }); }
+      bindUi(); bindPointer(); bindMapFx(); bindSpotlight(); bindToolbarFold(); bindSheetSwipe(); showHint();
       renderIdolMap(); fitView(); syncToolbar(); renderSideEmpty();
       $('notice').hidden = S.mode !== 'ALL';
       var g = Q.get('group'), gById = Q.get('id') && IM.getGroupById(Q.get('id')); // id 우선, group 이름은 fallback
@@ -844,6 +854,50 @@
       window.addEventListener('resize', debounce(function () { S.enter = false; renderIdolMap(); fitView(); }, 150));
       window.__IDOL_MAP__ = { S: S, DATA: DATA, buildPoints: buildPoints, robustZ: R.robustZ, classifyMapZone: R.classifyMapZone };
     }).catch(function () { $('excl').textContent = '데이터를 불러오지 못했어요.'; });
+  }
+  /* ---------- 사용성: 툴바 접기 / 첫 방문 안내 / 시트 스와이프 ---------- */
+  function bindToolbarFold() {
+    var tb = $('toolbar'), btn = $('tbMore');
+    if (!tb || !btn) return;
+    btn.addEventListener('click', function () { var on = !tb.classList.contains('open'); tb.classList.toggle('open', on); btn.setAttribute('aria-expanded', on); });
+    // 프리셋/색상이 URL 로 들어온 경우 접힌 상태에서도 무엇이 켜져 있는지 알 수 있게 펼쳐 둔다
+    if (S.preset !== 'ALL' || S.color !== 'tier') { tb.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }
+  }
+  var HINT_KEY = 'idolMapHintSeen', hintTimer = 0;
+  function hintSeen() { try { return localStorage.getItem(HINT_KEY) === '1'; } catch (e) { return false; } }
+  function dismissHint() {
+    var h = $('mapHint'); if (!h || h.hidden) return;
+    h.hidden = true; clearTimeout(hintTimer);
+    try { localStorage.setItem(HINT_KEY, '1'); } catch (e) { /* noop */ }
+  }
+  function showHint() {
+    var h = $('mapHint'); if (!h || hintSeen() || Q.get('group') || Q.get('id')) return;
+    h.hidden = false; hintTimer = setTimeout(dismissHint, 9000);
+    $('mapHintX').addEventListener('click', dismissHint);
+    el.svg.addEventListener('pointerdown', dismissHint, { once: true });
+    el.svg.addEventListener('wheel', dismissHint, { once: true, passive: true });
+  }
+  // 모바일 하단 시트: 손잡이/상단을 아래로 끌면 닫힌다
+  function bindSheetSwipe() {
+    var sh = el.sheet, y0 = null, dy = 0;
+    sh.addEventListener('pointerdown', function (e) {
+      if (window.innerWidth >= 1000) return;
+      var top = e.target.closest('.grab, .sh-hero');
+      if (!top || e.target.closest('button,a')) return;
+      y0 = e.clientY; dy = 0;
+      try { sh.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+    });
+    sh.addEventListener('pointermove', function (e) {
+      if (y0 === null) return;
+      dy = Math.max(0, e.clientY - y0); sh.style.transition = 'none'; sh.style.transform = 'translateY(' + dy + 'px)';
+    });
+    function end() {
+      if (y0 === null) return;
+      sh.style.transition = ''; sh.style.transform = '';
+      if (dy > 90) clearSelection();
+      y0 = null; dy = 0;
+    }
+    sh.addEventListener('pointerup', end); sh.addEventListener('pointercancel', end);
   }
   function debounce(fn, ms) { var t; return function () { clearTimeout(t); t = setTimeout(fn, ms); }; }
 
