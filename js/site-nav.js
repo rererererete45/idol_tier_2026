@@ -159,9 +159,9 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260933'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260933'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260933'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260935'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260935'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260935'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });

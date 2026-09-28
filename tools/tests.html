@@ -22,6 +22,7 @@ li small{color:#7c7c7c;margin-left:8px}
 <ul id="out"></ul>
 <script src="js/idol-match.js"></script>
 <script src="js/idol-recommendation-core.js"></script>
+<script src="js/rank-history.js"></script>
 <script>
 (async function () {
   var IM = window.IdolMatch, R = window.IdolRec, res = [];
@@ -124,6 +125,67 @@ li small{color:#7c7c7c;margin-left:8px}
     var bad = R.getDiscoverPool('ALL', { ignoreRecent: true }).filter(function (e) { return /^(무기한 활동휴지|시즌1 종료|3인 재편 후 장기 공백|활동 확인 필요)/.test(e.status); });
     return bad.length === 0 || bad.map(function (e) { return e.name; }).join();
   });
+
+
+  /* ---------- RANK HISTORY ---------- */
+  var RH = window.RankHistory;
+  t('순위 변동: 8→5 = ▲3', function () { var d = RH.getRankDelta({ rank: 5 }, { rank: 8 }); return (d.kind === 'up' && d.n === 3) || JSON.stringify(d); });
+  t('순위 변동: 2→6 = ▼4', function () { var d = RH.getRankDelta({ rank: 6 }, { rank: 2 }); return (d.kind === 'down' && d.n === 4) || JSON.stringify(d); });
+  t('순위 변동: 4→4 = –', function () { return RH.getRankDelta({ rank: 4 }, { rank: 4 }).kind === 'same'; });
+  t('이전 snapshot 에 id 없음 = NEW', function () { return RH.getRankDelta({ rank: 20 }, null, true).kind === 'new'; });
+  t('최초 월(이전 snapshot 없음) = –(none)', function () { return RH.getRankDelta({ rank: 3 }, null, false).kind === 'none'; });
+  t('점수 변동 계산', function () { return RH.getScoreDelta({ score: 88 }, { score: 86 }) === 2 && RH.getScoreDelta({ score: 84 }, { score: 85 }) === -1 && RH.getScoreDelta({ score: 90 }, { score: 90 }) === 0 && RH.getScoreDelta({ score: 1 }, null) === null; });
+  t('배지 텍스트(▲3 ▼4 – NEW)와 aria-label', function () {
+    var h = ['up', 'down', 'same', 'new', 'none'].map(function (k) { return RH.renderRankDeltaBadge({ kind: k, n: k === 'up' ? 3 : k === 'down' ? 4 : 0 }); }).join('');
+    return (h.indexOf('▲3') !== -1 && h.indexOf('▼4') !== -1 && h.indexOf('NEW') !== -1 && h.indexOf('–') !== -1 && (h.match(/aria-label/g) || []).length === 5) || h;
+  });
+  var mk = function (period, list, country) { return { meta: { country: country || 'KR', period: period, revision: 1 }, groups: list.map(function (g) { return { id: g[0], group: g[1], rank: g[2], tier: 'A', score: g[3], metrics: {} }; }) }; };
+  t('동점 rank 는 배열 순서와 무관하게 원본 값 유지', function () {
+    var snap = mk('2026-09', [['KR-2', 'B', 3, 80], ['KR-1', 'A', 1, 90], ['KR-3', 'C', 3, 80]]);
+    var h2 = RH.extractGroupHistory([snap], 'KR-2'), h3 = RH.extractGroupHistory([snap], 'KR-3'); return (h2[0].rank === 3 && h3[0].rank === 3) || 'ranks changed';
+  });
+  t('이름이 바뀌어도 같은 id 시계열로 이어짐', function () {
+    var h = RH.extractGroupHistory([mk('2026-10', [['KR-1', 'NewName', 2, 91]]), mk('2026-09', [['KR-1', 'OldName', 3, 88]])], 'KR-1');
+    return (h.length === 2 && h[0].period === '2026-09' && h[1].period === '2026-10' && h[0].group === 'OldName' && h[1].group === 'NewName') || JSON.stringify(h);
+  });
+  t('누락된 달은 보간하지 않음 / 최고·최저 순위', function () {
+    var snaps = [mk('2026-09', [['KR-1', 'A', 4, 80]]), mk('2026-10', [['KR-1', 'A', 2, 85]]), mk('2026-12', [['KR-1', 'A', 5, 79]])];
+    var h = RH.extractGroupHistory(snaps, 'KR-1');
+    return (h.length === 3 && !h.some(function (e) { return e.period === '2026-11'; }) && RH.getBestRank(h).rank === 2 && RH.getWorstRank(h).rank === 5 && RH.getBestRank(h).period === '2026-10') || JSON.stringify(h);
+  });
+  t('NEW 그룹은 진입 월부터만 시계열(가짜 값 없음) · 사라진 그룹의 과거 기록 유지', function () {
+    var snaps = [mk('2026-09', [['KR-1', 'A', 1, 90], ['KR-9', 'Gone', 2, 70]]), mk('2026-10', [['KR-1', 'A', 1, 90], ['KR-7', 'Fresh', 25, 40]])];
+    var fresh = RH.extractGroupHistory(snaps, 'KR-7'), gone = RH.extractGroupHistory(snaps, 'KR-9');
+    var d = RH.deltasFromSnapshots(snaps);
+    return (fresh.length === 1 && fresh[0].rank === 25 && gone.length === 1 && d['KR-7'].kind === 'new' && d['KR-1'].kind === 'same' && !d['KR-9']) || JSON.stringify(d);
+  });
+  t('기간 자르기: 최근 3개월(달력 기준)·데이터 부족 시 전체', function () {
+    var h = ['2026-09', '2026-10', '2026-12'].map(function (p) { return { period: p, rank: 1, score: 1 }; });
+    return RH.sliceRange(h, 3).length === 2 && RH.sliceRange(h, 12).length === 3 && RH.sliceRange(h, 0).length === 3 && RH.sliceRange([h[0]], 3).length === 1;
+  });
+  t('차트: 1위가 위쪽(y 좌표가 더 작음)', function () {
+    var svg = RH.lineChart({ series: [{ name: 'x', points: [{ p: '2026-09', v: 1 }, { p: '2026-10', v: 9 }] }], invert: true, rank: true, label: 't' });
+    var ys = (svg.match(/<circle cx="[\d.]+" cy="([\d.]+)"/g) || []).map(function (m) { return Number(/cy="([\d.]+)"/.exec(m)[1]); });
+    return (ys.length === 2 && ys[0] < ys[1]) || ys.join();
+  });
+  var idx = await RH.loadHistoryIndex();
+  res.push(['history index: 과거→최신 정렬, KR/JP 분리', !!idx && ['KR', 'JP'].every(function (c) { return Array.isArray(idx[c]) && idx[c].slice().sort().join() === idx[c].join() && idx[c].indexOf('2026-09') === 0; }), '']);
+  var krS = await RH.loadCountrySnapshot('KR', '2026-09'), jpS = await RH.loadCountrySnapshot('JP', '2026-09');
+  res.push(['2026-09 snapshot: KR 86팀 / JP 126팀', !!krS && !!jpS && krS.groups.length === 86 && jpS.groups.length === 126, krS && jpS ? krS.groups.length + '/' + jpS.groups.length : '로드 실패']);
+  res.push(['snapshot 필수 필드(id, group, rank, tier, score, metrics)', !!krS && !!jpS && krS.groups.concat(jpS.groups).every(function (g) { return g.id && g.group && Number.isFinite(g.rank) && g.tier && Number.isFinite(g.score) && g.metrics && Object.keys(g.metrics).length === 6; }), '']);
+  res.push(['KR/JP history 분리(id 접두사·metric 키 다름)', !!krS && !!jpS && krS.groups.every(function (g) { return /^KR-/.test(g.id) && 'domestic_digital' in g.metrics; }) && jpS.groups.every(function (g) { return /^JP-/.test(g.id) && 'streaming_sns' in g.metrics; }), '']);
+  var okRank = true, okMetric = true, why = '';
+  [['KR', krS], ['JP', jpS]].forEach(function (pair) {
+    IM.getRaw(pair[0]).forEach(function (r) {
+      var g = pair[1].groups.filter(function (x) { return x.id === r.id; })[0];
+      if (!g || g.rank !== r['순위'] || g.score !== r['총점'] || g.tier !== r['티어']) { okRank = false; why = r.id; }
+      if (g && Math.abs(Object.keys(g.metrics).reduce(function (a, k) { return a + g.metrics[k]; }, 0) - g.score) > 0.01) { okMetric = false; why = r.id; }
+    });
+  });
+  res.push(['snapshot rank/tier/score = DB 원본(동점 포함), metric 합 = 점수', okRank && okMetric, why]);
+  res.push(['2026-09 단독이면 모든 카드 변동 = –(none)', (function () { var d = RH.deltasFromSnapshots([krS]); return Object.keys(d).length === 86 && Object.keys(d).every(function (k) { return d[k].kind === 'none'; }); })(), '']);
+  var bad = await RH.loadCountrySnapshot('KR', '2099-01');
+  res.push(['없는 snapshot 로딩은 예외 없이 null(기존 기능 영향 없음)', bad === null, '']);
 
   Object.keys(backup).forEach(function (k) { if (backup[k] === null) localStorage.removeItem(k); else localStorage.setItem(k, backup[k]); });
   var pass = res.filter(function (r) { return r[1]; }).length;

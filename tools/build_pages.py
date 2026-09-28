@@ -54,7 +54,7 @@ def kr_rows(rows):
     for r in rows:
         img, wiki, imgpage = img_of("KR", r["그룹"])
         out.append({
-            "n": r["그룹"], "v": [r[k] for k in KR_KEYS], "slug": r["slug"],
+            "id": r["id"], "n": r["그룹"], "v": [r[k] for k in KR_KEYS], "slug": r["slug"],
             "gen": r["세대"], "style": r["스타일"], "agency": r["소속사"], "status": r["활동상태"],
             "debut": r["데뷔일"], "members": members(r["멤버수"]), "songs": r["대표곡"],
             "link": r["공식링크/SNS"], "verify": r["검증상태"], "note": r["대표출처/메모"],
@@ -68,7 +68,7 @@ def jp_rows(rows):
     for r in rows:
         img, wiki, imgpage = img_of("JP", r["그룹"])
         out.append({
-            "n": r["그룹"], "v": [r[k] for k in JP_KEYS], "slug": r["id"].lower(),
+            "id": r["id"], "n": r["그룹"], "v": [r[k] for k in JP_KEYS], "slug": r["id"].lower(),
             "period": PERIOD_FIX.get(r["결성시기"], r["결성시기"]),
             "lineage": LINEAGE_FIX.get(r["계열"], r["계열"]),
             "form": r["활동형태"], "style": r["스타일"], "status": r["활동상태"],
@@ -185,7 +185,7 @@ def build(page, data):
     }
     for k, v in rep.items():
         h = h.replace(k, v)
-    html = h + '<script src="js/idol-match.js?v=20260933"></script>\n<script src="js/idol-recommendation-core.js?v=20260933"></script>\n<script src="js/same-scene.js?v=20260933"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
+    html = h + '<script src="js/idol-match.js?v=20260935"></script>\n<script src="js/idol-recommendation-core.js?v=20260935"></script>\n<script src="js/same-scene.js?v=20260935"></script>\n<script src="js/rank-history.js?v=20260935"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
     open(os.path.join(ROOT, page["file"]), "w", encoding="utf-8", newline="\n").write(html)
     noimg = [d["n"] for d in data if not d["img"]]
     print(page["file"], len(data), "groups; without photo:", len(noimg))

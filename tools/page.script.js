@@ -111,12 +111,14 @@ function barsHTML(o){
     return '<div class="br"><span>'+l+'</span><span class="trk"><span class="fil'+(p>=70?'':' lo')+'" style="width:'+p+'%"></span></span><span>'+v+'</span></div>';
   }).join('');
 }
+let HD=null; // 전월 대비 순위 변동(id -> delta). 로딩 전/실패 시 null
+function rkBadge(o){return HD&&window.RankHistory?RankHistory.renderRankDeltaBadge(HD[o.id]):''}
 function card(o){
   const nm=encodeURIComponent(o.n);
   const verifychip=VCHIP.test(o.verify)?'<span class="chip mid">'+esc(o.verify)+'</span>':'';
   const stchip=o.status==='현역'?'':'<span class="chip">'+esc(o.status)+'</span>';
   const cmpOn=cmp.has(o.n);
-  return '<article class="card" data-slug="'+esc(o.slug)+'"><div class="crow"><button class="cmpbtn'+(cmpOn?' on':'')+'" data-cmp="'+esc(o.n)+'" aria-pressed="'+cmpOn+'" aria-label="비교에 추가">'+(cmpOn?'✓':'+')+'</button><span class="rank">#'+o.r+'</span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
+  return '<article class="card" data-slug="'+esc(o.slug)+'"><div class="crow"><button class="cmpbtn'+(cmpOn?' on':'')+'" data-cmp="'+esc(o.n)+'" aria-pressed="'+cmpOn+'" aria-label="비교에 추가">'+(cmpOn?'✓':'+')+'</button><span class="rankcol"><span class="rank">#'+o.r+'</span><span class="rkslot">'+rkBadge(o)+'</span></span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
    +'<div class="meta"><span class="chip">'+o.tier+'</span>'+verifychip+stchip+'</div>'
    +'<div class="bars">'+barsHTML(o)+'</div>'
    +'<div class="acts"><a class="btn grn"'+TGT+' href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
@@ -170,7 +172,7 @@ function detailHTML(o){
     +'<div class="dphead">'+photo
     +'<div class="dpinfo"><h2>'+esc(o.n)+'</h2>'
     +'<div class="dpmeta"><span class="chip">'+o.tier+'</span>'+verifychip+'</div>'
-    +'<div class="dpscore"><span class="n">'+o.s+'</span><span class="u">/ 100 · #'+o.r+'</span></div>'
+    +'<div class="dpscore"><span class="n">'+o.s+'</span><span class="u">/ 100 · #'+o.r+'</span>'+rkBadge(o)+'</div>'
     +'<a class="maplink" href="idol-map.html?country='+CFG.country+'&group='+encodeURIComponent(o.n)+'">IDOL MAP에서 위치 보기 →</a>'
     +(o.img?'<p class="dpsrc">사진 출처: <a href="'+(o.imgpage?esc(o.imgpage):namuUrl(o))+'"'+TGT+'>'+(o.imgpage?'공식 사이트':'나무위키')+'</a></p>':'')
     +'</div></div>'
@@ -184,7 +186,8 @@ function detailHTML(o){
     +'<a class="btn out"'+TGT+' href="'+namuUrl(o)+'">나무위키</a></div>'
     +(noteText?'<p class="dpnote">'+esc(noteText)+'</p>':'')
     +'<section class="scenebox" id="scenebox" data-n="'+esc(o.n)+'"></section>'
-    +'<section class="matchbox" id="matchbox" data-n="'+esc(o.n)+'"><h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><p class="mnote">불러오는 중…</p></section>';
+    +'<section class="matchbox" id="matchbox" data-n="'+esc(o.n)+'"><h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><p class="mnote">불러오는 중…</p></section>'
+    +'<section class="histbox" id="histbox" data-id="'+esc(o.id)+'"></section>';
 }
 function openDetailBySlug(slug){
   const o=A.find(x=>x.slug===slug);
@@ -202,6 +205,7 @@ function openDetailBySlug(slug){
   });
   renderMatchSection(o);
   if(window.SameScene)SameScene.render(document.getElementById('scenebox'),{country:CFG.country,name:o.n,onOpen:sceneOpen});
+  if(window.RankHistory)RankHistory.renderDetail(document.getElementById('histbox'),{country:CFG.country,id:o.id,name:o.n});
 }
 // SAME SCENE 카드에서 다른 그룹 상세로: 기록을 쌓지 않고 모달 내용만 바꾼다.
 function sceneOpen(name){
@@ -430,7 +434,8 @@ function buildCmpTable(){
   });
   svg+='</svg>';
   const legend=groups.map((g,gi)=>'<button class="legitem" data-n="'+esc(g.n)+'" style="--c:'+CPAL[gi%CPAL.length]+'"><span class="dot"></span>'+esc(g.n)+'<span class="sc">'+g.s+'</span></button>').join('');
-  document.getElementById('cmptable').innerHTML='<div class="radarwrap">'+svg+'</div><div class="radarlegend">'+legend+'</div>';
+  document.getElementById('cmptable').innerHTML='<div class="radarwrap">'+svg+'</div><div class="radarlegend">'+legend+'</div><div id="cmptrend"></div>';
+  if(window.RankHistory)RankHistory.renderCompareTrend(document.getElementById('cmptrend'),CFG.country,groups.map((g,gi)=>({id:g.id,name:g.n,color:CPAL[gi%CPAL.length]})));
 }
 function setActiveCmp(n){
   activeCmp=activeCmp===n?null:n;
@@ -501,3 +506,12 @@ if(QS.get('compare')){
   }
 }
 
+/* ---- 순위 변동(월별 history): 현재월+이전월 snapshot 만 먼저 읽어 카드의 ▲▼NEW 를 계산한다. 실패하면 기존 화면 그대로. ---- */
+if(window.RankHistory){
+  RankHistory.loadDeltas(CFG.country).then(m=>{
+    if(!m){document.getElementById('board').classList.add('nohist');return}
+    HD=m;render();
+    const open=document.getElementById('detailModal');
+    if(!open.classList.contains('hidden')){const cur=A.find(x=>x.n===document.body.getAttribute('data-nav-group'));if(cur){const s=document.querySelector('.dpscore');if(s&&!s.querySelector('.rkd'))s.insertAdjacentHTML('beforeend',rkBadge(cur))}}
+  });
+}

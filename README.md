@@ -13,6 +13,7 @@
 | SAME SCENE | 그룹 상세 안 | 같은 나라에서 비슷한 그룹 TOP 3 + 취향 확장 |
 | IDOL MAP | `idol-map.html` | 팬덤↔대중 / 디지털↔라이브 두 축의 시장 포지셔닝 지도 |
 | DISCOVER | 상단 🎲 버튼 | 랜덤·내 취향·숨은 보석·취향 확장·HOT·자동·오늘의 아이돌, 컬렉션, 월간 리포트, 공유 카드 |
+| 월별 순위 변동 | 점수표 카드·그룹 상세 하단 | 전월 대비 ▲▼–/NEW 배지, 순위·점수 시계열 차트(3·6·12개월·전체), 최고/최저 순위, 같은 국가 그룹 순위 추이 비교 |
 | 상단 내비게이션 | 모든 페이지 | 홈·한국·일본·지도·검색·최애·이전 화면 (사이트 안 이동은 브라우저 기록을 쌓지 않음) |
 
 ## 파일 구조
@@ -28,9 +29,11 @@ js/
   idol-match.js                데이터 로드, percentile 정규화, 스타일 태그, IDOL MATCH, 최애 저장
   idol-recommendation-core.js  IDOL MAP 논리 좌표 + SAME SCENE + DISCOVER 공통 엔진 (window.IdolRec)
   same-scene.js                SAME SCENE 카드 UI
+  rank-history.js              월별 순위 변동·시계열 (window.RankHistory)
   discover.js                  DISCOVER 모달 UI
   idol-map.js                  IDOL MAP 렌더링
 css/idol-map.css
+data/history/                  월별 순위 snapshot (index.json, kr/YYYY-MM.json, jp/YYYY-MM.json)
 data/                          kr_db.json, jp_db.json (+ file:// 폴백용 *_db.js), namu_images.json
 img/                           그룹 프로필 썸네일 (KR-###.webp / JP-###.webp)
 icons/                         파비콘·홈 화면 아이콘
@@ -49,6 +52,24 @@ tools/                         페이지 빌더, 이미지 수집 스크립트, 
 
 3. 새 그룹의 사진이 필요하면 `tools/fetch_namu_images.py` → `tools/download_images.py` 순서로 실행하고 `data/namu_images.json`을 갱신합니다.
 4. 브라우저 캐시를 위해 `?v=` 값을 함께 올립니다 (`index.html`, `idol-map.html`, `tools/page.head.html`, `tools/build_pages.py`, `js/site-nav.js`).
+
+## 다음 달 순위 데이터 추가 (월간 업데이트)
+
+기존 달의 snapshot은 덮어쓰지 않고 새 달을 **추가**합니다. 순위(`rank`)는 DB의 `순위` 값을 그대로 저장하므로 동점 순위도 유지됩니다.
+
+1. 새 평가 결과로 `data/kr_db.json`, `data/jp_db.json`을 갱신합니다.
+2. 이번 달 snapshot을 만들고 `data/history/index.json`에 달을 추가합니다.
+
+   ```bash
+   python tools/build_history.py 2026-10 data/kr_db.json data/jp_db.json --published 2026-10-28
+   ```
+
+3. 페이지를 다시 빌드합니다 (`python tools/build_pages.py data/kr_db.json data/jp_db.json`). 카드의 ▲▼NEW는 페이지가 열릴 때 마지막 두 달 snapshot으로 자동 계산됩니다.
+4. 과거 달의 값을 정정할 때는 `--correct "사유"`를 붙입니다. `revision`이 올라가고 `corrected_at`/`correction_note`가 기록됩니다.
+
+- 그룹 연결은 `id` 기준이라 이름이 바뀌어도 시계열이 이어집니다. 전월에 없던 id는 `NEW`, 누락된 달은 보간하지 않습니다.
+- 한국/일본 snapshot은 metric 키가 달라 파일을 분리했습니다. 두 나라 점수를 직접 비교하는 차트는 없습니다.
+- history 로딩이 실패해도 랭킹·검색·필터·상세·비교는 그대로 동작하고 history 영역만 숨겨집니다.
 
 ## 로컬 실행 · 테스트
 

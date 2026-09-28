@@ -109,6 +109,9 @@ h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-hei
 .cmpbtn.on{background:var(--green);color:#000}
 @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-3px)}40%,60%{transform:translateX(3px)}}
 .cmpbtn.shake{animation:shake .3s}
+.rankcol{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:34px}
+.rkslot{display:block;min-height:20px}
+.nohist .rkslot{display:none}
 .rank{font-size:12px;font-weight:700;color:var(--tx3);min-width:34px;padding-top:3px}
 .nm{font-size:16px;font-weight:700;line-height:1.25;margin:0;word-break:break-word;flex:1}
 .tot{text-align:right;line-height:1}
@@ -271,6 +274,7 @@ a.mshare{display:inline-flex;align-items:center;justify-content:center}
   .wrap{padding:0 14px 48px}
   .crow{gap:8px}
   .rank{min-width:24px}
+  .rankcol{min-width:30px}
   .pills{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
   .pills::-webkit-scrollbar{display:none}
   .pill{flex:none}
@@ -296,7 +300,7 @@ a.mshare{display:inline-flex;align-items:center;justify-content:center}
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">점수표는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260933"></script>
+<script src="js/site-nav.js?v=20260935"></script>
 <div class="wrap">
 
 <header>
