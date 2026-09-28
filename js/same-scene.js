@@ -65,7 +65,7 @@
       h += '<div class="sfoot"><button type="button" class="scenemap sbtn" data-discover="1" aria-label="다른 그룹 발견하기">🎲 다른 그룹 발견하기</button></div>'
         + '<p class="mnote">스타일 태그·시장 위치(IDOL MAP 논리 좌표)·팬덤·라이브·디지털·대중성·기세를 ' + label + ' 안에서의 상대 위치로 비교한 유사도예요. 점수나 체급 비교가 아니며, 활동종료 그룹은 제외해요.</p>';
       box.innerHTML = h;
-    });
+    }).catch(function () { box.innerHTML = '<p class="mnote">비슷한 그룹을 불러오지 못했어요. 새로고침해 주세요.</p>'; });
     if (!box._sceneBound) {
       box._sceneBound = true;
       box.addEventListener('click', function (e) {

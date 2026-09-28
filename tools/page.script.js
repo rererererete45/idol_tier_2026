@@ -374,6 +374,7 @@ document.getElementById('favGo').addEventListener('click',()=>{
 });
 document.getElementById('favClear').addEventListener('click',()=>{IdolMatch.clearFavorites(CFG.country);updateFavbar()});
 window.addEventListener('storage',updateFavbar);
+window.addEventListener('idolfav',updateFavbar);
 updateFavbar();
 
 /* ---- 그룹 비교 모드 ---- */

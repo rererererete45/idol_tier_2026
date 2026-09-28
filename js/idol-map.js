@@ -401,6 +401,15 @@
       g.classList.toggle('dimmed', !!curSet() && !hl && S.sel !== p.key);
     });
     $('count').textContent = vis.length + '팀 표시 중';
+    var note = $('emptyNote');
+    if (vis.length) { note.hidden = true; }
+    else {
+      var noFav = S.preset === 'MINE' && !Object.keys(favs).length;
+      note.innerHTML = noFav
+        ? '<b>❤️ 아직 저장한 최애가 없어요.</b><br>그룹 상세나 DISCOVER 카드에서 ♡를 눌러 저장하면 여기에 모여요.<br><button type="button" class="btn grn" data-discover>🎲 DISCOVER로 찾아보기</button>'
+        : '<b>조건에 맞는 그룹이 없어요.</b><br>검색어나 필터를 바꿔 보세요.<br><button type="button" class="btn out" data-reset>필터 초기화</button>';
+      note.hidden = false;
+    }
     drawCompareLine();
     layoutLabels();
   }
@@ -841,6 +850,10 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-mode]'), function (b) { b.addEventListener('click', function () { setMode(b.dataset.mode); }); });
     Array.prototype.forEach.call(document.querySelectorAll('[data-preset]'), function (b) { b.addEventListener('click', function () { applyMapPreset(b.dataset.preset); }); });
     Array.prototype.forEach.call(document.querySelectorAll('[data-color]'), function (b) { b.addEventListener('click', function () { S.color = b.dataset.color; renderIdolMap(); syncToolbar(); setUrl(); }); });
+    $('emptyNote').addEventListener('click', function (e) {
+      if (!e.target.closest('[data-reset]')) return;
+      S.preset = 'ALL'; S.query = ''; S.zone = null; $('q').value = ''; syncToolbar(); syncZones(); refreshStates(); setUrl();
+    });
     $('cmpToggle').addEventListener('click', function () { S.compare = !S.compare; S.cmp = []; if (!S.compare) closeSheet(); syncToolbar(); refreshStates(); });
     $('zin').addEventListener('click', function () { zoomAt(1.4, S.W / 2, S.H / 2); });
     $('zout').addEventListener('click', function () { zoomAt(1 / 1.4, S.W / 2, S.H / 2); });

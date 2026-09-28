@@ -40,12 +40,15 @@
     + '#sitenav{position:sticky;top:0;z-index:25;background:rgba(18,18,18,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(255,255,255,.07);font-family:"Figtree","Helvetica Neue",helvetica,arial,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans JP",sans-serif}'
     + '#sitenav *{box-sizing:border-box}'
     + '.sn-in{max-width:1360px;margin:0 auto;padding:0 14px;height:52px;display:flex;align-items:center;gap:6px}'
-    + '.sn-b{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 13px;border-radius:9999px;border:0;background:transparent;color:#b3b3b3;font:inherit;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .15s,color .15s}'
+    + '.sn-b{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 13px;border-radius:9999px;border:0;background:transparent;color:#b3b3b3;font:inherit;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;justify-content:center;min-width:44px;transition:background .15s,color .15s}'
     + '.sn-b:hover{background:rgba(255,255,255,.08);color:#fff}'
     + '.sn-b:focus-visible{outline:2px solid #1ed760;outline-offset:2px}'
     + '.sn-b[aria-current="page"]{background:#1ed760;color:#000}'
     + '.sn-b svg{width:16px;height:16px;fill:currentColor;flex:none}'
     + '.sn-home{color:#fff;font-weight:900;letter-spacing:-.01em}'
+    + '.sn-skip{position:absolute;left:8px;top:-60px;z-index:70;padding:10px 16px;border-radius:9999px;background:#1ed760;color:#000;font-size:13px;font-weight:800;text-decoration:none;transition:top .15s}.sn-skip:focus{top:8px}'
+    + '.sn-toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:120;max-width:calc(100vw - 32px);padding:12px 18px;border-radius:14px;background:#2a2a2a;color:#fff;font-weight:700;font-size:13px;line-height:1.5;box-shadow:rgba(0,0,0,.6) 0 10px 30px,inset 0 0 0 1px rgba(255,255,255,.12)}'
+    + '.wrap:focus{outline:none}'
     + '.sn-back{max-width:150px;padding:0 12px 0 9px;background:rgba(255,255,255,.07);color:#fff}'
     + '.sn-back span{overflow:hidden;text-overflow:ellipsis}'
     + '.sn-back[hidden]{display:none}'
@@ -84,7 +87,7 @@
   }
   var nav = document.createElement('nav');
   nav.id = 'sitenav'; nav.setAttribute('aria-label', '사이트 이동');
-  nav.innerHTML = '<div class="sn-in">'
+  nav.innerHTML = '<a class="sn-skip" href="#main">본문 바로가기</a><div class="sn-in">'
     + '<button class="sn-b sn-back" id="snBack" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5.4L14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg><span></span></button>'
     + link('home', HOUSE + '<span>홈</span>', 'sn-home')
     + '<div class="sn-links">' + link('kr', '🇰🇷 한국') + link('jp', '🇯🇵 일본') + link('map', '<span class="lg">IDOL MAP</span><span class="sm">지도</span>') + '</div>'
@@ -95,6 +98,11 @@
     + '</div>'
     + '<div class="sn-sr" id="snSr"><div class="sn-sr-in"><input id="snQ" type="search" placeholder="그룹 이름 검색 (한국·일본 전체)" autocomplete="off" aria-label="그룹 검색"><ul class="sn-res" id="snRes"></ul></div></div>';
   document.body.insertBefore(nav, document.body.firstChild);
+  document.addEventListener('DOMContentLoaded', function () { var w = document.querySelector('.wrap'); if (w && !w.id) { w.id = 'main'; w.setAttribute('tabindex', '-1'); } });
+  window.__toast = function (msg) {
+    var t = document.createElement('div'); t.className = 'sn-toast'; t.setAttribute('role', 'status'); t.textContent = msg; document.body.appendChild(t);
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 4200);
+  };
   var top = document.createElement('button');
   top.className = 'sn-top'; top.type = 'button'; top.setAttribute('aria-label', '맨 위로'); top.textContent = '↑';
   document.body.appendChild(top);
@@ -151,12 +159,12 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260929'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260931'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260931'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260933'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260933'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260933'); });
       discP = p;
     }
-    discP.then(function () { window.Discover.open(opts); });
+    discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });
   };
   (function autoOpen() {
     var qp = new URLSearchParams(location.search);

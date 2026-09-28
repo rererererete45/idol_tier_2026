@@ -88,7 +88,7 @@
     var raw = extraOf(country, name) || {};
     var e = {
       key: key, id: g.id, name: name, country: country, tier: g.tier, total: g.total, status: g.status, group: g,
-      styleTags: g.styleTags, styleRaw: g.styleRaw, spotify: g.spotify, slug: raw.slug || g.slug,
+      styleTags: g.styleTags, styleRaw: g.styleRaw, spotify: g.spotify, slug: g.slug,
       fandom: g.vec.fandom, live: g.vec.live, digital: g.vec.digital, popularity: g.vec.popularity, momentum: g.vec.momentum,
       vec: g.vec, mapX: pos ? pos.mapX : NaN, mapY: pos ? pos.mapY : NaN, zone: pos ? pos.zone : '',
       totalPercentile: pos ? pos.totalPercentile : NaN,
@@ -180,6 +180,10 @@
   }
 
   function isActive(e) { return IM.util.isActive(e); }
+  // 발견 후보: 활동종료/해산 외에 '무기한 휴지·시즌 종료·장기 공백·상태 미확인'으로 시작하는 상태도 제외한다.
+  // (일부 멤버만 휴지인 '현역(… 활동휴지)'는 그대로 후보)
+  var NOT_DISCOVERABLE = /^(무기한 활동휴지|시즌1 종료|3인 재편 후 장기 공백|활동 확인 필요)/;
+  function isDiscoverable(e) { return isActive(e) && !NOT_DISCOVERABLE.test(e.status || ''); }
 
   function getSameSceneMatches(country, name, opts) {
     opts = opts || {};
@@ -243,7 +247,7 @@
     IM.getFavorites().forEach(function (f) { var e = entityOf(f.country, f.group); if (e) favIds[e.key] = 1; });
     var list = [];
     (scope === 'KR' || scope === 'ALL' || !scope ? ['KR'] : []).concat(scope === 'JP' || scope === 'ALL' || !scope ? ['JP'] : []).forEach(function (c) { list = list.concat(entitiesOf(c)); });
-    return list.filter(function (e) { return isActive(e) && !favIds[e.key] && recent.indexOf(e.id) === -1; });
+    return list.filter(function (e) { return isDiscoverable(e) && !favIds[e.key] && recent.indexOf(e.id) === -1; });
   }
 
   function scoreVsProfile(profile, pool) {
@@ -407,7 +411,7 @@
     var favs = {}; IM.getFavorites().forEach(function (f) { favs[f.country + '|' + f.group] = 1; });
     var out = [];
     (scope === 'KR' ? ['KR'] : scope === 'JP' ? ['JP'] : ['KR', 'JP']).forEach(function (c) {
-      entitiesOf(c).filter(function (e) { return isActive(e) && !favs[e.key]; })
+      entitiesOf(c).filter(function (e) { return isDiscoverable(e) && !favs[e.key]; })
         .sort(function (a, b) { return b.total - a.total; }).slice(0, perCountry || 4).forEach(function (e) { out.push(e); });
     });
     return out;
@@ -430,6 +434,7 @@
     describeStyle: describeStyle, entityById: entityById, getDiscoveryCollection: getDiscoveryCollection, getMonthlyReport: getMonthlyReport, getFavoriteSuggestions: getFavoriteSuggestions,
     loadRecentDiscoveries: loadRecentDiscoveries, saveRecentDiscovery: saveRecentDiscovery,
     loadDiscoveryHistory: loadDiscoveryHistory, saveDiscoveryHistory: saveDiscoveryHistory, clearDiscoveryHistory: clearDiscoveryHistory,
+    isDiscoverable: isDiscoverable,
     _internals: { PICK: PICK, scoreVsProfile: scoreVsProfile, rankScene: rankScene, SCENE_W: SCENE_W }
   };
 })(window);

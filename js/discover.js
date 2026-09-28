@@ -44,9 +44,9 @@
     + '@keyframes dscFade{from{opacity:0}to{opacity:1}}@keyframes dscUp{from{transform:translateY(36px);opacity:0}to{transform:none;opacity:1}}'
     + '.dsc-head{display:flex;align-items:center;justify-content:space-between;gap:10px}'
     + '.dsc-head h2{margin:0;font-size:19px;font-weight:900;letter-spacing:-.01em}'
-    + '.dsc-x{width:40px;height:40px;border-radius:50%;border:0;background:#252525;color:#b3b3b3;font-size:14px;cursor:pointer}.dsc-x:hover{background:#333;color:#fff}'
+    + '.dsc-x{width:44px;height:44px;border-radius:50%;border:0;background:#252525;color:#b3b3b3;font-size:14px;cursor:pointer}.dsc-x:hover{background:#333;color:#fff}'
     + '.dsc-seg{display:flex;gap:2px;padding:3px;margin:12px 0 0;background:#121212;border-radius:9999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}'
-    + '.dsc-seg button{flex:1;min-height:40px;border:0;border-radius:9999px;background:transparent;color:#b3b3b3;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}'
+    + '.dsc-seg button{flex:1;min-height:44px;border:0;border-radius:9999px;background:transparent;color:#b3b3b3;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}'
     + '.dsc-seg button:hover{color:#fff}.dsc-seg button[aria-pressed="true"]{background:#1ed760;color:#000}'
     + '.dsc-modes{display:flex;flex-wrap:nowrap;gap:6px;margin:10px -18px 0;padding:0 18px 4px;overflow-x:auto;scrollbar-width:none}.dsc-modes::-webkit-scrollbar{display:none}'
     + '@media(min-width:640px){.dsc-modes{flex-wrap:wrap;margin:10px 0 0;padding:0;overflow:visible}}'
@@ -87,12 +87,12 @@
     + '.dsc-links>*:hover{color:#fff;background:#2f2f2f}'
     + '.dsc-hist{margin:16px 0 0;padding-top:14px;border-top:1px solid #2a2a2a}'
     + '.dsc-hist h4{display:flex;justify-content:space-between;align-items:center;margin:0 0 8px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#7c7c7c}'
-    + '.dsc-hist h4 button{border:0;background:transparent;color:#7c7c7c;font:inherit;font-size:11px;font-weight:700;cursor:pointer;min-height:32px;padding:0 4px}.dsc-hist h4 button:hover{color:#fff}'
+    + '.dsc-hist h4 button{border:0;background:transparent;color:#7c7c7c;font:inherit;font-size:11px;font-weight:700;cursor:pointer;min-height:44px;padding:0 8px}.dsc-hist h4 button:hover{color:#fff}'
     + '.dsc-hl{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.dsc-hl::-webkit-scrollbar{display:none}'
-    + '.dsc-hl button{flex:none;min-height:40px;padding:0 12px;border:0;border-radius:9999px;background:#1f1f1f;color:#fff;font:inherit;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}'
+    + '.dsc-hl button{flex:none;min-height:44px;padding:0 12px;border:0;border-radius:9999px;background:#1f1f1f;color:#fff;font:inherit;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}'
     + '.dsc-hl button:hover{background:#2a2a2a}'
     + '.dsc-tabs{display:flex;gap:2px;padding:3px;margin:12px 0 0;background:#121212;border-radius:9999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}'
-    + '.dsc-tabs button{flex:1;min-height:40px;border:0;border-radius:9999px;background:transparent;color:#b3b3b3;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer;white-space:nowrap}'
+    + '.dsc-tabs button{flex:1;min-height:44px;border:0;border-radius:9999px;background:transparent;color:#b3b3b3;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer;white-space:nowrap}'
     + '.dsc-tabs button:hover{color:#fff}.dsc-tabs button[aria-pressed="true"]{background:#fff;color:#000}'
     + '.dsc [hidden]{display:none!important}'
     + '.dsc-quick{margin:10px 0 0;padding:12px 14px;border-radius:14px;background:rgba(243,114,127,.1);box-shadow:inset 0 0 0 1px rgba(243,114,127,.3)}'
@@ -102,7 +102,7 @@
     + '.dsc-ql button[aria-pressed="true"]{background:#f3727f;color:#000}'
     + '.dsc-sum{display:flex;flex-direction:column;gap:2px;margin:14px 0 0}.dsc-sum b{font-size:16px;font-weight:900}.dsc-sum span{font-size:12px;color:#7c7c7c;font-weight:600}'
     + '.dsc-cf{display:flex;gap:6px;overflow-x:auto;margin:12px -18px 0;padding:0 18px 4px;scrollbar-width:none}.dsc-cf::-webkit-scrollbar{display:none}'
-    + '.dsc-cf button{flex:none;min-height:40px;padding:0 13px;border:0;border-radius:9999px;background:#1f1f1f;color:#b3b3b3;font:inherit;font-size:12px;font-weight:700;cursor:pointer}'
+    + '.dsc-cf button{flex:none;min-height:44px;padding:0 13px;border:0;border-radius:9999px;background:#1f1f1f;color:#b3b3b3;font:inherit;font-size:12px;font-weight:700;cursor:pointer}'
     + '.dsc-cf button[aria-pressed="true"]{background:#1ed760;color:#000}'
     + '.dsc-rows{display:grid;gap:6px;margin:8px 0 0}'
     + '.dsc-row{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 10px;border-radius:14px;background:#1f1f1f}'
@@ -220,7 +220,7 @@
       + '<div class="dsc-axis"><b>' + esc(why.axis.label) + '</b><span>' + esc(why.axis.text) + '</span></div>'
       + '<p class="dsc-sent">' + esc(why.sentence) + '</p>' + note
       + '<div class="dsc-act">'
-      + (e.spotify ? '<a class="grn" target="_blank" rel="noopener noreferrer" href="' + esc(e.spotify) + '" aria-label="' + esc(e.name) + ' Spotify에서 듣기">Spotify ▶</a>' : '')
+      + '<a class="grn" target="_blank" rel="noopener noreferrer" href="' + esc(e.spotify || 'https://open.spotify.com/search/' + encodeURIComponent(e.name)) + '" aria-label="' + esc(e.name) + (e.spotify ? ' Spotify에서 듣기' : ' Spotify에서 검색하기') + '">' + (e.spotify ? 'Spotify ▶' : 'Spotify 검색 ▶') + '</a>'
       + '<a href="' + detailUrl(e) + '" aria-label="' + esc(e.name) + ' 상세보기">상세보기</a>'
       + '<a href="' + mapUrl(e) + '" aria-label="' + esc(e.name) + ' 지도에서 보기">🗺 지도</a>'
       + '<button type="button" class="fav" data-fav aria-pressed="' + fav + '" aria-label="' + esc(e.name) + ' 최애 저장 토글">' + (fav ? '♥ 저장됨' : '♡ 저장') + '</button></div>'
@@ -489,6 +489,9 @@
       if (opts.id) res = R.discoveryFor(opts.id, opts.mode && opts.mode !== 'auto' ? opts.mode : 'random');
       if (state.view === 'find') { if (res) paint(res); else { state.cur = null; paint(R.pickDiscovery(state.mode, state.scope)); } }
       var f = (state.view === 'find' && root.querySelector('.dsc-next')) || root.querySelector('.dsc-x'); if (f) f.focus({ preventScroll: true });
+    }).catch(function () {
+      if (root) root.hidden = true;
+      (global.__toast || global.alert)('데이터를 불러오지 못했어요. 네트워크를 확인하고 다시 시도해 주세요.');
     });
   }
   function close() {

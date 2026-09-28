@@ -153,6 +153,24 @@ def icons(k):
     ])
 
 
+SITE = "https://rererererete45.github.io/idol_tier_2026/"
+
+
+def metas(page):
+    """검색/공유용 메타 태그 (description, Open Graph, Twitter, manifest)."""
+    desc = page["sub"].replace('"', "&quot;")
+    return chr(10).join([
+        '<meta name="description" content="%s">' % desc,
+        '<meta property="og:type" content="website">',
+        '<meta property="og:title" content="%s">' % page["title"],
+        '<meta property="og:description" content="%s">' % desc,
+        '<meta property="og:image" content="%sicons/%s-192.png">' % (SITE, page["icon"]),
+        '<meta property="og:url" content="%s%s">' % (SITE, page["file"]),
+        '<meta name="twitter:card" content="summary">',
+        '<link rel="manifest" href="manifest.webmanifest">',
+    ])
+
+
 def dumps(o):
     return json.dumps(o, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
@@ -160,14 +178,14 @@ def dumps(o):
 def build(page, data):
     h = HEAD
     rep = {
-        "@@TITLE@@": page["title"], "@@ICONS@@": icons(page["icon"]), "@@FONTLINK@@": page["font"], "@@FSVAR@@": page["fs"],
+        "@@TITLE@@": page["title"], "@@ICONS@@": icons(page["icon"]) + chr(10) + metas(page), "@@FONTLINK@@": page["font"], "@@FSVAR@@": page["fs"],
         "@@EYEBROW@@": page["eyebrow"].format(n=len(data)), "@@H1@@": page["h1"], "@@SUB@@": page["sub"],
         "@@FORMULA@@": page["formula"], "@@NAVHREF@@": page["navhref"], "@@NAVTEXT@@": page["navtext"], "@@CC@@": page["icon"].upper(),
         "@@FOOTER@@": "\n  " + page["footer"] + "\n",
     }
     for k, v in rep.items():
         h = h.replace(k, v)
-    html = h + '<script src="js/idol-match.js?v=20260929"></script>\n<script src="js/idol-recommendation-core.js?v=20260931"></script>\n<script src="js/same-scene.js?v=20260929"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
+    html = h + '<script src="js/idol-match.js?v=20260933"></script>\n<script src="js/idol-recommendation-core.js?v=20260933"></script>\n<script src="js/same-scene.js?v=20260933"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
     open(os.path.join(ROOT, page["file"]), "w", encoding="utf-8", newline="\n").write(html)
     noimg = [d["n"] for d in data if not d["img"]]
     print(page["file"], len(data), "groups; without photo:", len(noimg))
