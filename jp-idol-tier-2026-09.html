@@ -191,6 +191,7 @@ body.has-tray{padding-bottom:70px}
 .dpgrid .it{min-width:0}
 .dpgrid .k{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3);margin:0 0 4px}
 .dpgrid .v{font-size:13px;color:var(--tx);line-height:1.5;word-break:break-word}
+.dpintro{font-size:13.5px;line-height:1.7;color:var(--tx2);margin:0 0 18px}
 .dpsrc{font-size:11px;color:var(--tx3);margin:10px 0 0}
 .dpsrc a{text-decoration:underline}
 .dpnote{font-size:11.5px;color:var(--tx3);line-height:1.6;margin:14px 0 0;padding-top:14px;border-top:1px solid #2a2a2a}
@@ -457,6 +458,7 @@ function detailHTML(o){
     +'<div class="dpscore"><span class="n">'+o.s+'</span><span class="u">/ 100 · #'+o.r+'</span></div>'
     +(o.img?'<p class="dpsrc">사진 출처: <a href="'+namuUrl(o)+'"'+TGT+'>나무위키</a></p>':'')
     +'</div></div>'
+    +(o.intro?'<p class="dpintro">'+esc(o.intro)+'</p>':'')
     +'<div class="bars">'+barsHTML(o)+'</div>'
     +'<div class="dpgrid">'+info+'</div>'
     +'<div class="acts">'+officialBtn

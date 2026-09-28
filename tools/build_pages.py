@@ -14,6 +14,8 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HEAD = open(os.path.join(ROOT, "tools", "page.head.html"), encoding="utf-8").read()
 SCRIPT = open(os.path.join(ROOT, "tools", "page.script.js"), encoding="utf-8").read()
+INTRO_PATH = os.path.join(ROOT, "data", "kr_intro.json")
+KR_INTRO = json.load(open(INTRO_PATH, encoding="utf-8")) if os.path.exists(INTRO_PATH) else {}
 IMGS = json.load(open(os.path.join(ROOT, "data", "namu_images.json"), encoding="utf-8"))
 
 KR_KEYS = ["국내음원", "음반·팬덤", "공연", "글로벌", "국내인지도", "현재기세"]
@@ -54,7 +56,7 @@ def kr_rows(rows):
             "gen": r["세대"], "style": r["스타일"], "agency": r["소속사"], "status": r["활동상태"],
             "debut": r["데뷔일"], "members": members(r["멤버수"]), "songs": r["대표곡"],
             "link": r["공식링크/SNS"], "verify": r["검증상태"], "note": r["대표출처/메모"],
-            "img": img, "wiki": wiki,
+            "img": img, "wiki": wiki, "intro": KR_INTRO.get(r["그룹"], ""),
         })
     return out
 

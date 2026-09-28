@@ -167,6 +167,7 @@ function detailHTML(o){
     +'<div class="dpscore"><span class="n">'+o.s+'</span><span class="u">/ 100 · #'+o.r+'</span></div>'
     +(o.img?'<p class="dpsrc">사진 출처: <a href="'+namuUrl(o)+'"'+TGT+'>나무위키</a></p>':'')
     +'</div></div>'
+    +(o.intro?'<p class="dpintro">'+esc(o.intro)+'</p>':'')
     +'<div class="bars">'+barsHTML(o)+'</div>'
     +'<div class="dpgrid">'+info+'</div>'
     +'<div class="acts">'+officialBtn
