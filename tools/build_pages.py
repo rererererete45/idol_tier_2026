@@ -72,7 +72,7 @@ def jp_rows(rows):
             "form": r["활동형태"], "style": r["스타일"], "status": r["활동상태"],
             "debut": r["결성/데뷔일"], "members": members(r["멤버수"]), "songs": r["대표곡"],
             "agency": r["소속/운영"], "link": r["공식링크/SNS"], "verify": r["검증상태"],
-            "note": r["대표출처/메모"], "img": img, "wiki": wiki,
+            "note": r["대표출처/메모"], "img": img, "wiki": wiki, "intro": r.get("소개글", ""),
         })
     return out
 
