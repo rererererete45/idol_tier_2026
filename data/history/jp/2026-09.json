@@ -3,7 +3,10 @@
     "country": "JP",
     "period": "2026-09",
     "published_at": "2026-09-28",
-    "revision": 1
+    "revision": 1,
+    "population_count": 126,
+    "normalization_version": "v2",
+    "percentile_scope": "same-country, same-period relative position"
   },
   "groups": [
     {

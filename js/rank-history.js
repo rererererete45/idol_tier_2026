@@ -6,7 +6,7 @@
  * window.RankHistory 로만 노출한다. */
 (function (global) {
   'use strict';
-  var VERSION = '20260935';
+  var VERSION = '20260936';
   var script = document.currentScript, base = script && script.src ? script.src.replace(/js\/rank-history\.js.*$/, '') : '';
   var DIR = base + 'data/history/';
 
@@ -28,6 +28,13 @@
     if (!current || !previous || !Number.isFinite(current.score) || !Number.isFinite(previous.score)) return null;
     return Math.round((current.score - previous.score) * 100) / 100;
   }
+  // 알고리즘 내부의 월간 상승세는 raw ▲N 이 아니라 '순위 위치 백분위' 이동으로 본다 (팀 수가 달라져도 의미가 같다).
+  function getRankPositionPercentile(rank, n) {
+    if (!Number.isFinite(rank) || !Number.isFinite(n) || n < 1) return null;
+    return n <= 1 ? 100 : 100 * (1 - (rank - 1) / (n - 1));
+  }
+  var TIER_ORDER = ['S+', 'S', 'A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D'];
+  function tierIdx(t) { var i = TIER_ORDER.indexOf(t); return i < 0 ? null : i; }
   function fmtScoreDelta(d) { return d === null ? '' : d > 0 ? '(+' + d + ')' : d < 0 ? '(' + d + ')' : '(±0)'; }
 
   // history: [{period, rank, score, ...}] (오래된 → 최신). 동점이면 더 이른 달을 대표로 한다.
@@ -94,10 +101,18 @@
   // 카드용: id → {kind,n,rank,prevRank}. 현재월+이전월만 읽는다. 실패하면 null.
   function deltasFromSnapshots(snaps) {
     if (!snaps.length) return null;
-    var cur = snaps[snaps.length - 1], prev = snaps.length > 1 ? snaps[snaps.length - 2] : null, out = {};
+    var cur = snaps[snaps.length - 1], prev = snaps.length > 1 ? snaps[snaps.length - 2] : null, earlier = snaps.slice(0, -1), out = {};
     cur.groups.forEach(function (g) {
       var p = prev ? entryOf(prev, g.id) : null, d = getRankDelta(g, p, !!prev);
       d.rank = g.rank; d.prevRank = p ? p.rank : null; d.period = cur.meta.period; d.prevPeriod = prev ? prev.meta.period : null;
+      // 셋을 따로 보관: raw rank delta(UI) / 순위 위치 백분위 이동(알고리즘) / 점수 변화 — 순위 하락을 실력 하락으로 단정하지 않는다
+      d.scoreDelta = getScoreDelta(g, p);
+      d.curPercentile = getRankPositionPercentile(g.rank, cur.groups.length);
+      d.prevPercentile = p ? getRankPositionPercentile(p.rank, prev.groups.length) : null;
+      d.movement = p && d.curPercentile !== null && d.prevPercentile !== null ? d.curPercentile - d.prevPercentile : null;
+      var before = earlier.map(function (s) { return entryOf(s, g.id); }).filter(Boolean);
+      d.newPeak = before.length ? g.rank < Math.min.apply(null, before.map(function (e) { return e.rank; })) : null;
+      d.tierUp = p && tierIdx(g.tier) !== null && tierIdx(p.tier) !== null ? tierIdx(g.tier) < tierIdx(p.tier) : null;
       out[g.id] = d;
     });
     return out;
@@ -116,6 +131,7 @@
     else if (d.kind === 'new') { t = 'NEW'; label = '이번 달 새로 진입'; }
     else if (d.kind === 'same') { t = '–'; label = '전월과 순위 동일'; }
     else { t = '–'; label = '비교할 이전 기록 없음(첫 기록)'; }
+    if (Number.isFinite(d.scoreDelta) && d.kind !== 'none') label += ', 점수 ' + (d.scoreDelta > 0 ? '+' + d.scoreDelta : d.scoreDelta < 0 ? String(d.scoreDelta) : '±0');
     return '<span class="rkd ' + cls + '" role="img" aria-label="' + label + '" title="' + label + '">' + t + '</span>';
   }
 
@@ -287,7 +303,7 @@
   global.RankHistory = {
     version: VERSION,
     // 순수 계산
-    getRankDelta: getRankDelta, getScoreDelta: getScoreDelta, getBestRank: getBestRank, getWorstRank: getWorstRank,
+    getRankDelta: getRankDelta, getScoreDelta: getScoreDelta, getRankPositionPercentile: getRankPositionPercentile, getBestRank: getBestRank, getWorstRank: getWorstRank,
     extractGroupHistory: extractGroupHistory, sliceRange: sliceRange, deltasFromSnapshots: deltasFromSnapshots, monthIndex: monthIndex,
     // 로딩
     loadHistoryIndex: loadHistoryIndex, loadCountrySnapshot: loadCountrySnapshot, loadRecent: loadRecent, loadAll: loadAll, getGroupHistory: getGroupHistory, loadDeltas: loadDeltas,

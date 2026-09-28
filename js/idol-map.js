@@ -128,7 +128,7 @@
   }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function pageOf(c) { return IM.countries[c].page; }
-  function detailUrl(p) { return pageOf(p.country) + '?group=' + encodeURIComponent(p.group); }
+  function detailUrl(p) { return pageOf(p.country) + '?id=' + encodeURIComponent(p.id) + '&group=' + encodeURIComponent(p.group); }
 
   function activePoints() {
     var list = [];
@@ -459,7 +459,7 @@
       + '<p class="sh-k">MARKET POSITION <small>(자국 시장 내 백분위)</small></p>'
       + '<div class="pos">' + miniMap(p) + '<div>' + bar('대중 확장력', p.pub) + bar('코어 팬덤력', p.fan) + bar('라이브', p.live) + bar(digLabel(p), p.dig) + '</div></div>'
       + '<p class="sh-k">왜 이 위치인가?</p><div class="expl">' + expl + '</div>'
-      + (DEBUG ? '<pre class="dbg">rawX ' + p.xRaw.toFixed(1) + '  rawY ' + p.yRaw.toFixed(1) + '\nzX ' + p.zX.toFixed(2) + '  zY ' + p.zY.toFixed(2) + '\nscreen ' + p.screenX.toFixed(1) + ', ' + p.screenY.toFixed(1) + ' (base ' + p.baseX.toFixed(1) + ', ' + p.baseY.toFixed(1) + ')\npublic ' + p.pub.toFixed(1) + '  fandom ' + p.fan.toFixed(1) + '  live ' + p.live.toFixed(1) + '  digital ' + p.dig.toFixed(1) + '  momentum ' + p.mom.toFixed(1) + '</pre>' : '')
+      + (DEBUG ? '<pre class="dbg">rawX ' + p.xRaw.toFixed(1) + '  rawY ' + p.yRaw.toFixed(1) + '\nzX ' + p.zX.toFixed(2) + '  zY ' + p.zY.toFixed(2) + '  스케일 ' + p.scaleMethodX + '/' + p.scaleMethodY + '\nlogical ' + p.logicalX.toFixed(1) + ', ' + p.logicalY.toFixed(1) + '  (추천·시계열은 이 값만 사용)\nscreen ' + p.screenX.toFixed(1) + ', ' + p.screenY.toFixed(1) + ' (지터·충돌 보정 후, 표시 전용)  zone ' + p.zone + ' (logical 기준)\npublic ' + p.pub.toFixed(1) + '  fandom ' + p.fan.toFixed(1) + '  live ' + p.live.toFixed(1) + '  digital ' + p.dig.toFixed(1) + '  momentum ' + p.mom.toFixed(1) + '</pre>' : '')
       + matchList() + sceneList()
       + '<div class="sh-act"><a class="btn out" href="' + detailUrl(p) + '">상세보기</a>'
       + (p.spotify ? '<a class="btn grn" target="_blank" rel="noopener noreferrer" href="' + esc(p.spotify) + '" aria-label="' + esc(p.group) + ' Spotify에서 듣기">Spotify ▶</a>' : '')
@@ -505,7 +505,7 @@
     if (!S.match) return '';
     var rows = S.match.items.map(function (m) {
       var p = byKey[m.key] || findPoint(m.key);
-      return '<button class="mi-row" data-go="' + esc(m.key) + '"><span class="mk ' + m.type + '"></span><span class="nm">' + esc(p ? p.group : m.key) + '</span><b>' + m.score + '%</b></button>';
+      return '<button class="mi-row" data-go="' + esc(m.key) + '"><span class="mk ' + m.type + '"></span><span class="nm">' + esc(p ? p.group : m.key) + '</span><b title="추천 알고리즘의 상대 유사도 점수이며 확률이 아닙니다." aria-label="유사도 ' + m.score + '점">' + m.score + '</b></button>';
     }).join('');
     return '<p class="sh-k">IDOL MATCH <small>핑크 링 = 추천, 점선 다이아 = 숨은 취향</small></p><div class="mlist2">' + rows + '</div>';
   }
@@ -513,7 +513,7 @@
     if (!S.scene) return '';
     var rows = S.scene.items.map(function (m) {
       var p = findPoint(m.key);
-      return '<button class="mi-row" data-go="' + esc(m.key) + '"><span class="mk ' + m.type + '"></span><span class="nm">' + esc(p ? p.group : m.key) + '</span><b>' + m.score + '%</b></button>';
+      return '<button class="mi-row" data-go="' + esc(m.key) + '"><span class="mk ' + m.type + '"></span><span class="nm">' + esc(p ? p.group : m.key) + '</span><b title="추천 알고리즘의 상대 유사도 점수이며 확률이 아닙니다." aria-label="유사도 ' + m.score + '점">' + m.score + '</b></button>';
     }).join('');
     return '<p class="sh-k">🧬 SAME SCENE <small>금색 링 = 가장 비슷, 점선 = 취향 확장</small></p><div class="mlist2">' + rows + '</div>';
   }
@@ -830,9 +830,10 @@
       bindUi(); bindPointer(); bindMapFx(); bindSpotlight();
       renderIdolMap(); fitView(); syncToolbar(); renderSideEmpty();
       $('notice').hidden = S.mode !== 'ALL';
-      var g = Q.get('group');
+      var g = Q.get('group'), gById = Q.get('id') && IM.getGroupById(Q.get('id')); // id 우선, group 이름은 fallback
+      if (gById) g = gById.name;
       if (g) {
-        var cand = ['KR', 'JP'].map(function (c) { return IM.getGroup(c, g) ? c + '|' + g : null; }).filter(Boolean);
+        var cand = gById ? [gById.country + '|' + gById.name] : ['KR', 'JP'].map(function (c) { return IM.getGroup(c, g) ? c + '|' + g : null; }).filter(Boolean);
         var key = cand.filter(function (k) { return k.indexOf(S.mode) === 0; })[0] || cand[0];
         if (key) {
           if (Q.get('match') === '1') { var pp = findPoint(key); if (pp) runMatch(pp); }

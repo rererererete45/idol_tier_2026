@@ -40,10 +40,9 @@ li small{color:#7c7c7c;margin-left:8px}
     var a = R.logicalPoints('KR').points, ok = a.every(function (p) { return p.mapX >= 0 && p.mapX <= 100 && p.mapY >= 0 && p.mapY <= 100 && Math.abs(p.mapY - (100 - p.baseY)) < 1e-9; });
     var again = R.logicalPoints('KR').points; return ok && a === again;
   });
-  t('SAME SCENE 가중치 합 = 1', function () { var w = R._internals.SCENE_W, s = 0; Object.keys(w).forEach(function (k) { s += w[k]; }); return Math.abs(s - 1) < 1e-9 || s; });
-  t('mapSimilarity: 같은 위치=100, 대각 끝≈0', function () {
-    var a = { mapX: 0, mapY: 0 }, b = { mapX: 100, mapY: 100 };
-    return R.mapSimilarity(a, a) === 100 && R.mapSimilarity(a, b) < 0.001 && R.mapSimilarity(a, { mapX: NaN, mapY: 1 }) === 50;
+  t('mapSimilarity(설명용): 같은 위치=100, 대각 끝≈0, 좌표 없으면 null(50 아님)', function () {
+    var a = { logicalX: 0, logicalY: 0 }, b = { logicalX: 100, logicalY: 100 };
+    return R.mapSimilarity(a, a) === 100 && R.mapSimilarity(a, b) < 0.001 && R.mapSimilarity(a, { logicalX: NaN, logicalY: 1 }) === null;
   });
   ['KR', 'JP'].forEach(function (c) {
     t(c + ' SAME SCENE: 자기 제외·같은 나라·TOP3·중복 없음·활동종료 제외', function () {
@@ -59,7 +58,7 @@ li small{color:#7c7c7c;margin-left:8px}
           if (!IM.util.isActive(m.group)) bad.push(e.name + ' ended:' + m.group.name);
           if (m.score < 0 || m.score > 100) bad.push(e.name + ' score');
         });
-        r.expand.forEach(function (m) { if (m.score < 65 || m.breakdown.style < 55 || m.breakdown.map < 45) bad.push(e.name + ' expand-cond'); });
+        r.expand.forEach(function (m) { if (m.score < 65 || m.breakdown.style < 55 || m.breakdown.profile < 45) bad.push(e.name + ' expand-cond'); });
       });
       return bad.length ? bad.slice(0, 4).join(', ') : true;
     });
@@ -106,9 +105,6 @@ li small{color:#7c7c7c;margin-left:8px}
     ['aespa', 'LE SSERAFIM'].forEach(function (n) { IM.saveFavorite('KR', n); }); IM.saveFavorite('JP', 'FRUITS ZIPPER');
     return (!favHit && Object.keys(seen).length >= 6) || (favHit ? 'favorite shown' : Object.keys(seen).length + ' distinct');
   });
-  t('숨은 보석: 총점 백분위 < 75 이고 한 축 ≥ 75', function () {
-    for (var i = 0; i < 80; i++) { var e = R.pickDiscovery('hiddenGem', 'ALL').ent; if (e.totalPercentile >= 75 || Math.max(e.popularity, e.fandom, e.live, e.digital) < 75) return e.name; } return true;
-  });
   t('HOT: 현재기세 ≥ 80', function () { for (var i = 0; i < 60; i++) { var r = R.pickDiscovery('hot', 'ALL'); if (r.mode === 'hot' && r.ent.momentum < 80) return r.ent.name; } return true; });
   t('자동 모드 비율(최애 0팀: 45/35/20, 2팀 이상: 45/25/20/10)', function () {
     function dist(n) { var c = {}; for (var i = 0; i < 6000; i++) { var m = R.chooseDiscoveryMode(n); c[m] = (c[m] || 0) + 1; } Object.keys(c).forEach(function (k) { c[k] = c[k] / 60; }); return c; }
@@ -126,6 +122,161 @@ li small{color:#7c7c7c;margin-left:8px}
     return bad.length === 0 || bad.map(function (e) { return e.name; }).join();
   });
 
+
+
+  /* ---------- ALGORITHM V2 ---------- */
+  var U = IM.util;
+  var mkG = function (id, tags, vec, extra) {
+    return Object.assign({ id: id, name: id, country: 'KR', styleTags: tags, vec: Object.assign({ popularity: null, fandom: null, live: null, digital: null, momentum: null }, vec || {}), activityType: 'unknown', dataConfidence: 1, lineage: '', gen: '' }, extra || {});
+  };
+  t('결측 component 는 50 점 보너스를 받지 않는다(제외 후 재정규화)', function () {
+    var a = U.weightedObservedAverage([U.comp('x', 80, 0.5), U.comp('y', null, 0.5)]);
+    return (a.score === 80 && Math.abs(a.coverage - 0.5) < 1e-9 && U.weightedObservedAverage([U.comp('x', null, 1)]).score === null) || JSON.stringify(a);
+  });
+  t('7개 축 중 4개만 있으면 weight 가 올바르게 재정규화된다', function () {
+    var w = IM.defaultWeights, comps = [U.comp('style', 100, w.style), U.comp('live', 100, w.live), U.comp('fandom', 100, w.fandom), U.comp('popularity', 100, w.popularity),
+      U.comp('digital', null, w.digital), U.comp('momentum', null, w.momentum), U.comp('activity', null, w.activity)];
+    var a = U.weightedObservedAverage(comps); return (Math.abs(a.score - 100) < 1e-9 && Math.abs(a.coverage - 0.80) < 1e-9) || JSON.stringify(a);
+  });
+  t('스타일/수치 유사도: 데이터가 없으면 null (50 아님)', function () {
+    return U.calculateStyleSimilarity([], ['팝']) === null && U.calculateNumericSimilarity(null, 50) === null && U.calculateNumericSimilarity('x', 3) === null && IM.percentileRank(null, [1, 2, 3]) === null && U.toFiniteNumber('') === null && U.toFiniteNumber('7.5') === 7.5;
+  });
+  t('스타일 3단계: exact 1.0 / 같은 카테고리 ≥ 0.72 / 무관 0', function () {
+    return U.tagSimilarity('팝', '팝') === 1 && U.tagSimilarity('청춘', '카와이') >= 0.72 && U.tagSimilarity('힙합', '카와이') === 0 && U.tagSimilarity('록', '얼터너티브') >= 0.8;
+  });
+  t('태그 동의어 canonicalization (얼터/EDM/락/RNB/알앤비)', function () {
+    return U.canonicalTag('얼터') === '얼터너티브' && U.canonicalTag('EDM') === '일렉트로' && U.canonicalTag('락') === '록' && U.canonicalTag('RNB') === 'R&B' && U.canonicalTag('알앤비') === 'R&B';
+  });
+  t('흔한 태그일수록 specificity(IDF) 가 낮다', function () { return U.idf('팝') < U.idf('서브컬처') && U.idf('퍼포먼스') < U.idf('일렉트로'); });
+  t('데이터가 부족한 후보: 결측 축이 점수에 반영되지 않고 coverage 가 낮아진다', function () {
+    var src = mkG('S', ['팝'], { popularity: 60, fandom: 60, live: 60, digital: 60, momentum: 60 });
+    var tgt = mkG('T', ['팝'], { momentum: 60 });
+    var m = U.scoreMatch(src, tgt);
+    return (m.breakdown.live === null && m.breakdown.fandom === null && m.coverage < IM.quality.minCoverage + 0.2 && m.coverage < 0.7) || JSON.stringify([m.breakdown, m.coverage]);
+  });
+  t('coverage 0.55 미만 후보는 TOP 추천 기준에서 탈락', function () {
+    var src = mkG('S', ['팝'], { popularity: 60, fandom: 60, live: 60, digital: 60, momentum: 60 }), tgt = mkG('T', [], { momentum: 60 });
+    var m = U.scoreMatch(src, tgt); return m.coverage < IM.quality.minCoverage;
+  });
+  t('결과 신뢰도(confidence)와 유사도 분리 · 보정은 약하게(0.85+0.15c)', function () {
+    var src = mkG('S', ['팝'], { popularity: 60, fandom: 60, live: 60, digital: 60, momentum: 60 });
+    var hi = U.scoreMatch(src, mkG('B', ['팝'], { popularity: 60, fandom: 60, live: 60, digital: 60, momentum: 60 }, { dataConfidence: 1 }));
+    var lo = U.scoreMatch(src, mkG('A', ['팝'], { popularity: 60, fandom: 60, live: 60, digital: 60, momentum: 60 }, { dataConfidence: 0.5 }));
+    var sameScore = hi.score === lo.score, ranked = [lo, hi].sort(U.compareResults);
+    return (sameScore && lo.confidence < hi.confidence && ranked[0] === hi && Math.abs(hi.rankingScore / hi.raw - (0.85 + 0.15 * hi.confidence)) < 1e-9 && lo.rankingScore / lo.raw > 0.9) || 'confidence handling';
+  });
+  t('같은 입력이면 항상 같은 순서 · 입력 배열 순서를 뒤집어도 동일', function () {
+    var a = IM.getMatches('KR', 'IVE'), b = IM.getMatches('KR', 'IVE');
+    var src = IM.getGroup('KR', 'IVE'), tg = IM.getGroups('JP').filter(function (g) { return IM.util.isActive(g); });
+    var f = function (list) { return list.map(function (g) { return U.scoreMatch(src, g); }).sort(U.compareResults).slice(0, 15).map(function (m) { return m.group.id; }).join(); };
+    return (a.top.map(function (m) { return m.group.id; }).join() === b.top.map(function (m) { return m.group.id; }).join() && f(tg) === f(tg.slice().reverse())) || 'order differs';
+  });
+  t('MATCH: 최소 품질(58/40/0.55) 통과분만 TOP · 부족하면 안내(notice)', function () {
+    var bad = [], notices = 0;
+    IM.getGroups('KR').concat(IM.getGroups('JP')).forEach(function (g) {
+      var r = IM.getMatches(g.country, g.name); if (!r) return;
+      if (r.notice) notices++;
+      r.top.forEach(function (m) { if (!m.relaxed && (m.score < 58 || m.breakdown.style < 40 || m.coverage < 0.55)) bad.push(g.name); if (m.relaxed && !r.notice) bad.push(g.name + ':relaxed-no-notice'); });
+    });
+    return bad.length === 0 || bad.slice(0, 3).join();
+  });
+  t('SAME SCENE: 점수 구성은 style/profile/momentum/scale 뿐 — 지도 좌표를 다시 세지 않는다', function () {
+    var a = R.entityOf('KR', 'aespa'), b = R.entityOf('KR', 'ITZY'), names = R._internals.sceneComponents(a, b).map(function (c) { return c.name; }).join();
+    var s1 = R.sceneResult(a, b).score, b2 = Object.assign({}, b, { logicalX: 1, logicalY: 99, mapX: 1, mapY: 99 }), s2 = R.sceneResult(a, b2).score;
+    return (names === 'style,profile,momentum,scale' && s1 === s2 && R.SCENE_W.style === 0.45 && R.SCENE_W.profile === 0.35) || names + ' ' + s1 + '/' + s2;
+  });
+  t('SAME SCENE 4축 profile 은 하나의 거리로 계산', function () {
+    var p = { popularity: 50, fandom: 50, live: 50, digital: 50 };
+    return R.profileSimilarity(p, p) === 100 && R.profileSimilarity(p, { popularity: 60, fandom: 60, live: 60, digital: 60 }) === 90 && R.profileSimilarity(p, { popularity: 60 }) === null;
+  });
+  t('세대/계열 보정은 기준을 통과한 뒤에만(스타일이 다른 sister group 은 보정 없음)', function () {
+    var a = mkG('A', ['록'], { popularity: 50, fandom: 50, live: 50, digital: 50, momentum: 50 }, { gen: '5세대', totalPercentile: 50 });
+    var far = mkG('B', ['청순'], { popularity: 50, fandom: 50, live: 50, digital: 50, momentum: 50 }, { gen: '5세대', totalPercentile: 50 });
+    var near = mkG('C', ['록'], { popularity: 50, fandom: 50, live: 50, digital: 50, momentum: 50 }, { gen: '5세대', totalPercentile: 50 });
+    return R.sceneResult(a, far).bonus === 0 && R.sceneResult(a, near).bonus === 2;
+  });
+  t('SAME SCENE 결과에 confidence 와 검증 반영이 있다', function () {
+    var r = R.getSameSceneMatches('JP', 'FRUITS ZIPPER'); return r.top.every(function (m) { return m.confidence > 0 && m.confidence <= 1 && typeof m.confidenceLabel === 'string' && m.debug && m.debug.missing; });
+  });
+  t('DISCOVER 시드 재현(?seed=)', function () {
+    R.setSeed(1234); var a = []; for (var i = 0; i < 12; i++) a.push(R.pickDiscovery('random', 'ALL').ent.id);
+    R.setSeed(1234); var b = []; for (var j = 0; j < 12; j++) b.push(R.pickDiscovery('random', 'ALL').ent.id); R.setSeed(null);
+    return a.join() === b.join() || 'seed not reproducible';
+  });
+  t('ALL 랜덤: KR/JP 노출이 약 50:50 (팀 수 비율 86:126 아님)', function () {
+    R.setSeed(7); var kr = 0, n = 3000; for (var i = 0; i < n; i++) if (R.pickDiscovery('random', 'ALL').ent.country === 'KR') kr++; R.setSeed(null);
+    var p = kr / n; return (p > 0.46 && p < 0.54) || 'KR share ' + p.toFixed(3);
+  });
+  t('노출 페널티: 1/sqrt(1+count)', function () {
+    return Math.abs(R.noveltyWeight('X', {}) - 1) < 1e-9 && Math.abs(R.noveltyWeight('X', { X: 3 }) - 0.5) < 1e-9 && R.noveltyWeight('X', { X: 8 }) < R.noveltyWeight('X', { X: 1 });
+  });
+  t('서로 다른 두 취향의 최애: 평균 중간지대가 아니라 각 최애와 잘 맞는 후보가 상위', function () {
+    var f1 = R.entityOf('KR', 'IVE'), f2 = R.entityOf('KR', 'Dreamcatcher'), pool = R.entitiesOf('KR').concat(R.entitiesOf('JP')).filter(function (e) { return e.id !== f1.id && e.id !== f2.id && IM.util.isActive(e); });
+    var prof = pool.map(function (e) { return R.profileScoreVs([f1, f2], e); }).filter(Boolean).sort(function (x, y) { return y.raw - x.raw; }).slice(0, 12).map(function (m) { return m.ent.id; });
+    var top = function (f) { return pool.map(function (e) { return R.sceneResult(f, e); }).filter(function (m) { return m.score !== null; }).sort(U.compareResults).slice(0, 25).map(function (m) { return m.group.id; }); };
+    var t1 = top(f1), t2 = top(f2);
+    var hit1 = prof.filter(function (id) { return t1.indexOf(id) !== -1; }).length, hit2 = prof.filter(function (id) { return t2.indexOf(id) !== -1; }).length;
+    return (hit1 >= 2 && hit2 >= 2) || hit1 + '/' + hit2;
+  });
+  t('최애 5팀 이상이고 취향이 갈리면 취향군 A/B 로 분리, 3팀이면 분리 없음', function () {
+    var G = function (n) { return IM.getGroup(n[0], n[1]); };
+    var six = [['KR', 'IVE'], ['KR', 'TWICE'], ['JP', 'FRUITS ZIPPER'], ['JP', 'PassCode'], ['KR', 'Dreamcatcher'], ['JP', 'INUWASI']].map(G);
+    var c = U.clusterFavorites(six), three = U.clusterFavorites(six.slice(0, 3));
+    return (three === null && c && c.length === 2 && c[0].members.length >= 2 && c[1].members.length >= 2) || (c ? c.map(function (x) { return x.members.length; }).join() : 'no cluster');
+  });
+  t('지도 스케일: MAD=0 이어도 IQR → SD 로 fallback, 전부 같으면 0', function () {
+    var v = [5, 5, 5, 5, 5, 5, 9, 10, 12], i = R.robustScaleInfo(12, v), same = R.robustScaleInfo(5, [5, 5, 5]);
+    return (R.mad(v) === 0 && i.method !== 'MAD' && Math.abs(i.z) > 0.5 && isFinite(i.z) && same.z === 0 && same.method === 'none') || JSON.stringify(i);
+  });
+  t('지도 실데이터: 좌표가 중앙으로 붕괴하지 않고 logical 은 screen 과 분리', function () {
+    return ['KR', 'JP'].every(function (c) {
+      var pts = R.logicalPoints(c).points, xs = pts.map(function (p) { return p.logicalX; });
+      var m = xs.reduce(function (a, b) { return a + b; }, 0) / xs.length, sd = Math.sqrt(xs.reduce(function (a, b) { return a + (b - m) * (b - m); }, 0) / xs.length);
+      return sd > 3 && pts.every(function (p) { return 'logicalX' in p && 'logicalY' in p && !('screenX' in p) && p.zone; });
+    });
+  });
+  t('숨은 보석(V2): 데이터 완성도≥0.70·검증≥0.65·총점 상위권 제외', function () {
+    R.setSeed(11); var bad = null;
+    for (var i = 0; i < 100 && !bad; i++) { var r = R.pickDiscovery('hiddenGem', 'ALL'); var e = r.ent; if (r.mode === 'hiddenGem' && (e.completeness < 0.70 || e.verificationWeight < 0.65 || e.totalPercentile > 80)) bad = e.name; }
+    R.setSeed(null); return bad === null || bad;
+  });
+  t('HOT(V2): history 신호가 있으면 순위 상승·점수 상승이 반영되고 momentum 하나로 고정되지 않음', function () {
+    var pool = R.getDiscoverPool('ALL', { ignoreRecent: true }), hot = pool.filter(function (e) { return e.momentum >= 60; }).slice(0, 30), sig = {};
+    hot.forEach(function (e, i) { sig[e.id] = { movement: i % 3 === 0 ? 30 : 0, scoreDelta: i % 3 === 0 ? 4 : 0, newPeak: i % 3 === 0, tierUp: false }; });
+    R.setHotSignals(sig);
+    var withHist = R.hotScore(hot[0]), plain = hot[0].momentum, seen = {};
+    R.setSeed(3); for (var i = 0; i < 80; i++) seen[R.pickDiscovery('hot', 'ALL').ent.id] = 1; R.setSeed(null);
+    var comps = withHist.components.filter(function (c) { return c.available; }).length;
+    R.setHotSignals(null);
+    var noHist = R.hotScore(hot[0]);
+    return (comps === 4 && withHist.score !== plain && noHist.components.filter(function (c) { return c.available; }).length === 1 && Object.keys(seen).length >= 5) || comps + '/' + Object.keys(seen).length;
+  });
+  t('순위 위치 백분위: 1위=100, 꼴찌=0, 팀 수가 달라도 같은 척도', function () {
+    var RH2 = window.RankHistory; return RH2.getRankPositionPercentile(1, 86) === 100 && RH2.getRankPositionPercentile(86, 86) === 0 && RH2.getRankPositionPercentile(1, 1) === 100 && RH2.getRankPositionPercentile(2, 3) === 50 && RH2.getRankPositionPercentile(2, 3) === RH2.getRankPositionPercentile(63.5, 126);
+  });
+  t('history 신호: raw rank delta / percentile movement / score delta 를 각각 보관', function () {
+    var mk2 = function (p, l) { return { meta: { country: 'KR', period: p, revision: 1 }, groups: l.map(function (g) { return { id: g[0], group: g[0], rank: g[1], tier: g[3] || 'A', score: g[2], metrics: {} }; }) }; };
+    var d = window.RankHistory.deltasFromSnapshots([mk2('2026-09', [['A', 5, 80, 'A'], ['B', 1, 90, 'S'], ['C', 2, 85, 'A+']]), mk2('2026-10', [['A', 2, 84, 'A+'], ['B', 1, 90, 'S'], ['C', 3, 83, 'A']])]);
+    return (d.A.kind === 'up' && d.A.n === 3 && d.A.scoreDelta === 4 && d.A.movement > 0 && d.A.newPeak === true && d.A.tierUp === true && d.C.kind === 'down' && d.C.movement < 0 && d.B.movement === 0 && d.B.newPeak === false) || JSON.stringify(d.A);
+  });
+  t('최애 저장키는 id — 예전 {country,group} 형식을 1회 migration', function () {
+    var backup = localStorage.getItem('idolTierFavorites');
+    localStorage.setItem('idolTierFavorites', JSON.stringify([{ country: 'KR', group: 'IVE' }, { country: 'JP', group: 'FRUITS ZIPPER' }, { country: 'KR', group: '없는그룹' }]));
+    IM.migrateFavorites();
+    var saved = JSON.parse(localStorage.getItem('idolTierFavorites')), f = IM.getFavorites(), ok = saved.length === 2 && saved[0].id === 'KR-004' && saved[0].slug && !('group' in saved[0]) && f[0].group === 'IVE' && IM.isFavorite('KR', 'IVE') && IM.isFavorite('KR', 'KR-004') && IM.saveFavorite('KR', 'KR-004') === false && !IM.isFavorite('KR', 'IVE');
+    if (backup === null) localStorage.removeItem('idolTierFavorites'); else localStorage.setItem('idolTierFavorites', backup);
+    return ok || JSON.stringify(saved);
+  });
+  t('검증상태 → 신뢰도 가중치(공식1.0/1차0.95/부분0.8/추가검증필요0.6/확인필요0.4)', function () {
+    return U.verificationWeight('공식확인(2026-09-28)') === 1 && U.verificationWeight('1차 검증완료') === 0.95 && U.verificationWeight('공식/부분검증') === 0.8 && U.verificationWeight('추가검증필요') === 0.6 && U.verificationWeight('확인필요') === 0.4;
+  });
+  t('한국 활동형태는 하드코딩 기본값 없이 unknown → activity 항목 제외', function () {
+    var kr = IM.getGroup('KR', 'QWER'), jp = IM.getGroups('JP')[0]; var m = U.scoreMatch(kr, jp);
+    return kr.activityType === 'unknown' && m.breakdown.activity === null && m.debug === undefined && m.components.some(function (c) { return c.name === 'activity' && !c.available; });
+  });
+  t('지도 zone 은 jitter 전 logical 좌표로 분류', function () {
+    return R.logicalPoints('JP').points.every(function (p) { return p.zone === R.classifyMapZone(p.baseX, p.baseY); });
+  });
 
   /* ---------- RANK HISTORY ---------- */
   var RH = window.RankHistory;

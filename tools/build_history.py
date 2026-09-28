@@ -36,20 +36,38 @@ def load_rows(path, country):
     return data
 
 
+def competition_ranks(rows):
+    """향후 월 순위를 자동 생성할 때의 고정 정책: competition rank (1, 2, 2, 4).
+    동점 그룹의 화면 표시 순서(점수 > 현재기세 > id)는 표시용일 뿐 published rank 를 바꾸지 않는다."""
+    order = sorted(rows, key=lambda r: -r["총점"])
+    out, prev, cur = {}, None, 0
+    for i, r in enumerate(order):
+        if r["총점"] != prev:
+            cur, prev = i + 1, r["총점"]
+        out[r["id"]] = cur
+    return out
+
+
 def build_snapshot(rows, country, period, published, revision=1, extra_meta=None):
     metrics = KR_METRICS if country == "KR" else JP_METRICS
     groups = []
+    computed = competition_ranks(rows)
+    mismatch = [r["그룹"] for r in rows if r.get("순위") is not None and int(r["순위"]) != computed[r["id"]]]
+    if mismatch:
+        print("경고: DB 순위가 competition rank(1,2,2,4)와 다른 그룹 %d개 (DB 값을 그대로 저장합니다): %s" % (len(mismatch), ", ".join(mismatch[:5])))
     for r in rows:
         m = {key: r[col] for col, key in metrics}
         score = r["총점"]
         if abs(sum(m.values()) - score) > 0.01:
             raise SystemExit("%s %s: metric 합(%s)과 총점(%s)이 다릅니다" % (country, r["그룹"], sum(m.values()), score))
-        groups.append({"id": r["id"], "group": r["그룹"], "rank": int(r["순위"]), "tier": r["티어"], "score": score, "metrics": m})
+        groups.append({"id": r["id"], "group": r["그룹"], "rank": int(r["순위"]) if r.get("순위") is not None else computed[r["id"]], "tier": r["티어"], "score": score, "metrics": m})
     groups.sort(key=lambda g: (g["rank"], g["id"]))  # 저장 순서만 정렬. rank 값은 그대로 보존
     ids = [g["id"] for g in groups]
     if len(set(ids)) != len(ids):
         raise SystemExit("%s: 중복 id 가 있습니다" % country)
-    meta = {"country": country, "period": period, "published_at": published, "revision": revision}
+    # percentile 은 '해당 월, 자국 시장 안에서의 상대 위치'다. 팀 수(population)와 정규화 버전을 함께 기록한다.
+    meta = {"country": country, "period": period, "published_at": published, "revision": revision,
+            "population_count": len(groups), "normalization_version": "v2", "percentile_scope": "same-country, same-period relative position"}
     meta.update(extra_meta or {})
     return {"meta": meta, "groups": groups}
 

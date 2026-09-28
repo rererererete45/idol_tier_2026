@@ -4,7 +4,8 @@ const LB=CFG.LB,MX=CFG.MX;
 const T=[["S+",90,100],["S",80,89],["A+",70,79],["A",60,69],["B+",50,59],["B",40,49],["C+",30,39],["C",20,29],["D+",10,19],["D",0,9]];
 const ti=s=>T.findIndex(t=>s>=t[1]);
 const A=D.map(o=>{const s=o.v.reduce((a,b)=>a+b,0);return Object.assign({},o,{s:s,tier:T[ti(s)][0]})});
-A.sort((a,b)=>b.s-a.s);
+const MI=CFG.country==='KR'?5:4; // 현재기세 항목 위치
+A.sort((a,b)=>b.s-a.s||b.v[MI]-a.v[MI]||String(a.id).localeCompare(String(b.id)));
 let pv=null,pr=0;A.forEach((o,i)=>{if(o.s!==pv){pr=i+1;pv=o.s}o.r=pr});
 
 function statusBucket(s){
@@ -204,7 +205,7 @@ function openDetailBySlug(slug){
     updateFavbar();
   });
   renderMatchSection(o);
-  if(window.SameScene)SameScene.render(document.getElementById('scenebox'),{country:CFG.country,name:o.n,onOpen:sceneOpen});
+  if(window.SameScene)SameScene.render(document.getElementById('scenebox'),{country:CFG.country,name:o.n,id:o.id,onOpen:sceneOpen});
   if(window.RankHistory)RankHistory.renderDetail(document.getElementById('histbox'),{country:CFG.country,id:o.id,name:o.n});
 }
 // SAME SCENE 카드에서 다른 그룹 상세로: 기록을 쌓지 않고 모달 내용만 바꾼다.
@@ -242,9 +243,9 @@ document.getElementById('board').addEventListener('click',e=>{
   if(!c)return;
   openDetail(c.dataset.slug);
 });
-const qGroup=QS.get('group');
-if(qGroup){
-  const t=A.find(x=>x.n===qGroup||x.slug===qGroup);
+const qGroup=QS.get('group'),qId=QS.get('id');
+if(qGroup||qId){
+  const t=(qId&&A.find(x=>x.id===qId))||A.find(x=>x.n===qGroup||x.slug===qGroup);
   if(t){
     history.replaceState({slug:t.slug},'',location.pathname+'#'+t.slug);
     openDetailBySlug(t.slug);
@@ -265,7 +266,10 @@ const includeEnded=()=>{try{return localStorage.getItem(INC_KEY)==='1'}catch(e){
 const setIncludeEnded=v=>{try{localStorage.setItem(INC_KEY,v?'1':'0')}catch(e){}};
 const AXES=[['popularity','대중성'],['fandom','팬덤'],['live','라이브'],['digital','디지털'],['momentum','기세']];
 const WLABEL={style:'스타일',live:'라이브',fandom:'팬덤',popularity:'대중성',digital:'디지털',momentum:'기세',activity:'활동형태'};
-function matchUrl(name){return CFG.other.page+'?group='+encodeURIComponent(name)}
+function matchUrl(g){return CFG.other.page+'?id='+encodeURIComponent(g.id)+'&group='+encodeURIComponent(g.name)}
+const DEBUGM=QS.get('debugMatch')==='1';
+const NOPROB='추천 알고리즘의 상대 유사도 점수이며 확률이 아닙니다.';
+const v100=v=>v==null?0:v;
 const MPAL=['#f3727f','#ffa42b','#539df5','#a78bfa','#22d3ee','#e879f9'];
 function tasteRadar(a,an,items){
   const N=AXES.length,cx=130,cy=126,R=78,ang=i=>i*(2*Math.PI/N)-Math.PI/2;
@@ -275,11 +279,11 @@ function tasteRadar(a,an,items){
     const [x,y]=polar(cx,cy,R,ang(i)),[lx,ly]=polar(cx,cy,R+18,ang(i)),cv=Math.cos(ang(i));
     svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x+'" y2="'+y+'" stroke="var(--bd)" stroke-width="1"/><text x="'+lx+'" y="'+(ly+4)+'" text-anchor="'+(Math.abs(cv)<0.01?'middle':cv>0?'start':'end')+'" font-size="10.5" font-weight="700" fill="var(--tx3)">'+l+'</text>';
   });
-  const pts=v=>AXES.map(([k],i)=>polar(cx,cy,R*Math.max(0.03,v[k]/100),ang(i)).join(',')).join(' ');
+  const pts=v=>AXES.map(([k],i)=>polar(cx,cy,R*Math.max(0.03,v100(v[k])/100),ang(i)).join(',')).join(' ');
   items.forEach((it,i)=>{const c=MPAL[i%MPAL.length];svg+='<g class="rgroup" data-i="'+i+'"><polygon points="'+pts(it.vec)+'" fill="'+c+'" fill-opacity="0.14" stroke="'+c+'" stroke-width="2"/></g>'});
   svg+='<polygon points="'+pts(a)+'" fill="#1ed760" fill-opacity="0.22" stroke="#1ed760" stroke-width="3"/></svg>';
   const leg='<span class="mleg-me"><span style="color:var(--green)">●</span> '+esc(an)+' (내 선택)</span>'
-    +items.map((it,i)=>'<button type="button" class="legitem" data-i="'+i+'" style="--c:'+MPAL[i%MPAL.length]+'" aria-pressed="false" aria-label="'+esc(it.name)+' 강조해서 보기"><span class="dot"></span>'+esc(it.name)+'<span class="sc">'+it.score+'%</span></button>').join('');
+    +items.map((it,i)=>'<button type="button" class="legitem" data-i="'+i+'" style="--c:'+MPAL[i%MPAL.length]+'" aria-pressed="false" aria-label="'+esc(it.name)+' 강조해서 보기"><span class="dot"></span>'+esc(it.name)+'<span class="sc">'+it.score+'</span></button>').join('');
   return '<div class="mradarwrap">'+svg+'<div class="mleglist">'+leg+'</div></div>';
 }
 function mprofHighlight(box,i){
@@ -294,13 +298,15 @@ function mprofHighlight(box,i){
 function matchCard(m,i){
   const g=m.group,label=esc(g.name);
   const sp=g.spotify?'<a class="btn grn"'+TGT+' href="'+esc(g.spotify)+'" aria-label="'+label+' Spotify에서 듣기">Spotify ▶</a>':'';
-  const bd=TUNE?'<p class="mlog">'+Object.keys(m.breakdown).map(k=>k+' '+Math.round(m.breakdown[k])).join(' · ')+'</p>':'';
-  return '<article class="mcard"><div class="mtop"><span class="mmedal" aria-hidden="true">'+MEDALS[i]+'</span><div class="mname">'+label+'</div><div class="mpct" aria-label="매치율 '+m.score+' 퍼센트"><b>'+m.score+'%</b><span>MATCH</span></div></div>'
-    +'<p class="mtags">'+esc(m.tags.join(' · '))+'</p><p class="mreason">'+esc(m.reasons.join('. '))+'</p>'+bd
-    +'<div class="mact"><a class="btn out" href="'+matchUrl(g.name)+'" aria-label="'+label+' 상세보기">상세보기</a>'+sp+'</div></article>';
+  const bd=(TUNE||DEBUGM)?'<p class="mlog">'+Object.keys(m.breakdown).map(k=>k+' '+(m.breakdown[k]==null?'—':Math.round(m.breakdown[k]))).join(' · ')+'</p>':'';
+  const dbg=DEBUGM&&m.debug?'<pre class="mlog dbgm">'+esc('가중치(재정규화 전) '+JSON.stringify(m.debug.usedWeights)+'\n결측 '+JSON.stringify(m.debug.missing)+' · coverage '+m.debug.coverage+' · confidence '+m.debug.confidence+'\n보정점수 '+m.debug.rankingScore+' · 다양성 감점 '+m.debug.diversityPenalty+' · tie-break '+m.debug.tieBreak+(m.bestFavorite?'\n가장 잘 맞는 최애 '+m.bestFavorite.name:''))+'</pre>':'';
+  const flags=(m.limited?'<span class="chip mid" title="데이터가 일부 부족하거나 검증이 덜 된 그룹이에요">데이터 제한</span> ':'')+(m.relaxed?'<span class="chip" title="기준을 조금 낮춰 고른 취향 확장 후보예요">취향 확장</span> ':'')+'<span class="mconf" title="결과 신뢰도(데이터 완성도×검증상태)">신뢰도 '+m.confidenceLabel+'</span>';
+  return '<article class="mcard"><div class="mtop"><span class="mmedal" aria-hidden="true">'+MEDALS[i]+'</span><div class="mname">'+label+'</div><div class="mpct" title="'+NOPROB+'" aria-label="유사도 '+m.score+'점. '+NOPROB+'"><b>'+m.score+'</b><span>MATCH</span></div></div>'
+    +'<p class="mtags">'+esc(m.tags.join(' · '))+'</p><p class="mreason">'+esc(m.reasons.join('. '))+'</p><p class="mflags">'+flags+'</p>'+bd+dbg
+    +'<div class="mact"><a class="btn out" href="'+matchUrl(g)+'" aria-label="'+label+' 상세보기">상세보기</a>'+sp+'</div></article>';
 }
 function gemRow(m){
-  return '<div class="mgem"><div class="mname">'+esc(m.group.name)+'</div><div class="gp">'+m.score+'%<small>MATCH</small></div><a class="mlink" href="'+matchUrl(m.group.name)+'" aria-label="'+esc(m.group.name)+' 상세보기">상세보기</a></div>';
+  return '<div class="mgem"><div class="mname">'+esc(m.group.name)+'</div><div class="gp" title="'+NOPROB+'" aria-label="유사도 '+m.score+'점">'+m.score+'<small>MATCH</small></div><a class="mlink" href="'+matchUrl(m.group)+'" aria-label="'+esc(m.group.name)+' 상세보기">상세보기</a></div>';
 }
 function tuneHTML(){
   const w=IdolMatch.getWeights();
@@ -309,15 +315,17 @@ function tuneHTML(){
 }
 function matchBody(o,r){
   let h='<div class="mctl"><label class="mchk"><input type="checkbox" id="incEnded"'+(includeEnded()?' checked':'')+'> 활동종료 그룹 포함</label><span class="mbtns"><a class="mshare" href="idol-map.html?country='+CFG.country+'&group='+encodeURIComponent(o.n)+'&match=1">지도에서 보기</a> <button class="mshare" type="button" id="shareBtn">결과 공유</button></span></div>'
+    +(r.notice?'<p class="mnote" style="margin:0 0 10px;color:var(--warn)">'+esc(r.notice)+'</p>':'')
     +'<div class="mlist">'+r.top.map(matchCard).join('')+'</div>';
+  if(!r.top.length)h+='<p class="mnote">기준을 통과한 비슷한 팀이 아직 없어요.</p>';
   if(r.hidden.length)h+='<p class="mgemt">💎 숨은 취향 발견</p><div class="mlist">'+r.hidden.map(gemRow).join('')+'</div>';
   const cmpItems=r.top.concat(r.hidden).map(m=>({name:m.group.name,vec:m.group.vec,score:m.score}));
   if(cmpItems.length)h+='<details class="mprof"><summary>취향 프로필 비교 보기 ('+cmpItems.length+'팀)</summary>'+tasteRadar(r.source.vec,o.n,cmpItems)+'<p class="mnote">추천된 그룹(TOP 3 + 숨은 취향)을 모두 겹쳐 보여줘요. 이름을 누르면 그 그룹만 강조돼요. 각 축은 해당 나라 안에서의 상대 위치(백분위)예요.</p></details>';
-  return h+'<p class="mnote">스타일·라이브·팬덤·대중성 성향을 각 시장 안에서의 상대 위치(백분위)로 비교한 취향 유사도이며, 점수나 체급 비교가 아닙니다.</p>';
+  return h+'<p class="mnote">스타일·라이브·팬덤·대중성 성향을 각 시장 안에서의 상대 위치(백분위)로 비교한 취향 유사도예요. MATCH 숫자는 '+NOPROB+' 점수나 체급 비교가 아니에요. 데이터가 없는 항목은 계산에서 빼고 남은 항목만으로 다시 가중했어요.</p>';
 }
 function shareMatches(o,r,btn){
-  const base=location.href.split(/[?#]/)[0],url=base+'?group='+encodeURIComponent(o.n);
-  const text=o.n+'와(과) 비슷한 '+CFG.other.label+' 아이돌: '+r.top.map(m=>m.group.name+' '+m.score+'%').join(', ');
+  const base=location.href.split(/[?#]/)[0],url=base+'?id='+encodeURIComponent(o.id)+'&group='+encodeURIComponent(o.n);
+  const text=o.n+'와(과) 비슷한 '+CFG.other.label+' 아이돌: '+r.top.map(m=>m.group.name+' (유사도 '+m.score+')').join(', ');
   if(navigator.share){navigator.share({title:'IDOL MATCH',text:text,url:url}).catch(()=>{});return}
   const done=()=>{const t=btn.textContent;btn.textContent='링크 복사됨 ✓';setTimeout(()=>{btn.textContent=t},1600)};
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text+'\n'+url).then(done).catch(()=>window.prompt('복사해서 공유하세요',text+' '+url));
@@ -335,7 +343,7 @@ function renderMatchSection(o){
       const r=IdolMatch.getMatches(CFG.country,o.n,{includeEnded:includeEnded()});
       last=r;
       box.querySelector('#mbody').innerHTML=r&&r.top.length?matchBody(o,r):'<p class="mnote">추천 결과가 없어요.</p>';
-      if(TUNE&&r)console.table(r.top.map(m=>Object.assign({group:m.group.name,score:m.score},m.breakdown)));
+      if((TUNE||DEBUGM)&&r)console.table(r.top.map(m=>Object.assign({group:m.group.name,score:m.score,coverage:+m.coverage.toFixed(2),confidence:+m.confidence.toFixed(2)},m.breakdown)));
     };
     paint();
     box.addEventListener('change',e=>{if(e.target.id==='incEnded'){setIncludeEnded(e.target.checked);paint()}});
@@ -370,8 +378,9 @@ document.getElementById('favGo').addEventListener('click',()=>{
     if(!r)return;
     document.getElementById('detailPanel').innerHTML='<div class="cmphead"><h2>내 취향으로 찾기</h2><div class="headact"><button class="cmpclose" id="detailClose" aria-label="닫기">✕</button></div></div>'
       +'<div class="favchips">'+r.groups.map(g=>'<span class="chip">♥ '+esc(g.name)+'</span>').join('')+'</div>'
-      +'<h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+' 아이돌 TOP 5</h3><div class="mlist">'+r.matches.map(matchCard).join('')+'</div>'
-      +'<p class="mnote">최애들의 평균 성향(백분위)과 스타일 태그 빈도로 계산한 결과예요.'+(includeEnded()?'':' (활동종료 그룹 제외)')+'</p>';
+      +(r.clusters?'<p class="mnote" style="margin:8px 0 0">최애가 서로 다른 두 취향으로 나뉘어서, 취향별로 따로 추천해요.</p>'+r.clusters.map(c=>'<h3 class="mtitle" style="margin-top:16px">'+esc(c.label)+'<span class="sub2">'+c.groups.map(g=>esc(g.name)).join(' · ')+'</span></h3><div class="mlist">'+c.matches.map(matchCard).join('')+'</div>').join('')
+        :'<h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+' 아이돌 TOP 5</h3><div class="mlist">'+r.matches.map(matchCard).join('')+'</div>')
+      +'<p class="mnote">후보마다 (가장 잘 맞는 최애 0.55 + 상위 2개 평균 0.45)로 계산해서, 서로 다른 최애를 평균내 엉뚱한 중간 취향으로 뭉개지 않아요. MATCH 숫자는 '+NOPROB+(includeEnded()?'':' (활동종료 그룹 제외)')+'</p>';
     document.getElementById('detailModal').classList.remove('hidden');
     document.getElementById('detailClose').addEventListener('click',()=>document.getElementById('detailModal').classList.add('hidden'));
   });

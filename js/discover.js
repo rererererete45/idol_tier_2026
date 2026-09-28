@@ -21,8 +21,10 @@
   function reduced() { return global.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }
   function flagB(c) { return '<span class="dsc-flag ' + c.toLowerCase() + '">' + c + '</span>'; }
   function pageOf(c) { return base + IM.countries[c].page; }
-  function detailUrl(e) { return pageOf(e.country) + '?group=' + encodeURIComponent(e.name); }
-  function mapUrl(e) { return base + 'idol-map.html?country=' + e.country + '&group=' + encodeURIComponent(e.name); }
+  // id 를 우선하고 group 이름은 fallback/표시용
+  function detailUrl(e) { return pageOf(e.country) + '?id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name); }
+  function mapUrl(e) { return base + 'idol-map.html?country=' + e.country + '&id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name); }
+  var DEBUG = /[?&]debugDiscover=1/.test(location.search);
   function sceneUrl(e) { return mapUrl(e) + '&scene=1'; }
   var IMGS = null; // data/namu_images.json: {KR:{name:{img}}, JP:{...}} — 사진이 있는 그룹만 <img> 를 만든다(404 방지)
   function loadImgs() {
@@ -125,6 +127,7 @@
     + '.dsc-tags.rep{margin:0}.dsc-tags.rep em{font-style:normal;color:#1ed760;margin-left:4px}'
     + '.dsc-gl{display:flex;flex-wrap:wrap;gap:6px}'
     + '.dsc-fine{margin:12px 0 0;font-size:10.5px;line-height:1.6;color:#7c7c7c}'
+    + '.dsc-dbg{white-space:pre-wrap;margin:10px 0 0;padding:8px;border-radius:8px;background:#121212;color:#7c7c7c;font-size:10.5px;line-height:1.5;font-family:inherit}'
     + '.dsc-empty{padding:26px 8px;text-align:center;color:#b3b3b3;font-size:13px;line-height:1.7}'
     + '.dsc-roll h3{opacity:.55;filter:blur(.6px)}'
     + '@media(max-width:400px){.dsc-top h3{font-size:19px}.dsc-av{width:64px;height:64px}}'
@@ -211,7 +214,7 @@
     var tags = R.describeStyle(e).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('');
     var fav = IM.isFavorite(e.country, e.name);
     var note = (res.fellBack ? '<p class="dsc-note">' + esc(fallbackText(res)) + '</p>' : '')
-      + (res.relaxed ? '<p class="dsc-note">후보가 적어서 숨은 보석 기준을 조금 넓혔어요. (총점 하위 75% 미만 · 한 축 75 이상)</p>' : '');
+      + (res.relaxed ? '<p class="dsc-note">후보가 적어서 숨은 보석 기준을 조금 넓혔어요. (총점 하위 80% 이하 · 강점 축 1개 이상)</p>' : '');
     return '<article class="dsc-card" style="--mc:' + mc + '" data-key="' + esc(e.key) + '">'
       + '<span class="dsc-badge">' + esc(why.badge) + '</span>'
       + '<div class="dsc-top"><div class="dsc-av">' + esc(e.name.charAt(0)) + (imgOf(e) ? '<img alt="" src="' + imgOf(e) + '" onerror="this.remove()">' : '') + '</div>'
@@ -219,6 +222,8 @@
       + (tags ? '<div class="dsc-tags">' + tags + '</div>' : '')
       + '<div class="dsc-axis"><b>' + esc(why.axis.label) + '</b><span>' + esc(why.axis.text) + '</span></div>'
       + '<p class="dsc-sent">' + esc(why.sentence) + '</p>' + note
+      + (res.limited ? '<p class="dsc-note">데이터가 일부 부족하거나 검증이 덜 된 그룹이에요. 추천 신뢰도가 낮을 수 있어요.</p>' : '')
+      + (DEBUG ? '<pre class="dsc-dbg">' + esc(JSON.stringify(res.debug, null, 1)) + '\nconfidence ' + (res.confidence == null ? '—' : res.confidence.toFixed(2)) + '</pre>' : '')
       + '<div class="dsc-act">'
       + '<a class="grn" target="_blank" rel="noopener noreferrer" href="' + esc(e.spotify || 'https://open.spotify.com/search/' + encodeURIComponent(e.name)) + '" aria-label="' + esc(e.name) + (e.spotify ? ' Spotify에서 듣기' : ' Spotify에서 검색하기') + '">' + (e.spotify ? 'Spotify ▶' : 'Spotify 검색 ▶') + '</a>'
       + '<a href="' + detailUrl(e) + '" aria-label="' + esc(e.name) + ' 상세보기">상세보기</a>'
@@ -475,10 +480,19 @@
     } catch (e) { /* noop */ }
   }
 
+  // HOT V2: 월별 history 가 있으면 순위 위치 백분위 이동·점수 변화·NEW PEAK 를 반영한다. 실패하면 현재기세만 쓴다.
+  function loadHotSignals() {
+    if (!global.RankHistory) return Promise.resolve();
+    return Promise.all(['KR', 'JP'].map(function (c) { return global.RankHistory.loadAll(c); })).then(function (all) {
+      var map = {};
+      all.forEach(function (snaps) { if (snaps.length) Object.assign(map, global.RankHistory.deltasFromSnapshots(snaps)); });
+      R.setHotSignals(map);
+    }).catch(function () { R.setHotSignals(null); });
+  }
   function open(opts) {
     opts = opts || {};
     build();
-    Promise.all([IM.ready, loadImgs()]).then(function () {
+    Promise.all([IM.ready, loadImgs(), loadHotSignals()]).then(function () {
       if (opts.scope && ['ALL', 'KR', 'JP'].indexOf(opts.scope) >= 0) state.scope = opts.scope;
       if (opts.mode && MODE_COLOR[opts.mode]) state.mode = opts.mode;
       state.opener = document.activeElement;
