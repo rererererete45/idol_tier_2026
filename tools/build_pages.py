@@ -34,7 +34,7 @@ def tags(pairs):
 
 def img_of(country, name):
     r = IMGS.get(country, {}).get(name) or {}
-    return r.get("img", ""), r.get("wiki", "")
+    return r.get("img", ""), r.get("wiki", ""), r.get("page", "") if r.get("src") == "official" else ""
 
 
 def members(v):
@@ -48,13 +48,13 @@ def members(v):
 def kr_rows(rows):
     out = []
     for r in rows:
-        img, wiki = img_of("KR", r["그룹"])
+        img, wiki, imgpage = img_of("KR", r["그룹"])
         out.append({
             "n": r["그룹"], "v": [r[k] for k in KR_KEYS], "slug": r["slug"],
             "gen": r["세대"], "style": r["스타일"], "agency": r["소속사"], "status": r["활동상태"],
             "debut": r["데뷔일"], "members": members(r["멤버수"]), "songs": r["대표곡"],
             "link": r["공식링크/SNS"], "verify": r["검증상태"], "note": r["대표출처/메모"],
-            "img": img, "wiki": wiki, "intro": r.get("소개글", ""), "editor": r.get("에디터 코멘트(주관)", ""),
+            "img": img, "wiki": wiki, "imgpage": imgpage, "intro": r.get("소개글", ""), "editor": r.get("에디터 코멘트(주관)", ""),
         })
     return out
 
@@ -62,7 +62,7 @@ def kr_rows(rows):
 def jp_rows(rows):
     out = []
     for r in rows:
-        img, wiki = img_of("JP", r["그룹"])
+        img, wiki, imgpage = img_of("JP", r["그룹"])
         out.append({
             "n": r["그룹"], "v": [r[k] for k in JP_KEYS], "slug": r["id"].lower(),
             "period": PERIOD_FIX.get(r["결성시기"], r["결성시기"]),
@@ -70,7 +70,7 @@ def jp_rows(rows):
             "form": r["활동형태"], "style": r["스타일"], "status": r["활동상태"],
             "debut": r["결성/데뷔일"], "members": members(r["멤버수"]), "songs": r["대표곡"],
             "agency": r["소속/운영"], "link": r["공식링크/SNS"], "verify": r["검증상태"],
-            "note": r["대표출처/메모"], "img": img, "wiki": wiki, "intro": r.get("소개글", ""), "editor": r.get("에디터 코멘트(주관)", ""),
+            "note": r["대표출처/메모"], "img": img, "wiki": wiki, "imgpage": imgpage, "intro": r.get("소개글", ""), "editor": r.get("에디터 코멘트(주관)", ""),
         })
     return out
 
@@ -117,7 +117,7 @@ JP = dict(
     font=FONT_JP, fs=FS_JP,
     footer=(
         "<p>점수는 공개 공연 규모·투어 회차·매진 여부, CD/특전·팬클럽 구매력, 대중 인지도, 스트리밍·SNS 화제량, 최근 12개월 성장세, 메이저 미디어 존재감을 교차 반영한 상대평가 지수입니다. 점수·티어는 2026년 9월 평가 스냅샷이며, 멤버수·활동상태 등 상세 정보는 2026-09-28 기준 공식 사이트·공지·보도를 반영했습니다. 카드에 <b style=\"color:var(--warn)\">부분검증·추가검증필요·인원변동형</b>이 표시된 항목은 최신 공식 정보 재확인이 필요하며, 확인되지 않은 정보는 '확인필요'로 표기했습니다.</p>\n"
-        "  <p>카드를 클릭하면 결성/데뷔일·소속/운영·멤버수·대표곡·SNS 등을 담은 그룹 상세 정보가 열립니다. 상세 화면의 ‘에디터 코멘트’는 객관 데이터와 별개의 주관적 해석이며 순위·티어·점수에는 영향을 주지 않습니다. 프로필 사진은 나무위키 문서의 대표 이미지를 작게 축소해 저장한 것으로(문서가 없는 그룹은 이니셜로 대체), 출처는 상세 화면에 표기했으며 저작권은 각 권리자에게 있습니다.</p>\n"
+        "  <p>카드를 클릭하면 결성/데뷔일·소속/운영·멤버수·대표곡·SNS 등을 담은 그룹 상세 정보가 열립니다. 상세 화면의 ‘에디터 코멘트’는 객관 데이터와 별개의 주관적 해석이며 순위·티어·점수에는 영향을 주지 않습니다. 프로필 사진은 나무위키 문서의 대표 이미지(문서가 없는 그룹은 공식 사이트의 공유용 대표 이미지)를 작게 축소해 저장한 것으로(사진을 구하지 못한 그룹은 이니셜로 대체), 출처는 상세 화면에 표기했으며 저작권은 각 권리자에게 있습니다.</p>\n"
         "  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결됩니다. PC에서는 새 탭으로 열리고, 모바일에서는 현재 화면에서 바로 연결되어 해당 앱이 설치되어 있으면 자동으로 앱이 열립니다(앱이 없으면 웹페이지로 이동). 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>"
     ),
     cfg=dict(

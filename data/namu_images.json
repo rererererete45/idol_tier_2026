@@ -621,6 +621,120 @@
   "Bunny La Crew": {
    "img": "img/JP-126.webp",
    "wiki": "Bunny La Crew"
+  },
+  "モーニング娘。'26": {
+   "img": "img/JP-017.webp",
+   "wiki": "모닝구 무스메 '26"
+  },
+  "ももいろクローバーZ": {
+   "img": "img/JP-018.webp",
+   "wiki": "모모이로 클로버 Z"
+  },
+  "いぎなり東北産": {
+   "img": "img/JP-016.webp",
+   "wiki": "이기나리 도호쿠산"
+  },
+  "つばきファクトリー": {
+   "img": "img/JP-034.webp",
+   "wiki": "츠바키 팩토리"
+  },
+  "なみだ色の消しごむ": {
+   "img": "img/JP-076.webp",
+   "wiki": "나미다이로노 케시고무"
+  },
+  "アップアップガールズ（仮）": {
+   "img": "img/JP-096.webp",
+   "wiki": "업업걸즈(가)"
+  },
+  "純情のアフィリア": {
+   "img": "img/JP-094.webp",
+   "wiki": "순정의 아필리아"
+  },
+  "ドラマチックレコード": {
+   "img": "img/JP-082.webp",
+   "wiki": "드라마틱 레코드"
+  },
+  "透色ドロップ": {
+   "img": "img/JP-115.webp",
+   "wiki": "스키이로 드롭"
+  },
+  "アンジュルム": {
+   "img": "img/JP-025.webp",
+   "wiki": "안쥬르므"
+  },
+  "クマリデパート": {
+   "img": "img/JP-102.webp",
+   "wiki": "쿠마리데파토"
+  },
+  "かすみ草とステラ": {
+   "img": "img/JP-117.webp",
+   "wiki": "카스미소토스테라"
+  },
+  "iScream": {
+   "img": "img/JP-065.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://www.ldh.co.jp/management/iscream/"
+  },
+  "yosugala": {
+   "img": "img/JP-066.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://yosugala.fanpla.jp/"
+  },
+  "フィロソフィーのダンス": {
+   "img": "img/JP-069.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://danceforphilosophy.com/"
+  },
+  "NEO JAPONISM": {
+   "img": "img/JP-080.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://neojaponism.com/"
+  },
+  "THE ORCHESTRA TOKYO": {
+   "img": "img/JP-085.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://theorchestratokyo.com/"
+  },
+  "#よーよーよー": {
+   "img": "img/JP-089.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://yoyoyo.info/"
+  },
+  "二丁目の魁カミングアウト": {
+   "img": "img/JP-097.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://www.comingout.jp/"
+  },
+  "きのホ。": {
+   "img": "img/JP-100.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://kinopo.jp/"
+  },
+  "ハルニシオン": {
+   "img": "img/JP-110.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://harunision-official.boosty.app/top"
+  },
+  "KRD8": {
+   "img": "img/JP-112.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://krd8.jp/"
+  },
+  "ルルネージュ": {
+   "img": "img/JP-124.webp",
+   "wiki": "",
+   "src": "official",
+   "page": "https://ruruneige.com/"
   }
  }
 }

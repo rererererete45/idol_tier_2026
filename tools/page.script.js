@@ -165,7 +165,7 @@ function detailHTML(o){
     +'<div class="dpinfo"><h2>'+esc(o.n)+'</h2>'
     +'<div class="dpmeta"><span class="chip">'+o.tier+'</span>'+verifychip+'</div>'
     +'<div class="dpscore"><span class="n">'+o.s+'</span><span class="u">/ 100 · #'+o.r+'</span></div>'
-    +(o.img?'<p class="dpsrc">사진 출처: <a href="'+namuUrl(o)+'"'+TGT+'>나무위키</a></p>':'')
+    +(o.img?'<p class="dpsrc">사진 출처: <a href="'+(o.imgpage?esc(o.imgpage):namuUrl(o))+'"'+TGT+'>'+(o.imgpage?'공식 사이트':'나무위키')+'</a></p>':'')
     +'</div></div>'
     +(o.intro?'<p class="dpintro">'+esc(o.intro)+'</p>':'')
     +'<div class="bars">'+barsHTML(o)+'</div>'
