@@ -94,7 +94,7 @@ KR = dict(
         "  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결됩니다. PC에서는 새 탭으로 열리고, 모바일에서는 현재 화면에서 바로 연결되어 해당 앱이 설치되어 있으면 자동으로 앱이 열립니다(앱이 없으면 웹페이지로 이동). 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>"
     ),
     cfg=dict(
-        country="KR", LB=["음원", "팬덤", "공연", "글로벌", "인지도", "기세"], MX=[20, 20, 20, 15, 15, 10],
+        country="KR", other={"page": "jp-idol-tier-2026-09.html", "label": "일본", "flag": "🇯🇵"}, LB=["음원", "팬덤", "공연", "글로벌", "인지도", "기세"], MX=[20, 20, 20, 15, 15, 10],
         facets=[
             {"key": "gen", "label": "세대", "order": ["1세대", "2세대", "3세대", "4세대", "5세대", "6세대"]},
             {"key": "tier", "label": "티어"},
@@ -125,7 +125,7 @@ JP = dict(
         "  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결됩니다. PC에서는 새 탭으로 열리고, 모바일에서는 현재 화면에서 바로 연결되어 해당 앱이 설치되어 있으면 자동으로 앱이 열립니다(앱이 없으면 웹페이지로 이동). 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>"
     ),
     cfg=dict(
-        country="JP", LB=["공연", "팬덤", "인지도", "SNS", "기세", "업계"], MX=[25, 20, 20, 15, 10, 10],
+        country="JP", other={"page": "kr-idol-tier-2026-09.html", "label": "한국", "flag": "🇰🇷"}, LB=["공연", "팬덤", "인지도", "SNS", "기세", "업계"], MX=[25, 20, 20, 15, 10, 10],
         facets=[
             {"key": "period", "label": "결성시기",
              "order": ["~2009", "2010~2014", "2015~2019", "2020~2022", "2023~현재", "확인필요"]},
@@ -167,7 +167,7 @@ def build(page, data):
     }
     for k, v in rep.items():
         h = h.replace(k, v)
-    html = h + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
+    html = h + '<script src="js/idol-match.js?v=20260928"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
     open(os.path.join(ROOT, page["file"]), "w", encoding="utf-8", newline="\n").write(html)
     noimg = [d["n"] for d in data if not d["img"]]
     print(page["file"], len(data), "groups; without photo:", len(noimg))

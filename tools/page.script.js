@@ -163,7 +163,8 @@ function detailHTML(o){
   const noteParts=(o.note||'').split(' | ');
   const noteText=noteParts.length>1?noteParts.slice(1).join(' | '):'';
   const officialBtn=(o.link&&o.link.startsWith('http'))?'<a class="btn out"'+TGT+' href="'+esc(o.link)+'">공식 링크</a>':'';
-  return '<div class="cmphead"><h2>그룹 상세</h2><button class="cmpclose" id="detailClose" aria-label="닫기">✕</button></div>'
+  const isFav=window.IdolMatch&&IdolMatch.isFavorite(CFG.country,o.n);
+  return '<div class="cmphead"><h2>그룹 상세</h2><div class="headact"><button class="favbtn" id="favBtn" aria-pressed="'+!!isFav+'" aria-label="'+esc(o.n)+' 최애로 저장">'+(isFav?'♥ 최애':'♡ 최애')+'</button><button class="cmpclose" id="detailClose" aria-label="닫기">✕</button></div></div>'
     +'<div class="dphead">'+photo
     +'<div class="dpinfo"><h2>'+esc(o.n)+'</h2>'
     +'<div class="dpmeta"><span class="chip">'+o.tier+'</span>'+verifychip+'</div>'
@@ -178,7 +179,8 @@ function detailHTML(o){
     +'<a class="btn grn"'+TGT+' href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
     +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
     +'<a class="btn out"'+TGT+' href="'+namuUrl(o)+'">나무위키</a></div>'
-    +(noteText?'<p class="dpnote">'+esc(noteText)+'</p>':'');
+    +(noteText?'<p class="dpnote">'+esc(noteText)+'</p>':'')
+    +'<section class="matchbox" id="matchbox" data-n="'+esc(o.n)+'"><h3 class="mtitle">'+CFG.other.flag+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><p class="mnote">불러오는 중…</p></section>';
 }
 function openDetailBySlug(slug){
   const o=A.find(x=>x.slug===slug);
@@ -186,6 +188,14 @@ function openDetailBySlug(slug){
   document.getElementById('detailPanel').innerHTML=detailHTML(o);
   document.getElementById('detailModal').classList.remove('hidden');
   document.getElementById('detailClose').addEventListener('click',closeDetail);
+  const fb=document.getElementById('favBtn');
+  fb.addEventListener('click',()=>{
+    if(!window.IdolMatch)return;
+    const on=IdolMatch.saveFavorite(CFG.country,o.n);
+    fb.setAttribute('aria-pressed',on);fb.textContent=on?'♥ 최애':'♡ 최애';
+    updateFavbar();
+  });
+  renderMatchSection(o);
 }
 function closeDetail(){
   if(history.state&&history.state.slug){history.back()}
@@ -208,13 +218,74 @@ document.getElementById('board').addEventListener('click',e=>{
   if(!c)return;
   openDetail(c.dataset.slug);
 });
-if(location.hash){
+const qGroup=new URLSearchParams(location.search).get('group');
+if(qGroup){
+  const t=A.find(x=>x.n===qGroup||x.slug===qGroup);
+  if(t){
+    history.replaceState({slug:t.slug},'',location.pathname+'#'+t.slug);
+    openDetailBySlug(t.slug);
+  }
+}else if(location.hash){
   const initSlug=decodeURIComponent(location.hash.slice(1));
   if(A.some(x=>x.slug===initSlug)){
     history.replaceState({slug:initSlug},'',location.hash);
     openDetailBySlug(initSlug);
   }
 }
+
+/* ---- IDOL MATCH ---- */
+const MEDALS=['🥇','🥈','🥉','4','5'];
+function matchUrl(name){return CFG.other.page+'?group='+encodeURIComponent(name)}
+function matchCard(m,i){
+  const g=m.group,label=esc(g.name);
+  const sp=g.spotify?'<a class="btn grn"'+TGT+' href="'+esc(g.spotify)+'" aria-label="'+label+' Spotify에서 듣기">Spotify ▶</a>':'';
+  return '<article class="mcard"><div class="mtop"><span class="mmedal" aria-hidden="true">'+MEDALS[i]+'</span><div class="mname">'+label+'</div><div class="mpct" aria-label="매치율 '+m.score+' 퍼센트"><b>'+m.score+'%</b><span>MATCH</span></div></div>'
+    +'<p class="mtags">'+esc(m.tags.join(' · '))+'</p><p class="mreason">'+esc(m.reasons.join('. '))+'</p>'
+    +'<div class="mact"><a class="btn out" href="'+matchUrl(g.name)+'" aria-label="'+label+' 상세보기">상세보기</a>'+sp+'</div></article>';
+}
+function gemRow(m){
+  return '<div class="mgem"><div class="mname">'+esc(m.group.name)+'</div><div class="gp">'+m.score+'%<small>MATCH</small></div><a class="mlink" href="'+matchUrl(m.group.name)+'" aria-label="'+esc(m.group.name)+' 상세보기">상세보기</a></div>';
+}
+function matchHTML(r){
+  let h='<h3 class="mtitle">'+CFG.other.flag+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><div class="mlist">'+r.top.map(matchCard).join('')+'</div>';
+  if(r.hidden.length)h+='<p class="mgemt">💎 숨은 취향 발견</p><div class="mlist">'+r.hidden.map(gemRow).join('')+'</div>';
+  return h+'<p class="mnote">스타일·라이브·팬덤·대중성 성향을 각 시장 안에서의 상대 위치(백분위)로 비교한 취향 유사도이며, 점수나 체급 비교가 아닙니다.</p>';
+}
+function renderMatchSection(o){
+  const box=document.getElementById('matchbox');
+  if(!box)return;
+  if(!window.IdolMatch){box.innerHTML='';return}
+  IdolMatch.ready.then(()=>{
+    if(!box.isConnected||box.dataset.n!==o.n)return;
+    const r=IdolMatch.getMatches(CFG.country,o.n);
+    box.innerHTML=r&&r.top.length?matchHTML(r):'';
+  }).catch(()=>{if(box.isConnected)box.innerHTML='<p class="mnote">추천 데이터를 불러오지 못했어요.</p>'});
+}
+function myFavs(){return window.IdolMatch?IdolMatch.getFavorites().filter(f=>f.country===CFG.country):[]}
+function updateFavbar(){
+  const bar=document.getElementById('favbar'),f=myFavs();
+  bar.hidden=f.length<2;
+  if(f.length<2)return;
+  document.getElementById('favtext').innerHTML='<b>♥</b> 내 최애 '+f.length+'팀';
+  document.getElementById('favGo').textContent='내 취향으로 '+CFG.other.label+' 아이돌 찾기';
+}
+document.getElementById('favGo').addEventListener('click',()=>{
+  const f=myFavs();
+  if(f.length<2)return;
+  IdolMatch.ready.then(()=>{
+    const r=IdolMatch.getFavoriteMatches(f,CFG.country==='KR'?'JP':'KR',5);
+    if(!r)return;
+    document.getElementById('detailPanel').innerHTML='<div class="cmphead"><h2>내 취향으로 찾기</h2><div class="headact"><button class="cmpclose" id="detailClose" aria-label="닫기">✕</button></div></div>'
+      +'<div class="favchips">'+r.groups.map(g=>'<span class="chip">♥ '+esc(g.name)+'</span>').join('')+'</div>'
+      +'<h3 class="mtitle">'+CFG.other.flag+' '+CFG.other.label+' 아이돌 TOP 5</h3><div class="mlist">'+r.matches.map(matchCard).join('')+'</div>'
+      +'<p class="mnote">최애들의 평균 성향(백분위)과 스타일 태그 빈도로 계산한 결과예요.</p>';
+    document.getElementById('detailModal').classList.remove('hidden');
+    document.getElementById('detailClose').addEventListener('click',()=>document.getElementById('detailModal').classList.add('hidden'));
+  });
+});
+document.getElementById('favClear').addEventListener('click',()=>{IdolMatch.clearFavorites(CFG.country);updateFavbar()});
+window.addEventListener('storage',updateFavbar);
+updateFavbar();
 
 /* ---- 그룹 비교 모드 ---- */
 function setCmpBtn(n,on){
