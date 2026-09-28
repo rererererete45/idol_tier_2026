@@ -170,7 +170,7 @@
     var music = P('국내음원');
     var popularity = music * 0.60 + P('국내인지도') * 0.40;
     return {
-      country: 'KR', name: r['그룹'], slug: r.slug, tier: r['티어'], status: r['활동상태'] || '',
+      country: 'KR', id: r.id, name: r['그룹'], slug: r.slug, tier: r['티어'], total: Number(r['총점']), status: r['활동상태'] || '',
       styleRaw: r['스타일'], styleTags: extractStyleTags(r['스타일'], r['소개글']),
       // 한국은 활동형태 필드가 없어 대중성 백분위로 추정: 낮으면 소규모 라이브형(라이브 아이돌)으로 본다.
       activityType: KR_ACTIVITY_OVERRIDES[r['그룹']] || (popularity >= 45 ? '메이저' : '라이브 아이돌'),
@@ -189,7 +189,7 @@
     var P = function (k) { return percentileRank(Number(r[k]), maps[k]); };
     var sns = P('스트리밍·SNS');
     return {
-      country: 'JP', name: r['그룹'], slug: String(r.id || '').toLowerCase(), tier: r['티어'], status: r['활동상태'] || '',
+      country: 'JP', id: r.id, name: r['그룹'], slug: String(r.id || '').toLowerCase(), tier: r['티어'], total: Number(r['총점']), status: r['활동상태'] || '',
       styleRaw: r['스타일'], styleTags: extractStyleTags(r['스타일'], r['소개글']),
       activityType: r['활동형태'] || '메이저',
       spotify: firstSpotify(r),
@@ -347,7 +347,7 @@
   }
 
   /* ---------- 데이터 로드 ---------- */
-  var state = { groups: { KR: [], JP: [] }, byKey: {} };
+  var state = { groups: { KR: [], JP: [] }, byKey: {}, raw: { KR: [], JP: [] } };
 
   function fetchJson(url) {
     return fetch(url + '?v=' + DATA_VERSION).then(function (r) {
@@ -375,6 +375,7 @@
   var ready = Promise.all([loadCountry('KR'), loadCountry('JP')]).then(function (res) {
     var kr = Array.isArray(res[0]) ? res[0] : res[0].korea;
     var jp = Array.isArray(res[1]) ? res[1] : (res[1].japan || res[1]);
+    state.raw.KR = kr; state.raw.JP = jp;
     var krMaps = buildPercentileMaps(kr, KR_KEYS);
     var jpMaps = buildPercentileMaps(jp, JP_KEYS);
     state.groups.KR = kr.map(function (r) { return normalizeKoreanGroup(r, krMaps); });
@@ -420,6 +421,8 @@
   global.IdolMatch = {
     version: DATA_VERSION, countries: COUNTRIES, ready: ready,
     getMatches: getMatches, getFavoriteMatches: getFavoriteMatches,
+    getRaw: function (c) { return state.raw[c]; }, getGroups: function (c) { return state.groups[c]; },
+    getGroup: function (c, n) { return state.byKey[c + '|' + n]; }, percentileRank: percentileRank,
     setWeights: setWeights, getWeights: getWeights, resetWeights: resetWeights, defaultWeights: DEFAULT_WEIGHTS,
     getFavorites: getFavorites, saveFavorite: saveFavorite, isFavorite: isFavorite, clearFavorites: clearFavorites,
     // 테스트/검증용

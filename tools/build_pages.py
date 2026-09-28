@@ -162,7 +162,7 @@ def build(page, data):
     rep = {
         "@@TITLE@@": page["title"], "@@ICONS@@": icons(page["icon"]), "@@FONTLINK@@": page["font"], "@@FSVAR@@": page["fs"],
         "@@EYEBROW@@": page["eyebrow"].format(n=len(data)), "@@H1@@": page["h1"], "@@SUB@@": page["sub"],
-        "@@FORMULA@@": page["formula"], "@@NAVHREF@@": page["navhref"], "@@NAVTEXT@@": page["navtext"],
+        "@@FORMULA@@": page["formula"], "@@NAVHREF@@": page["navhref"], "@@NAVTEXT@@": page["navtext"], "@@CC@@": page["icon"].upper(),
         "@@FOOTER@@": "\n  " + page["footer"] + "\n",
     }
     for k, v in rep.items():
