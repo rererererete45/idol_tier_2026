@@ -6,7 +6,7 @@
  * window.RankHistory 로만 노출한다. */
 (function (global) {
   'use strict';
-  var VERSION = '20260944';
+  var VERSION = '20260945';
   var script = document.currentScript, base = script && script.src ? script.src.replace(/js\/rank-history\.js.*$/, '') : '';
   var DIR = base + 'data/history/';
 
@@ -222,19 +222,19 @@
     var h = '<div class="rh-stats rh-stats3">'
       + '<div><small>최근 3개월</small><b>' + t3 + '</b><em>' + (back3 ? '#' + back3.rank + ' → #' + cur.rank : '3개월 전 기록 없음') + '</em></div>'
       + '<div><small>최고 점수</small><b>' + maxS + '</b><em>' + fmtPeriod(maxP) + (maxP === cur.period ? ' · 이번 달' : '') + '</em></div>'
-      + '<div><small>연속 상승</small><b>' + (st ? st.length + '개월' : '–') + '</b><em>' + (st ? fmtPeriod(st.start) + ' ~ ' + fmtPeriod(st.end) : '이어진 상승 없음') + '</em></div></div>';
+      + '<div><small>연속 상승</small><b>' + (st ? st.length + '개월' : '–') + '</b><em>' + (st ? fmtPeriod(st.start) + ' ~ ' + fmtPeriod(st.end) : '연속 상승 없음') + '</em></div></div>';
     if (prevSnap) {
       var pe = entryOf(prevSnap, id), ce = entryOf(snaps[ci], id);
       if (pe && ce) {
         var md = HA.metricDelta(country, pe, ce), cmp = HA.compareEntries(pe, ce, prevSnap.groups.length, snaps[ci].groups.length, true);
-        var chips = !md.comparable ? '<p class="rh-note" style="margin:0">비교 가능한 세부 평가항목이 없습니다.</p>'
-          : !md.changes.length ? '<p class="rh-note" style="margin:0">세부 평가항목 점수는 전월과 같아요.</p>'
+        var chips = !md.comparable ? '<p class="rh-note" style="margin:0">비교할 세부 항목이 없어요.</p>'
+          : !md.changes.length ? '<p class="rh-note" style="margin:0">세부 항목 점수는 지난달과 같아요.</p>'
           : '<ul class="rh-wy">' + md.changes.map(function (c) { return '<li class="' + (c.delta > 0 ? 'up' : 'dn') + '">' + (c.delta > 0 ? '▲' : '▼') + ' ' + esc(c.label) + ' ' + HA.fmtSigned(c.delta) + '</li>'; }).join('') + '</ul>';
-        h += '<div class="rh-why"><h4>왜 움직였나 <small>평가항목상 주요 변화 · ' + fmtPeriod(prevSnap.meta.period) + ' → ' + fmtPeriod(curPeriodOf(snaps[ci])) + '</small></h4>'
-          + '<p class="rh-sum">종합점수 <b>' + pe.score + ' → ' + ce.score + '</b> (' + HA.fmtSigned(cmp.scoreDelta) + ') · 순위 <b>#' + pe.rank + ' → #' + ce.rank + '</b>'
-          + (cmp.movementPct !== null ? ' · 시장 내 위치 <b>' + HA.fmtSigned(cmp.movementPct, 1) + '%p</b>' : '') + '</p>' + chips
-          + (HA.isBreakInterval(brk, prevSnap.meta.period, curPeriodOf(snaps[ci])) ? '<p class="rh-note" style="color:#ffd7a0">⚠ 이 구간(' + fmtPeriod(prevSnap.meta.period) + ' → ' + fmtPeriod(curPeriodOf(snaps[ci])) + ')은 다수 그룹의 점수가 한꺼번에 크게 바뀐 구간이라 월간 변화로 읽기 어려워요. HISTORY의 안내를 참고해 주세요.</p>' : '')
-          + '<p class="rh-note">평가항목 점수의 차이일 뿐 실제 사건의 원인을 뜻하지 않아요.</p></div>';
+        h += '<div class="rh-why"><h4>왜 움직였나 <small>달라진 항목 · ' + fmtPeriod(prevSnap.meta.period) + ' → ' + fmtPeriod(curPeriodOf(snaps[ci])) + '</small></h4>'
+          + '<p class="rh-sum">총점 <b>' + pe.score + ' → ' + ce.score + '</b> (' + HA.fmtSigned(cmp.scoreDelta) + ') · 순위 <b>#' + pe.rank + ' → #' + ce.rank + '</b>'
+          + (cmp.movementPct !== null ? ' · 상대 위치 <b>' + HA.fmtSigned(cmp.movementPct, 1) + '%p</b>' : '') + '</p>' + chips
+          + (HA.isBreakInterval(brk, prevSnap.meta.period, curPeriodOf(snaps[ci])) ? '<p class="rh-note" style="color:#ffd7a0">이 구간(' + fmtPeriod(prevSnap.meta.period) + ' → ' + fmtPeriod(curPeriodOf(snaps[ci])) + ')은 점수가 한꺼번에 크게 뒤바뀐 구간이라 한 달 변화로 보기 어려워요. 자세한 건 HISTORY에서 확인하세요.</p>' : '')
+          + '<p class="rh-note">어떤 항목이 달라졌는지만 보여줘요. 이유까지는 알 수 없어요.</p></div>';
       }
     }
     h += '<div class="rh-cta"><a href="history?country=' + country + '&period=' + cur.period + '&view=timeline&group=' + encodeURIComponent(id) + '">' + fmtPeriod(cur.period) + ' 기록 보기</a>'

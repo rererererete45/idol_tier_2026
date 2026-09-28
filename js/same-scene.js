@@ -79,7 +79,7 @@
         h += '<p class="mgemt">🌱 취향 확장 <span style="font-size:11px;font-weight:600;color:var(--tx3,#7c7c7c)">비슷하지만 조금 다른 방향</span></p><div class="mlist" style="gap:8px">' + r.expand.map(expandRow).join('') + '</div>';
       }
       h += '<div class="sfoot"><button type="button" class="scenemap sbtn" data-discover="1" aria-label="다른 그룹 발견하기">🎲 다른 그룹 발견하기</button></div>'
-        + '<p class="mnote">스타일 태그, 시장 성향(팬덤·라이브·디지털·대중성 4축을 한 번의 거리로 계산), 현재기세, 체급을 ' + label + ' 안에서의 상대 위치로 비교한 유사도예요. MATCH 숫자는 ' + NOPROB + ' 활동종료 그룹은 제외하고, 데이터가 없는 항목은 계산에서 빼요.</p>';
+        + '<p class="mnote">스타일 태그, 시장 성향(팬덤·라이브·디지털·대중성 4축을 한 번의 거리로 계산), 현재기세, 총점 수준을 ' + label + ' 안에서의 상대 위치로 비교한 유사도예요. MATCH 숫자는 ' + NOPROB + ' 활동종료 그룹은 제외하고, 데이터가 없는 항목은 계산에서 빼요.</p>';
       box.innerHTML = h;
     }).catch(function () { box.innerHTML = '<p class="mnote">비슷한 그룹을 불러오지 못했어요. 새로고침해 주세요.</p>'; });
     if (!box._sceneBound) {

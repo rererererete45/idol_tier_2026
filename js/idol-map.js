@@ -462,7 +462,7 @@
       + '<button class="x" id="shClose" aria-label="닫기">✕</button></div>'
       + '<div class="sh-zone"><i></i><b>' + esc(p.zone) + '</b><span>' + ZONE_META[p.zone].text + '</span></div>'
       + '<div class="kpis"><div class="kpi"><small>총점</small><b data-count="' + p.totalScore + '">' + p.totalScore + '</b></div>'
-      + '<div class="kpi"><small>체급 상위</small><b><span data-count="' + topTotal + '">' + topTotal + '</span><u>%</u></b></div>'
+      + '<div class="kpi"><small>총점 상위</small><b><span data-count="' + topTotal + '">' + topTotal + '</span><u>%</u></b></div>'
       + '<div class="kpi"><small>기세 상위</small><b><span data-count="' + topMom + '">' + topMom + '</span><u>%</u></b></div></div>'
       + '<p class="sh-k">MARKET POSITION <small>(자국 시장 내 백분위)</small></p>'
       + '<div class="pos">' + miniMap(p) + '<div>' + bar('대중 확장력', p.pub) + bar('코어 팬덤력', p.fan) + bar('라이브', p.live) + bar(digLabel(p), p.dig) + '</div></div>'
@@ -660,7 +660,7 @@
     if (S.color === 'style') items = STYLE_CATS.map(function (c) { return '<span class="lg"><i style="background:' + c.color + '"></i>' + c.label + '</span>'; });
     else items = TIER_ORDER.map(function (t) { return '<span class="lg"><i style="background:' + TIER_COLORS[t] + '"></i>' + t + '</span>'; });
     var html = '<div class="lgb"><span class="lgt">' + (S.color === 'style' ? '스타일' : '티어') + '</span>' + items.join('') + '</div>'
-      + '<div class="lgb"><span class="lgt">크기</span><span class="lgsz"><i style="width:9px;height:9px"></i><i style="width:13px;height:13px"></i><i style="width:18px;height:18px"></i></span><span>전체 체급</span></div>'
+      + '<div class="lgb"><span class="lgt">크기</span><span class="lgsz"><i style="width:9px;height:9px"></i><i style="width:13px;height:13px"></i><i style="width:18px;height:18px"></i></span><span>총점</span></div>'
       + '<div class="lgb"><span class="lgt">빛</span><span class="lgglow"><i class="g0"></i><i class="g1"></i><i class="g3"></i></span><span>현재기세</span></div>'
       + (S.mode === 'ALL' ? '<div class="lgb"><span class="lgt">모양</span><span>● 한국 · ◆ 일본</span></div>' : '')
       + (S.scene ? '<div class="lgb"><span class="lgt">SAME SCENE</span><span><b class="ringkey src"></b>선택 그룹 <b class="ringkey scene"></b>가장 비슷 <b class="ringkey expand"></b>취향 확장</span></div>' : '')
@@ -700,9 +700,9 @@
     el.sideEmpty.innerHTML = '<p class="se-t">HOW TO READ</p><ul class="se-how">'
       + '<li><span class="se-ic">↔</span><span><b>가로</b> 왼쪽일수록 코어 팬덤형, 오른쪽일수록 대중 확장형이에요.</span></li>'
       + '<li><span class="se-ic">↕</span><span><b>세로</b> 위쪽일수록 라이브·공연형, 아래쪽일수록 디지털·음원형이에요.</span></li>'
-      + '<li><span class="se-ic">◉</span><span><b>크기·빛</b> 버블이 클수록 체급, 빛이 강할수록 현재기세가 높아요.</span></li>'
+      + '<li><span class="se-ic">◉</span><span><b>크기·빛</b> 버블이 클수록 총점이, 빛이 강할수록 현재기세가 높아요.</span></li>'
       + '<li><span class="se-ic">☝</span><span><b>버블을 눌러</b> 위치의 이유와 비슷한 그룹을 확인하고, 휠·핀치로 확대해 보세요.</span></li></ul>'
-      + '<p class="se-t">체급 TOP' + (S.mode === 'ALL' ? ' (국가별)' : '') + '</p><div class="se-list">' + lists + '</div>';
+      + '<p class="se-t">총점 TOP' + (S.mode === 'ALL' ? ' (국가별)' : '') + '</p><div class="se-list">' + lists + '</div>';
   }
 
   /* ---------- DotGrid 배경 (React Bits DotGrid 스타일) ---------- */
@@ -776,7 +776,7 @@
     if (!p || !p.node || !FINE) { tip.hidden = true; return; }
     var box = $('mapbox').getBoundingClientRect(), r = p.node.getBoundingClientRect();
     var cxp = r.left + r.width / 2 - box.left, top = r.top - box.top - 8, below = top < 90;
-    tip.innerHTML = '<div class="tn">' + esc(p.group) + flag(p.country) + '</div><div class="tm">' + tierChip(p) + ' ' + p.totalScore + '점 · 체급 상위 ' + Math.max(1, Math.round(100 - p.totalPercentile)) + '%</div>'
+    tip.innerHTML = '<div class="tn">' + esc(p.group) + flag(p.country) + '</div><div class="tm">' + tierChip(p) + ' ' + p.totalScore + '점 · 총점 상위 ' + Math.max(1, Math.round(100 - p.totalPercentile)) + '%</div>'
       + '<div class="tz" style="--zc:' + zc(p) + '"><i></i>' + esc(p.zone) + '</div>';
     tip.hidden = false;
     var half = tip.offsetWidth / 2;

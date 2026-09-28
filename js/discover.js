@@ -473,7 +473,7 @@
         wrapText(x, why.sentence, W - 160).slice(0, 4).forEach(function (t, i) { x.fillText(t, 80, 960 + i * 58); });
         // 푸터
         x.fillStyle = 'rgba(255,255,255,.1)'; x.fillRect(80, H - 210, W - 160, 2);
-        x.fillStyle = '#fff'; x.font = '900 38px ' + FONT; x.fillText('여자아이돌 체급 점수표', 80, H - 140);
+        x.fillStyle = '#fff'; x.font = '900 38px ' + FONT; x.fillText('여자아이돌 티어리스트', 80, H - 140);
         x.fillStyle = '#7c7c7c'; x.font = '600 28px ' + FONT; x.fillText(base.replace(/^https?:\/\//, '').replace(/\/$/, ''), 80, H - 90);
         resolve(c);
       };

@@ -89,7 +89,8 @@
   function labelIds(d) { // 고정한 그룹 + 점수 상위 몇 팀에 이름을 붙이되, 이미 놓인 라벨과 겹치면 숨긴다
     var n = M.W < 520 ? 5 : 10, ids = {}, placed = [];
     var order = d.L.points.slice().sort(function (a, b) { return (b.id === M.pin) - (a.id === M.pin) || b.totalScore - a.totalScore || (a.id < b.id ? -1 : 1); });
-    var cand = order.filter(function (p) { return p.id === M.pin; }).concat(order.filter(function (p) { return p.id !== M.pin; }).slice(0, n));
+    var cand = order.filter(function (p) { return p.id === M.pin; });
+    if (!M.pin) cand = order.slice(0, n); // 고른 그룹이 없을 때만 점수 상위 팀에 이름을 붙인다
     cand.forEach(function (p) {
       var pos = xy(p), r = radiusOf(p), w = String(p.group).length * 6.4 + 8, right = pos.x > M.W - 110;
       var box = { x1: right ? pos.x - r - 5 - w : pos.x + r + 5, y1: pos.y - 8, x2: 0, y2: pos.y + 8 }; box.x2 = box.x1 + w;
@@ -136,13 +137,14 @@
     });
     applyHighlight(); drawPin(); drawZones(); drawTrail(); syncCtl();
     var bk = (M.ctx.breaks || []).filter(function (x) { return x.to === d.period; })[0], bn = $('mrBreak');
-    if (bn) { bn.hidden = !bk; if (bk) bn.innerHTML = '<b>⚠ 이 달의 지도 이동은 참고용이에요</b><br>' + fp(bk.from) + ' → ' + fp(bk.to) + ' · ' + M.ctx.esc(bk.reason); }
+    if (bn) { bn.hidden = !bk; if (bk) bn.innerHTML = '<b>주의 · 이 달 지도 이동은 참고만 하세요</b><br>' + fp(bk.from) + ' → ' + fp(bk.to) + ' · ' + M.ctx.esc(bk.reason); }
     if (M.live) M.live.textContent = fp(d.period) + ' ' + M.ctx.ko[M.country] + ' 시장 지도, ' + d.L.population + '팀';
   }
   function applyHighlight() {
     Object.keys(M.nodes).forEach(function (id) {
       var n = M.nodes[id], zone = n.getAttribute('data-z');
-      n.classList.toggle('dim', !!M.zone && zone !== M.zone && id !== M.pin);
+      // 그룹을 고르면 그 그룹만 또렷하게 두고 나머지는 흐리게(집중), 영역을 고르면 그 영역만 또렷하게
+      n.classList.toggle('dim', (!!M.pin && id !== M.pin) || (!!M.zone && zone !== M.zone && id !== M.pin));
       n.classList.toggle('sel', id === M.pin);
       if (id === M.pin && n.parentNode.lastChild !== n) M.layer.appendChild(n);
     });
@@ -195,12 +197,12 @@
   function drawPin() {
     var box = $('mrPin'), d = M.cur, id = M.pin, e = M.ctx.esc;
     if (!id) {
-      box.innerHTML = '<h3>FOLLOW A GROUP</h3><p class="mr-help">점을 누르면 그 그룹을 따라가며 <b style="color:var(--tx)">궤적(TRAIL)</b>을 그려요. 아래 입력칸에서 이름으로 찾을 수도 있어요. 다른 그룹은 선택한 달의 위치만 보여줘요.</p>';
+      box.innerHTML = '<h3>FOLLOW A GROUP</h3><p class="mr-help">점을 누르면 그 그룹만 또렷하게 남고 나머지는 흐려져요. 지나온 자리(<b style="color:var(--tx)">TRAIL</b>)도 같이 그려져요. 아래 칸에서 이름으로 찾아도 돼요.</p>';
       return;
     }
     var p = d.by[id], ent = HA.entryById(d.snap, id), name = ent ? ent.group : (p ? p.group : id);
     var facts = ent
-      ? fp(d.period) + ' · <b>#' + ent.rank + '</b> · ' + ent.score + '점 · ' + e(ent.tier) + '<br><span style="color:' + (p ? ZONES[p.zone].color : '#b3b3b3') + ';font-weight:800">' + (p ? p.zone : '지도 제외') + '</span>' + (p ? ' <span style="color:var(--tx3)">' + ZONES[p.zone].text + '</span>' : ' <span style="color:var(--tx3)">평가항목 값이 부족해 지도에서 제외됐어요</span>')
+      ? fp(d.period) + ' · <b>#' + ent.rank + '</b> · ' + ent.score + '점 · ' + e(ent.tier) + '<br><span style="color:' + (p ? ZONES[p.zone].color : '#b3b3b3') + ';font-weight:800">' + (p ? p.zone : '지도 제외') + '</span>' + (p ? ' <span style="color:var(--tx3)">' + ZONES[p.zone].text + '</span>' : ' <span style="color:var(--tx3)">값이 부족해서 지도에는 없어요</span>')
       : fp(d.period) + '에는 평가 기록이 없어요.';
     var box2 = '<div class="pin-h"><b>' + e(name) + '</b><button type="button" data-unpin aria-label="선택 해제">✕</button></div><p class="pin-facts">' + facts + '</p><div id="mrPath"></div>'
       + '<div class="dcta" style="margin-top:12px"><a class="pri" href="#" data-detail="' + e(id) + '" style="min-height:42px;flex-basis:120px">' + fp(d.period) + ' 기록</a><a class="sec2" href="map?country=' + M.country + '&group=' + encodeURIComponent(name) + '" style="min-height:42px;flex-basis:120px">현재 지도</a></div>';
@@ -235,7 +237,7 @@
     var tok = ++M.goTok, m = M;
     return loadPeriod(p).then(function (d) {
       if (!M || M !== m || tok !== M.goTok) return;
-      if (!d) { setLoad(true, '이 달의 기록을 불러오지 못했습니다. 다른 월을 선택해 주세요.'); pause(); return; }
+      if (!d) { setLoad(true, '이 달 기록을 불러오지 못했어요. 다른 달을 골라 주세요.'); pause(); return; }
       setLoad(false);
       if (fromUser) M.ctx.setPeriod(p);
       render(d, animate);
@@ -252,7 +254,7 @@
       if (ps.indexOf(M.period) >= ps.length - 1) goPeriod(ps[0], false, true); // 끝에서 다시 누르면 처음부터
       M.playing = true; syncCtl();
       M.timer = setTimeout(step, reduced ? 900 : 350);
-    }).catch(function () { if (M) { pb.disabled = false; syncCtl(); if (global.__toast) global.__toast('월별 기록을 불러오지 못해 재생하지 못했어요'); } });
+    }).catch(function () { if (M) { pb.disabled = false; syncCtl(); if (global.__toast) global.__toast('기록을 불러오지 못해서 재생할 수 없어요'); } });
   }
   function step() {
     if (!M || !M.playing) return;
@@ -262,7 +264,8 @@
   }
   function pinGroup(id) {
     M.pin = id || null; M.ctx.setState({ pin: M.pin });
-    applyHighlight(); drawPin(); drawTrail();
+    M.svg.classList.toggle('focus', !!M.pin);
+    if (M.cur) render(M.cur, false); // 이름표(고른 그룹만)·강조·궤적을 한 번에 다시 그린다
     var pick = $('mrPick'); if (pick && !id) pick.value = '';
   }
 
@@ -299,16 +302,17 @@
       + '<span class="g"><span class="lab">TRAIL</span><span class="seg" role="group" aria-label="궤적 범위">' + TRAILS.map(function (t) { return '<button class="pill" type="button" data-trail="' + t[0] + '" aria-pressed="false">' + t[1] + '</button>'; }).join('') + '</span></span>'
       + '<input class="mr-pick" id="mrPick" list="mrGroups" placeholder="그룹 이름으로 따라가기" autocomplete="off" aria-label="그룹 찾아 따라가기"><datalist id="mrGroups"></datalist></div>'
       + '<div class="verbanner" id="mrBreak" role="note" hidden></div>'
-      + '<p class="mr-disc"><b>지도는 각 월 자국 시장 내부 분포를 기준으로 한 상대 위치입니다.</b> 같은 원점수라도 전체 분포가 달라지면 지도 좌표가 달라질 수 있어요. 가로축은 코어 팬덤형 ↔ 대중 확장형, 세로축은 디지털·음원형 ↔ 라이브·공연형이고, 위치는 우열이 아니라 성향이에요. 버블 크기는 그 달 총점의 시장 내 위치예요. 한국·일본은 평가 기준이 달라 서로 비교하지 않습니다.</p>'
+      + '<p class="mr-disc"><b>이 지도는 그 달 자국 시장 안에서의 상대 위치예요.</b> 같은 점수여도 그 달 전체 분포가 다르면 위치가 달라질 수 있어요. 가로는 코어 팬덤 ↔ 대중, 세로는 디지털·음원 ↔ 라이브·공연이고, 위치는 우열이 아니라 성향이에요. 버블 크기는 그 달 총점이 시장에서 어느 정도인지를 뜻해요. 한국과 일본은 따로 봐요.</p>'
       + '<p class="sr" id="mrLive" aria-live="polite"></p>';
     M.stage = $('mrStage'); M.svg = $('mrSvg'); M.tip = $('mrTip'); M.live = $('mrLive');
+    M.svg.classList.toggle('focus', !!M.pin);
     M.bg = el('g', null, M.svg); M.trailG = el('g', null, M.svg); M.layer = el('g', null, M.svg);
     measure(); drawBg();
     bindEvents();
     setLoad(true, '지도를 계산하는 중…');
     ctx.snap(M.country, S.period).then(function (s) {
       if (!M) return;
-      if (!s) { setLoad(true, '이 달의 기록을 불러오지 못했습니다. 다른 월을 선택해 주세요.'); return; }
+      if (!s) { setLoad(true, '이 달 기록을 불러오지 못했어요. 다른 달을 골라 주세요.'); return; }
       var d = M.cache[S.period] = M.cache[S.period] || computeFor(M.country, s);
       M.period = S.period; setLoad(false); render(d, false);
       $('mrGroups').innerHTML = s.groups.slice().sort(function (a, b) { return a.rank - b.rank; }).map(function (g) { return '<option value="' + e(g.group) + '"></option>'; }).join('');

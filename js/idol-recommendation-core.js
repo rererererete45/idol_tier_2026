@@ -146,7 +146,7 @@
   function isDiscoverable(e) { return isActive(e) && !NOT_DISCOVERABLE.test(e.status || ''); }
 
   /* ---------- SAME SCENE V2 ---------- */
-  // 스타일 45 / 4축 profile 35 / 현재기세 5 / 체급(총점 백분위) 5. 세대·계열은 점수가 아니라 동점 보정(+2/+3, 기준 통과 후에만).
+  // 스타일 45 / 4축 profile 35 / 현재기세 5 / 총점 수준(총점 백분위) 5. 세대·계열은 점수가 아니라 동점 보정(+2/+3, 기준 통과 후에만).
   // 지도 좌표는 점수에 넣지 않는다 — 같은 4축 정보를 두 번 세는 중복가중을 없앤다.
   var SCENE_W = { style: 0.45, profile: 0.35, momentum: 0.05, scale: 0.05 };
   var PROFILE_DIMS = ['popularity', 'fandom', 'live', 'digital'];
@@ -201,12 +201,12 @@
   var AXIS_NAME = { popularity: '대중성', fandom: '팬덤', live: '라이브', digital: '디지털' };
   var REASON_LEAD = {
     style: '음악·콘셉트가 비슷한 팀입니다.', profile: '시장 성향(팬덤·라이브·디지털·대중성)이 비슷한 팀입니다.',
-    scale: '체급이 비슷한 팀입니다.', momentum: '현재 기세가 비슷한 흐름의 팀입니다.'
+    scale: '점수대가 비슷한 팀입니다.', momentum: '현재 기세가 비슷한 흐름의 팀입니다.'
   };
   var REASON_MORE = {
-    style: '음악·콘셉트도 닮았습니다.', profile: '시장 성향도 가깝습니다.', scale: '체급도 비슷합니다.', momentum: '현재 기세도 비슷한 흐름입니다.'
+    style: '음악·콘셉트도 닮았습니다.', profile: '시장 성향도 가깝습니다.', scale: '점수대도 비슷합니다.', momentum: '현재 기세도 비슷한 흐름입니다.'
   };
-  // 최대 2문장. 우선순위: 스타일 > 시장 성향 > 체급 > 기세. 시장 성향이 맞으면 특히 가까운 축을 짚어 준다.
+  // 최대 2문장. 우선순위: 스타일 > 시장 성향 > 점수대 > 기세. 시장 성향이 맞으면 특히 가까운 축을 짚어 준다.
   function generateSameSceneReason(b, a, t) {
     var hit = REASON_ORDER.filter(function (r) { return isNum(b[r[0]]) && b[r[0]] >= r[1]; }).map(function (r) { return r[0]; });
     if (!hit.length) return ['전반적인 성향이 고르게 닮은 팀입니다.'];
@@ -574,7 +574,7 @@
       favorites: IM.getFavorites().length
     };
   }
-  // 최애가 부족할 때 고르기 쉬운 후보(국가별 체급 상위, 최애 제외)
+  // 최애가 부족할 때 고르기 쉬운 후보(국가별 총점 상위, 최애 제외)
   function getFavoriteSuggestions(scope, perCountry) {
     var favs = {}; IM.getFavorites().forEach(function (f) { favs[f.id] = 1; });
     var out = [];

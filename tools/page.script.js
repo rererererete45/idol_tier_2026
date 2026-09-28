@@ -367,7 +367,7 @@ function matchBody(o,r){
   if(r.hidden.length)h+='<p class="mgemt">💎 숨은 취향 발견</p><div class="mlist">'+r.hidden.map(gemRow).join('')+'</div>';
   const cmpItems=r.top.concat(r.hidden).map(m=>({name:m.group.name,vec:m.group.vec,score:m.score}));
   if(cmpItems.length)h+='<details class="mprof"><summary>취향 프로필 비교 보기 ('+cmpItems.length+'팀)</summary>'+tasteRadar(r.source.vec,o.n,cmpItems)+'<p class="mnote">추천된 그룹(TOP 3 + 숨은 취향)을 모두 겹쳐 보여줘요. 이름을 누르면 그 그룹만 강조돼요. 각 축은 해당 나라 안에서의 상대 위치(백분위)예요.</p></details>';
-  return h+'<p class="mnote">스타일·라이브·팬덤·대중성 성향을 각 시장 안에서의 상대 위치(백분위)로 비교한 취향 유사도예요. MATCH 숫자는 '+NOPROB+' 점수나 체급 비교가 아니에요. 데이터가 없는 항목은 계산에서 빼고 남은 항목만으로 다시 가중했어요.</p>';
+  return h+'<p class="mnote">스타일·라이브·팬덤·대중성 성향을 각 시장 안에서의 상대 위치(백분위)로 비교한 취향 유사도예요. MATCH 숫자는 '+NOPROB+' 총점 비교가 아니에요. 데이터가 없는 항목은 계산에서 빼고 남은 항목만으로 다시 가중했어요.</p>';
 }
 function shareMatches(o,r,btn){
   const base=location.href.split(/[?#]/)[0],url=base+'?id='+encodeURIComponent(o.id)+'&group='+encodeURIComponent(o.n);

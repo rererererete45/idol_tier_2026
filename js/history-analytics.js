@@ -260,24 +260,24 @@
    * 보드는 국가별로만 만든다. value 가 없거나 0 인 그룹은 넣지 않는다. 동점은 같은 순위로 표시하고 순위 10 까지 모두 노출한다. */
   function pl(n, unit) { return n + unit; }
   var BOARDS = [
-    { key: 'rank1Months', cat: 'rank', title: '최다 1위', unit: '개월', rule: '순위가 1위인 달의 수 (공동 1위도 1개월로 인정)', v: function (g) { return g.rank1.months; }, per: function (g) { return g.rank1.periods; }, text: function (g) { return pl(g.rank1.months, '개월'); } },
-    { key: 'rank1Streak', cat: 'rank', title: '최장 연속 1위', unit: '개월', rule: '달력상 이어진 달에서 계속 1위인 최장 구간 (한 달이라도 빠지면 끊김)', v: function (g) { return g.rank1.streak ? g.rank1.streak.length : 0; }, per: function (g) { return g.rank1.streak ? g.rank1.streak.periods : []; }, text: function (g) { return pl(g.rank1.streak.length, '개월'); } },
-    { key: 'top5Months', cat: 'rank', title: 'TOP 5 진입 개월', unit: '개월', rule: '순위 ≤ 5 인 달의 수 (공동 5위 포함)', v: function (g) { return g.top5.months; }, per: function (g) { return g.top5.periods; }, text: function (g) { return pl(g.top5.months, '개월'); } },
-    { key: 'top5Streak', cat: 'rank', title: '최장 연속 TOP 5', unit: '개월', rule: '이어진 달에서 계속 5위 이내인 최장 구간', v: function (g) { return g.top5.streak ? g.top5.streak.length : 0; }, per: function (g) { return g.top5.streak ? g.top5.streak.periods : []; }, text: function (g) { return pl(g.top5.streak.length, '개월'); } },
-    { key: 'top10Months', cat: 'rank', title: 'TOP 10 진입 개월', unit: '개월', rule: '순위 ≤ 10 인 달의 수 (공동 10위 포함)', v: function (g) { return g.top10.months; }, per: function (g) { return g.top10.periods; }, text: function (g) { return pl(g.top10.months, '개월'); } },
-    { key: 'top10Streak', cat: 'rank', title: '최장 연속 TOP 10', unit: '개월', rule: '이어진 달에서 계속 10위 이내인 최장 구간', v: function (g) { return g.top10.streak ? g.top10.streak.length : 0; }, per: function (g) { return g.top10.streak ? g.top10.streak.periods : []; }, text: function (g) { return pl(g.top10.streak.length, '개월'); } },
-    { key: 'bestRank', cat: 'rank', title: '개인 최고 순위', unit: '위', rule: '기록된 달 중 가장 좋은 순위. 같으면 그 순위를 더 오래 유지한 그룹이 앞', asc: true, v: function (g) { return g.bestRank.rank; }, per: function (g) { return g.bestRank.periods; }, text: function (g) { return '#' + g.bestRank.rank; }, tie: function (g) { return -g.bestRank.periods.length; } },
-    { key: 'maxScore', cat: 'score', title: '역대 최고 종합점수', unit: '점', rule: '기록된 달 중 가장 높은 종합점수 (최초로 달성한 달 기준)', v: function (g) { return g.maxScore.score; }, per: function (g) { return g.maxScore.periods; }, text: function (g) { return g.maxScore.score + '점'; }, tie: function (g) { return mi(g.maxScore.first); } },
-    { key: 'scoreGain', cat: 'score', title: '단월 최대 점수 상승', unit: '점', rule: '바로 앞 달과 이어진 달 사이의 종합점수 상승폭', v: function (g) { return g.scoreGain ? g.scoreGain.value : 0; }, per: function (g) { return g.scoreGain ? [g.scoreGain.period] : []; }, text: function (g) { return fmtSigned(g.scoreGain.value) + '점 (' + g.scoreGain.prevScore + '→' + g.scoreGain.score + ')'; } },
-    { key: 'scoreLoss', cat: 'score', title: '단월 최대 점수 하락', unit: '점', rule: '바로 앞 달과 이어진 달 사이의 종합점수 하락폭. 순위·실력 평가가 아닌 점수표상의 변화예요', v: function (g) { return g.scoreLoss ? -g.scoreLoss.value : 0; }, per: function (g) { return g.scoreLoss ? [g.scoreLoss.period] : []; }, text: function (g) { return fmtSigned(g.scoreLoss.value) + '점 (' + g.scoreLoss.prevScore + '→' + g.scoreLoss.score + ')'; } },
-    { key: 'rankUp', cat: 'movement', title: '단월 최대 순위 상승', unit: '%p', rule: '이어진 달 사이에서 실제 순위가 오른 경우, 평가 팀 수 차이를 보정한 시장 내 위치 지수 이동(%p) 기준. 신규 진입 제외', v: function (g) { return g.rankUp ? g.rankUp.movement : 0; }, per: function (g) { return g.rankUp ? [g.rankUp.period] : []; }, text: function (g) { return '#' + g.rankUp.prevRank + ' → #' + g.rankUp.rank + ' ▲' + g.rankUp.rawDelta + ' · ' + fmtSigned(g.rankUp.movementPct, 1) + '%p'; } },
-    { key: 'rankDown', cat: 'movement', title: '단월 최대 순위 하락', unit: '%p', rule: '이어진 달 사이에서 실제 순위가 내려간 경우의 시장 내 위치 지수 이동(%p). 순위 하락이 곧 실력·인기 하락은 아니에요', v: function (g) { return g.rankDown ? -g.rankDown.movement : 0; }, per: function (g) { return g.rankDown ? [g.rankDown.period] : []; }, text: function (g) { return '#' + g.rankDown.prevRank + ' → #' + g.rankDown.rank + ' ▼' + (-g.rankDown.rawDelta) + ' · ' + fmtSigned(g.rankDown.movementPct, 1) + '%p'; } },
-    { key: 'newPeaks', cat: 'movement', title: 'NEW PEAK 횟수', unit: '회', rule: '그 달의 순위가 그 이전 모든 기록보다 좋았던 횟수 (첫 기록 제외)', v: function (g) { return g.newPeaks.count; }, per: function (g) { return g.newPeaks.periods; }, text: function (g) { return pl(g.newPeaks.count, '회'); } },
-    { key: 'tierUps', cat: 'movement', title: '티어 승격 횟수', unit: '회', rule: '이어진 달에서 전월보다 높은 티어가 된 횟수', v: function (g) { return g.tierUps.count; }, per: function (g) { return g.tierUps.periods; }, text: function (g) { return pl(g.tierUps.count, '회'); } },
-    { key: 'riseStreak', cat: 'movement', title: '최장 연속 상승', unit: '개월', rule: '이어진 달에서 매달 실제 순위가 오른 최장 구간', v: function (g) { return g.riseStreak ? g.riseStreak.length : 0; }, per: function (g) { return g.riseStreak ? g.riseStreak.periods : []; }, text: function (g) { return pl(g.riseStreak.length, '개월'); } },
-    { key: 'months', cat: 'longevity', title: '평가 기록 개월 수', unit: '개월', rule: 'snapshot 에 등장한 달의 수. 실제 활동 기간과는 다를 수 있어요', v: function (g) { return g.months; }, per: function (g) { return []; }, text: function (g) { return pl(g.months, '개월') + ' · 커버리지 ' + Math.round((g.coverage || 0) * 100) + '%'; }, tie: function (g) { return mi(g.first); } },
-    { key: 'sTierMonths', cat: 'longevity', title: 'S+ / S 체류 개월', unit: '개월', rule: '티어가 S+ 또는 S 인 달의 수', v: function (g) { return g.tierMonths.sTier.length; }, per: function (g) { return g.tierMonths.sTier; }, text: function (g) { return pl(g.tierMonths.sTier.length, '개월'); } },
-    { key: 'aPlusMonths', cat: 'longevity', title: 'A+ 이상 체류 개월', unit: '개월', rule: '티어가 A+ 이상(S+, S, A+)인 달의 수', v: function (g) { return g.tierMonths.aPlus.length; }, per: function (g) { return g.tierMonths.aPlus; }, text: function (g) { return pl(g.tierMonths.aPlus.length, '개월'); } }
+    { key: 'rank1Months', cat: 'rank', title: '최다 1위', unit: '개월', rule: '1위였던 달 수 (공동 1위 포함)', v: function (g) { return g.rank1.months; }, per: function (g) { return g.rank1.periods; }, text: function (g) { return pl(g.rank1.months, '개월'); } },
+    { key: 'rank1Streak', cat: 'rank', title: '최장 연속 1위', unit: '개월', rule: '이어진 달 동안 계속 1위였던 가장 긴 구간. 한 달이라도 빠지면 끊겨요', v: function (g) { return g.rank1.streak ? g.rank1.streak.length : 0; }, per: function (g) { return g.rank1.streak ? g.rank1.streak.periods : []; }, text: function (g) { return pl(g.rank1.streak.length, '개월'); } },
+    { key: 'top5Months', cat: 'rank', title: 'TOP 5 진입 개월', unit: '개월', rule: '5위 안이었던 달 수 (공동 5위 포함)', v: function (g) { return g.top5.months; }, per: function (g) { return g.top5.periods; }, text: function (g) { return pl(g.top5.months, '개월'); } },
+    { key: 'top5Streak', cat: 'rank', title: '최장 연속 TOP 5', unit: '개월', rule: '이어진 달 동안 계속 5위 안이었던 가장 긴 구간', v: function (g) { return g.top5.streak ? g.top5.streak.length : 0; }, per: function (g) { return g.top5.streak ? g.top5.streak.periods : []; }, text: function (g) { return pl(g.top5.streak.length, '개월'); } },
+    { key: 'top10Months', cat: 'rank', title: 'TOP 10 진입 개월', unit: '개월', rule: '10위 안이었던 달 수 (공동 10위 포함)', v: function (g) { return g.top10.months; }, per: function (g) { return g.top10.periods; }, text: function (g) { return pl(g.top10.months, '개월'); } },
+    { key: 'top10Streak', cat: 'rank', title: '최장 연속 TOP 10', unit: '개월', rule: '이어진 달 동안 계속 10위 안이었던 가장 긴 구간', v: function (g) { return g.top10.streak ? g.top10.streak.length : 0; }, per: function (g) { return g.top10.streak ? g.top10.streak.periods : []; }, text: function (g) { return pl(g.top10.streak.length, '개월'); } },
+    { key: 'bestRank', cat: 'rank', title: '개인 최고 순위', unit: '위', rule: '가장 높았던 순위. 같으면 그 순위를 더 오래 지킨 그룹이 앞이에요', asc: true, v: function (g) { return g.bestRank.rank; }, per: function (g) { return g.bestRank.periods; }, text: function (g) { return '#' + g.bestRank.rank; }, tie: function (g) { return -g.bestRank.periods.length; } },
+    { key: 'maxScore', cat: 'score', title: '역대 최고 종합점수', unit: '점', rule: '가장 높았던 총점 (처음 찍은 달 기준)', v: function (g) { return g.maxScore.score; }, per: function (g) { return g.maxScore.periods; }, text: function (g) { return g.maxScore.score + '점'; }, tie: function (g) { return mi(g.maxScore.first); } },
+    { key: 'scoreGain', cat: 'score', title: '단월 최대 점수 상승', unit: '점', rule: '한 달 사이에 총점이 가장 많이 오른 폭', v: function (g) { return g.scoreGain ? g.scoreGain.value : 0; }, per: function (g) { return g.scoreGain ? [g.scoreGain.period] : []; }, text: function (g) { return fmtSigned(g.scoreGain.value) + '점 (' + g.scoreGain.prevScore + '→' + g.scoreGain.score + ')'; } },
+    { key: 'scoreLoss', cat: 'score', title: '단월 최대 점수 하락', unit: '점', rule: '한 달 사이에 총점이 가장 많이 내려간 폭. 실력 평가가 아니라 점수 변화일 뿐이에요', v: function (g) { return g.scoreLoss ? -g.scoreLoss.value : 0; }, per: function (g) { return g.scoreLoss ? [g.scoreLoss.period] : []; }, text: function (g) { return fmtSigned(g.scoreLoss.value) + '점 (' + g.scoreLoss.prevScore + '→' + g.scoreLoss.score + ')'; } },
+    { key: 'rankUp', cat: 'movement', title: '단월 최대 순위 상승', unit: '%p', rule: '한 달 사이에 순위가 오른 경우, 팀 수 차이를 보정한 상대 위치(%p)가 가장 많이 오른 순서. 새로 들어온 그룹은 뺐어요', v: function (g) { return g.rankUp ? g.rankUp.movement : 0; }, per: function (g) { return g.rankUp ? [g.rankUp.period] : []; }, text: function (g) { return '#' + g.rankUp.prevRank + ' → #' + g.rankUp.rank + ' ▲' + g.rankUp.rawDelta + ' · ' + fmtSigned(g.rankUp.movementPct, 1) + '%p'; } },
+    { key: 'rankDown', cat: 'movement', title: '단월 최대 순위 하락', unit: '%p', rule: '한 달 사이에 순위가 내려간 경우의 상대 위치(%p). 순위가 내려갔다고 인기가 떨어진 건 아니에요', v: function (g) { return g.rankDown ? -g.rankDown.movement : 0; }, per: function (g) { return g.rankDown ? [g.rankDown.period] : []; }, text: function (g) { return '#' + g.rankDown.prevRank + ' → #' + g.rankDown.rank + ' ▼' + (-g.rankDown.rawDelta) + ' · ' + fmtSigned(g.rankDown.movementPct, 1) + '%p'; } },
+    { key: 'newPeaks', cat: 'movement', title: 'NEW PEAK 횟수', unit: '회', rule: '그때까지의 자기 최고 순위를 넘어선 횟수 (첫 기록 제외)', v: function (g) { return g.newPeaks.count; }, per: function (g) { return g.newPeaks.periods; }, text: function (g) { return pl(g.newPeaks.count, '회'); } },
+    { key: 'tierUps', cat: 'movement', title: '티어 승격 횟수', unit: '회', rule: '지난달보다 티어가 오른 횟수', v: function (g) { return g.tierUps.count; }, per: function (g) { return g.tierUps.periods; }, text: function (g) { return pl(g.tierUps.count, '회'); } },
+    { key: 'riseStreak', cat: 'movement', title: '최장 연속 상승', unit: '개월', rule: '매달 순위가 계속 오른 가장 긴 구간', v: function (g) { return g.riseStreak ? g.riseStreak.length : 0; }, per: function (g) { return g.riseStreak ? g.riseStreak.periods : []; }, text: function (g) { return pl(g.riseStreak.length, '개월'); } },
+    { key: 'months', cat: 'longevity', title: '평가 기록 개월 수', unit: '개월', rule: '기록에 나온 달 수. 실제 활동 기간과 다를 수 있어요', v: function (g) { return g.months; }, per: function (g) { return []; }, text: function (g) { return pl(g.months, '개월') + ' · 커버리지 ' + Math.round((g.coverage || 0) * 100) + '%'; }, tie: function (g) { return mi(g.first); } },
+    { key: 'sTierMonths', cat: 'longevity', title: 'S+ / S 체류 개월', unit: '개월', rule: 'S+ 또는 S 티어였던 달 수', v: function (g) { return g.tierMonths.sTier.length; }, per: function (g) { return g.tierMonths.sTier; }, text: function (g) { return pl(g.tierMonths.sTier.length, '개월'); } },
+    { key: 'aPlusMonths', cat: 'longevity', title: 'A+ 이상 체류 개월', unit: '개월', rule: 'A+ 이상(S+·S·A+) 티어였던 달 수', v: function (g) { return g.tierMonths.aPlus.length; }, per: function (g) { return g.tierMonths.aPlus; }, text: function (g) { return pl(g.tierMonths.aPlus.length, '개월'); } }
   ];
   var CATEGORIES = [{ key: 'rank', label: 'RANK' }, { key: 'score', label: 'SCORE' }, { key: 'movement', label: 'MOVEMENT' }, { key: 'longevity', label: 'LONGEVITY' }];
 
@@ -342,22 +342,22 @@
   /* ---------- EDITOR'S WATCH ----------
    * 취향으로 고르지 않고 객관 규칙에 맞는 그룹만 근거 수치와 함께 낸다. 이어진 4개월(period 포함)이 있어야 한다. */
   var WATCH_RULES = [
-    { key: 'climber', title: 'THREE-MONTH CLIMBER', rule: '최근 3개 비교구간 모두 실제 순위가 오르고 시장 내 위치 지수가 상승' },
-    { key: 'scoreStreak', title: 'SCORE STREAK', rule: '최근 3개 비교구간 모두 종합점수 상승' },
-    { key: 'peakRun', title: 'PEAK RUN', rule: '최근 3개월 중 2회 이상 자기 최고 순위 갱신(NEW PEAK)' },
-    { key: 'tierHold', title: 'TIER HOLD', rule: '최근 6개월 안에 티어가 오른 뒤 2개월 이상 그 티어 이상을 유지' }
+    { key: 'climber', title: 'THREE-MONTH CLIMBER', rule: '최근 3개월 연속으로 순위가 올랐어요' },
+    { key: 'scoreStreak', title: 'SCORE STREAK', rule: '최근 3개월 연속으로 총점이 올랐어요' },
+    { key: 'peakRun', title: 'PEAK RUN', rule: '최근 3개월 안에 자기 최고 순위를 2번 이상 경신했어요' },
+    { key: 'tierHold', title: 'TIER HOLD', rule: '최근 6개월 안에 티어가 오른 뒤 2개월 넘게 그 티어를 지켰어요' }
   ];
   function computeEditorsWatch(country, snapshots, period, breaks) {
     var snaps = sortSnapshots(snapshots).filter(function (s) { return mi(s.meta.period) <= mi(period); });
     var last = snaps[snaps.length - 1];
     var empty = { ready: false, cards: [], rules: WATCH_RULES, reason: '' };
-    if (!last || last.meta.period !== period) { empty.reason = '선택한 달의 기록이 없어요'; return empty; }
+    if (!last || last.meta.period !== period) { empty.reason = '고른 달 기록이 없어요'; return empty; }
     var win = snaps.slice(-4);
     if (win.length < 4 || !win.every(function (s, i) { return i === 0 || isConsecutiveMonth(win[i - 1].meta.period, s.meta.period); })) {
-      empty.reason = '이어진 4개월의 기록이 있어야 계산해요'; return empty;
+      empty.reason = '이어진 4개월 기록이 있어야 계산할 수 있어요'; return empty;
     }
     if (win.some(function (s, i) { return i > 0 && excluded(breaks, win[i - 1].meta.period, s.meta.period); })) {
-      empty.reason = '최근 4개월에 평가 기준·자료 갱신으로 보이는 구간 경계가 있어 계산하지 않아요'; return empty;
+      empty.reason = '최근 4개월 안에 점수가 크게 뒤바뀐 구간이 있어서 계산하지 않아요'; return empty;
     }
     var pops = {}; snaps.forEach(function (s) { pops[s.meta.period] = s.groups.length; });
     var cards = [];
@@ -386,7 +386,7 @@
         if (best !== null && h.rank < best && mi(h.period) > mi(period) - 3) peaks.push(h);
         best = best === null ? h.rank : Math.min(best, h.rank);
       });
-      if (peaks.length >= 2) cards.push({ rule: 'peakRun', id: g.id, group: g.group, rank: g.rank, tier: g.tier, key: peaks.length * 1000 - peaks[peaks.length - 1].rank, fact: '최근 3개월 중 ' + peaks.length + '회 최고 순위 갱신', detail: peaks.map(function (h) { return fmtPeriod(h.period).slice(2) + ' #' + h.rank; }) });
+      if (peaks.length >= 2) cards.push({ rule: 'peakRun', id: g.id, group: g.group, rank: g.rank, tier: g.tier, key: peaks.length * 1000 - peaks[peaks.length - 1].rank, fact: '최근 3개월 중 ' + peaks.length + '번 최고 순위 경신', detail: peaks.map(function (h) { return fmtPeriod(h.period).slice(2) + ' #' + h.rank; }) });
       // TIER HOLD
       var k = -1;
       for (var i = 1; i < hist.length; i++) {

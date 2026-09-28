@@ -81,12 +81,12 @@ def jp_rows(rows):
 
 KR = dict(
     file="kr.html", icon="kr",
-    title="2026 한국 여자아이돌 체급 점수표",
+    title="2026 한국 여자아이돌 티어리스트",
     eyebrow="2026.09.28 기준 · {n}팀",
-    h1="한국 여자아이돌<br>체급 점수표",
-    sub="국내 음원·음반 시장과 팬덤 체급, 공연·글로벌 소비력을 함께 반영한 100점 환산 체급지수입니다. 공식 통계가 아니라 동일 기준 상대평가이므로 ±2~3점은 동급으로 봅니다.",
+    h1="한국 여자아이돌<br>티어리스트",
+    sub="국내 음원·음반 시장과 팬덤 규모, 공연·글로벌 소비력을 함께 반영해 100점 만점으로 환산한 점수입니다. 공식 통계가 아니라 같은 기준으로 매긴 상대평가라서 ±2~3점 차이는 같은 급으로 봅니다.",
     formula=tags([("국내음원", 20), ("음반·팬덤", 20), ("공연", 20), ("글로벌", 15), ("국내인지도", 15), ("현재기세", 10)]),
-    navhref="./jp", navtext="일본 여자아이돌 체급 점수표 보기 →",
+    navhref="./jp", navtext="일본 여자아이돌 티어리스트 보기 →",
     font=FONT_KR, fs=FS_KR,
     footer=(
         "<p>점수는 Circle Chart·Melon 등 국내음원 성적, 앨범 판매·팬덤 구매력, 국내외 단독공연·투어 규모, Spotify·해외 차트·글로벌 투어 소비력, 대중 인지도, 최근 12개월 기세를 교차 반영한 상대평가 지수입니다. 점수·티어는 2026년 9월 평가 스냅샷이며, 멤버수·활동상태 등 상세 정보는 2026-09-28 기준 공식 사이트·소속사 공지·보도를 반영했습니다. 카드에 <b style=\"color:var(--warn)\">부분검증</b>이 표시된 항목은 최신 공식 정보 재확인이 필요합니다.</p>\n"
@@ -112,12 +112,12 @@ KR = dict(
 )
 JP = dict(
     file="jp.html", icon="jp",
-    title="2026 일본 여자아이돌 체급 점수표",
+    title="2026 일본 여자아이돌 티어리스트",
     eyebrow="2026.09.28 기준 · {n}팀",
-    h1="일본 여자아이돌<br>체급 점수표",
-    sub="일본 시장 구조에 맞춰 현장 동원력에 가장 큰 배점을 둔 100점 환산 체급지수입니다. 공식 통계가 아니라 동일 기준 상대평가이므로 ±2~3점은 동급으로 봅니다.",
+    h1="일본 여자아이돌<br>티어리스트",
+    sub="일본 시장 구조에 맞춰 현장 동원력에 가장 큰 배점을 두고 100점 만점으로 환산한 점수입니다. 공식 통계가 아니라 같은 기준으로 매긴 상대평가라서 ±2~3점 차이는 같은 급으로 봅니다.",
     formula=tags([("공연·현장", 25), ("팬덤·구매력", 20), ("대중인지도", 20), ("스트리밍·SNS", 15), ("현재 기세", 10), ("업계 영향력", 10)]),
-    navhref="./kr", navtext="한국 여자아이돌 체급 점수표 보기 →",
+    navhref="./kr", navtext="한국 여자아이돌 티어리스트 보기 →",
     font=FONT_JP, fs=FS_JP,
     footer=(
         "<p>점수는 공개 공연 규모·투어 회차·매진 여부, CD/특전·팬클럽 구매력, 대중 인지도, 스트리밍·SNS 화제량, 최근 12개월 성장세, 메이저 미디어 존재감을 교차 반영한 상대평가 지수입니다. 점수·티어는 2026년 9월 평가 스냅샷이며, 멤버수·활동상태 등 상세 정보는 2026-09-28 기준 공식 사이트·공지·보도를 반영했습니다. 카드에 <b style=\"color:var(--warn)\">부분검증·추가검증필요·인원변동형</b>이 표시된 항목은 최신 공식 정보 재확인이 필요하며, 확인되지 않은 정보는 '확인필요'로 표기했습니다.</p>\n"
@@ -185,7 +185,7 @@ def build(page, data):
     }
     for k, v in rep.items():
         h = h.replace(k, v)
-    html = h + '<script src="js/idol-match.js?v=20260944"></script>\n<script src="js/idol-recommendation-core.js?v=20260944"></script>\n<script src="js/same-scene.js?v=20260944"></script>\n<script src="js/rank-history.js?v=20260944"></script>\n<script src="js/history-analytics.js?v=20260944"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
+    html = h + '<script src="js/idol-match.js?v=20260945"></script>\n<script src="js/idol-recommendation-core.js?v=20260945"></script>\n<script src="js/same-scene.js?v=20260945"></script>\n<script src="js/rank-history.js?v=20260945"></script>\n<script src="js/history-analytics.js?v=20260945"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
     open(os.path.join(ROOT, page["file"]), "w", encoding="utf-8", newline="\n").write(html)
     noimg = [d["n"] for d in data if not d["img"]]
     print(page["file"], len(data), "groups; without photo:", len(noimg))

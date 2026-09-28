@@ -314,7 +314,7 @@ li small{color:#7c7c7c;margin-left:8px}
   });
   t('EDITOR\'S WATCH: 경계를 포함한 4개월(2026-03)은 계산하지 않고 사유를 알림, 2026-04 는 계산', function () {
     var a = HA.computeEditorsWatch('KR', snapsKR, '2026-03', BRK.KR), b = HA.computeEditorsWatch('KR', snapsKR, '2026-04', BRK.KR);
-    return !a.ready && /경계/.test(a.reason) && b.ready;
+    return !a.ready && /구간/.test(a.reason) && b.ready;
   });
 
   var pass = res.filter(function (r) { return r[1]; }).length;

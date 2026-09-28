@@ -4,7 +4,7 @@
  * - REPLACE_NAV=false 로 바꾸면 예전처럼 브라우저 기록에 쌓인다. */
 (function () {
   'use strict';
-  var SITE_V = '20260944', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
+  var SITE_V = '20260945', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
   var script = document.currentScript, base = '';
   if (script && script.src) base = script.src.replace(/js\/site-nav\.js.*$/, '');
 
@@ -196,10 +196,10 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260944'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260944'); });
-      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260944'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260944'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260945'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260945'); });
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260945'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260945'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });
@@ -274,7 +274,7 @@
     res.innerHTML = (list.length ? list.map(function (x, i) {
       return '<li><a href="' + urlOf(x) + '" class="' + (i === 0 ? 'on' : '') + '"><span class="f ' + x.c + '">' + x.c.toUpperCase() + '</span>' + x.n.replace(/[&<>]/g, '') + '<small>' + x.t + ' · ' + x.s + '</small></a></li>';
     }).join('') : '<li class="none">검색 결과가 없어요.</li>')
-      + (v ? '' : '<li class="none" style="padding:6px 14px">체급 상위 그룹이에요. 이름을 입력해 보세요.</li>');
+      + (v ? '' : '<li class="none" style="padding:6px 14px">총점 상위 그룹이에요. 이름을 입력해 보세요.</li>');
   }
   function toggleSearch(on) {
     sr.classList.toggle('on', on); sBtn.setAttribute('aria-expanded', on);

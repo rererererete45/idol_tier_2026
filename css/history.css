@@ -283,7 +283,9 @@ body[data-country="JP"] .playbtn{box-shadow:0 4px 18px rgba(243,114,127,.3)}
 .mr-map .pt{cursor:pointer;transition:transform var(--dur,.8s) cubic-bezier(.4,0,.2,1),opacity var(--dur,.8s) ease}
 .mr-map .pt circle{stroke:rgba(0,0,0,.55);stroke-width:1.2;transition:r var(--dur,.8s) ease}
 .mr-map .pt.enter{opacity:0}
-.mr-map .pt.dim{opacity:.16}
+.mr-map .pt.dim{opacity:.14}
+.mr-map .pt.dim:hover{opacity:.6}
+.mr-map.focus .pt.sel circle{stroke:#fff;stroke-width:3;filter:drop-shadow(0 0 8px rgba(255,255,255,.55))}
 .mr-map .pt.sel circle{stroke:#fff;stroke-width:2.4}
 .mr-map .pt:hover circle{stroke:#fff;stroke-width:2}
 .mr-map .pt text{font:800 11px var(--fs);fill:#fff;paint-order:stroke;stroke:#121212;stroke-width:3px;pointer-events:none}
