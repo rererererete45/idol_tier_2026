@@ -177,7 +177,7 @@ function detailHTML(o){
     +'<div class="dpinfo"><h2>'+esc(o.n)+'</h2>'
     +'<div class="dpmeta"><span class="chip">'+o.tier+'</span>'+verifychip+'</div>'
     +'<div class="dpscore"><span class="n">'+o.s+'</span><span class="u">/ 100 · #'+o.r+'</span>'+rkBadge(o)+'</div>'
-    +'<a class="maplink" href="idol-map.html?country='+CFG.country+'&group='+encodeURIComponent(o.n)+'">IDOL MAP에서 위치 보기 →</a>'
+    +'<a class="maplink" href="map?country='+CFG.country+'&group='+encodeURIComponent(o.n)+'">IDOL MAP에서 위치 보기 →</a>'
     +(o.img?'<p class="dpsrc">사진 출처: <a href="'+(o.imgpage?esc(o.imgpage):namuUrl(o))+'"'+TGT+'>'+(o.imgpage?'공식 사이트':'나무위키')+'</a></p>':'')
     +'</div></div>'
     +'<nav class="djump" aria-label="상세 섹션 바로가기"><button type="button" data-jump="scenebox">🧬 비슷한 '+(CFG.country==='KR'?'한국':'일본')+' 그룹</button><button type="button" data-jump="matchbox">'+CFG.other.label+' 취향</button><button type="button" data-jump="histbox">📈 순위 추이</button></nav>'
@@ -360,7 +360,7 @@ function tuneHTML(){
     +'<button class="mshare" type="button" id="tuneReset">기본값으로</button><p class="mnote">가중치는 합이 100%가 되도록 자동 정규화되며, 각 카드 아래에 항목별 유사도 로그가 표시됩니다(콘솔에도 출력).</p></details>';
 }
 function matchBody(o,r){
-  let h='<div class="mctl"><label class="mchk"><input type="checkbox" id="incEnded"'+(includeEnded()?' checked':'')+'> 활동종료 그룹 포함</label><span class="mbtns"><a class="mshare" href="idol-map.html?country='+CFG.country+'&group='+encodeURIComponent(o.n)+'&match=1">지도에서 보기</a> <button class="mshare" type="button" id="shareBtn">결과 공유</button></span></div>'
+  let h='<div class="mctl"><label class="mchk"><input type="checkbox" id="incEnded"'+(includeEnded()?' checked':'')+'> 활동종료 그룹 포함</label><span class="mbtns"><a class="mshare" href="map?country='+CFG.country+'&group='+encodeURIComponent(o.n)+'&match=1">지도에서 보기</a> <button class="mshare" type="button" id="shareBtn">결과 공유</button></span></div>'
     +(r.notice?'<p class="mnote" style="margin:0 0 10px;color:var(--warn)">'+esc(r.notice)+'</p>':'')
     +'<div class="mlist">'+r.top.map(matchCard).join('')+'</div>';
   if(!r.top.length)h+='<p class="mnote">기준을 통과한 비슷한 팀이 아직 없어요.</p>';

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IDOL MAP — 여자아이돌 시장 포지셔닝 지도</title>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/kr-32.png">
+<link rel="apple-touch-icon" href="icons/kr-180.png">
+<meta name="theme-color" content="#121212">
+<meta name="description" content="코어 팬덤↔대중, 라이브↔디지털 두 축으로 한국·일본 여자아이돌의 시장 성향을 지도에서 확인하세요.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="IDOL MAP — 여자아이돌 시장 포지셔닝 지도">
+<meta property="og:description" content="코어 팬덤↔대중, 라이브↔디지털 두 축으로 한국·일본 여자아이돌의 시장 성향을 지도에서 확인하세요.">
+<meta property="og:image" content="https://rererererete45.github.io/idol_tier_2026/icons/kr-192.png">
+<meta property="og:url" content="https://rererererete45.github.io/idol_tier_2026/map">
+<meta name="twitter:card" content="summary">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/idol-map.css?v=20260942">
+</head>
+<body>
+<noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">IDOL MAP은 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
+<script src="js/site-nav.js?v=20260942"></script>
+<div class="wrap">
+<header>
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+  <p class="eyebrow"><span class="shiny">IDOL MAP · 2026.09.28</span></p>
+  <h1 aria-label="아이돌 시장 포지셔닝 지도"><span class="w" style="--i:0">아이돌</span> <span class="w" style="--i:1">시장</span><br><span class="w" style="--i:2">포지셔닝</span> <span class="w" style="--i:3">지도</span></h1>
+  <p class="sub" id="mapSub" tabindex="0" role="button" aria-expanded="false" aria-label="설명 펼치기/접기">누가 더 높은지가 아니라 <b>어떤 방식으로 강한지</b>를 보여줘요. 가로축은 코어 팬덤형 ↔ 대중 확장형, 세로축은 디지털·음원형 ↔ 라이브·공연형이에요. 위치는 우열이 아닌 성향이고, 총점은 버블 크기에만 쓰여요.</p>
+  <nav class="navs" aria-label="페이지 이동"><a href="kr">한국 체급 점수표 →</a><a href="jp">일본 체급 점수표 →</a></nav>
+</header>
+
+<div class="toolbar" id="toolbar">
+  <div class="tgroup">
+    <span class="tlabel">시장</span>
+    <div class="seg" role="group" aria-label="시장 선택">
+      <button class="pill" data-mode="KR" aria-pressed="true">🇰🇷 한국</button>
+      <button class="pill" data-mode="JP" aria-pressed="false">🇯🇵 일본</button>
+      <button class="pill" data-mode="ALL" aria-pressed="false">통합</button>
+    </div>
+  </div>
+  <div class="tgroup tbtn">
+    <button class="pill tog" id="tbMore" type="button" aria-expanded="false" aria-controls="toolbar">⚙ 보기 설정 <span class="tbcar" aria-hidden="true">▾</span></button>
+  </div>
+  <div class="tgroup more">
+    <span class="tlabel">보기</span>
+    <div class="seg" role="group" aria-label="프리셋">
+      <button class="pill" data-preset="ALL" aria-pressed="true">전체</button>
+      <button class="pill" data-preset="HOT" aria-pressed="false">🔥 HOT</button>
+      <button class="pill" data-preset="GEM" aria-pressed="false">💎 숨은 강자</button>
+      <button class="pill" data-preset="MINE" aria-pressed="false">❤️ MY</button>
+    </div>
+  </div>
+  <div class="tgroup more">
+    <span class="tlabel">색상</span>
+    <div class="seg" role="group" aria-label="색상 기준">
+      <button class="pill" data-color="tier" aria-pressed="true">티어</button>
+      <button class="pill" data-color="style" aria-pressed="false">스타일</button>
+    </div>
+  </div>
+  <div class="tgroup more">
+    <button class="pill tog" id="cmpToggle" aria-pressed="false">⇄ 두 그룹 비교</button>
+  </div>
+  <div class="tgroup grow">
+    <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 015.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"/></svg><input id="q" type="search" placeholder="그룹 검색" autocomplete="off" aria-label="그룹 검색"></label>
+    <button class="pill tog" id="resetBtn" type="button" aria-label="필터와 선택을 모두 초기화">↺ 초기화</button>
+    <span class="count" id="count" aria-live="polite"></span>
+  </div>
+</div>
+
+<div class="zones" id="zones" role="group" aria-label="영역별 필터"></div>
+<div class="empty-note" id="emptyNote" role="status" hidden></div>
+
+<div class="stage">
+  <div class="mapcol">
+    <div class="mapbox" id="mapbox">
+      <canvas id="dots" aria-hidden="true"></canvas>
+      <div id="mapwrap">
+        <svg id="map" role="group" aria-label="아이돌 포지셔닝 지도"></svg>
+        <p class="map-loading" id="mapLoading">지도를 불러오는 중…</p>
+        <span class="axl t"><i>▲</i> LIVE <em>라이브·공연형</em></span>
+        <span class="axl b"><i>▼</i> DIGITAL <em>디지털·음원형</em></span>
+        <span class="axl l"><i>◀</i> FANDOM <em>코어 팬덤형</em></span>
+        <span class="axl r">PUBLIC <em>대중 확장형</em> <i>▶</i></span>
+        <div class="zoomctl">
+          <button class="zbtn" id="zin" aria-label="확대">+</button>
+          <span id="zoomval">100%</span>
+          <button class="zbtn" id="zout" aria-label="축소">−</button>
+          <button class="zbtn" id="zreset" aria-label="보기 초기화" style="font-size:13px">1×</button>
+        </div>
+        <div id="tip" role="tooltip" hidden></div>
+        <div class="map-hint" id="mapHint" role="note" hidden><span>👆 버블을 눌러 자세히 · 휠/핀치로 확대 · 드래그로 이동</span><button type="button" id="mapHintX" aria-label="안내 닫기">✕</button></div>
+      </div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <p class="notice" id="notice" hidden>※ 통합 지도는 각 그룹이 <b>자국 시장에서 어떤 위치에 있는지</b>를 비교합니다. 한국과 일본의 절대적 시장 규모나 총점을 직접 비교하지 않습니다. (● 한국 · ◆ 일본)</p>
+  </div>
+
+  <aside id="side" aria-label="그룹 정보">
+    <div class="side-empty" id="sideEmpty"></div>
+    <section class="sheet" id="sheet" hidden aria-live="polite" aria-label="그룹 상세"></section>
+  </aside>
+</div>
+
+<div class="foot">
+  <p>위치 = 자국 시장 안 백분위 기반(한국 86팀 · 일본 126팀 각각 계산). 버블 크기 = 전체 체급(자국 백분위), 빛 = 현재기세. 점을 누르면 그룹의 시장 성향과 그 위치인 이유를 보여주고, "비슷한 그룹"으로 IDOL MATCH 결과를 지도에서 확인할 수 있어요.</p>
+  <p id="excl"></p>
+</div>
+</div>
+
+<script src="js/idol-match.js?v=20260942"></script>
+<script src="js/idol-recommendation-core.js?v=20260942"></script>
+<script src="js/idol-map.js?v=20260942"></script>
+</body>
+</html>

@@ -12,7 +12,7 @@
 <meta property="og:title" content="여자아이돌 체급 점수표">
 <meta property="og:description" content="한국·일본 여자아이돌 체급 점수표, IDOL MAP, 비슷한 그룹 추천, DISCOVER를 한곳에서.">
 <meta property="og:image" content="https://rererererete45.github.io/idol_tier_2026/icons/kr-192.png">
-<meta property="og:url" content="https://rererererete45.github.io/idol_tier_2026/index.html">
+<meta property="og:url" content="https://rererererete45.github.io/idol_tier_2026/">
 <meta name="twitter:card" content="summary">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -139,7 +139,7 @@ footer{margin-top:52px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:1
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">이 사이트의 점수표·지도·추천 기능은 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260941"></script>
+<script src="js/site-nav.js?v=20260942"></script>
 <div class="wrap">
 <header>
   <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -147,8 +147,8 @@ footer{margin-top:52px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:1
   <h1 aria-label="여자아이돌 체급 점수표"><span class="w" style="--i:0">여자아이돌</span><br><span class="w" style="--i:1">체급</span> <span class="w" style="--i:2">점수표</span></h1>
   <p class="sub">시장별 구조에 맞춰 배점을 달리한 100점 환산 체급지수입니다. 공식 통계가 아니라 동일 기준 상대평가이므로 ±2~3점은 동급으로 봅니다.</p>
   <div class="hero-act">
-    <a class="hbtn grn" href="./kr-idol-tier-2026-09.html">🇰🇷 한국 점수표</a>
-    <a class="hbtn" href="./jp-idol-tier-2026-09.html">🇯🇵 일본 점수표</a>
+    <a class="hbtn grn" href="./kr">🇰🇷 한국 점수표</a>
+    <a class="hbtn" href="./jp">🇯🇵 일본 점수표</a>
     <button class="hbtn" type="button" id="hSearch" aria-label="그룹 검색 열기">🔍 그룹 찾기 <kbd>/</kbd></button>
     <a class="hbtn" href="?discover=1" data-discover>🎲 발견하기</a>
   </div>
@@ -167,7 +167,7 @@ footer{margin-top:52px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:1
 </section>
 
 <section class="sec" aria-labelledby="topT">
-  <div class="sec-h"><h2 id="topT">🏆 이번 달 TOP 5</h2><a href="./idol-map.html">지도로 보기 →</a></div>
+  <div class="sec-h"><h2 id="topT">🏆 이번 달 TOP 5</h2><a href="./map">지도로 보기 →</a></div>
   <div class="tops" id="tops">
     <div class="top"><h3>Korea</h3><div class="sk" style="height:200px"></div></div>
     <div class="top"><h3>Japan</h3><div class="sk" style="height:200px"></div></div>
@@ -177,19 +177,19 @@ footer{margin-top:52px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:1
 <section class="sec" aria-labelledby="featT">
   <div class="sec-h"><h2 id="featT">탐색 기능</h2></div>
   <div class="cards">
-    <a class="card" href="./kr-idol-tier-2026-09.html" style="--ac:#1ed760">
+    <a class="card" href="./kr" style="--ac:#1ed760">
       <span class="ic" aria-hidden="true">🇰🇷</span><span class="flag">Korea · 86팀</span>
       <h2>한국 여자아이돌</h2>
       <p>국내음원·음반·팬덤, 공연, 글로벌 소비력, 국내인지도, 현재기세를 반영한 점수표. 상세 필터와 그룹 비교, 월별 순위 변동까지.</p>
       <span class="cta">점수표 보기 →</span>
     </a>
-    <a class="card" href="./jp-idol-tier-2026-09.html" style="--ac:#f3727f">
+    <a class="card" href="./jp" style="--ac:#f3727f">
       <span class="ic" aria-hidden="true">🇯🇵</span><span class="flag">Japan · 126팀</span>
       <h2>일본 여자아이돌</h2>
       <p>공연·현장 동원력에 가장 큰 배점을 둔 일본 시장 구조 기준 점수표. 계열·활동형태별로 골라 볼 수 있어요.</p>
       <span class="cta">점수표 보기 →</span>
     </a>
-    <a class="card" href="./idol-map.html" style="--ac:#539df5">
+    <a class="card" href="./map" style="--ac:#539df5">
       <span class="ic" aria-hidden="true">🗺</span><span class="flag">IDOL MAP</span>
       <h2>시장 포지셔닝 지도</h2>
       <p>코어 팬덤↔대중, 라이브↔디지털 두 축으로 한국·일본 아이돌의 성향을 지도에서 확인해요.</p>
@@ -214,7 +214,7 @@ footer{margin-top:52px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:1
   'use strict';
   var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var vm = document.querySelector('script[src*="site-nav.js"]').src.match(/v=(\d+)/), V = vm ? vm[1] : '';
-  var PAGE = { KR: 'kr-idol-tier-2026-09.html', JP: 'jp-idol-tier-2026-09.html' };
+  var PAGE = { KR: 'kr', JP: 'jp' };
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function loadScript(src) { return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = src + '?v=' + V; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
   function count(n, to) {
@@ -262,7 +262,7 @@ footer{margin-top:52px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:1
         + '<div class="bd"><span class="bdg">📅 오늘의 아이돌</span><h3>' + esc(e.name) + '</h3><p class="mt">' + (e.country === 'KR' ? '🇰🇷 한국' : '🇯🇵 일본') + ' · ' + esc(e.tier) + ' · ' + e.total + '점</p>'
         + '<div class="tg">' + tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>'
         + '<div class="ac"><a class="g" href="' + page + '">상세보기</a>' + (e.spotify ? '<a target="_blank" rel="noopener noreferrer" href="' + esc(e.spotify) + '">Spotify ▶</a>' : '')
-        + '<a href="idol-map.html?country=' + e.country + '&id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name) + '">🗺 지도</a></div></div>';
+        + '<a href="map?country=' + e.country + '&id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name) + '">🗺 지도</a></div></div>';
     }).catch(function () { var s = today.closest('.sec'); if (s) s.hidden = true; });
 })();
 </script>

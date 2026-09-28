@@ -8,10 +8,10 @@
 
 | 기능 | 위치 | 설명 |
 |---|---|---|
-| 점수표 | `kr-idol-tier-2026-09.html`, `jp-idol-tier-2026-09.html` | 랭킹, 상세 필터, 그룹 상세(대표곡·Spotify·에디터 코멘트), 그룹 비교(레이더 6팀), 최애 저장 |
+| 점수표 | `/kr`, `/jp` (`kr.html`, `jp.html`) | 랭킹, 상세 필터, 그룹 상세(대표곡·Spotify·에디터 코멘트), 그룹 비교(레이더 6팀), 최애 저장 |
 | IDOL MATCH | 그룹 상세 안 | 한국↔일본 취향 유사도 추천 |
 | SAME SCENE | 그룹 상세 안 | 같은 나라에서 비슷한 그룹 TOP 3 + 취향 확장 |
-| IDOL MAP | `idol-map.html` | 팬덤↔대중 / 디지털↔라이브 두 축의 시장 포지셔닝 지도 |
+| IDOL MAP | `/map` (`map.html`) | 팬덤↔대중 / 디지털↔라이브 두 축의 시장 포지셔닝 지도 |
 | DISCOVER | 상단 🎲 버튼 | 랜덤·내 취향·숨은 보석·취향 확장·HOT·자동·오늘의 아이돌, 컬렉션, 월간 리포트, 공유 카드 |
 | 월별 순위 변동 | 점수표 카드·그룹 상세 하단 | 전월 대비 ▲▼–/NEW 배지, 순위·점수 시계열 차트(3·6·12개월·전체), 최고/최저 순위, 같은 국가 그룹 순위 추이 비교 |
 | 상단 내비게이션 | 모든 페이지 | 홈·한국·일본·지도·검색·최애·이전 화면 (사이트 안 이동은 브라우저 기록을 쌓지 않음) |
@@ -19,9 +19,10 @@
 ## 파일 구조
 
 ```text
-index.html                     홈
-kr-/jp-idol-tier-2026-09.html  점수표 (tools/build_pages.py 가 생성)
-idol-map.html                  IDOL MAP
+index.html                     홈 (/)
+kr.html, jp.html               점수표 (/kr, /jp — tools/build_pages.py 가 생성)
+map.html                       IDOL MAP (/map)
+kr-idol-tier-2026-09.html 등    예전 주소 → 새 주소 리다이렉트(쿼리·해시 유지)
 404.html, manifest.webmanifest
 
 js/
@@ -93,8 +94,10 @@ tools/                         페이지 빌더, 이미지 수집 스크립트, 
 ## 로컬 실행 · 테스트
 
 ```bash
-python -m http.server 8770
+python tools/serve.py 8770
 ```
+
+`tools/serve.py`는 GitHub Pages처럼 확장자 없는 주소(`/kr`, `/jp`, `/map`)를 `.html` 파일로 연결해 줍니다. (`python -m http.server`로는 `/kr`가 열리지 않아요. `file://`로 직접 열 때는 `kr.html`처럼 확장자를 붙여야 합니다.)
 
 - 사이트: http://localhost:8770/
 - 엔진 자체 테스트: http://localhost:8770/tools/tests.html (SAME SCENE·DISCOVER·지도 좌표 불변식 검사, 전부 통과해야 함)

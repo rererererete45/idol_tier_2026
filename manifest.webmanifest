@@ -2,7 +2,7 @@
   "name": "여자아이돌 체급 점수표",
   "short_name": "아이돌 체급표",
   "description": "한국·일본 여자아이돌 체급 점수표, IDOL MAP, 비슷한 그룹 추천, DISCOVER",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#121212",

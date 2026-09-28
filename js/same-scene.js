@@ -3,7 +3,7 @@
  * SameScene.render(box, { country, name, onOpen(name), mapPage }) */
 (function (global) {
   'use strict';
-  var COUNTRY = { KR: { label: '한국', page: 'idol-map.html' }, JP: { label: '일본', page: 'idol-map.html' } };
+  var COUNTRY = { KR: { label: '한국', page: 'map' }, JP: { label: '일본', page: 'map' } };
   var MEDALS = ['🥇', '🥈', '🥉'];
   var ACCENT = '#ffd166';
 
@@ -13,7 +13,7 @@
   // id 를 우선하고 group 이름은 fallback/표시용
   function mapUrl(country, g) {
     var id = g && typeof g === 'object' ? g.id : '', name = g && typeof g === 'object' ? g.name : g;
-    return 'idol-map.html?country=' + country + (id ? '&id=' + encodeURIComponent(id) : '') + '&group=' + encodeURIComponent(name) + '&scene=1';
+    return 'map?country=' + country + (id ? '&id=' + encodeURIComponent(id) : '') + '&group=' + encodeURIComponent(name) + '&scene=1';
   }
   function flags(m) {
     return (m.limited ? '<span class="chip mid" title="데이터가 일부 부족하거나 검증이 덜 된 그룹이에요">데이터 제한</span> ' : '')

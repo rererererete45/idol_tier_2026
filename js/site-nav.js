@@ -4,17 +4,23 @@
  * - REPLACE_NAV=false 로 바꾸면 예전처럼 브라우저 기록에 쌓인다. */
 (function () {
   'use strict';
-  var SITE_V = '20260941', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
+  var SITE_V = '20260942', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
   var script = document.currentScript, base = '';
   if (script && script.src) base = script.src.replace(/js\/site-nav\.js.*$/, '');
 
-  var PAGES = { home: 'index.html', kr: 'kr-idol-tier-2026-09.html', jp: 'jp-idol-tier-2026-09.html', map: 'idol-map.html' };
+  var PAGES = { home: '', kr: 'kr', jp: 'jp', map: 'map' };
+  // 주소는 /kr, /jp, /map (확장자 없음). 예전 .html 주소로 들어와도 같은 페이지로 인식하고 주소창을 정리한다.
   function pageKey(path) {
-    if (/idol-map\.html$/.test(path)) return 'map';
-    if (/kr-idol-tier/.test(path)) return 'kr';
-    if (/jp-idol-tier/.test(path)) return 'jp';
-    return 'home';
+    var seg = String(path).replace(/\/+$/, '').split('/').pop().replace(/\.html$/, '');
+    return seg === 'map' || seg === 'idol-map' ? 'map' : seg === 'kr' ? 'kr' : seg === 'jp' ? 'jp' : 'home';
   }
+  (function cleanUrl() {
+    try {
+      if (location.protocol === 'file:' || !/\.html$/.test(location.pathname)) return;
+      var p = location.pathname.replace(/index\.html$/, '').replace(/\.html$/, '');
+      history.replaceState(history.state, '', p + location.search + location.hash);
+    } catch (e) { /* noop */ }
+  })();
   var NAMES = { home: '홈', kr: '한국', jp: '일본', map: 'IDOL MAP' };
   var here = pageKey(location.pathname);
 
@@ -156,7 +162,8 @@
     if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
     var u; try { u = new URL(a.href, location.href); } catch (err) { return; }
     if (u.origin !== location.origin) return;
-    if (!/(\.html|\/)$/.test(u.pathname)) return;
+    var last = u.pathname.split('/').pop();
+    if (last && /\.[a-z0-9]+$/i.test(last) && !/\.html$/i.test(last)) return; // 이미지·스크립트·데이터 등 파일은 그대로
     if (u.pathname === location.pathname && u.search === location.search) return; // 같은 화면(해시만 다른 경우 등)은 그대로
     e.preventDefault();
     pushHere();
@@ -183,10 +190,10 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260941'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260941'); });
-      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260941'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260941'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260942'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260942'); });
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260942'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260942'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });

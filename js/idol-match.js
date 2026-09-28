@@ -11,8 +11,8 @@
   var FAVORITE_KEY = 'idolTierFavorites';
 
   var COUNTRIES = {
-    KR: { file: 'data/kr_db.json', page: 'kr-idol-tier-2026-09.html', label: '한국', flag: '🇰🇷' },
-    JP: { file: 'data/jp_db.json', page: 'jp-idol-tier-2026-09.html', label: '일본', flag: '🇯🇵' }
+    KR: { file: 'data/kr_db.json', page: 'kr', label: '한국', flag: '🇰🇷' },
+    JP: { file: 'data/jp_db.json', page: 'jp', label: '일본', flag: '🇯🇵' }
   };
 
   var KR_KEYS = ['국내음원', '음반·팬덤', '공연', '글로벌', '국내인지도', '현재기세'];

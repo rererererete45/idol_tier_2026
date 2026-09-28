@@ -23,7 +23,7 @@
   function pageOf(c) { return base + IM.countries[c].page; }
   // id 를 우선하고 group 이름은 fallback/표시용
   function detailUrl(e) { return pageOf(e.country) + '?id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name); }
-  function mapUrl(e) { return base + 'idol-map.html?country=' + e.country + '&id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name); }
+  function mapUrl(e) { return base + 'map?country=' + e.country + '&id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name); }
   var DEBUG = /[?&]debugDiscover=1/.test(location.search);
   function sceneUrl(e) { return mapUrl(e) + '&scene=1'; }
   var IMGS = null; // data/namu_images.json: {KR:{name:{img}}, JP:{...}} — 사진이 있는 그룹만 <img> 를 만든다(404 방지)
@@ -474,7 +474,7 @@
         // 푸터
         x.fillStyle = 'rgba(255,255,255,.1)'; x.fillRect(80, H - 210, W - 160, 2);
         x.fillStyle = '#fff'; x.font = '900 38px ' + FONT; x.fillText('여자아이돌 체급 점수표', 80, H - 140);
-        x.fillStyle = '#7c7c7c'; x.font = '600 28px ' + FONT; x.fillText(base.replace(/^https?:\/\//, '') + 'index.html', 80, H - 90);
+        x.fillStyle = '#7c7c7c'; x.font = '600 28px ' + FONT; x.fillText(base.replace(/^https?:\/\//, '').replace(/\/$/, ''), 80, H - 90);
         resolve(c);
       };
       var src = imgOf(e);
@@ -501,7 +501,7 @@
       }, 'image/png');
     });
   }
-  function shareUrl(res) { return base + 'index.html?discover=' + encodeURIComponent(res.ent.id) + '&mode=' + encodeURIComponent(res.mode) + '&scope=' + encodeURIComponent(state.scope); }
+  function shareUrl(res) { return base + '?discover=' + encodeURIComponent(res.ent.id) + '&mode=' + encodeURIComponent(res.mode) + '&scope=' + encodeURIComponent(state.scope); }
 
   /* ---------- URL 상태: 지금 보는 카드가 주소에 반영된다 ---------- */
   function syncUrl(res) {
