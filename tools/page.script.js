@@ -154,6 +154,9 @@ function detailHTML(o){
   const info=CFG.info.map(([k,key])=>{
     let v=o[key];
     if(key==='members')v=typeof v==='number'?v+'명':v;
+    if(key==='songs'&&o.tracks&&o.tracks.length){
+      return '<div class="it wide"><p class="k">'+esc(k)+' · Spotify</p><p class="v tracks">'+o.tracks.map(t=>'<a class="trklink"'+TGT+' href="'+esc(t[1])+'">'+ICN+esc(t[0])+'</a>').join('')+'</p></div>';
+    }
     if(v==null||v==='')v='-';
     return '<div class="it"><p class="k">'+esc(k)+'</p><p class="v">'+esc(v)+'</p></div>';
   }).join('');

@@ -37,6 +37,10 @@ def img_of(country, name):
     return r.get("img", ""), r.get("wiki", ""), r.get("page", "") if r.get("src") == "official" else ""
 
 
+def tracks_of(r):
+    return [[t["title"], t["spotify_url"]] for t in r.get("대표곡목록", []) if t.get("title") and t.get("spotify_url")]
+
+
 def members(v):
     if v is None:
         return "확인필요"
@@ -54,7 +58,7 @@ def kr_rows(rows):
             "gen": r["세대"], "style": r["스타일"], "agency": r["소속사"], "status": r["활동상태"],
             "debut": r["데뷔일"], "members": members(r["멤버수"]), "songs": r["대표곡"],
             "link": r["공식링크/SNS"], "verify": r["검증상태"], "note": r["대표출처/메모"],
-            "img": img, "wiki": wiki, "imgpage": imgpage, "intro": r.get("소개글", ""), "editor": r.get("에디터 코멘트(주관)", ""),
+            "img": img, "wiki": wiki, "imgpage": imgpage, "tracks": tracks_of(r), "intro": r.get("소개글", ""), "editor": r.get("에디터 코멘트(주관)", ""),
         })
     return out
 
@@ -70,7 +74,7 @@ def jp_rows(rows):
             "form": r["활동형태"], "style": r["스타일"], "status": r["활동상태"],
             "debut": r["결성/데뷔일"], "members": members(r["멤버수"]), "songs": r["대표곡"],
             "agency": r["소속/운영"], "link": r["공식링크/SNS"], "verify": r["검증상태"],
-            "note": r["대표출처/메모"], "img": img, "wiki": wiki, "imgpage": imgpage, "intro": r.get("소개글", ""), "editor": r.get("에디터 코멘트(주관)", ""),
+            "note": r["대표출처/메모"], "img": img, "wiki": wiki, "imgpage": imgpage, "tracks": tracks_of(r), "intro": r.get("소개글", ""), "editor": r.get("에디터 코멘트(주관)", ""),
         })
     return out
 

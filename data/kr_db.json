@@ -27,7 +27,8 @@
     "updated_groups": 20,
     "updated_fields": 88,
     "description_style": "Apple Music/Spotify의 아티스트 바이오처럼 팀 정체성→사운드/대표곡 순으로 읽히도록 작성한 오리지널 소개문. 플랫폼 문구를 직접 복제하지 않음.",
-    "editor_comment_note": "에디터 코멘트(주관)는 객관 데이터와 별개의 주관적 해석이다. 팀의 음악적 정체성, 현재 포지션, 장점과 아쉬운 점을 바탕으로 작성했으며 순위·티어·점수 산정에는 영향을 주지 않는다."
+    "editor_comment_note": "에디터 코멘트(주관)는 객관 데이터와 별개의 주관적 해석이다. 팀의 음악적 정체성, 현재 포지션, 장점과 아쉬운 점을 바탕으로 작성했으며 순위·티어·점수 산정에는 영향을 주지 않는다.",
+    "spotify_links": "대표곡목록[].spotify_url은 Spotify 검색 URL. 그룹명+곡명으로 Spotify 앱/웹 검색 화면을 열어 동일 곡의 지역/앨범 버전 차이에도 대응."
   },
   "korea": [
     {
@@ -45,6 +46,23 @@
       "데뷔일": "2016-08-08",
       "멤버수": 4,
       "대표곡": "DDU-DU DDU-DU; Kill This Love; Pink Venom",
+      "대표곡목록": [
+        {
+          "title": "DDU-DU DDU-DU",
+          "spotify_url": "https://open.spotify.com/search/BLACKPINK%20DDU-DU%20DDU-DU",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Kill This Love",
+          "spotify_url": "https://open.spotify.com/search/BLACKPINK%20Kill%20This%20Love",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Pink Venom",
+          "spotify_url": "https://open.spotify.com/search/BLACKPINK%20Pink%20Venom",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://ygfamily.com/ko/artists/blackpink/profile",
       "국내음원": 18,
       "음반·팬덤": 20,
@@ -72,6 +90,23 @@
       "데뷔일": "2015-10-20",
       "멤버수": 9,
       "대표곡": "CHEER UP; TT; FANCY",
+      "대표곡목록": [
+        {
+          "title": "CHEER UP",
+          "spotify_url": "https://open.spotify.com/search/TWICE%20CHEER%20UP",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "TT",
+          "spotify_url": "https://open.spotify.com/search/TWICE%20TT",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "FANCY",
+          "spotify_url": "https://open.spotify.com/search/TWICE%20FANCY",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.twicejapan.com/feature/profile",
       "국내음원": 14,
       "음반·팬덤": 18,
@@ -99,6 +134,23 @@
       "데뷔일": "2020-11-17",
       "멤버수": 4,
       "대표곡": "Next Level; Drama; Supernova",
+      "대표곡목록": [
+        {
+          "title": "Next Level",
+          "spotify_url": "https://open.spotify.com/search/aespa%20Next%20Level",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Drama",
+          "spotify_url": "https://open.spotify.com/search/aespa%20Drama",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Supernova",
+          "spotify_url": "https://open.spotify.com/search/aespa%20Supernova",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.smentertainment.com/",
       "국내음원": 17,
       "음반·팬덤": 18,
@@ -126,6 +178,23 @@
       "데뷔일": "2021-12-01",
       "멤버수": 6,
       "대표곡": "LOVE DIVE; I AM; After LIKE",
+      "대표곡목록": [
+        {
+          "title": "LOVE DIVE",
+          "spotify_url": "https://open.spotify.com/search/IVE%20LOVE%20DIVE",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "I AM",
+          "spotify_url": "https://open.spotify.com/search/IVE%20I%20AM",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "After LIKE",
+          "spotify_url": "https://open.spotify.com/search/IVE%20After%20LIKE",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://ive-official.jp/",
       "국내음원": 19,
       "음반·팬덤": 18,
@@ -153,6 +222,23 @@
       "데뷔일": "2022-05-02",
       "멤버수": 5,
       "대표곡": "ANTIFRAGILE; EASY; CRAZY",
+      "대표곡목록": [
+        {
+          "title": "ANTIFRAGILE",
+          "spotify_url": "https://open.spotify.com/search/LE%20SSERAFIM%20ANTIFRAGILE",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "EASY",
+          "spotify_url": "https://open.spotify.com/search/LE%20SSERAFIM%20EASY",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "CRAZY",
+          "spotify_url": "https://open.spotify.com/search/LE%20SSERAFIM%20CRAZY",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://le-sserafim.com/",
       "국내음원": 16,
       "음반·팬덤": 15,
@@ -180,6 +266,23 @@
       "데뷔일": "2018-05-02",
       "멤버수": 5,
       "대표곡": "LATATA; TOMBOY; Queencard",
+      "대표곡목록": [
+        {
+          "title": "LATATA",
+          "spotify_url": "https://open.spotify.com/search/i-dle%20LATATA",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "TOMBOY",
+          "spotify_url": "https://open.spotify.com/search/i-dle%20TOMBOY",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Queencard",
+          "spotify_url": "https://open.spotify.com/search/i-dle%20Queencard",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://i-dle.cubeent.co.jp/profile/",
       "국내음원": 17,
       "음반·팬덤": 16,
@@ -207,6 +310,23 @@
       "데뷔일": "2024-04-01",
       "멤버수": 7,
       "대표곡": "SHEESH; DRIP; BATTER UP",
+      "대표곡목록": [
+        {
+          "title": "SHEESH",
+          "spotify_url": "https://open.spotify.com/search/BABYMONSTER%20SHEESH",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "DRIP",
+          "spotify_url": "https://open.spotify.com/search/BABYMONSTER%20DRIP",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "BATTER UP",
+          "spotify_url": "https://open.spotify.com/search/BABYMONSTER%20BATTER%20UP",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://ygfamily.com/ko/artists/babymonster/profile",
       "국내음원": 12,
       "음반·팬덤": 17,
@@ -234,6 +354,23 @@
       "데뷔일": "2022-07-22",
       "멤버수": 4,
       "대표곡": "Attention; Hype Boy; Ditto",
+      "대표곡목록": [
+        {
+          "title": "Attention",
+          "spotify_url": "https://open.spotify.com/search/NewJeans%20Attention",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Hype Boy",
+          "spotify_url": "https://open.spotify.com/search/NewJeans%20Hype%20Boy",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Ditto",
+          "spotify_url": "https://open.spotify.com/search/NewJeans%20Ditto",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.newjeans.jp/profile",
       "국내음원": 19,
       "음반·팬덤": 17,
@@ -261,6 +398,23 @@
       "데뷔일": "2024-03-25",
       "멤버수": 5,
       "대표곡": "Magnetic; Cherish (My Love); Almond Chocolate",
+      "대표곡목록": [
+        {
+          "title": "Magnetic",
+          "spotify_url": "https://open.spotify.com/search/ILLIT%20Magnetic",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Cherish (My Love)",
+          "spotify_url": "https://open.spotify.com/search/ILLIT%20Cherish%20%28My%20Love%29",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Almond Chocolate",
+          "spotify_url": "https://open.spotify.com/search/ILLIT%20Almond%20Chocolate",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://illit-official.jp/profile",
       "국내음원": 17,
       "음반·팬덤": 14,
@@ -288,6 +442,23 @@
       "데뷔일": "2022-02-22",
       "멤버수": 6,
       "대표곡": "O.O; Love Me Like This; DASH",
+      "대표곡목록": [
+        {
+          "title": "O.O",
+          "spotify_url": "https://open.spotify.com/search/NMIXX%20O.O",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Love Me Like This",
+          "spotify_url": "https://open.spotify.com/search/NMIXX%20Love%20Me%20Like%20This",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "DASH",
+          "spotify_url": "https://open.spotify.com/search/NMIXX%20DASH",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://nmixx.jype.com/profile",
       "국내음원": 17,
       "음반·팬덤": 13,
@@ -315,6 +486,28 @@
       "데뷔일": "2014-08-01",
       "멤버수": 5,
       "대표곡": "Red Flavor; Psycho; Feel My Rhythm; Surfin' Boy",
+      "대표곡목록": [
+        {
+          "title": "Red Flavor",
+          "spotify_url": "https://open.spotify.com/search/Red%20Velvet%20Red%20Flavor",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Psycho",
+          "spotify_url": "https://open.spotify.com/search/Red%20Velvet%20Psycho",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Feel My Rhythm",
+          "spotify_url": "https://open.spotify.com/search/Red%20Velvet%20Feel%20My%20Rhythm",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Surfin' Boy",
+          "spotify_url": "https://open.spotify.com/search/Red%20Velvet%20Surfin%27%20Boy",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.smentertainment.com/",
       "국내음원": 14,
       "음반·팬덤": 10,
@@ -342,6 +535,18 @@
       "데뷔일": "2025-02-24",
       "멤버수": 8,
       "대표곡": "The Chase; STYLE",
+      "대표곡목록": [
+        {
+          "title": "The Chase",
+          "spotify_url": "https://open.spotify.com/search/Hearts2Hearts%20The%20Chase",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "STYLE",
+          "spotify_url": "https://open.spotify.com/search/Hearts2Hearts%20STYLE",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.smentertainment.com/",
       "국내음원": 19,
       "음반·팬덤": 17,
@@ -369,6 +574,18 @@
       "데뷔일": "2025-03-24",
       "멤버수": 5,
       "대표곡": "I DO ME; BTG",
+      "대표곡목록": [
+        {
+          "title": "I DO ME",
+          "spotify_url": "https://open.spotify.com/search/KiiiKiii%20I%20DO%20ME",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "BTG",
+          "spotify_url": "https://open.spotify.com/search/KiiiKiii%20BTG",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.starship-ent.com/",
       "국내음원": 20,
       "음반·팬덤": 11,
@@ -396,6 +613,23 @@
       "데뷔일": "2024-06-28",
       "멤버수": 6,
       "대표곡": "Debut; Touch; Gnarly",
+      "대표곡목록": [
+        {
+          "title": "Debut",
+          "spotify_url": "https://open.spotify.com/search/KATSEYE%20Debut",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Touch",
+          "spotify_url": "https://open.spotify.com/search/KATSEYE%20Touch",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Gnarly",
+          "spotify_url": "https://open.spotify.com/search/KATSEYE%20Gnarly",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.katseye.world/the-members/",
       "국내음원": 7,
       "음반·팬덤": 11,
@@ -423,6 +657,23 @@
       "데뷔일": "2023-10-18",
       "멤버수": 4,
       "대표곡": "Discord; T.B.H; My Name Is Malguem",
+      "대표곡목록": [
+        {
+          "title": "Discord",
+          "spotify_url": "https://open.spotify.com/search/QWER%20Discord",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "T.B.H",
+          "spotify_url": "https://open.spotify.com/search/QWER%20T.B.H",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "My Name Is Malguem",
+          "spotify_url": "https://open.spotify.com/search/QWER%20My%20Name%20Is%20Malguem",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.youtube.com/@QWER_Band_official",
       "국내음원": 19,
       "음반·팬덤": 8,
@@ -450,6 +701,23 @@
       "데뷔일": "2019-02-12",
       "멤버수": 5,
       "대표곡": "DALLA DALLA; WANNABE; CAKE",
+      "대표곡목록": [
+        {
+          "title": "DALLA DALLA",
+          "spotify_url": "https://open.spotify.com/search/ITZY%20DALLA%20DALLA",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "WANNABE",
+          "spotify_url": "https://open.spotify.com/search/ITZY%20WANNABE",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "CAKE",
+          "spotify_url": "https://open.spotify.com/search/ITZY%20CAKE",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://itzy.jype.com/",
       "국내음원": 8,
       "음반·팬덤": 10,
@@ -477,6 +745,23 @@
       "데뷔일": "2014-06-19",
       "멤버수": 4,
       "대표곡": "Mr. Ambiguous; HIP; Starry Night",
+      "대표곡목록": [
+        {
+          "title": "Mr. Ambiguous",
+          "spotify_url": "https://open.spotify.com/search/MAMAMOO%20Mr.%20Ambiguous",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "HIP",
+          "spotify_url": "https://open.spotify.com/search/MAMAMOO%20HIP",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Starry Night",
+          "spotify_url": "https://open.spotify.com/search/MAMAMOO%20Starry%20Night",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.rbbridge.com/",
       "국내음원": 9,
       "음반·팬덤": 6,
@@ -504,6 +789,23 @@
       "데뷔일": "2023-07-05",
       "멤버수": 4,
       "대표곡": "Shhh; Midas Touch; Sticky",
+      "대표곡목록": [
+        {
+          "title": "Shhh",
+          "spotify_url": "https://open.spotify.com/search/KISS%20OF%20LIFE%20Shhh",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Midas Touch",
+          "spotify_url": "https://open.spotify.com/search/KISS%20OF%20LIFE%20Midas%20Touch",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Sticky",
+          "spotify_url": "https://open.spotify.com/search/KISS%20OF%20LIFE%20Sticky",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://kissoflife-official.com/",
       "국내음원": 12,
       "음반·팬덤": 9,
@@ -531,6 +833,23 @@
       "데뷔일": "2023-02-13",
       "멤버수": 24,
       "대표곡": "Rising; Girls Never Die; Generation",
+      "대표곡목록": [
+        {
+          "title": "Rising",
+          "spotify_url": "https://open.spotify.com/search/tripleS%20Rising",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Girls Never Die",
+          "spotify_url": "https://open.spotify.com/search/tripleS%20Girls%20Never%20Die",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Generation",
+          "spotify_url": "https://open.spotify.com/search/tripleS%20Generation",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.triplescosmos.com/",
       "국내음원": 9,
       "음반·팬덤": 16,
@@ -558,6 +877,23 @@
       "데뷔일": "2024-03-26",
       "멤버수": 5,
       "대표곡": "UhUh; Love Attack; Pinball",
+      "대표곡목록": [
+        {
+          "title": "UhUh",
+          "spotify_url": "https://open.spotify.com/search/RESCENE%20UhUh",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Love Attack",
+          "spotify_url": "https://open.spotify.com/search/RESCENE%20Love%20Attack",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Pinball",
+          "spotify_url": "https://open.spotify.com/search/RESCENE%20Pinball",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.youtube.com/@RESCENE_official",
       "국내음원": 18,
       "음반·팬덤": 10,
@@ -585,6 +921,23 @@
       "데뷔일": "2024-09-06",
       "멤버수": 5,
       "대표곡": "MEOW; TOXIC; HANDS UP",
+      "대표곡목록": [
+        {
+          "title": "MEOW",
+          "spotify_url": "https://open.spotify.com/search/MEOVV%20MEOW",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "TOXIC",
+          "spotify_url": "https://open.spotify.com/search/MEOVV%20TOXIC",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "HANDS UP",
+          "spotify_url": "https://open.spotify.com/search/MEOVV%20HANDS%20UP",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.theblacklabel.com/",
       "국내음원": 10,
       "음반·팬덤": 11,
@@ -612,6 +965,23 @@
       "데뷔일": "2018-01-24",
       "멤버수": 5,
       "대표곡": "LOVE BOMB; DM; Supersonic",
+      "대표곡목록": [
+        {
+          "title": "LOVE BOMB",
+          "spotify_url": "https://open.spotify.com/search/fromis_9%20LOVE%20BOMB",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "DM",
+          "spotify_url": "https://open.spotify.com/search/fromis_9%20DM",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Supersonic",
+          "spotify_url": "https://open.spotify.com/search/fromis_9%20Supersonic",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/officialfromis_9/",
       "국내음원": 12,
       "음반·팬덤": 8,
@@ -639,6 +1009,23 @@
       "데뷔일": "2016-05-04",
       "멤버수": 9,
       "대표곡": "Very Very Very; Downpour; Suddenly",
+      "대표곡목록": [
+        {
+          "title": "Very Very Very",
+          "spotify_url": "https://open.spotify.com/search/I.O.I%20Very%20Very%20Very",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Downpour",
+          "spotify_url": "https://open.spotify.com/search/I.O.I%20Downpour",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Suddenly",
+          "spotify_url": "https://open.spotify.com/search/I.O.I%20Suddenly",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://x.com/ioi_10th",
       "국내음원": 12,
       "음반·팬덤": 7,
@@ -666,6 +1053,23 @@
       "데뷔일": "2024-11-25",
       "멤버수": 6,
       "대표곡": "IZNA; SIGN; BEEP",
+      "대표곡목록": [
+        {
+          "title": "IZNA",
+          "spotify_url": "https://open.spotify.com/search/izna%20IZNA",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "SIGN",
+          "spotify_url": "https://open.spotify.com/search/izna%20SIGN",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "BEEP",
+          "spotify_url": "https://open.spotify.com/search/izna%20BEEP",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://wake-one.com/artists/izna/",
       "국내음원": 9,
       "음반·팬덤": 10,
@@ -693,6 +1097,23 @@
       "데뷔일": "2020-11-12",
       "멤버수": 6,
       "대표곡": "ASAP; RUN2U; Teddy Bear",
+      "대표곡목록": [
+        {
+          "title": "ASAP",
+          "spotify_url": "https://open.spotify.com/search/STAYC%20ASAP",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "RUN2U",
+          "spotify_url": "https://open.spotify.com/search/STAYC%20RUN2U",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Teddy Bear",
+          "spotify_url": "https://open.spotify.com/search/STAYC%20Teddy%20Bear",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.highup-ent.com/",
       "국내음원": 10,
       "음반·팬덤": 9,
@@ -720,6 +1141,23 @@
       "데뷔일": "2022-11-18",
       "멤버수": 5,
       "대표곡": "Cupid; SOS; Pookie",
+      "대표곡목록": [
+        {
+          "title": "Cupid",
+          "spotify_url": "https://open.spotify.com/search/FIFTY%20FIFTY%20Cupid",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "SOS",
+          "spotify_url": "https://open.spotify.com/search/FIFTY%20FIFTY%20SOS",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Pookie",
+          "spotify_url": "https://open.spotify.com/search/FIFTY%20FIFTY%20Pookie",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.theattrakt.com/",
       "국내음원": 9,
       "음반·팬덤": 6,
@@ -747,6 +1185,23 @@
       "데뷔일": "2024-05-31",
       "멤버수": 5,
       "대표곡": "Virtual Angel; Birth; Air",
+      "대표곡목록": [
+        {
+          "title": "Virtual Angel",
+          "spotify_url": "https://open.spotify.com/search/ARTMS%20Virtual%20Angel",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Birth",
+          "spotify_url": "https://open.spotify.com/search/ARTMS%20Birth",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Air",
+          "spotify_url": "https://open.spotify.com/search/ARTMS%20Air",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://artms-strategy.com/",
       "국내음원": 6,
       "음반·팬덤": 8,
@@ -774,6 +1229,23 @@
       "데뷔일": "2011-04-19",
       "멤버수": 5,
       "대표곡": "NoNoNo; Mr. Chu; Dumhdurum",
+      "대표곡목록": [
+        {
+          "title": "NoNoNo",
+          "spotify_url": "https://open.spotify.com/search/Apink%20NoNoNo",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Mr. Chu",
+          "spotify_url": "https://open.spotify.com/search/Apink%20Mr.%20Chu",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Dumhdurum",
+          "spotify_url": "https://open.spotify.com/search/Apink%20Dumhdurum",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://apink-japan.com/profiles",
       "국내음원": 7,
       "음반·팬덤": 5,
@@ -801,6 +1273,23 @@
       "데뷔일": "2022-01-03",
       "멤버수": 6,
       "대표곡": "WA DA DA; Up!; Shooting Star",
+      "대표곡목록": [
+        {
+          "title": "WA DA DA",
+          "spotify_url": "https://open.spotify.com/search/Kep1er%20WA%20DA%20DA",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Up!",
+          "spotify_url": "https://open.spotify.com/search/Kep1er%20Up%21",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Shooting Star",
+          "spotify_url": "https://open.spotify.com/search/Kep1er%20Shooting%20Star",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://wake-one.com/artists/kep1er/",
       "국내음원": 6,
       "음반·팬덤": 6,
@@ -828,6 +1317,23 @@
       "데뷔일": "2017-01-13",
       "멤버수": 7,
       "대표곡": "Chase Me; BOCA; Scream",
+      "대표곡목록": [
+        {
+          "title": "Chase Me",
+          "spotify_url": "https://open.spotify.com/search/Dreamcatcher%20Chase%20Me",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "BOCA",
+          "spotify_url": "https://open.spotify.com/search/Dreamcatcher%20BOCA",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Scream",
+          "spotify_url": "https://open.spotify.com/search/Dreamcatcher%20Scream",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://dreamcatcher.kr/",
       "국내음원": 4,
       "음반·팬덤": 7,
@@ -855,6 +1361,23 @@
       "데뷔일": "2022-02-09",
       "멤버수": 3,
       "대표곡": "BOP BOP!; MANIAC; Shhh!",
+      "대표곡목록": [
+        {
+          "title": "BOP BOP!",
+          "spotify_url": "https://open.spotify.com/search/VIVIZ%20BOP%20BOP%21",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "MANIAC",
+          "spotify_url": "https://open.spotify.com/search/VIVIZ%20MANIAC",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Shhh!",
+          "spotify_url": "https://open.spotify.com/search/VIVIZ%20Shhh%21",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.bpment.co.kr/",
       "국내음원": 7,
       "음반·팬덤": 6,
@@ -882,6 +1405,23 @@
       "데뷔일": "2007-08-05",
       "멤버수": 8,
       "대표곡": "Gee; Genie; Into the New World",
+      "대표곡목록": [
+        {
+          "title": "Gee",
+          "spotify_url": "https://open.spotify.com/search/Girls%27%20Generation%20Gee",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Genie",
+          "spotify_url": "https://open.spotify.com/search/Girls%27%20Generation%20Genie",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Into the New World",
+          "spotify_url": "https://open.spotify.com/search/Girls%27%20Generation%20Into%20the%20New%20World",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.smentertainment.com/",
       "국내음원": 6,
       "음반·팬덤": 4,
@@ -909,6 +1449,23 @@
       "데뷔일": "2015-04-21",
       "멤버수": 6,
       "대표곡": "Secret Garden; Dolphin; Dun Dun Dance",
+      "대표곡목록": [
+        {
+          "title": "Secret Garden",
+          "spotify_url": "https://open.spotify.com/search/OH%20MY%20GIRL%20Secret%20Garden",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Dolphin",
+          "spotify_url": "https://open.spotify.com/search/OH%20MY%20GIRL%20Dolphin",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Dun Dun Dance",
+          "spotify_url": "https://open.spotify.com/search/OH%20MY%20GIRL%20Dun%20Dun%20Dance",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.wment.co.kr/",
       "국내음원": 7,
       "음반·팬덤": 5,
@@ -936,6 +1493,23 @@
       "데뷔일": "2007-03-29",
       "멤버수": 5,
       "대표곡": "Mister; Step; Lupin",
+      "대표곡목록": [
+        {
+          "title": "Mister",
+          "spotify_url": "https://open.spotify.com/search/KARA%20Mister",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Step",
+          "spotify_url": "https://open.spotify.com/search/KARA%20Step",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Lupin",
+          "spotify_url": "https://open.spotify.com/search/KARA%20Lupin",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.rbbridge.com/",
       "국내음원": 5,
       "음반·팬덤": 4,
@@ -963,6 +1537,23 @@
       "데뷔일": "2021-11-10",
       "멤버수": 7,
       "대표곡": "GingaMingaYo; RING ma Bell; EUNOIA",
+      "대표곡목록": [
+        {
+          "title": "GingaMingaYo",
+          "spotify_url": "https://open.spotify.com/search/Billlie%20GingaMingaYo",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "RING ma Bell",
+          "spotify_url": "https://open.spotify.com/search/Billlie%20RING%20ma%20Bell",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "EUNOIA",
+          "spotify_url": "https://open.spotify.com/search/Billlie%20EUNOIA",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.mystic89.net/",
       "국내음원": 5,
       "음반·팬덤": 6,
@@ -990,6 +1581,23 @@
       "데뷔일": "2022-01-05",
       "멤버수": 4,
       "대표곡": "Rose Blossom; Seoul; Let It Burn",
+      "대표곡목록": [
+        {
+          "title": "Rose Blossom",
+          "spotify_url": "https://open.spotify.com/search/H1-KEY%20Rose%20Blossom",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Seoul",
+          "spotify_url": "https://open.spotify.com/search/H1-KEY%20Seoul",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Let It Burn",
+          "spotify_url": "https://open.spotify.com/search/H1-KEY%20Let%20It%20Burn",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.glgenter.com/",
       "국내음원": 8,
       "음반·팬덤": 5,
@@ -1017,6 +1625,23 @@
       "데뷔일": "2026-08-24",
       "멤버수": 7,
       "대표곡": "SUN KISS; ABD; Echo",
+      "대표곡목록": [
+        {
+          "title": "SUN KISS",
+          "spotify_url": "https://open.spotify.com/search/TUIDE%20SUN%20KISS",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "ABD",
+          "spotify_url": "https://open.spotify.com/search/TUIDE%20ABD",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Echo",
+          "spotify_url": "https://open.spotify.com/search/TUIDE%20Echo",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://en.yna.co.kr/view/AEN20260824010400315",
       "국내음원": 9,
       "음반·팬덤": 6,
@@ -1044,6 +1669,23 @@
       "데뷔일": "2024-03-27",
       "멤버수": 8,
       "대표곡": "SUPERWOMAN; SWICY; Milky Way",
+      "대표곡목록": [
+        {
+          "title": "SUPERWOMAN",
+          "spotify_url": "https://open.spotify.com/search/UNIS%20SUPERWOMAN",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "SWICY",
+          "spotify_url": "https://open.spotify.com/search/UNIS%20SWICY",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Milky Way",
+          "spotify_url": "https://open.spotify.com/search/UNIS%20Milky%20Way",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.youtube.com/@UNIS_offcl",
       "국내음원": 5,
       "음반·팬덤": 8,
@@ -1071,6 +1713,18 @@
       "데뷔일": "2024-10-16",
       "멤버수": 8,
       "대표곡": "WaveWay; Be a Star",
+      "대표곡목록": [
+        {
+          "title": "WaveWay",
+          "spotify_url": "https://open.spotify.com/search/SAY%20MY%20NAME%20WaveWay",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Be a Star",
+          "spotify_url": "https://open.spotify.com/search/SAY%20MY%20NAME%20Be%20a%20Star",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.in-kode.com/say_my_name.html",
       "국내음원": 5,
       "음반·팬덤": 10,
@@ -1098,6 +1752,28 @@
       "데뷔일": "2019-03-18",
       "멤버수": 4,
       "대표곡": "Bon Bon Chocolat; DUN DUN; LA DI DA; CODE",
+      "대표곡목록": [
+        {
+          "title": "Bon Bon Chocolat",
+          "spotify_url": "https://open.spotify.com/search/EVERGLOW%20Bon%20Bon%20Chocolat",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "DUN DUN",
+          "spotify_url": "https://open.spotify.com/search/EVERGLOW%20DUN%20DUN",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "LA DI DA",
+          "spotify_url": "https://open.spotify.com/search/EVERGLOW%20LA%20DI%20DA",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "CODE",
+          "spotify_url": "https://open.spotify.com/search/EVERGLOW%20CODE",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.youtube.com/@EVERGLOWOFFICIAL",
       "국내음원": 4,
       "음반·팬덤": 4,
@@ -1125,6 +1801,18 @@
       "데뷔일": "2025-04-08",
       "멤버수": 6,
       "대표곡": "NERDY; r u ok?",
+      "대표곡목록": [
+        {
+          "title": "NERDY",
+          "spotify_url": "https://open.spotify.com/search/ifeye%20NERDY",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "r u ok?",
+          "spotify_url": "https://open.spotify.com/search/ifeye%20r%20u%20ok%3F",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://linktr.ee/ifeye_official",
       "국내음원": 7,
       "음반·팬덤": 5,
@@ -1152,6 +1840,18 @@
       "데뷔일": "2025-08-13",
       "멤버수": 7,
       "대표곡": "Plot Twist; 3!4!",
+      "대표곡목록": [
+        {
+          "title": "Plot Twist",
+          "spotify_url": "https://open.spotify.com/search/AtHeart%20Plot%20Twist",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "3!4!",
+          "spotify_url": "https://open.spotify.com/search/AtHeart%203%214%21",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://atheart.me/",
       "국내음원": 6,
       "음반·팬덤": 4,
@@ -1179,6 +1879,23 @@
       "데뷔일": "2023-10-18",
       "멤버수": 5,
       "대표곡": "MACARONI CHEESE; XXL; ATE THAT",
+      "대표곡목록": [
+        {
+          "title": "MACARONI CHEESE",
+          "spotify_url": "https://open.spotify.com/search/YOUNG%20POSSE%20MACARONI%20CHEESE",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "XXL",
+          "spotify_url": "https://open.spotify.com/search/YOUNG%20POSSE%20XXL",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "ATE THAT",
+          "spotify_url": "https://open.spotify.com/search/YOUNG%20POSSE%20ATE%20THAT",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.rbbridge.com/",
       "국내음원": 5,
       "음반·팬덤": 4,
@@ -1206,6 +1923,23 @@
       "데뷔일": "2011-04-08",
       "멤버수": 3,
       "대표곡": "Rollin'; We Ride; ONE MORE TIME",
+      "대표곡목록": [
+        {
+          "title": "Rollin'",
+          "spotify_url": "https://open.spotify.com/search/BBGIRLS%20Rollin%27",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "We Ride",
+          "spotify_url": "https://open.spotify.com/search/BBGIRLS%20We%20Ride",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "ONE MORE TIME",
+          "spotify_url": "https://open.spotify.com/search/BBGIRLS%20ONE%20MORE%20TIME",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://bbgirls.bstage.in/",
       "국내음원": 6,
       "음반·팬덤": 3,
@@ -1233,6 +1967,23 @@
       "데뷔일": "2024-06-03",
       "멤버수": 7,
       "대표곡": "BADVILLAIN; HURRICANE; ZOOM",
+      "대표곡목록": [
+        {
+          "title": "BADVILLAIN",
+          "spotify_url": "https://open.spotify.com/search/BADVILLAIN%20BADVILLAIN",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "HURRICANE",
+          "spotify_url": "https://open.spotify.com/search/BADVILLAIN%20HURRICANE",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "ZOOM",
+          "spotify_url": "https://open.spotify.com/search/BADVILLAIN%20ZOOM",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.bpment.co.kr/",
       "국내음원": 4,
       "음반·팬덤": 4,
@@ -1260,6 +2011,18 @@
       "데뷔일": "2025-06-23",
       "멤버수": 4,
       "대표곡": "F Girl; AFTER CRY",
+      "대표곡목록": [
+        {
+          "title": "F Girl",
+          "spotify_url": "https://open.spotify.com/search/Baby%20DONT%20Cry%20F%20Girl",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "AFTER CRY",
+          "spotify_url": "https://open.spotify.com/search/Baby%20DONT%20Cry%20AFTER%20CRY",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://babydontcry.asia/",
       "국내음원": 5,
       "음반·팬덤": 4,
@@ -1287,6 +2050,23 @@
       "데뷔일": "2021-06-10",
       "멤버수": 6,
       "대표곡": "Vanilla; ALIVE; Honey or Spice",
+      "대표곡목록": [
+        {
+          "title": "Vanilla",
+          "spotify_url": "https://open.spotify.com/search/LIGHTSUM%20Vanilla",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "ALIVE",
+          "spotify_url": "https://open.spotify.com/search/LIGHTSUM%20ALIVE",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Honey or Spice",
+          "spotify_url": "https://open.spotify.com/search/LIGHTSUM%20Honey%20or%20Spice",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.cubeent.co.kr/",
       "국내음원": 4,
       "음반·팬덤": 4,
@@ -1314,6 +2094,23 @@
       "데뷔일": "2024-09-03",
       "멤버수": 6,
       "대표곡": "UNO; SATURN; Girl Meets Boy",
+      "대표곡목록": [
+        {
+          "title": "UNO",
+          "spotify_url": "https://open.spotify.com/search/MADEIN%20UNO",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "SATURN",
+          "spotify_url": "https://open.spotify.com/search/MADEIN%20SATURN",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Girl Meets Boy",
+          "spotify_url": "https://open.spotify.com/search/MADEIN%20Girl%20Meets%20Boy",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://madein-official.net/profile/",
       "국내음원": 4,
       "음반·팬덤": 5,
@@ -1341,6 +2138,23 @@
       "데뷔일": "2009-10-13",
       "멤버수": 3,
       "대표곡": "Shy Boy; Starlight Moonlight; Ice Cream",
+      "대표곡목록": [
+        {
+          "title": "Shy Boy",
+          "spotify_url": "https://open.spotify.com/search/Secret%20Shy%20Boy",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Starlight Moonlight",
+          "spotify_url": "https://open.spotify.com/search/Secret%20Starlight%20Moonlight",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Ice Cream",
+          "spotify_url": "https://open.spotify.com/search/Secret%20Ice%20Cream",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.rbbridge.com/",
       "국내음원": 4,
       "음반·팬덤": 3,
@@ -1368,6 +2182,23 @@
       "데뷔일": "2020-05-13",
       "멤버수": 5,
       "대표곡": "Bad Girl; Catch the Stars; POM POM POM",
+      "대표곡목록": [
+        {
+          "title": "Bad Girl",
+          "spotify_url": "https://open.spotify.com/search/WOOAH%20Bad%20Girl",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Catch the Stars",
+          "spotify_url": "https://open.spotify.com/search/WOOAH%20Catch%20the%20Stars",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "POM POM POM",
+          "spotify_url": "https://open.spotify.com/search/WOOAH%20POM%20POM%20POM",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.youtube.com/@wooah",
       "국내음원": 5,
       "음반·팬덤": 4,
@@ -1395,6 +2226,23 @@
       "데뷔일": "2022-05-05",
       "멤버수": 7,
       "대표곡": "SHUT DOWN; CLASSY; Tick Tick Boom",
+      "대표곡목록": [
+        {
+          "title": "SHUT DOWN",
+          "spotify_url": "https://open.spotify.com/search/CLASS%3Ay%20SHUT%20DOWN",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "CLASSY",
+          "spotify_url": "https://open.spotify.com/search/CLASS%3Ay%20CLASSY",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Tick Tick Boom",
+          "spotify_url": "https://open.spotify.com/search/CLASS%3Ay%20Tick%20Tick%20Boom",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.youtube.com/@CLASSy_official",
       "국내음원": 4,
       "음반·팬덤": 4,
@@ -1422,6 +2270,23 @@
       "데뷔일": "2016-02-25",
       "멤버수": 10,
       "대표곡": "Secret; As You Wish; UNNATURAL",
+      "대표곡목록": [
+        {
+          "title": "Secret",
+          "spotify_url": "https://open.spotify.com/search/WJSN%20Secret",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "As You Wish",
+          "spotify_url": "https://open.spotify.com/search/WJSN%20As%20You%20Wish",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "UNNATURAL",
+          "spotify_url": "https://open.spotify.com/search/WJSN%20UNNATURAL",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.starship-ent.com/",
       "국내음원": 3,
       "음반·팬덤": 4,
@@ -1449,6 +2314,23 @@
       "데뷔일": "2020-10-16",
       "멤버수": 4,
       "대표곡": "Tonight; Karma; Roll Up",
+      "대표곡목록": [
+        {
+          "title": "Tonight",
+          "spotify_url": "https://open.spotify.com/search/BLACKSWAN%20Tonight",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Karma",
+          "spotify_url": "https://open.spotify.com/search/BLACKSWAN%20Karma",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Roll Up",
+          "spotify_url": "https://open.spotify.com/search/BLACKSWAN%20Roll%20Up",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://drmusic.me/",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1476,6 +2358,13 @@
       "데뷔일": "2025-04",
       "멤버수": 5,
       "대표곡": "Things we love : H",
+      "대표곡목록": [
+        {
+          "title": "Things we love : H",
+          "spotify_url": "https://open.spotify.com/search/HITGS%20Things%20we%20love%20%3A%20H",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.melon.com/musicstory/detail.htm?mstorySeq=16060",
       "국내음원": 4,
       "음반·팬덤": 5,
@@ -1503,6 +2392,23 @@
       "데뷔일": "2025-06-04",
       "멤버수": 6,
       "대표곡": "ZOOM; Telepathy; WICKED GAME",
+      "대표곡목록": [
+        {
+          "title": "ZOOM",
+          "spotify_url": "https://open.spotify.com/search/USPEER%20ZOOM",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Telepathy",
+          "spotify_url": "https://open.spotify.com/search/USPEER%20Telepathy",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "WICKED GAME",
+          "spotify_url": "https://open.spotify.com/search/USPEER%20WICKED%20GAME",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://mwenter.co.kr/artist/USPEER/",
       "국내음원": 4,
       "음반·팬덤": 8,
@@ -1530,6 +2436,23 @@
       "데뷔일": "2024-11-01",
       "멤버수": 5,
       "대표곡": "Best Friendz; I Like You; Babyface",
+      "대표곡목록": [
+        {
+          "title": "Best Friendz",
+          "spotify_url": "https://open.spotify.com/search/ODD%20YOUTH%20Best%20Friendz",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "I Like You",
+          "spotify_url": "https://open.spotify.com/search/ODD%20YOUTH%20I%20Like%20You",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Babyface",
+          "spotify_url": "https://open.spotify.com/search/ODD%20YOUTH%20Babyface",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://linktr.ee/odd_youth",
       "국내음원": 4,
       "음반·팬덤": 5,
@@ -1557,6 +2480,18 @@
       "데뷔일": "2024-04-01",
       "멤버수": 4,
       "대표곡": "Locked On; Ain't Nobody",
+      "대표곡목록": [
+        {
+          "title": "Locked On",
+          "spotify_url": "https://open.spotify.com/search/VVUP%20Locked%20On",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Ain't Nobody",
+          "spotify_url": "https://open.spotify.com/search/VVUP%20Ain%27t%20Nobody",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://weverse.io/vvup/notice/24360?hl=ko",
       "국내음원": 4,
       "음반·팬덤": 3,
@@ -1584,6 +2519,23 @@
       "데뷔일": "2012-02-16",
       "멤버수": 5,
       "대표곡": "Up & Down; Ah Yeah; L.I.E",
+      "대표곡목록": [
+        {
+          "title": "Up & Down",
+          "spotify_url": "https://open.spotify.com/search/EXID%20Up%20%26%20Down",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Ah Yeah",
+          "spotify_url": "https://open.spotify.com/search/EXID%20Ah%20Yeah",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "L.I.E",
+          "spotify_url": "https://open.spotify.com/search/EXID%20L.I.E",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "http://exid-official.jp/",
       "국내음원": 3,
       "음반·팬덤": 2,
@@ -1611,6 +2563,23 @@
       "데뷔일": "2020-05-19",
       "멤버수": 4,
       "대표곡": "Who Dis?; Got That Boom; Don’t Touch",
+      "대표곡목록": [
+        {
+          "title": "Who Dis?",
+          "spotify_url": "https://open.spotify.com/search/SECRET%20NUMBER%20Who%20Dis%3F",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Got That Boom",
+          "spotify_url": "https://open.spotify.com/search/SECRET%20NUMBER%20Got%20That%20Boom",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Don’t Touch",
+          "spotify_url": "https://open.spotify.com/search/SECRET%20NUMBER%20Don%E2%80%99t%20Touch",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/secretnumber.official/",
       "국내음원": 2,
       "음반·팬덤": 3,
@@ -1638,6 +2607,23 @@
       "데뷔일": "2021-09-08",
       "멤버수": 7,
       "대표곡": "GOT'YA; La Luna; DEMIGOD",
+      "대표곡목록": [
+        {
+          "title": "GOT'YA",
+          "spotify_url": "https://open.spotify.com/search/ICHILLIN%27%20GOT%27YA",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "La Luna",
+          "spotify_url": "https://open.spotify.com/search/ICHILLIN%27%20La%20Luna",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "DEMIGOD",
+          "spotify_url": "https://open.spotify.com/search/ICHILLIN%27%20DEMIGOD",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.youtube.com/@ICHILLIN_official",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1665,6 +2651,23 @@
       "데뷔일": "2024-03-27",
       "멤버수": 4,
       "대표곡": "Good Girl; Don’t Cry; Tumbler (Hot & Cold)",
+      "대표곡목록": [
+        {
+          "title": "Good Girl",
+          "spotify_url": "https://open.spotify.com/search/Candy%20Shop%20Good%20Girl",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Don’t Cry",
+          "spotify_url": "https://open.spotify.com/search/Candy%20Shop%20Don%E2%80%99t%20Cry",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Tumbler (Hot & Cold)",
+          "spotify_url": "https://open.spotify.com/search/Candy%20Shop%20Tumbler%20%28Hot%20%26%20Cold%29",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://candy-shop.jp/",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1692,6 +2695,18 @@
       "데뷔일": "2025-05-29",
       "멤버수": 6,
       "대표곡": "KILL MA BO$$; BANG BANG!",
+      "대표곡목록": [
+        {
+          "title": "KILL MA BO$$",
+          "spotify_url": "https://open.spotify.com/search/KIIRAS%20KILL%20MA%20BO%24%24",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "BANG BANG!",
+          "spotify_url": "https://open.spotify.com/search/KIIRAS%20BANG%20BANG%21",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.sec.gov/Archives/edgar/data/2027262/000149315226003710/ex99-1.htm",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1719,6 +2734,23 @@
       "데뷔일": "2026-06-30",
       "멤버수": 5,
       "대표곡": "OXY; Key Beats; Catch My Breath",
+      "대표곡목록": [
+        {
+          "title": "OXY",
+          "spotify_url": "https://open.spotify.com/search/Keyveatz%20OXY",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Key Beats",
+          "spotify_url": "https://open.spotify.com/search/Keyveatz%20Key%20Beats",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Catch My Breath",
+          "spotify_url": "https://open.spotify.com/search/Keyveatz%20Catch%20My%20Breath",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.aomgofficial.com/keyveatz",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1746,6 +2778,18 @@
       "데뷔일": "2025",
       "멤버수": 3,
       "대표곡": "Echo; Cupid (Bossa Ver.)",
+      "대표곡목록": [
+        {
+          "title": "Echo",
+          "spotify_url": "https://open.spotify.com/search/ablume%20Echo",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Cupid (Bossa Ver.)",
+          "spotify_url": "https://open.spotify.com/search/ablume%20Cupid%20%28Bossa%20Ver.%29",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.ablume.com/about",
       "국내음원": 3,
       "음반·팬덤": 2,
@@ -1773,6 +2817,23 @@
       "데뷔일": "2026-05-27",
       "멤버수": 7,
       "대표곡": "Stolen; One day; AWA",
+      "대표곡목록": [
+        {
+          "title": "Stolen",
+          "spotify_url": "https://open.spotify.com/search/H%2F%2FPE%20Princess%20Stolen",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "One day",
+          "spotify_url": "https://open.spotify.com/search/H%2F%2FPE%20Princess%20One%20day",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "AWA",
+          "spotify_url": "https://open.spotify.com/search/H%2F%2FPE%20Princess%20AWA",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://wmg.jp/hiipe-princess",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1800,6 +2861,23 @@
       "데뷔일": "2025-04-22",
       "멤버수": 4,
       "대표곡": "Tea; D.I.M.M.; Stay The Night",
+      "대표곡목록": [
+        {
+          "title": "Tea",
+          "spotify_url": "https://open.spotify.com/search/VVS%20Tea",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "D.I.M.M.",
+          "spotify_url": "https://open.spotify.com/search/VVS%20D.I.M.M.",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Stay The Night",
+          "spotify_url": "https://open.spotify.com/search/VVS%20Stay%20The%20Night",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/vvssodvs/",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1827,6 +2905,18 @@
       "데뷔일": "2024-09-02",
       "멤버수": 6,
       "대표곡": "COCOCO; ACT LIKE THAT",
+      "대표곡목록": [
+        {
+          "title": "COCOCO",
+          "spotify_url": "https://open.spotify.com/search/GENBLUE%20COCOCO",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "ACT LIKE THAT",
+          "spotify_url": "https://open.spotify.com/search/GENBLUE%20ACT%20LIKE%20THAT",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.tenentcorp.com/pages/genblue",
       "국내음원": 3,
       "음반·팬덤": 4,
@@ -1854,6 +2944,23 @@
       "데뷔일": "2010-07-09",
       "멤버수": 4,
       "대표곡": "Something; Expectation; Darling",
+      "대표곡목록": [
+        {
+          "title": "Something",
+          "spotify_url": "https://open.spotify.com/search/Girl%27s%20Day%20Something",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Expectation",
+          "spotify_url": "https://open.spotify.com/search/Girl%27s%20Day%20Expectation",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Darling",
+          "spotify_url": "https://open.spotify.com/search/Girl%27s%20Day%20Darling",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "공식 그룹 SNS 미운영/확인불가",
       "국내음원": 2,
       "음반·팬덤": 2,
@@ -1881,6 +2988,18 @@
       "데뷔일": "2026-08-19",
       "멤버수": 7,
       "대표곡": "SQUEEZY; HUNGRY (Side A)",
+      "대표곡목록": [
+        {
+          "title": "SQUEEZY",
+          "spotify_url": "https://open.spotify.com/search/OURBIRTHDAY%20SQUEEZY",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "HUNGRY (Side A)",
+          "spotify_url": "https://open.spotify.com/search/OURBIRTHDAY%20HUNGRY%20%28Side%20A%29",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.melon.com/artist/detail.htm?artistId=5033431",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1908,6 +3027,18 @@
       "데뷔일": "2025-04-29",
       "멤버수": 5,
       "대표곡": "RETRY; ATTITUDE",
+      "대표곡목록": [
+        {
+          "title": "RETRY",
+          "spotify_url": "https://open.spotify.com/search/UDTT%20RETRY",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "ATTITUDE",
+          "spotify_url": "https://open.spotify.com/search/UDTT%20ATTITUDE",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/udtt._.official/",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1935,6 +3066,23 @@
       "데뷔일": "2022-07-27",
       "멤버수": 7,
       "대표곡": "Pop? Pop!; Shining Bright; 숨길 수 없는 맘인걸",
+      "대표곡목록": [
+        {
+          "title": "Pop? Pop!",
+          "spotify_url": "https://open.spotify.com/search/CSR%20Pop%3F%20Pop%21",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Shining Bright",
+          "spotify_url": "https://open.spotify.com/search/CSR%20Shining%20Bright",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "숨길 수 없는 맘인걸",
+          "spotify_url": "https://open.spotify.com/search/CSR%20%EC%88%A8%EA%B8%B8%20%EC%88%98%20%EC%97%86%EB%8A%94%20%EB%A7%98%EC%9D%B8%EA%B1%B8",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://csrofficial.jp/",
       "국내음원": 4,
       "음반·팬덤": 4,
@@ -1962,6 +3110,23 @@
       "데뷔일": "2022-10-24",
       "멤버수": 6,
       "대표곡": "Yummy Yummy; UN-NORMAL; Y2K",
+      "대표곡목록": [
+        {
+          "title": "Yummy Yummy",
+          "spotify_url": "https://open.spotify.com/search/Queenz%20Eye%20Yummy%20Yummy",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "UN-NORMAL",
+          "spotify_url": "https://open.spotify.com/search/Queenz%20Eye%20UN-NORMAL",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Y2K",
+          "spotify_url": "https://open.spotify.com/search/Queenz%20Eye%20Y2K",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/queenzeye_official/",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -1989,6 +3154,23 @@
       "데뷔일": "2023-01-13",
       "멤버수": 4,
       "대표곡": "PRIMROSE; REVIVAL; Cosmic",
+      "대표곡목록": [
+        {
+          "title": "PRIMROSE",
+          "spotify_url": "https://open.spotify.com/search/PRIMROSE%20PRIMROSE",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "REVIVAL",
+          "spotify_url": "https://open.spotify.com/search/PRIMROSE%20REVIVAL",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Cosmic",
+          "spotify_url": "https://open.spotify.com/search/PRIMROSE%20Cosmic",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://linktr.ee/primrose__official",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -2016,6 +3198,18 @@
       "데뷔일": "2024-04-02",
       "멤버수": 4,
       "대표곡": "Daddy’s Little Girl; Deeeep",
+      "대표곡목록": [
+        {
+          "title": "Daddy’s Little Girl",
+          "spotify_url": "https://open.spotify.com/search/SPIA%20Daddy%E2%80%99s%20Little%20Girl",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Deeeep",
+          "spotify_url": "https://open.spotify.com/search/SPIA%20Deeeep",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "공식 그룹 SNS 확인 필요",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -2043,6 +3237,23 @@
       "데뷔일": "2023-04-11",
       "멤버수": 5,
       "대표곡": "KEEPING THE FIRE; SYNCHRONIZE; NO DOUBT",
+      "대표곡목록": [
+        {
+          "title": "KEEPING THE FIRE",
+          "spotify_url": "https://open.spotify.com/search/X%3AIN%20KEEPING%20THE%20FIRE",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "SYNCHRONIZE",
+          "spotify_url": "https://open.spotify.com/search/X%3AIN%20SYNCHRONIZE",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "NO DOUBT",
+          "spotify_url": "https://open.spotify.com/search/X%3AIN%20NO%20DOUBT",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://linktr.ee/x_in",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -2070,6 +3281,13 @@
       "데뷔일": "2023-11-03",
       "멤버수": 0,
       "대표곡": "Independent Woman",
+      "대표곡목록": [
+        {
+          "title": "Independent Woman",
+          "spotify_url": "https://open.spotify.com/search/eite%20Independent%20Woman",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "공식 그룹 SNS 확인 필요",
       "국내음원": 2,
       "음반·팬덤": 3,
@@ -2097,6 +3315,18 @@
       "데뷔일": "2026-05-28",
       "멤버수": 5,
       "대표곡": "Lost in Proof; HOW’s Delight",
+      "대표곡목록": [
+        {
+          "title": "Lost in Proof",
+          "spotify_url": "https://open.spotify.com/search/HEART%20OF%20WOMAN%20Lost%20in%20Proof",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "HOW’s Delight",
+          "spotify_url": "https://open.spotify.com/search/HEART%20OF%20WOMAN%20HOW%E2%80%99s%20Delight",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://heartofwoman.kr",
       "국내음원": 3,
       "음반·팬덤": 2,
@@ -2124,6 +3354,23 @@
       "데뷔일": "2022-04-04",
       "멤버수": 6,
       "대표곡": "Love in Bloom; Que Sera Sera; Twinkle, Twinkle",
+      "대표곡목록": [
+        {
+          "title": "Love in Bloom",
+          "spotify_url": "https://open.spotify.com/search/ILY%3A1%20Love%20in%20Bloom",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Que Sera Sera",
+          "spotify_url": "https://open.spotify.com/search/ILY%3A1%20Que%20Sera%20Sera",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Twinkle, Twinkle",
+          "spotify_url": "https://open.spotify.com/search/ILY%3A1%20Twinkle%2C%20Twinkle",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/fcenm_ily1/",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -2151,6 +3398,18 @@
       "데뷔일": "2026-04-21",
       "멤버수": 6,
       "대표곡": "UNCHILD; ENERGY",
+      "대표곡목록": [
+        {
+          "title": "UNCHILD",
+          "spotify_url": "https://open.spotify.com/search/UNCHILD%20UNCHILD",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "ENERGY",
+          "spotify_url": "https://open.spotify.com/search/UNCHILD%20ENERGY",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.highup-ent.com/en/unchild/",
       "국내음원": 3,
       "음반·팬덤": 3,
@@ -2178,6 +3437,13 @@
       "데뷔일": "2026-02-03",
       "멤버수": 5,
       "대표곡": "No Limit",
+      "대표곡목록": [
+        {
+          "title": "No Limit",
+          "spotify_url": "https://open.spotify.com/search/NAVILLERA%20No%20Limit",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/_navillera.official_/",
       "국내음원": 2,
       "음반·팬덤": 2,
@@ -2205,6 +3471,23 @@
       "데뷔일": "2024-04-17",
       "멤버수": 3,
       "대표곡": "SING !; Be Your Wave; Christmas Eve",
+      "대표곡목록": [
+        {
+          "title": "SING !",
+          "spotify_url": "https://open.spotify.com/search/BEWAVE%20SING%20%21",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Be Your Wave",
+          "spotify_url": "https://open.spotify.com/search/BEWAVE%20Be%20Your%20Wave",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Christmas Eve",
+          "spotify_url": "https://open.spotify.com/search/BEWAVE%20Christmas%20Eve",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/bewave_offcl/",
       "국내음원": 2,
       "음반·팬덤": 3,
@@ -2232,6 +3515,18 @@
       "데뷔일": "2025-07-10",
       "멤버수": 4,
       "대표곡": "I’m Just Me; Picasso",
+      "대표곡목록": [
+        {
+          "title": "I’m Just Me",
+          "spotify_url": "https://open.spotify.com/search/CrazAngel%20I%E2%80%99m%20Just%20Me",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Picasso",
+          "spotify_url": "https://open.spotify.com/search/CrazAngel%20Picasso",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/crazangel.official/",
       "국내음원": 2,
       "음반·팬덤": 2,
@@ -2259,6 +3554,18 @@
       "데뷔일": "2024-04-17",
       "멤버수": 5,
       "대표곡": "돌아봐줄래; Aing",
+      "대표곡목록": [
+        {
+          "title": "돌아봐줄래",
+          "spotify_url": "https://open.spotify.com/search/UNICODE%20%EB%8F%8C%EC%95%84%EB%B4%90%EC%A4%84%EB%9E%98",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Aing",
+          "spotify_url": "https://open.spotify.com/search/UNICODE%20Aing",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/unicode.xnet/",
       "국내음원": 2,
       "음반·팬덤": 3,
@@ -2286,6 +3593,23 @@
       "데뷔일": "2024-01-05",
       "멤버수": 5,
       "대표곡": "Voyage; Scene; Universe",
+      "대표곡목록": [
+        {
+          "title": "Voyage",
+          "spotify_url": "https://open.spotify.com/search/Geenius%20Voyage",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Scene",
+          "spotify_url": "https://open.spotify.com/search/Geenius%20Scene",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Universe",
+          "spotify_url": "https://open.spotify.com/search/Geenius%20Universe",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/geenius_official/",
       "국내음원": 2,
       "음반·팬덤": 2,
@@ -2313,6 +3637,23 @@
       "데뷔일": "2025-01-14",
       "멤버수": 4,
       "대표곡": "Playground; BF; Snowflake",
+      "대표곡목록": [
+        {
+          "title": "Playground",
+          "spotify_url": "https://open.spotify.com/search/Kandis%20Playground",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "BF",
+          "spotify_url": "https://open.spotify.com/search/Kandis%20BF",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "Snowflake",
+          "spotify_url": "https://open.spotify.com/search/Kandis%20Snowflake",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://www.instagram.com/official_Kandis",
       "국내음원": 2,
       "음반·팬덤": 2,
@@ -2340,6 +3681,23 @@
       "데뷔일": "2026-01-21",
       "멤버수": 2,
       "대표곡": "꿈만 같았다; 본 (本); HAWWAH (夏渦)",
+      "대표곡목록": [
+        {
+          "title": "꿈만 같았다",
+          "spotify_url": "https://open.spotify.com/search/dodree%20%EA%BF%88%EB%A7%8C%20%EA%B0%99%EC%95%98%EB%8B%A4",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "본 (本)",
+          "spotify_url": "https://open.spotify.com/search/dodree%20%EB%B3%B8%20%28%E6%9C%AC%29",
+          "link_type": "spotify_search"
+        },
+        {
+          "title": "HAWWAH (夏渦)",
+          "spotify_url": "https://open.spotify.com/search/dodree%20HAWWAH%20%28%E5%A4%8F%E6%B8%A6%29",
+          "link_type": "spotify_search"
+        }
+      ],
       "공식링크/SNS": "https://en.innitent.com/dodree",
       "국내음원": 2,
       "음반·팬덤": 2,

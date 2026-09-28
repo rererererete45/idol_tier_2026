@@ -15,6 +15,23 @@
     "결성/데뷔일": "2017-09-06",
     "멤버수": 10.0,
     "대표곡": "青春“サブリミナル”; とくべチュ、して; 絶対アイドル辞めない",
+    "대표곡목록": [
+      {
+        "title": "青春“サブリミナル”",
+        "spotify_url": "https://open.spotify.com/search/%3DLOVE%20%E9%9D%92%E6%98%A5%E2%80%9C%E3%82%B5%E3%83%96%E3%83%AA%E3%83%9F%E3%83%8A%E3%83%AB%E2%80%9D",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "とくべチュ、して",
+        "spotify_url": "https://open.spotify.com/search/%3DLOVE%20%E3%81%A8%E3%81%8F%E3%81%B9%E3%83%81%E3%83%A5%E3%80%81%E3%81%97%E3%81%A6",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "絶対アイドル辞めない",
+        "spotify_url": "https://open.spotify.com/search/%3DLOVE%20%E7%B5%B6%E5%AF%BE%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E8%BE%9E%E3%82%81%E3%81%AA%E3%81%84",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "代々木アニメーション学院 / Sony Music",
     "공식링크/SNS": "https://equal-love.jp/",
     "공연·현장": 25,
@@ -44,6 +61,23 @@
     "결성/데뷔일": "2012-02-22",
     "멤버수": null,
     "대표곡": "インフルエンサー; シンクロニシティ; Monopoly",
+    "대표곡목록": [
+      {
+        "title": "インフルエンサー",
+        "spotify_url": "https://open.spotify.com/search/%E4%B9%83%E6%9C%A8%E5%9D%8246%20%E3%82%A4%E3%83%B3%E3%83%95%E3%83%AB%E3%82%A8%E3%83%B3%E3%82%B5%E3%83%BC",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "シンクロニシティ",
+        "spotify_url": "https://open.spotify.com/search/%E4%B9%83%E6%9C%A8%E5%9D%8246%20%E3%82%B7%E3%83%B3%E3%82%AF%E3%83%AD%E3%83%8B%E3%82%B7%E3%83%86%E3%82%A3",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Monopoly",
+        "spotify_url": "https://open.spotify.com/search/%E4%B9%83%E6%9C%A8%E5%9D%8246%20Monopoly",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "乃木坂46合同会社 / Sony Music",
     "공식링크/SNS": "https://www.nogizaka46.com/",
     "공연·현장": 24,
@@ -73,6 +107,23 @@
     "결성/데뷔일": "2022-04-10",
     "멤버수": 7.0,
     "대표곡": "わたしの一番かわいいところ; NEW KAWAII; かがみ",
+    "대표곡목록": [
+      {
+        "title": "わたしの一番かわいいところ",
+        "spotify_url": "https://open.spotify.com/search/FRUITS%20ZIPPER%20%E3%82%8F%E3%81%9F%E3%81%97%E3%81%AE%E4%B8%80%E7%95%AA%E3%81%8B%E3%82%8F%E3%81%84%E3%81%84%E3%81%A8%E3%81%93%E3%82%8D",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "NEW KAWAII",
+        "spotify_url": "https://open.spotify.com/search/FRUITS%20ZIPPER%20NEW%20KAWAII",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "かがみ",
+        "spotify_url": "https://open.spotify.com/search/FRUITS%20ZIPPER%20%E3%81%8B%E3%81%8C%E3%81%BF",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "ASOBISYSTEM",
     "공식링크/SNS": "https://fruitszipper.asobisystem.com/",
     "공연·현장": 24,
@@ -102,6 +153,23 @@
     "결성/데뷔일": "2025-04-02",
     "멤버수": 7.0,
     "대표곡": "ROSE; Blue Jeans; Burning Flower",
+    "대표곡목록": [
+      {
+        "title": "ROSE",
+        "spotify_url": "https://open.spotify.com/search/HANA%20ROSE",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Blue Jeans",
+        "spotify_url": "https://open.spotify.com/search/HANA%20Blue%20Jeans",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Burning Flower",
+        "spotify_url": "https://open.spotify.com/search/HANA%20Burning%20Flower",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "B-RAVE / BMSG",
     "공식링크/SNS": "https://hana.b-rave.tokyo/",
     "공연·현장": 20,
@@ -131,6 +199,23 @@
     "결성/데뷔일": "2020-12-02",
     "멤버수": 9.0,
     "대표곡": "Make you happy; Take a picture; Paradise",
+    "대표곡목록": [
+      {
+        "title": "Make you happy",
+        "spotify_url": "https://open.spotify.com/search/NiziU%20Make%20you%20happy",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Take a picture",
+        "spotify_url": "https://open.spotify.com/search/NiziU%20Take%20a%20picture",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Paradise",
+        "spotify_url": "https://open.spotify.com/search/NiziU%20Paradise",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "JYP Entertainment Japan",
     "공식링크/SNS": "https://niziu.com/",
     "공연·현장": 24,
@@ -160,6 +245,23 @@
     "결성/데뷔일": "2024-08-04",
     "멤버수": 8.0,
     "대표곡": "かわいいだけじゃだめですか？; ひたむきシンデレラ！; キューにストップできません！",
+    "대표곡목록": [
+      {
+        "title": "かわいいだけじゃだめですか？",
+        "spotify_url": "https://open.spotify.com/search/CUTIE%20STREET%20%E3%81%8B%E3%82%8F%E3%81%84%E3%81%84%E3%81%A0%E3%81%91%E3%81%98%E3%82%83%E3%81%A0%E3%82%81%E3%81%A7%E3%81%99%E3%81%8B%EF%BC%9F",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ひたむきシンデレラ！",
+        "spotify_url": "https://open.spotify.com/search/CUTIE%20STREET%20%E3%81%B2%E3%81%9F%E3%82%80%E3%81%8D%E3%82%B7%E3%83%B3%E3%83%87%E3%83%AC%E3%83%A9%EF%BC%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "キューにストップできません！",
+        "spotify_url": "https://open.spotify.com/search/CUTIE%20STREET%20%E3%82%AD%E3%83%A5%E3%83%BC%E3%81%AB%E3%82%B9%E3%83%88%E3%83%83%E3%83%97%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%9B%E3%82%93%EF%BC%81",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "ASOBISYSTEM",
     "공식링크/SNS": "https://cutiestreet.asobisystem.com/",
     "공연·현장": 20,
@@ -189,6 +291,23 @@
     "결성/데뷔일": "2020-12-09",
     "멤버수": 32.0,
     "대표곡": "Start over!; 承認欲求; UDAGAWA GENERATION",
+    "대표곡목록": [
+      {
+        "title": "Start over!",
+        "spotify_url": "https://open.spotify.com/search/%E6%AB%BB%E5%9D%8246%20Start%20over%21",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "承認欲求",
+        "spotify_url": "https://open.spotify.com/search/%E6%AB%BB%E5%9D%8246%20%E6%89%BF%E8%AA%8D%E6%AC%B2%E6%B1%82",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "UDAGAWA GENERATION",
+        "spotify_url": "https://open.spotify.com/search/%E6%AB%BB%E5%9D%8246%20UDAGAWA%20GENERATION",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "Seed & Flower / Sony Music",
     "공식링크/SNS": "https://sakurazaka46.com/",
     "공연·현장": 22,
@@ -218,6 +337,23 @@
     "결성/데뷔일": "2019-03-27",
     "멤버수": 27.0,
     "대표곡": "キュン; ドレミソラシド; 君はハニーデュー",
+    "대표곡목록": [
+      {
+        "title": "キュン",
+        "spotify_url": "https://open.spotify.com/search/%E6%97%A5%E5%90%91%E5%9D%8246%20%E3%82%AD%E3%83%A5%E3%83%B3",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ドレミソラシド",
+        "spotify_url": "https://open.spotify.com/search/%E6%97%A5%E5%90%91%E5%9D%8246%20%E3%83%89%E3%83%AC%E3%83%9F%E3%82%BD%E3%83%A9%E3%82%B7%E3%83%89",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "君はハニーデュー",
+        "spotify_url": "https://open.spotify.com/search/%E6%97%A5%E5%90%91%E5%9D%8246%20%E5%90%9B%E3%81%AF%E3%83%8F%E3%83%8B%E3%83%BC%E3%83%87%E3%83%A5%E3%83%BC",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "Seed & Flower / Sony Music",
     "공식링크/SNS": "https://www.hinatazaka46.com/",
     "공연·현장": 21,
@@ -247,6 +383,23 @@
     "결성/데뷔일": "2005-12-08",
     "멤버수": null,
     "대표곡": "ヘビーローテーション; 恋するフォーチュンクッキー; 365日の紙飛行機",
+    "대표곡목록": [
+      {
+        "title": "ヘビーローテーション",
+        "spotify_url": "https://open.spotify.com/search/AKB48%20%E3%83%98%E3%83%93%E3%83%BC%E3%83%AD%E3%83%BC%E3%83%86%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "恋するフォーチュンクッキー",
+        "spotify_url": "https://open.spotify.com/search/AKB48%20%E6%81%8B%E3%81%99%E3%82%8B%E3%83%95%E3%82%A9%E3%83%BC%E3%83%81%E3%83%A5%E3%83%B3%E3%82%AF%E3%83%83%E3%82%AD%E3%83%BC",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "365日の紙飛行機",
+        "spotify_url": "https://open.spotify.com/search/AKB48%20365%E6%97%A5%E3%81%AE%E7%B4%99%E9%A3%9B%E8%A1%8C%E6%A9%9F",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "DH",
     "공식링크/SNS": "https://www.akb48.co.jp/",
     "공연·현장": 18,
@@ -276,6 +429,23 @@
     "결성/데뷔일": "2020-06-05",
     "멤버수": 9,
     "대표곡": "アイドルライフスターターパック; アイドルライフブースターパック; 会いにKiTE!",
+    "대표곡목록": [
+      {
+        "title": "アイドルライフスターターパック",
+        "spotify_url": "https://open.spotify.com/search/iLiFE%21%20%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%BF%E3%83%BC%E3%83%91%E3%83%83%E3%82%AF",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "アイドルライフブースターパック",
+        "spotify_url": "https://open.spotify.com/search/iLiFE%21%20%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E3%83%A9%E3%82%A4%E3%83%95%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%91%E3%83%83%E3%82%AF",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "会いにKiTE!",
+        "spotify_url": "https://open.spotify.com/search/iLiFE%21%20%E4%BC%9A%E3%81%84%E3%81%ABKiTE%21",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "imaginate / HEROINES",
     "공식링크/SNS": "https://ilife-heroines.com/profile/",
     "공연·현장": 22,
@@ -305,6 +475,23 @@
     "결성/데뷔일": "2015-04-11",
     "멤버수": 5.0,
     "대표곡": "すきっ！～超ver～; 最上級にかわいいの！; 超最強",
+    "대표곡목록": [
+      {
+        "title": "すきっ！～超ver～",
+        "spotify_url": "https://open.spotify.com/search/%E8%B6%85%E3%81%A8%E3%81%8D%E3%82%81%E3%81%8D%E2%99%A1%E5%AE%A3%E4%BC%9D%E9%83%A8%20%E3%81%99%E3%81%8D%E3%81%A3%EF%BC%81%EF%BD%9E%E8%B6%85ver%EF%BD%9E",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "最上級にかわいいの！",
+        "spotify_url": "https://open.spotify.com/search/%E8%B6%85%E3%81%A8%E3%81%8D%E3%82%81%E3%81%8D%E2%99%A1%E5%AE%A3%E4%BC%9D%E9%83%A8%20%E6%9C%80%E4%B8%8A%E7%B4%9A%E3%81%AB%E3%81%8B%E3%82%8F%E3%81%84%E3%81%84%E3%81%AE%EF%BC%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "超最強",
+        "spotify_url": "https://open.spotify.com/search/%E8%B6%85%E3%81%A8%E3%81%8D%E3%82%81%E3%81%8D%E2%99%A1%E5%AE%A3%E4%BC%9D%E9%83%A8%20%E8%B6%85%E6%9C%80%E5%BC%B7",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "STARDUST PROMOTION",
     "공식링크/SNS": "https://toki-sen.com/",
     "공연·현장": 21,
@@ -334,6 +521,23 @@
     "결성/데뷔일": "2023-03-14",
     "멤버수": 7.0,
     "대표곡": "倍倍FIGHT!; キス・ミー・パティシエ; 推し♡好き♡しんどい",
+    "대표곡목록": [
+      {
+        "title": "倍倍FIGHT!",
+        "spotify_url": "https://open.spotify.com/search/CANDY%20TUNE%20%E5%80%8D%E5%80%8DFIGHT%21",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "キス・ミー・パティシエ",
+        "spotify_url": "https://open.spotify.com/search/CANDY%20TUNE%20%E3%82%AD%E3%82%B9%E3%83%BB%E3%83%9F%E3%83%BC%E3%83%BB%E3%83%91%E3%83%86%E3%82%A3%E3%82%B7%E3%82%A8",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "推し♡好き♡しんどい",
+        "spotify_url": "https://open.spotify.com/search/CANDY%20TUNE%20%E6%8E%A8%E3%81%97%E2%99%A1%E5%A5%BD%E3%81%8D%E2%99%A1%E3%81%97%E3%82%93%E3%81%A9%E3%81%84",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "ASOBISYSTEM",
     "공식링크/SNS": "https://candytune.asobisystem.com/",
     "공연·현장": 17,
@@ -363,6 +567,23 @@
     "결성/데뷔일": "2024-04-17",
     "멤버수": 11.0,
     "대표곡": "Click; Hi-Five; MUSE",
+    "대표곡목록": [
+      {
+        "title": "Click",
+        "spotify_url": "https://open.spotify.com/search/ME%3AI%20Click",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Hi-Five",
+        "spotify_url": "https://open.spotify.com/search/ME%3AI%20Hi-Five",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "MUSE",
+        "spotify_url": "https://open.spotify.com/search/ME%3AI%20MUSE",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "LAPONE GIRLS",
     "공식링크/SNS": "https://me-i.jp/",
     "공연·현장": 18,
@@ -392,6 +613,23 @@
     "결성/데뷔일": "2012-11-07",
     "멤버수": 5.0,
     "대표곡": "Make it!; Realize!; ドリームパレード",
+    "대표곡목록": [
+      {
+        "title": "Make it!",
+        "spotify_url": "https://open.spotify.com/search/i%E2%98%86Ris%20Make%20it%21",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Realize!",
+        "spotify_url": "https://open.spotify.com/search/i%E2%98%86Ris%20Realize%21",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ドリームパレード",
+        "spotify_url": "https://open.spotify.com/search/i%E2%98%86Ris%20%E3%83%89%E3%83%AA%E3%83%BC%E3%83%A0%E3%83%91%E3%83%AC%E3%83%BC%E3%83%89",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "avex / 81PRODUCE",
     "공식링크/SNS": "https://iris.dive2ent.com/",
     "공연·현장": 20,
@@ -421,6 +659,23 @@
     "결성/데뷔일": "2021-04-07",
     "멤버수": 12.0,
     "대표곡": "まほろばアスタリスク; 想わせぶりっこ; ラストチャンス、ラストダンス",
+    "대표곡목록": [
+      {
+        "title": "まほろばアスタリスク",
+        "spotify_url": "https://open.spotify.com/search/%E2%89%A0ME%20%E3%81%BE%E3%81%BB%E3%82%8D%E3%81%B0%E3%82%A2%E3%82%B9%E3%82%BF%E3%83%AA%E3%82%B9%E3%82%AF",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "想わせぶりっこ",
+        "spotify_url": "https://open.spotify.com/search/%E2%89%A0ME%20%E6%83%B3%E3%82%8F%E3%81%9B%E3%81%B6%E3%82%8A%E3%81%A3%E3%81%93",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ラストチャンス、ラストダンス",
+        "spotify_url": "https://open.spotify.com/search/%E2%89%A0ME%20%E3%83%A9%E3%82%B9%E3%83%88%E3%83%81%E3%83%A3%E3%83%B3%E3%82%B9%E3%80%81%E3%83%A9%E3%82%B9%E3%83%88%E3%83%80%E3%83%B3%E3%82%B9",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "代々木アニメーション学院 / King Records",
     "공식링크/SNS": "https://not-equal-me.jp/",
     "공연·현장": 18,
@@ -450,6 +705,23 @@
     "결성/데뷔일": "2015-08",
     "멤버수": 9.0,
     "대표곡": "わざとあざとエキスパート; 沼れ！マイラバー; 服を着て、恋したい",
+    "대표곡목록": [
+      {
+        "title": "わざとあざとエキスパート",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%84%E3%81%8E%E3%81%AA%E3%82%8A%E6%9D%B1%E5%8C%97%E7%94%A3%20%E3%82%8F%E3%81%96%E3%81%A8%E3%81%82%E3%81%96%E3%81%A8%E3%82%A8%E3%82%AD%E3%82%B9%E3%83%91%E3%83%BC%E3%83%88",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "沼れ！マイラバー",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%84%E3%81%8E%E3%81%AA%E3%82%8A%E6%9D%B1%E5%8C%97%E7%94%A3%20%E6%B2%BC%E3%82%8C%EF%BC%81%E3%83%9E%E3%82%A4%E3%83%A9%E3%83%90%E3%83%BC",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "服を着て、恋したい",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%84%E3%81%8E%E3%81%AA%E3%82%8A%E6%9D%B1%E5%8C%97%E7%94%A3%20%E6%9C%8D%E3%82%92%E7%9D%80%E3%81%A6%E3%80%81%E6%81%8B%E3%81%97%E3%81%9F%E3%81%84",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "STARDUST PROMOTION",
     "공식링크/SNS": "https://madeintohoku.com/",
     "공연·현장": 20,
@@ -479,6 +751,23 @@
     "결성/데뷔일": "1997-09-14",
     "멤버수": 11.0,
     "대표곡": "LOVEマシーン; 恋愛レボリューション21; One・Two・Three",
+    "대표곡목록": [
+      {
+        "title": "LOVEマシーン",
+        "spotify_url": "https://open.spotify.com/search/%E3%83%A2%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0%E5%A8%98%E3%80%82%2726%20LOVE%E3%83%9E%E3%82%B7%E3%83%BC%E3%83%B3",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "恋愛レボリューション21",
+        "spotify_url": "https://open.spotify.com/search/%E3%83%A2%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0%E5%A8%98%E3%80%82%2726%20%E6%81%8B%E6%84%9B%E3%83%AC%E3%83%9C%E3%83%AA%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B321",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "One・Two・Three",
+        "spotify_url": "https://open.spotify.com/search/%E3%83%A2%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0%E5%A8%98%E3%80%82%2726%20One%E3%83%BBTwo%E3%83%BBThree",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "UP-FRONT PROMOTION",
     "공식링크/SNS": "https://helloproject.com/morningmusume/",
     "공연·현장": 18,
@@ -508,6 +797,23 @@
     "결성/데뷔일": "2008-05-17",
     "멤버수": 4.0,
     "대표곡": "行くぜっ！怪盗少女; サラバ、愛しき悲しみたちよ; 走れ！",
+    "대표곡목록": [
+      {
+        "title": "行くぜっ！怪盗少女",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%82%E3%82%82%E3%81%84%E3%82%8D%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%90%E3%83%BCZ%20%E8%A1%8C%E3%81%8F%E3%81%9C%E3%81%A3%EF%BC%81%E6%80%AA%E7%9B%97%E5%B0%91%E5%A5%B3",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "サラバ、愛しき悲しみたちよ",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%82%E3%82%82%E3%81%84%E3%82%8D%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%90%E3%83%BCZ%20%E3%82%B5%E3%83%A9%E3%83%90%E3%80%81%E6%84%9B%E3%81%97%E3%81%8D%E6%82%B2%E3%81%97%E3%81%BF%E3%81%9F%E3%81%A1%E3%82%88",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "走れ！",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%82%E3%82%82%E3%81%84%E3%82%8D%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%90%E3%83%BCZ%20%E8%B5%B0%E3%82%8C%EF%BC%81",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "STARDUST PROMOTION / King Records",
     "공식링크/SNS": "https://www.momoclo.net/",
     "공연·현장": 18,
@@ -537,6 +843,23 @@
     "결성/데뷔일": "2013-09-11",
     "멤버수": 11,
     "대표곡": "ロマンスの途中; Fiesta! Fiesta!; 微炭酸",
+    "대표곡목록": [
+      {
+        "title": "ロマンスの途中",
+        "spotify_url": "https://open.spotify.com/search/Juice%3DJuice%20%E3%83%AD%E3%83%9E%E3%83%B3%E3%82%B9%E3%81%AE%E9%80%94%E4%B8%AD",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Fiesta! Fiesta!",
+        "spotify_url": "https://open.spotify.com/search/Juice%3DJuice%20Fiesta%21%20Fiesta%21",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "微炭酸",
+        "spotify_url": "https://open.spotify.com/search/Juice%3DJuice%20%E5%BE%AE%E7%82%AD%E9%85%B8",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "UP-FRONT PROMOTION",
     "공식링크/SNS": "https://helloproject.com/juicejuice/",
     "공연·현장": 18,
@@ -566,6 +889,23 @@
     "결성/데뷔일": "2024-03-04",
     "멤버수": 7.0,
     "대표곡": "ぱじゃまぱーてぃー！; ぐっじょぶ！; Call me, Tell me",
+    "대표곡목록": [
+      {
+        "title": "ぱじゃまぱーてぃー！",
+        "spotify_url": "https://open.spotify.com/search/SWEET%20STEADY%20%E3%81%B1%E3%81%98%E3%82%83%E3%81%BE%E3%81%B1%E3%83%BC%E3%81%A6%E3%81%83%E3%83%BC%EF%BC%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ぐっじょぶ！",
+        "spotify_url": "https://open.spotify.com/search/SWEET%20STEADY%20%E3%81%90%E3%81%A3%E3%81%98%E3%82%87%E3%81%B6%EF%BC%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Call me, Tell me",
+        "spotify_url": "https://open.spotify.com/search/SWEET%20STEADY%20Call%20me%2C%20Tell%20me",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "ASOBISYSTEM",
     "공식링크/SNS": "https://sweetsteady.asobisystem.com/",
     "공연·현장": 14,
@@ -595,6 +935,23 @@
     "결성/데뷔일": "2024-01-17",
     "멤버수": 12.0,
     "대표곡": "体育館ディスコ; 初恋シンデレラ; ブルーハワイレモン",
+    "대표곡목록": [
+      {
+        "title": "体育館ディスコ",
+        "spotify_url": "https://open.spotify.com/search/%E2%89%92JOY%20%E4%BD%93%E8%82%B2%E9%A4%A8%E3%83%87%E3%82%A3%E3%82%B9%E3%82%B3",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "初恋シンデレラ",
+        "spotify_url": "https://open.spotify.com/search/%E2%89%92JOY%20%E5%88%9D%E6%81%8B%E3%82%B7%E3%83%B3%E3%83%87%E3%83%AC%E3%83%A9",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ブルーハワイレモン",
+        "spotify_url": "https://open.spotify.com/search/%E2%89%92JOY%20%E3%83%96%E3%83%AB%E3%83%BC%E3%83%8F%E3%83%AF%E3%82%A4%E3%83%AC%E3%83%A2%E3%83%B3",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "代々木アニメーション学院 / Sony Music",
     "공식링크/SNS": "https://nearly-equal-joy.jp/",
     "공연·현장": 15,
@@ -624,6 +981,23 @@
     "결성/데뷔일": "2011-10-23",
     "멤버수": null,
     "대표곡": "メロンジュース; 最高かよ; ぶっ倒れるまで",
+    "대표곡목록": [
+      {
+        "title": "メロンジュース",
+        "spotify_url": "https://open.spotify.com/search/HKT48%20%E3%83%A1%E3%83%AD%E3%83%B3%E3%82%B8%E3%83%A5%E3%83%BC%E3%82%B9",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "最高かよ",
+        "spotify_url": "https://open.spotify.com/search/HKT48%20%E6%9C%80%E9%AB%98%E3%81%8B%E3%82%88",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ぶっ倒れるまで",
+        "spotify_url": "https://open.spotify.com/search/HKT48%20%E3%81%B6%E3%81%A3%E5%80%92%E3%82%8C%E3%82%8B%E3%81%BE%E3%81%A7",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "Mercury",
     "공식링크/SNS": "https://www.hkt48.jp/",
     "공연·현장": 15,
@@ -653,6 +1027,23 @@
     "결성/데뷔일": "2022-08-07",
     "멤버수": 10.0,
     "대표곡": "可愛くてごめん; 美しく生きろ; 初恋のひと。",
+    "대표곡목록": [
+      {
+        "title": "可愛くてごめん",
+        "spotify_url": "https://open.spotify.com/search/%E9%AB%98%E5%B6%BA%E3%81%AE%E3%81%AA%E3%81%A7%E3%81%97%E3%81%93%20%E5%8F%AF%E6%84%9B%E3%81%8F%E3%81%A6%E3%81%94%E3%82%81%E3%82%93",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "美しく生きろ",
+        "spotify_url": "https://open.spotify.com/search/%E9%AB%98%E5%B6%BA%E3%81%AE%E3%81%AA%E3%81%A7%E3%81%97%E3%81%93%20%E7%BE%8E%E3%81%97%E3%81%8F%E7%94%9F%E3%81%8D%E3%82%8D",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "初恋のひと。",
+        "spotify_url": "https://open.spotify.com/search/%E9%AB%98%E5%B6%BA%E3%81%AE%E3%81%AA%E3%81%A7%E3%81%97%E3%81%93%20%E5%88%9D%E6%81%8B%E3%81%AE%E3%81%B2%E3%81%A8%E3%80%82",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "TWIN PLANET / Victor",
     "공식링크/SNS": "https://takanenonadeshiko.jp/",
     "공연·현장": 14,
@@ -682,6 +1073,23 @@
     "결성/데뷔일": "2013",
     "멤버수": 4.0,
     "대표곡": "Taking you out; MISS UNLIMITED; Ray",
+    "대표곡목록": [
+      {
+        "title": "Taking you out",
+        "spotify_url": "https://open.spotify.com/search/PassCode%20Taking%20you%20out",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "MISS UNLIMITED",
+        "spotify_url": "https://open.spotify.com/search/PassCode%20MISS%20UNLIMITED",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Ray",
+        "spotify_url": "https://open.spotify.com/search/PassCode%20Ray",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "we-B studios / Universal",
     "공식링크/SNS": "https://passcode-official.com/",
     "공연·현장": 19,
@@ -711,6 +1119,23 @@
     "결성/데뷔일": "2009-04",
     "멤버수": 9,
     "대표곡": "大器晩成; 46億年LOVE; 次々続々",
+    "대표곡목록": [
+      {
+        "title": "大器晩成",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%A2%E3%83%B3%E3%82%B8%E3%83%A5%E3%83%AB%E3%83%A0%20%E5%A4%A7%E5%99%A8%E6%99%A9%E6%88%90",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "46億年LOVE",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%A2%E3%83%B3%E3%82%B8%E3%83%A5%E3%83%AB%E3%83%A0%2046%E5%84%84%E5%B9%B4LOVE",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "次々続々",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%A2%E3%83%B3%E3%82%B8%E3%83%A5%E3%83%AB%E3%83%A0%20%E6%AC%A1%E3%80%85%E7%B6%9A%E3%80%85",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "UP-FRONT PROMOTION",
     "공식링크/SNS": "https://helloproject.com/angerme/",
     "공연·현장": 16,
@@ -740,6 +1165,23 @@
     "결성/데뷔일": "2023-12-07",
     "멤버수": 11.0,
     "대표곡": "眼差しSniper; コヨーテが鳴いている; 7秒のレジスタンス",
+    "대표곡목록": [
+      {
+        "title": "眼差しSniper",
+        "spotify_url": "https://open.spotify.com/search/WHITE%20SCORPION%20%E7%9C%BC%E5%B7%AE%E3%81%97Sniper",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "コヨーテが鳴いている",
+        "spotify_url": "https://open.spotify.com/search/WHITE%20SCORPION%20%E3%82%B3%E3%83%A8%E3%83%BC%E3%83%86%E3%81%8C%E9%B3%B4%E3%81%84%E3%81%A6%E3%81%84%E3%82%8B",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "7秒のレジスタンス",
+        "spotify_url": "https://open.spotify.com/search/WHITE%20SCORPION%207%E7%A7%92%E3%81%AE%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "OVERSE",
     "공식링크/SNS": "https://whitescorpion.jp/",
     "공연·현장": 16,
@@ -769,6 +1211,23 @@
     "결성/데뷔일": "2024-06-26",
     "멤버수": 5.0,
     "대표곡": "おともだち; キミと××××したいだけ; 花喰み",
+    "대표곡목록": [
+      {
+        "title": "おともだち",
+        "spotify_url": "https://open.spotify.com/search/%E3%83%95%E3%82%A1%E3%83%B3%E3%83%88%E3%83%A0%E3%82%B7%E3%83%BC%E3%82%BF%20%E3%81%8A%E3%81%A8%E3%82%82%E3%81%A0%E3%81%A1",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "キミと××××したいだけ",
+        "spotify_url": "https://open.spotify.com/search/%E3%83%95%E3%82%A1%E3%83%B3%E3%83%88%E3%83%A0%E3%82%B7%E3%83%BC%E3%82%BF%20%E3%82%AD%E3%83%9F%E3%81%A8%C3%97%C3%97%C3%97%C3%97%E3%81%97%E3%81%9F%E3%81%84%E3%81%A0%E3%81%91",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "花喰み",
+        "spotify_url": "https://open.spotify.com/search/%E3%83%95%E3%82%A1%E3%83%B3%E3%83%88%E3%83%A0%E3%82%B7%E3%83%BC%E3%82%BF%20%E8%8A%B1%E5%96%B0%E3%81%BF",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "クラウドナイン",
     "공식링크/SNS": "https://phantomsiita.com/",
     "공연·현장": 12,
@@ -798,6 +1257,18 @@
     "결성/데뷔일": "2025-12-12",
     "멤버수": 9.0,
     "대표곡": "もっとキラッと; 未確認STAR;",
+    "대표곡목록": [
+      {
+        "title": "もっとキラッと",
+        "spotify_url": "https://open.spotify.com/search/MORE%20STAR%20%E3%82%82%E3%81%A3%E3%81%A8%E3%82%AD%E3%83%A9%E3%83%83%E3%81%A8",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "未確認STAR",
+        "spotify_url": "https://open.spotify.com/search/MORE%20STAR%20%E6%9C%AA%E7%A2%BA%E8%AA%8DSTAR",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "ASOBISYSTEM",
     "공식링크/SNS": "https://morestar.asobisystem.com/",
     "공연·현장": 14,
@@ -827,6 +1298,18 @@
     "결성/데뷔일": "2025-01-29",
     "멤버수": 17.0,
     "대표곡": "Ｉ Ｌ Ｕ; 僕のオーロラ;",
+    "대표곡목록": [
+      {
+        "title": "Ｉ Ｌ Ｕ",
+        "spotify_url": "https://open.spotify.com/search/Rain%20Tree%20%EF%BC%A9%20%EF%BC%AC%20%EF%BC%B5",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "僕のオーロラ",
+        "spotify_url": "https://open.spotify.com/search/Rain%20Tree%20%E5%83%95%E3%81%AE%E3%82%AA%E3%83%BC%E3%83%AD%E3%83%A9",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "OVERSE / King Records",
     "공식링크/SNS": "https://rt-official.jp/",
     "공연·현장": 15,
@@ -856,6 +1339,23 @@
     "결성/데뷔일": "2008-10-05",
     "멤버수": null,
     "대표곡": "パレオはエメラルド; チョコの奴隷; 前のめり",
+    "대표곡목록": [
+      {
+        "title": "パレオはエメラルド",
+        "spotify_url": "https://open.spotify.com/search/SKE48%20%E3%83%91%E3%83%AC%E3%82%AA%E3%81%AF%E3%82%A8%E3%83%A1%E3%83%A9%E3%83%AB%E3%83%89",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "チョコの奴隷",
+        "spotify_url": "https://open.spotify.com/search/SKE48%20%E3%83%81%E3%83%A7%E3%82%B3%E3%81%AE%E5%A5%B4%E9%9A%B7",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "前のめり",
+        "spotify_url": "https://open.spotify.com/search/SKE48%20%E5%89%8D%E3%81%AE%E3%82%81%E3%82%8A",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "Zest / avex",
     "공식링크/SNS": "https://ske48.co.jp/",
     "공연·현장": 14,
@@ -885,6 +1385,23 @@
     "결성/데뷔일": "2015-03-29",
     "멤버수": 5.0,
     "대표곡": "いぬねこ。青春真っ盛り; 最上級ぱらどっくす; 詠み人知らずの青春歌",
+    "대표곡목록": [
+      {
+        "title": "いぬねこ。青春真っ盛り",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%8F%E3%83%BC%E3%81%99%E3%81%9F%20%E3%81%84%E3%81%AC%E3%81%AD%E3%81%93%E3%80%82%E9%9D%92%E6%98%A5%E7%9C%9F%E3%81%A3%E7%9B%9B%E3%82%8A",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "最上級ぱらどっくす",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%8F%E3%83%BC%E3%81%99%E3%81%9F%20%E6%9C%80%E4%B8%8A%E7%B4%9A%E3%81%B1%E3%82%89%E3%81%A9%E3%81%A3%E3%81%8F%E3%81%99",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "詠み人知らずの青春歌",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%8F%E3%83%BC%E3%81%99%E3%81%9F%20%E8%A9%A0%E3%81%BF%E4%BA%BA%E7%9F%A5%E3%82%89%E3%81%9A%E3%81%AE%E9%9D%92%E6%98%A5%E6%AD%8C",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "avex management",
     "공식링크/SNS": "https://wa-suta.world/",
     "공연·현장": 15,
@@ -914,6 +1431,23 @@
     "결성/데뷔일": "2009-08-04",
     "멤버수": 8,
     "대표곡": "仮契約のシンデレラ; なないろ; ジャンプ",
+    "대표곡목록": [
+      {
+        "title": "仮契約のシンデレラ",
+        "spotify_url": "https://open.spotify.com/search/%E7%A7%81%E7%AB%8B%E6%81%B5%E6%AF%94%E5%AF%BF%E4%B8%AD%E5%AD%A6%20%E4%BB%AE%E5%A5%91%E7%B4%84%E3%81%AE%E3%82%B7%E3%83%B3%E3%83%87%E3%83%AC%E3%83%A9",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "なないろ",
+        "spotify_url": "https://open.spotify.com/search/%E7%A7%81%E7%AB%8B%E6%81%B5%E6%AF%94%E5%AF%BF%E4%B8%AD%E5%AD%A6%20%E3%81%AA%E3%81%AA%E3%81%84%E3%82%8D",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ジャンプ",
+        "spotify_url": "https://open.spotify.com/search/%E7%A7%81%E7%AB%8B%E6%81%B5%E6%AF%94%E5%AF%BF%E4%B8%AD%E5%AD%A6%20%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%97",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "STARDUST PROMOTION",
     "공식링크/SNS": "https://www.shiritsuebichu.jp/",
     "공연·현장": 15,
@@ -943,6 +1477,18 @@
     "결성/데뷔일": "2022",
     "멤버수": null,
     "대표곡": "真夏のユーレイ!!; ぷいぷい。;",
+    "대표곡목록": [
+      {
+        "title": "真夏のユーレイ!!",
+        "spotify_url": "https://open.spotify.com/search/Merry%20BAD%20TUNE.%20%E7%9C%9F%E5%A4%8F%E3%81%AE%E3%83%A6%E3%83%BC%E3%83%AC%E3%82%A4%21%21",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ぷいぷい。",
+        "spotify_url": "https://open.spotify.com/search/Merry%20BAD%20TUNE.%20%E3%81%B7%E3%81%84%E3%81%B7%E3%81%84%E3%80%82",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "ESOLA MADE",
     "공식링크/SNS": "https://merrybadtune.com/",
     "공연·현장": 16,
@@ -972,6 +1518,23 @@
     "결성/데뷔일": "2017-02-22",
     "멤버수": 11.0,
     "대표곡": "初恋サンライズ; 今夜だけ浮かれたかった; 意識高い乙女のジレンマ",
+    "대표곡목록": [
+      {
+        "title": "初恋サンライズ",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%A4%E3%81%B0%E3%81%8D%E3%83%95%E3%82%A1%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC%20%E5%88%9D%E6%81%8B%E3%82%B5%E3%83%B3%E3%83%A9%E3%82%A4%E3%82%BA",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "今夜だけ浮かれたかった",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%A4%E3%81%B0%E3%81%8D%E3%83%95%E3%82%A1%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC%20%E4%BB%8A%E5%A4%9C%E3%81%A0%E3%81%91%E6%B5%AE%E3%81%8B%E3%82%8C%E3%81%9F%E3%81%8B%E3%81%A3%E3%81%9F",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "意識高い乙女のジレンマ",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%A4%E3%81%B0%E3%81%8D%E3%83%95%E3%82%A1%E3%82%AF%E3%83%88%E3%83%AA%E3%83%BC%20%E6%84%8F%E8%AD%98%E9%AB%98%E3%81%84%E4%B9%99%E5%A5%B3%E3%81%AE%E3%82%B8%E3%83%AC%E3%83%B3%E3%83%9E",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "UP-FRONT PROMOTION",
     "공식링크/SNS": "https://helloproject.com/tsubakifactory/",
     "공연·현장": 14,
@@ -1001,6 +1564,23 @@
     "결성/데뷔일": "2014-12-28",
     "멤버수": 6.0,
     "대표곡": "ar; Fantastic90; a story beyond",
+    "대표곡목록": [
+      {
+        "title": "ar",
+        "spotify_url": "https://open.spotify.com/search/Devil%20ANTHEM.%20ar",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Fantastic90",
+        "spotify_url": "https://open.spotify.com/search/Devil%20ANTHEM.%20Fantastic90",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "a story beyond",
+        "spotify_url": "https://open.spotify.com/search/Devil%20ANTHEM.%20a%20story%20beyond",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "エイジアプロモーション系 / Victor",
     "공식링크/SNS": "https://devilanthem.net/",
     "공연·현장": 16,
@@ -1030,6 +1610,23 @@
     "결성/데뷔일": "2019-06-26",
     "멤버수": 7.0,
     "대표곡": "ダイジョウブ; チュワパネ！; C'mon Neo Zipang!!!",
+    "대표곡목록": [
+      {
+        "title": "ダイジョウブ",
+        "spotify_url": "https://open.spotify.com/search/Girls%C2%B2%20%E3%83%80%E3%82%A4%E3%82%B8%E3%83%A7%E3%82%A6%E3%83%96",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "チュワパネ！",
+        "spotify_url": "https://open.spotify.com/search/Girls%C2%B2%20%E3%83%81%E3%83%A5%E3%83%AF%E3%83%91%E3%83%8D%EF%BC%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "C'mon Neo Zipang!!!",
+        "spotify_url": "https://open.spotify.com/search/Girls%C2%B2%20C%27mon%20Neo%20Zipang%21%21%21",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "LDH JAPAN",
     "공식링크/SNS": "https://www.girls2.jp/",
     "공연·현장": 12,
@@ -1059,6 +1656,23 @@
     "결성/데뷔일": "2021-10-03",
     "멤버수": 11.0,
     "대표곡": "推し変なんて許さない！; ファンサ; 恋を着る季節",
+    "대표곡목록": [
+      {
+        "title": "推し変なんて許さない！",
+        "spotify_url": "https://open.spotify.com/search/%E5%8F%AF%E6%86%90%E3%81%AA%E3%82%A2%E3%82%A4%E3%83%9C%E3%83%AA%E3%83%BC%20%E6%8E%A8%E3%81%97%E5%A4%89%E3%81%AA%E3%82%93%E3%81%A6%E8%A8%B1%E3%81%95%E3%81%AA%E3%81%84%EF%BC%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ファンサ",
+        "spotify_url": "https://open.spotify.com/search/%E5%8F%AF%E6%86%90%E3%81%AA%E3%82%A2%E3%82%A4%E3%83%9C%E3%83%AA%E3%83%BC%20%E3%83%95%E3%82%A1%E3%83%B3%E3%82%B5",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "恋を着る季節",
+        "spotify_url": "https://open.spotify.com/search/%E5%8F%AF%E6%86%90%E3%81%AA%E3%82%A2%E3%82%A4%E3%83%9C%E3%83%AA%E3%83%BC%20%E6%81%8B%E3%82%92%E7%9D%80%E3%82%8B%E5%AD%A3%E7%AF%80",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "TWIN PLANET / 日本クラウン",
     "공식링크/SNS": "https://karennaivory.jp/",
     "공연·현장": 13,
@@ -1088,6 +1702,23 @@
     "결성/데뷔일": "2020",
     "멤버수": 6,
     "대표곡": "Altair; Hyper Nova; Planetes",
+    "대표곡목록": [
+      {
+        "title": "Altair",
+        "spotify_url": "https://open.spotify.com/search/INUWASI%20Altair",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Hyper Nova",
+        "spotify_url": "https://open.spotify.com/search/INUWASI%20Hyper%20Nova",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Planetes",
+        "spotify_url": "https://open.spotify.com/search/INUWASI%20Planetes",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "MAPLE INC.",
     "공식링크/SNS": "https://inuwasi.jp/",
     "공연·현장": 17,
@@ -1117,6 +1748,18 @@
     "결성/데뷔일": "2021-07",
     "멤버수": 7.0,
     "대표곡": "UKIYO-YO ONDO; パレパレ;",
+    "대표곡목록": [
+      {
+        "title": "UKIYO-YO ONDO",
+        "spotify_url": "https://open.spotify.com/search/Palette%20Parade%20UKIYO-YO%20ONDO",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "パレパレ",
+        "spotify_url": "https://open.spotify.com/search/Palette%20Parade%20%E3%83%91%E3%83%AC%E3%83%91%E3%83%AC",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "PLAYYTE",
     "공식링크/SNS": "https://paletteparade-idol.com/",
     "공연·현장": 15,
@@ -1146,6 +1789,23 @@
     "결성/데뷔일": "2021-03-03",
     "멤버수": null,
     "대표곡": "最先端フォーミュラー; 疾走ドリーマー; ナツソラ",
+    "대표곡목록": [
+      {
+        "title": "最先端フォーミュラー",
+        "spotify_url": "https://open.spotify.com/search/JamsCollection%20%E6%9C%80%E5%85%88%E7%AB%AF%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9F%E3%83%A5%E3%83%A9%E3%83%BC",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "疾走ドリーマー",
+        "spotify_url": "https://open.spotify.com/search/JamsCollection%20%E7%96%BE%E8%B5%B0%E3%83%89%E3%83%AA%E3%83%BC%E3%83%9E%E3%83%BC",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ナツソラ",
+        "spotify_url": "https://open.spotify.com/search/JamsCollection%20%E3%83%8A%E3%83%84%E3%82%BD%E3%83%A9",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "RIZE PRODUCTION",
     "공식링크/SNS": "https://jamscollection.jp/",
     "공연·현장": 13,
@@ -1175,6 +1835,23 @@
     "결성/데뷔일": "2010-10-09",
     "멤버수": null,
     "대표곡": "ナギイチ; 僕らのユリイカ; ワロタピーポー",
+    "대표곡목록": [
+      {
+        "title": "ナギイチ",
+        "spotify_url": "https://open.spotify.com/search/NMB48%20%E3%83%8A%E3%82%AE%E3%82%A4%E3%83%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "僕らのユリイカ",
+        "spotify_url": "https://open.spotify.com/search/NMB48%20%E5%83%95%E3%82%89%E3%81%AE%E3%83%A6%E3%83%AA%E3%82%A4%E3%82%AB",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ワロタピーポー",
+        "spotify_url": "https://open.spotify.com/search/NMB48%20%E3%83%AF%E3%83%AD%E3%82%BF%E3%83%94%E3%83%BC%E3%83%9D%E3%83%BC",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "Showtitle",
     "공식링크/SNS": "https://www.nmb48.com/",
     "공연·현장": 14,
@@ -1204,6 +1881,23 @@
     "결성/데뷔일": "2022-07-13",
     "멤버수": 8,
     "대표곡": "恋のクラウチングスタート; 運命 CHACHACHACHA～N; ちはやぶる",
+    "대표곡목록": [
+      {
+        "title": "恋のクラウチングスタート",
+        "spotify_url": "https://open.spotify.com/search/OCHA%20NORMA%20%E6%81%8B%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%81%E3%83%B3%E3%82%B0%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%88",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "運命 CHACHACHACHA～N",
+        "spotify_url": "https://open.spotify.com/search/OCHA%20NORMA%20%E9%81%8B%E5%91%BD%20CHACHACHACHA%EF%BD%9EN",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ちはやぶる",
+        "spotify_url": "https://open.spotify.com/search/OCHA%20NORMA%20%E3%81%A1%E3%81%AF%E3%82%84%E3%81%B6%E3%82%8B",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "UP-FRONT PROMOTION",
     "공식링크/SNS": "https://helloproject.com/ochanorma/",
     "공연·현장": 13,
@@ -1233,6 +1927,23 @@
     "결성/데뷔일": "2019-10-20",
     "멤버수": 4.0,
     "대표곡": "Pinky Promise; Justice Day; Oops!!",
+    "대표곡목록": [
+      {
+        "title": "Pinky Promise",
+        "spotify_url": "https://open.spotify.com/search/%40onefive%20Pinky%20Promise",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Justice Day",
+        "spotify_url": "https://open.spotify.com/search/%40onefive%20Justice%20Day",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Oops!!",
+        "spotify_url": "https://open.spotify.com/search/%40onefive%20Oops%21%21",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "AMUSE / avex",
     "공식링크/SNS": "https://onefive-web.jp/",
     "공연·현장": 14,
@@ -1262,6 +1973,18 @@
     "결성/데뷔일": "2021",
     "멤버수": null,
     "대표곡": "今日、依存して。; ビターチョコレート;",
+    "대표곡목록": [
+      {
+        "title": "今日、依存して。",
+        "spotify_url": "https://open.spotify.com/search/AVAM%20%E4%BB%8A%E6%97%A5%E3%80%81%E4%BE%9D%E5%AD%98%E3%81%97%E3%81%A6%E3%80%82",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ビターチョコレート",
+        "spotify_url": "https://open.spotify.com/search/AVAM%20%E3%83%93%E3%82%BF%E3%83%BC%E3%83%81%E3%83%A7%E3%82%B3%E3%83%AC%E3%83%BC%E3%83%88",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "—",
     "공식링크/SNS": "https://avam-idol.com/",
     "공연·현장": 13,
@@ -1291,6 +2014,23 @@
     "결성/데뷔일": "2022-08-18",
     "멤버수": 5.0,
     "대표곡": "Obsession; NOT SORRY; Unknown Sense",
+    "대표곡목록": [
+      {
+        "title": "Obsession",
+        "spotify_url": "https://open.spotify.com/search/ExWHYZ%20Obsession",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "NOT SORRY",
+        "spotify_url": "https://open.spotify.com/search/ExWHYZ%20NOT%20SORRY",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Unknown Sense",
+        "spotify_url": "https://open.spotify.com/search/ExWHYZ%20Unknown%20Sense",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "WACK / EMI Records",
     "공식링크/SNS": "https://www.exwhyz.jp/",
     "공연·현장": 12,
@@ -1320,6 +2060,23 @@
     "결성/데뷔일": "2024-06-19",
     "멤버수": 4.0,
     "대표곡": "CONNECT; STATIC; THE FLASH GIRL",
+    "대표곡목록": [
+      {
+        "title": "CONNECT",
+        "spotify_url": "https://open.spotify.com/search/IS%3ASUE%20CONNECT",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "STATIC",
+        "spotify_url": "https://open.spotify.com/search/IS%3ASUE%20STATIC",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "THE FLASH GIRL",
+        "spotify_url": "https://open.spotify.com/search/IS%3ASUE%20THE%20FLASH%20GIRL",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "LAPONE GIRLS",
     "공식링크/SNS": "https://is-sue.jp/",
     "공연·현장": 11,
@@ -1349,6 +2106,23 @@
     "결성/데뷔일": "2015-08-21",
     "멤버수": 32.0,
     "대표곡": "青春時計; 世界の人へ; シャーベットピンク",
+    "대표곡목록": [
+      {
+        "title": "青春時計",
+        "spotify_url": "https://open.spotify.com/search/NGT48%20%E9%9D%92%E6%98%A5%E6%99%82%E8%A8%88",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "世界の人へ",
+        "spotify_url": "https://open.spotify.com/search/NGT48%20%E4%B8%96%E7%95%8C%E3%81%AE%E4%BA%BA%E3%81%B8",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "シャーベットピンク",
+        "spotify_url": "https://open.spotify.com/search/NGT48%20%E3%82%B7%E3%83%A3%E3%83%BC%E3%83%99%E3%83%83%E3%83%88%E3%83%94%E3%83%B3%E3%82%AF",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "Flora",
     "공식링크/SNS": "https://ngt48.jp/",
     "공연·현장": 13,
@@ -1378,6 +2152,13 @@
     "결성/데뷔일": "2025",
     "멤버수": null,
     "대표곡": "すきなんかじゃ…にゃい！;",
+    "대표곡목록": [
+      {
+        "title": "すきなんかじゃ…にゃい！",
+        "spotify_url": "https://open.spotify.com/search/fav%20me%20%E3%81%99%E3%81%8D%E3%81%AA%E3%82%93%E3%81%8B%E3%81%98%E3%82%83%E2%80%A6%E3%81%AB%E3%82%83%E3%81%84%EF%BC%81",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "ASOBISYSTEM",
     "공식링크/SNS": "https://favme.asobisystem.com/",
     "공연·현장": 11,
@@ -1407,6 +2188,23 @@
     "결성/데뷔일": "2021-01",
     "멤버수": 4.0,
     "대표곡": "ツインテールは20歳まで♡; らぶきゅん♡うぉんてっど; えぶりで大好き記念日",
+    "대표곡목록": [
+      {
+        "title": "ツインテールは20歳まで♡",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%8D%E3%82%85%E3%82%8B%E3%82%8A%E3%82%93%E3%81%A3%E3%81%A6%E3%81%97%E3%81%A6%E3%81%BF%E3%81%A6%20%E3%83%84%E3%82%A4%E3%83%B3%E3%83%86%E3%83%BC%E3%83%AB%E3%81%AF20%E6%AD%B3%E3%81%BE%E3%81%A7%E2%99%A1",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "らぶきゅん♡うぉんてっど",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%8D%E3%82%85%E3%82%8B%E3%82%8A%E3%82%93%E3%81%A3%E3%81%A6%E3%81%97%E3%81%A6%E3%81%BF%E3%81%A6%20%E3%82%89%E3%81%B6%E3%81%8D%E3%82%85%E3%82%93%E2%99%A1%E3%81%86%E3%81%89%E3%82%93%E3%81%A6%E3%81%A3%E3%81%A9",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "えぶりで大好き記念日",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%8D%E3%82%85%E3%82%8B%E3%82%8A%E3%82%93%E3%81%A3%E3%81%A6%E3%81%97%E3%81%A6%E3%81%BF%E3%81%A6%20%E3%81%88%E3%81%B6%E3%82%8A%E3%81%A7%E5%A4%A7%E5%A5%BD%E3%81%8D%E8%A8%98%E5%BF%B5%E6%97%A5",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "DEARSTAGE",
     "공식링크/SNS": "https://www.kyurushite.com/",
     "공연·현장": 12,
@@ -1436,6 +2234,23 @@
     "결성/데뷔일": "2014-07",
     "멤버수": null,
     "대표곡": "トライアングル・ドリーマー; ずっとサマーで恋してる; 愛をこころにサマーと数えよ",
+    "대표곡목록": [
+      {
+        "title": "トライアングル・ドリーマー",
+        "spotify_url": "https://open.spotify.com/search/%E8%99%B9%E3%81%AE%E3%82%B3%E3%83%B3%E3%82%AD%E3%82%B9%E3%82%BF%E3%83%89%E3%83%BC%E3%83%AB%20%E3%83%88%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%82%B0%E3%83%AB%E3%83%BB%E3%83%89%E3%83%AA%E3%83%BC%E3%83%9E%E3%83%BC",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ずっとサマーで恋してる",
+        "spotify_url": "https://open.spotify.com/search/%E8%99%B9%E3%81%AE%E3%82%B3%E3%83%B3%E3%82%AD%E3%82%B9%E3%82%BF%E3%83%89%E3%83%BC%E3%83%AB%20%E3%81%9A%E3%81%A3%E3%81%A8%E3%82%B5%E3%83%9E%E3%83%BC%E3%81%A7%E6%81%8B%E3%81%97%E3%81%A6%E3%82%8B",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "愛をこころにサマーと数えよ",
+        "spotify_url": "https://open.spotify.com/search/%E8%99%B9%E3%81%AE%E3%82%B3%E3%83%B3%E3%82%AD%E3%82%B9%E3%82%BF%E3%83%89%E3%83%BC%E3%83%AB%20%E6%84%9B%E3%82%92%E3%81%93%E3%81%93%E3%82%8D%E3%81%AB%E3%82%B5%E3%83%9E%E3%83%BC%E3%81%A8%E6%95%B0%E3%81%88%E3%82%88",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "DEARSTAGE",
     "공식링크/SNS": "https://2zicon.tokyo/",
     "공연·현장": 13,
@@ -1465,6 +2280,18 @@
     "결성/데뷔일": "2016",
     "멤버수": 9.0,
     "대표곡": "ぱ ぴ ぷ ぺ POP!; キミだけのワンダーランド;",
+    "대표곡목록": [
+      {
+        "title": "ぱ ぴ ぷ ぺ POP!",
+        "spotify_url": "https://open.spotify.com/search/Appare%21%20%E3%81%B1%20%E3%81%B4%20%E3%81%B7%20%E3%81%BA%20POP%21",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "キミだけのワンダーランド",
+        "spotify_url": "https://open.spotify.com/search/Appare%21%20%E3%82%AD%E3%83%9F%E3%81%A0%E3%81%91%E3%81%AE%E3%83%AF%E3%83%B3%E3%83%80%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "PLAYYTE",
     "공식링크/SNS": "https://appare-official.jp/",
     "공연·현장": 13,
@@ -1494,6 +2321,18 @@
     "결성/데뷔일": "2022",
     "멤버수": null,
     "대표곡": "INTERNET MAGICAL GIRL; ジャージは戦闘服★;",
+    "대표곡목록": [
+      {
+        "title": "INTERNET MAGICAL GIRL",
+        "spotify_url": "https://open.spotify.com/search/NANIMONO%20INTERNET%20MAGICAL%20GIRL",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ジャージは戦闘服★",
+        "spotify_url": "https://open.spotify.com/search/NANIMONO%20%E3%82%B8%E3%83%A3%E3%83%BC%E3%82%B8%E3%81%AF%E6%88%A6%E9%97%98%E6%9C%8D%E2%98%85",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "OTONA CHILD.",
     "공식링크/SNS": "https://nanimono-official.com/",
     "공연·현장": 14,
@@ -1523,6 +2362,23 @@
     "결성/데뷔일": "2017-03-31",
     "멤버수": null,
     "대표곡": "暗闇; 花は誰のもの？; 無謀な夢は覚めることがない",
+    "대표곡목록": [
+      {
+        "title": "暗闇",
+        "spotify_url": "https://open.spotify.com/search/STU48%20%E6%9A%97%E9%97%87",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "花は誰のもの？",
+        "spotify_url": "https://open.spotify.com/search/STU48%20%E8%8A%B1%E3%81%AF%E8%AA%B0%E3%81%AE%E3%82%82%E3%81%AE%EF%BC%9F",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "無謀な夢は覚めることがない",
+        "spotify_url": "https://open.spotify.com/search/STU48%20%E7%84%A1%E8%AC%80%E3%81%AA%E5%A4%A2%E3%81%AF%E8%A6%9A%E3%82%81%E3%82%8B%E3%81%93%E3%81%A8%E3%81%8C%E3%81%AA%E3%81%84",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "STU",
     "공식링크/SNS": "https://sp.stu48.com/",
     "공연·현장": 13,
@@ -1552,6 +2408,23 @@
     "결성/데뷔일": "2015-06-21",
     "멤버수": 7.0,
     "대표곡": "おっしょい！; よかよかダンス; 虹ノ湊",
+    "대표곡목록": [
+      {
+        "title": "おっしょい！",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%B0%E3%81%A3%E3%81%A6%E3%82%93%E5%B0%91%E5%A5%B3%E9%9A%8A%20%E3%81%8A%E3%81%A3%E3%81%97%E3%82%87%E3%81%84%EF%BC%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "よかよかダンス",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%B0%E3%81%A3%E3%81%A6%E3%82%93%E5%B0%91%E5%A5%B3%E9%9A%8A%20%E3%82%88%E3%81%8B%E3%82%88%E3%81%8B%E3%83%80%E3%83%B3%E3%82%B9",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "虹ノ湊",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%B0%E3%81%A3%E3%81%A6%E3%82%93%E5%B0%91%E5%A5%B3%E9%9A%8A%20%E8%99%B9%E3%83%8E%E6%B9%8A",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "STARDUST PROMOTION",
     "공식링크/SNS": "https://battengirls.com/",
     "공연·현장": 14,
@@ -1581,6 +2454,18 @@
     "결성/데뷔일": "2020",
     "멤버수": null,
     "대표곡": "鼓動; 夏のオレンジ;",
+    "대표곡목록": [
+      {
+        "title": "鼓動",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB%E6%9C%AA%E5%AE%9A%20%E9%BC%93%E5%8B%95",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "夏のオレンジ",
+        "spotify_url": "https://open.spotify.com/search/%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB%E6%9C%AA%E5%AE%9A%20%E5%A4%8F%E3%81%AE%E3%82%AA%E3%83%AC%E3%83%B3%E3%82%B8",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "TSUIMA",
     "공식링크/SNS": "https://miteititle.com/",
     "공연·현장": 15,
@@ -1610,6 +2495,23 @@
     "결성/데뷔일": "2023-08-30",
     "멤버수": 23.0,
     "대표곡": "青空について考える; 卒業まで; 好きすぎてUp and down",
+    "대표곡목록": [
+      {
+        "title": "青空について考える",
+        "spotify_url": "https://open.spotify.com/search/%E5%83%95%E3%81%8C%E8%A6%8B%E3%81%9F%E3%81%8B%E3%81%A3%E3%81%9F%E9%9D%92%E7%A9%BA%20%E9%9D%92%E7%A9%BA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E8%80%83%E3%81%88%E3%82%8B",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "卒業まで",
+        "spotify_url": "https://open.spotify.com/search/%E5%83%95%E3%81%8C%E8%A6%8B%E3%81%9F%E3%81%8B%E3%81%A3%E3%81%9F%E9%9D%92%E7%A9%BA%20%E5%8D%92%E6%A5%AD%E3%81%BE%E3%81%A7",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "好きすぎてUp and down",
+        "spotify_url": "https://open.spotify.com/search/%E5%83%95%E3%81%8C%E8%A6%8B%E3%81%9F%E3%81%8B%E3%81%A3%E3%81%9F%E9%9D%92%E7%A9%BA%20%E5%A5%BD%E3%81%8D%E3%81%99%E3%81%8E%E3%81%A6Up%20and%20down",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "Ligareaz Management / avex",
     "공식링크/SNS": "https://bokuao.com/",
     "공연·현장": 12,
@@ -1639,6 +2541,23 @@
     "결성/데뷔일": "2017-09-20",
     "멤버수": null,
     "대표곡": "僕は存在していなかった; シャンプーの匂いがした; ムズイ",
+    "대표곡목록": [
+      {
+        "title": "僕は存在していなかった",
+        "spotify_url": "https://open.spotify.com/search/22%2F7%20%E5%83%95%E3%81%AF%E5%AD%98%E5%9C%A8%E3%81%97%E3%81%A6%E3%81%84%E3%81%AA%E3%81%8B%E3%81%A3%E3%81%9F",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "シャンプーの匂いがした",
+        "spotify_url": "https://open.spotify.com/search/22%2F7%20%E3%82%B7%E3%83%A3%E3%83%B3%E3%83%97%E3%83%BC%E3%81%AE%E5%8C%82%E3%81%84%E3%81%8C%E3%81%97%E3%81%9F",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ムズイ",
+        "spotify_url": "https://open.spotify.com/search/22%2F7%20%E3%83%A0%E3%82%BA%E3%82%A4",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "Buzz Wave / Sony Music",
     "공식링크/SNS": "https://nanabunnonijyuuni.com/",
     "공연·현장": 13,
@@ -1668,6 +2587,18 @@
     "결성/데뷔일": "2021-05-05",
     "멤버수": 9.0,
     "대표곡": "ちゅきらぶ！; プラトニックチョロイン;",
+    "대표곡목록": [
+      {
+        "title": "ちゅきらぶ！",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%AE%E3%82%93%E3%81%B5%E3%81%83%E3%81%8F%EF%BC%81%20%E3%81%A1%E3%82%85%E3%81%8D%E3%82%89%E3%81%B6%EF%BC%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "プラトニックチョロイン",
+        "spotify_url": "https://open.spotify.com/search/%E3%81%AE%E3%82%93%E3%81%B5%E3%81%83%E3%81%8F%EF%BC%81%20%E3%83%97%E3%83%A9%E3%83%88%E3%83%8B%E3%83%83%E3%82%AF%E3%83%81%E3%83%A7%E3%83%AD%E3%82%A4%E3%83%B3",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "imaginate / HEROINES",
     "공식링크/SNS": "https://nonfic.heroines.jp/",
     "공연·현장": 13,
@@ -1697,6 +2628,18 @@
     "결성/데뷔일": "2023",
     "멤버수": null,
     "대표곡": "AI SEE CHAT; おにぎりはしゃけ;",
+    "대표곡목록": [
+      {
+        "title": "AI SEE CHAT",
+        "spotify_url": "https://open.spotify.com/search/%E6%9C%80%E7%B5%82%E6%9C%AA%E6%9D%A5%E5%B0%91%E5%A5%B3%20AI%20SEE%20CHAT",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "おにぎりはしゃけ",
+        "spotify_url": "https://open.spotify.com/search/%E6%9C%80%E7%B5%82%E6%9C%AA%E6%9D%A5%E5%B0%91%E5%A5%B3%20%E3%81%8A%E3%81%AB%E3%81%8E%E3%82%8A%E3%81%AF%E3%81%97%E3%82%83%E3%81%91",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "Mint-Productions",
     "공식링크/SNS": "https://saishumiraishoujo.com/",
     "공연·현장": 12,
@@ -1726,6 +2669,23 @@
     "결성/데뷔일": "2019-08-07",
     "멤버수": 11,
     "대표곡": "眼鏡の男の子; ニッポンノD・N・A！; 英雄～笑って！ショパン先輩～",
+    "대표곡목록": [
+      {
+        "title": "眼鏡の男の子",
+        "spotify_url": "https://open.spotify.com/search/BEYOOOOONDS%20%E7%9C%BC%E9%8F%A1%E3%81%AE%E7%94%B7%E3%81%AE%E5%AD%90",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ニッポンノD・N・A！",
+        "spotify_url": "https://open.spotify.com/search/BEYOOOOONDS%20%E3%83%8B%E3%83%83%E3%83%9D%E3%83%B3%E3%83%8ED%E3%83%BBN%E3%83%BBA%EF%BC%81",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "英雄～笑って！ショパン先輩～",
+        "spotify_url": "https://open.spotify.com/search/BEYOOOOONDS%20%E8%8B%B1%E9%9B%84%EF%BD%9E%E7%AC%91%E3%81%A3%E3%81%A6%EF%BC%81%E3%82%B7%E3%83%A7%E3%83%91%E3%83%B3%E5%85%88%E8%BC%A9%EF%BD%9E",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "UP-FRONT PROMOTION",
     "공식링크/SNS": "https://helloproject.com/beyooooonds/",
     "공연·현장": 12,
@@ -1755,6 +2715,23 @@
     "결성/데뷔일": "2017",
     "멤버수": 4.0,
     "대표곡": "水生; AOAWASE; 絶交郷愁",
+    "대표곡목록": [
+      {
+        "title": "水生",
+        "spotify_url": "https://open.spotify.com/search/CYNHN%20%E6%B0%B4%E7%94%9F",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "AOAWASE",
+        "spotify_url": "https://open.spotify.com/search/CYNHN%20AOAWASE",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "絶交郷愁",
+        "spotify_url": "https://open.spotify.com/search/CYNHN%20%E7%B5%B6%E4%BA%A4%E9%83%B7%E6%84%81",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "DEARSTAGE / I BLUE",
     "공식링크/SNS": "https://cynhn.com/",
     "공연·현장": 15,
@@ -1784,6 +2761,23 @@
     "결성/데뷔일": "2014-07",
     "멤버수": 11,
     "대표곡": "Plastic 2 Mercy; FOUL; CAN'T STOP",
+    "대표곡목록": [
+      {
+        "title": "Plastic 2 Mercy",
+        "spotify_url": "https://open.spotify.com/search/GANG%20PARADE%20Plastic%202%20Mercy",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "FOUL",
+        "spotify_url": "https://open.spotify.com/search/GANG%20PARADE%20FOUL",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "CAN'T STOP",
+        "spotify_url": "https://open.spotify.com/search/GANG%20PARADE%20CAN%27T%20STOP",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "WACK / Warner Music",
     "공식링크/SNS": "https://gangparade.jp/",
     "공연·현장": 14,
@@ -1813,6 +2807,23 @@
     "결성/데뷔일": "2010-12-22",
     "멤버수": 9,
     "대표곡": "MAX!乙女心; ラブサマ!!!; ナツカレ★バケーション",
+    "대표곡목록": [
+      {
+        "title": "MAX!乙女心",
+        "spotify_url": "https://open.spotify.com/search/SUPER%E2%98%86GiRLS%20MAX%21%E4%B9%99%E5%A5%B3%E5%BF%83",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ラブサマ!!!",
+        "spotify_url": "https://open.spotify.com/search/SUPER%E2%98%86GiRLS%20%E3%83%A9%E3%83%96%E3%82%B5%E3%83%9E%21%21%21",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ナツカレ★バケーション",
+        "spotify_url": "https://open.spotify.com/search/SUPER%E2%98%86GiRLS%20%E3%83%8A%E3%83%84%E3%82%AB%E3%83%AC%E2%98%85%E3%83%90%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "avex management",
     "공식링크/SNS": "https://supergirls.jp/",
     "공연·현장": 12,
@@ -1842,6 +2853,7 @@
     "결성/데뷔일": "2021-04-17",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "imaginate / HEROINES",
     "공식링크/SNS": "https://www.yakousei-amuse.jp/",
     "공연·현장": 13,
@@ -1871,6 +2883,7 @@
     "결성/데뷔일": "2019",
     "멤버수": 3,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "LDH JAPAN",
     "공식링크/SNS": "https://www.ldh.co.jp/management/iscream/",
     "공연·현장": 11,
@@ -1900,6 +2913,7 @@
     "결성/데뷔일": "2022-06",
     "멤버수": 4,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "WEXS (we-B studios × sakebi)",
     "공식링크/SNS": "https://yosugala.fanpla.jp/",
     "공연·현장": 12,
@@ -1929,6 +2943,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://utageidol.info/profile/",
     "공연·현장": 12,
@@ -1958,6 +2973,7 @@
     "결성/데뷔일": "2019-03-17",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "株式会社ポリム",
     "공식링크/SNS": "https://anthurium-web.com/",
     "공연·현장": 13,
@@ -1987,6 +3003,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://danceforphilosophy.com/",
     "공연·현장": 11,
@@ -2016,6 +3033,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://roughlaugh-official.com/profile/",
     "공연·현장": 10,
@@ -2045,6 +3063,7 @@
     "결성/데뷔일": "2017-06-24",
     "멤버수": 6,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "株式会社SENSATION",
     "공식링크/SNS": "https://tebasen.com/biography/",
     "공연·현장": 13,
@@ -2074,6 +3093,7 @@
     "결성/데뷔일": "2013-03-27",
     "멤버수": 9,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "RIZE PRODUCTION",
     "공식링크/SNS": "https://fstv.rizepro.net/",
     "공연·현장": 12,
@@ -2103,6 +3123,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://mydeardarlin.com/",
     "공연·현장": 12,
@@ -2132,6 +3153,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 9,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "UP-FRONT PROMOTION",
     "공식링크/SNS": "https://helloproject.com/rosychronicle/",
     "공연·현장": 10,
@@ -2161,6 +3183,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 3,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "Velvet management",
     "공식링크/SNS": "https://taskhavefun.net/",
     "공연·현장": 12,
@@ -2190,6 +3213,7 @@
     "결성/데뷔일": "2023-07-17",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "フレオマネジメント",
     "공식링크/SNS": "https://namikeshi-fc.com/",
     "공연·현장": 11,
@@ -2219,6 +3243,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://mooove.world/",
     "공연·현장": 8,
@@ -2248,6 +3273,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://asis-official.com/member/",
     "공연·현장": 10,
@@ -2277,6 +3303,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 13,
@@ -2306,6 +3333,7 @@
     "결성/데뷔일": "2017-11-12",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "株式会社リーディ",
     "공식링크/SNS": "https://neojaponism.com/",
     "공연·현장": 12,
@@ -2335,6 +3363,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 11,
@@ -2364,6 +3393,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 11,
@@ -2393,6 +3423,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 12,
@@ -2422,6 +3453,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 8,
@@ -2451,6 +3483,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 4,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://theorchestratokyo.com/",
     "공연·현장": 12,
@@ -2480,6 +3513,23 @@
     "결성/데뷔일": "2023-03-25",
     "멤버수": 5.0,
     "대표곡": "KiSSES; Cake!; ハッピーキス",
+    "대표곡목록": [
+      {
+        "title": "KiSSES",
+        "spotify_url": "https://open.spotify.com/search/KiSS%20KiSS%20KiSSES",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "Cake!",
+        "spotify_url": "https://open.spotify.com/search/KiSS%20KiSS%20Cake%21",
+        "link_type": "spotify_search"
+      },
+      {
+        "title": "ハッピーキス",
+        "spotify_url": "https://open.spotify.com/search/KiSS%20KiSS%20%E3%83%8F%E3%83%83%E3%83%94%E3%83%BC%E3%82%AD%E3%82%B9",
+        "link_type": "spotify_search"
+      }
+    ],
     "소속/운영": "WACK",
     "공식링크/SNS": "https://www.kisskiss.tokyo/news/2/",
     "공연·현장": 11,
@@ -2509,6 +3559,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://www.loveinq.com/",
     "공연·현장": 10,
@@ -2538,6 +3589,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 12,
@@ -2567,6 +3619,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://yoyoyo.info/",
     "공연·현장": 8,
@@ -2596,6 +3649,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "SCOT",
     "공식링크/SNS": "https://scot-inc.jp/stainy/",
     "공연·현장": 10,
@@ -2625,6 +3679,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 11,
@@ -2654,6 +3709,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 4,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "WONDER&CLOCKS",
     "공식링크/SNS": "https://un1con-official.com/",
     "공연·현장": 7,
@@ -2683,6 +3739,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 12,
@@ -2712,6 +3769,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 6,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://stand-up-project.jp/j-afilia/profile/",
     "공연·현장": 10,
@@ -2741,6 +3799,7 @@
     "결성/데뷔일": "2020-12-19",
     "멤버수": 5,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://situasion.com/profile/",
     "공연·현장": 11,
@@ -2770,6 +3829,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 5,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "YU-M Entertainment",
     "공식링크/SNS": "확인필요",
     "공연·현장": 11,
@@ -2799,6 +3859,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 4,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://www.comingout.jp/",
     "공연·현장": 11,
@@ -2828,6 +3889,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 10,
@@ -2857,6 +3919,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 10,
@@ -2886,6 +3949,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 5,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "KOTO RECORD",
     "공식링크/SNS": "https://kinopo.jp/",
     "공연·현장": 10,
@@ -2915,6 +3979,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "NT-Records",
     "공식링크/SNS": "https://ntrecords.com/",
     "공연·현장": 10,
@@ -2944,6 +4009,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 6,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://www.qumalidepart.com/",
     "공연·현장": 10,
@@ -2973,6 +4039,7 @@
     "결성/데뷔일": "2016-02-19",
     "멤버수": 4,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "ボックスコーポレーション / ドリーミュージックアーティストマネージメント",
     "공식링크/SNS": "https://magipun.com/",
     "공연·현장": 9,
@@ -3002,6 +4069,7 @@
     "결성/데뷔일": "2024-08",
     "멤버수": 5,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "TWIN PLANET",
     "공식링크/SNS": "https://mascarpiece-fc.com/",
     "공연·현장": 9,
@@ -3031,6 +4099,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 5,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://fan.pia.jp/PIGGS/",
     "공연·현장": 10,
@@ -3060,6 +4129,7 @@
     "결성/데뷔일": "2019",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "TWIN PLANET",
     "공식링크/SNS": "https://sweet-alley.com/",
     "공연·현장": 9,
@@ -3089,6 +4159,7 @@
     "결성/데뷔일": "2021",
     "멤버수": 6,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://fishbowl.jp/",
     "공연·현장": 9,
@@ -3118,6 +4189,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 9,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "YU-M Entertainment",
     "공식링크/SNS": "https://upupgirls2.jp/",
     "공연·현장": 10,
@@ -3147,6 +4219,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 5,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "Noisy IDOL",
     "공식링크/SNS": "https://kingsari.com/",
     "공연·현장": 11,
@@ -3176,6 +4249,7 @@
     "결성/데뷔일": "2025-02-15",
     "멤버수": 6,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://harunision-official.boosty.app/top",
     "공연·현장": 10,
@@ -3205,6 +4279,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "AUR",
     "공식링크/SNS": "https://aur-japan.jp/",
     "공연·현장": 9,
@@ -3234,6 +4309,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://krd8.jp/",
     "공연·현장": 9,
@@ -3263,6 +4339,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 9,
@@ -3292,6 +4369,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 6,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://sayostay.dspm.jp/",
     "공연·현장": 9,
@@ -3321,6 +4399,7 @@
     "결성/데뷔일": "2020-06-18",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://sukiirodrop.com/",
     "공연·현장": 10,
@@ -3350,6 +4429,7 @@
     "결성/데뷔일": "2018-08-12",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "ArcJewel",
     "공식링크/SNS": "https://gran-ciel.jp/",
     "공연·현장": 9,
@@ -3379,6 +4459,7 @@
     "결성/데뷔일": "2021-06",
     "멤버수": 13,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "株式会社SHINGEKI",
     "공식링크/SNS": "확인필요",
     "공연·현장": 10,
@@ -3408,6 +4489,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://super-pouvoir.ntrecords.com/",
     "공연·현장": 9,
@@ -3437,6 +4519,7 @@
     "결성/데뷔일": "2021-04-23",
     "멤버수": 10,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://www.tensentenseisyoujo.com/",
     "공연·현장": 9,
@@ -3466,6 +4549,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "LIVE PLANET",
     "공식링크/SNS": "https://dreaming-monster.jp/",
     "공연·현장": 9,
@@ -3495,6 +4579,7 @@
     "결성/데뷔일": "2018-05",
     "멤버수": 4,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://kolokol-official.com/",
     "공연·현장": 9,
@@ -3524,6 +4609,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 8,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://www.pinkyspice.com/",
     "공연·현장": 9,
@@ -3553,6 +4639,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 5,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "株式会社VERSE",
     "공식링크/SNS": "https://www.ringwanderung-official.com/",
     "공연·현장": 9,
@@ -3582,6 +4669,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 5,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "https://ruruneige.com/",
     "공연·현장": 9,
@@ -3611,6 +4699,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": 7,
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "확인필요",
     "공식링크/SNS": "확인필요",
     "공연·현장": 8,
@@ -3640,6 +4729,7 @@
     "결성/데뷔일": "확인필요",
     "멤버수": "확인필요",
     "대표곡": "확인필요",
+    "대표곡목록": [],
     "소속/운영": "UPDANCE ENTERTAINMENT",
     "공식링크/SNS": "https://bunnylacrew.com/",
     "공연·현장": 8,
