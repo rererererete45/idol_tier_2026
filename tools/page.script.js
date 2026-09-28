@@ -170,6 +170,7 @@ function detailHTML(o){
     +(o.intro?'<p class="dpintro">'+esc(o.intro)+'</p>':'')
     +'<div class="bars">'+barsHTML(o)+'</div>'
     +'<div class="dpgrid">'+info+'</div>'
+    +(o.editor?'<div class="dpedit"><p class="dpedit-k">에디터 코멘트 <span>주관적 의견 · 점수/티어와 무관</span></p><p class="dpedit-v">'+esc(o.editor)+'</p></div>':'')
     +'<div class="acts">'+officialBtn
     +'<a class="btn grn"'+TGT+' href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
     +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
