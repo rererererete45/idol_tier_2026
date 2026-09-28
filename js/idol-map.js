@@ -228,7 +228,7 @@
 
   function renderIdolMap() {
     measure();
-    var svg = el.svg;
+    var svg = el.svg; S.sig = '';
     while (svg.firstChild) svg.removeChild(svg.firstChild);
     svg.setAttribute('class', S.enter && !REDUCED ? 'enter' : '');
     var pl = plot();
@@ -400,7 +400,15 @@
       if (hl) g.setAttribute('data-hl', hl); else g.removeAttribute('data-hl');
       g.classList.toggle('dimmed', !!curSet() && !hl && S.sel !== p.key);
     });
+    var sig = pts.map(function (p) { return p.node && p.node.classList.contains('off') ? '0' : '1'; }).join('');
+    if (sig !== S.sig && el.layer) { // 필터에서 빠진(흐린) 점이 보이는 점을 가리지 않도록 뒤로 보낸다
+      S.sig = sig;
+      var offs = [], ons = [];
+      Array.prototype.forEach.call(el.layer.children, function (n) { (n.classList.contains('off') ? offs : ons).push(n); });
+      offs.concat(ons).forEach(function (n) { el.layer.appendChild(n); });
+    }
     $('count').textContent = vis.length + '팀 표시 중';
+    syncDirty();
     var note = $('emptyNote');
     if (vis.length) { note.hidden = true; }
     else {
@@ -490,7 +498,23 @@
     var r = IMGS[p.country] && IMGS[p.country][p.group];
     return r && r.img ? '<img alt="" src="' + esc(r.img) + '" onerror="this.remove()" style="position:absolute;inset:0">' : '';
   }
-  function showSheet() { el.sheet.hidden = false; document.body.classList.add('sheet-open'); }
+  function showSheet() {
+    el.sheet.hidden = false; document.body.classList.add('sheet-open');
+    var hero = el.sheet.querySelector('.sh-hero'), x = el.sheet.querySelector('#shClose');
+    if (hero && x && !hero.querySelector('.pk')) {
+      var pk = document.createElement('button'); pk.type = 'button'; pk.className = 'x pk'; pk.id = 'shPeek'; pk.textContent = '⌄';
+      pk.setAttribute('aria-label', '시트 접기/펼치기'); pk.setAttribute('aria-expanded', !el.sheet.classList.contains('peek'));
+      pk.addEventListener('click', function () { setPeek(!el.sheet.classList.contains('peek')); });
+      hero.insertBefore(pk, x);
+    }
+    setPeek(el.sheet.classList.contains('peek'));
+  }
+  // 모바일: 시트를 한 줄로 접어 지도를 가리지 않게 한다 (필터/검색을 만지면 자동으로 접힌다)
+  function setPeek(on) {
+    el.sheet.classList.toggle('peek', on); document.body.classList.toggle('sheet-peek', on && !el.sheet.hidden);
+    var pk = $('shPeek'); if (pk) pk.setAttribute('aria-expanded', !on);
+  }
+  function peekSheet() { if (!el.sheet.hidden && window.innerWidth < 1000) setPeek(true); }
   // 막대 채우기 + 숫자 카운트업 (Count Up)
   function animateSheet(root) {
     requestAnimationFrame(function () {
@@ -548,7 +572,7 @@
     $('cmpReset').addEventListener('click', function () { S.cmp = []; refreshStates(); closeSheet(); });
   }
 
-  function closeSheet() { el.sheet.hidden = true; document.body.classList.remove('sheet-open'); }
+  function closeSheet() { el.sheet.hidden = true; el.sheet.classList.remove('peek'); document.body.classList.remove('sheet-open', 'sheet-peek'); }
 
   /* ---------- 선택 / 매칭 ---------- */
   function setUrl() {
@@ -741,7 +765,7 @@
       var b = e.target.closest && e.target.closest('.zchip'); if (!b) return;
       var z = b.getAttribute('data-zone');
       S.zone = S.zone === z ? null : z;
-      syncZones(); refreshStates();
+      syncZones(); refreshStates(); peekSheet();
     });
   }
 
@@ -749,7 +773,7 @@
   function hideTipNow() { if (el.tip) el.tip.hidden = true; }
   function showTip(p) {
     var tip = el.tip;
-    if (!p || !p.node || !FINE || p.node.classList.contains('off')) { tip.hidden = true; return; }
+    if (!p || !p.node || !FINE) { tip.hidden = true; return; }
     var box = $('mapbox').getBoundingClientRect(), r = p.node.getBoundingClientRect();
     var cxp = r.left + r.width / 2 - box.left, top = r.top - box.top - 8, below = top < 90;
     tip.innerHTML = '<div class="tn">' + esc(p.group) + flag(p.country) + '</div><div class="tm">' + tierChip(p) + ' ' + p.totalScore + '점 · 체급 상위 ' + Math.max(1, Math.round(100 - p.totalPercentile)) + '%</div>'
@@ -809,7 +833,7 @@
     svg.addEventListener('click', function (e) {
       if (moved > 6) { moved = 0; return; }
       var g = e.target.closest && e.target.closest('.mp');
-      if (g && !g.classList.contains('off')) selectGroup(g.getAttribute('data-k'));
+      if (g) selectGroup(g.getAttribute('data-k'));
       else if (!g && !S.compare) clearSelection();
     });
     svg.addEventListener('keydown', function (e) {
@@ -898,10 +922,25 @@
       y0 = null; dy = 0;
     }
     sh.addEventListener('pointerup', end); sh.addEventListener('pointercancel', end);
+    sh.addEventListener('click', function (e) { if (sh.classList.contains('peek') && e.target.closest('.sh-hero') && !e.target.closest('button,a')) setPeek(false); });
   }
   function debounce(fn, ms) { var t; return function () { clearTimeout(t); t = setTimeout(fn, ms); }; }
 
+  function isDirty() {
+    return S.preset !== 'ALL' || S.color !== 'tier' || !!S.zone || !!S.query || S.compare || !!S.sel || !!S.match || !!S.scene || S.cmp.length > 0;
+  }
+  function syncDirty() { var b = $('resetBtn'); if (b) b.classList.toggle('dirty', isDirty()); }
+  // 필터·선택·추천·비교·검색을 모두 처음 상태로 (시장 선택 KR/JP/통합은 유지)
+  function resetAll() {
+    S.preset = 'ALL'; S.color = 'tier'; S.zone = null; S.query = ''; $('q').value = '';
+    S.compare = false; S.cmp = []; S.sel = null; S.match = null; S.scene = null; S.hover = null;
+    closeSheet(); hideTipNow();
+    renderIdolMap(); fitView(); syncToolbar(); syncZones(); refreshStates(); setUrl();
+    if (window.__toast) window.__toast('↺ 지도를 처음 상태로 되돌렸어요');
+  }
   function bindUi() {
+    $('resetBtn').addEventListener('click', resetAll);
+    Array.prototype.forEach.call(document.querySelectorAll('.toolbar .pill, .toolbar #q'), function (b) { b.addEventListener(b.id === 'q' ? 'focus' : 'click', function () { if (b.id !== 'resetBtn') peekSheet(); }); });
     Array.prototype.forEach.call(document.querySelectorAll('[data-mode]'), function (b) { b.addEventListener('click', function () { setMode(b.dataset.mode); }); });
     Array.prototype.forEach.call(document.querySelectorAll('[data-preset]'), function (b) { b.addEventListener('click', function () { applyMapPreset(b.dataset.preset); }); });
     Array.prototype.forEach.call(document.querySelectorAll('[data-color]'), function (b) { b.addEventListener('click', function () { S.color = b.dataset.color; renderIdolMap(); syncToolbar(); setUrl(); }); });

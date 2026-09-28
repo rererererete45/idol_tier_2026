@@ -185,7 +185,7 @@ def build(page, data):
     }
     for k, v in rep.items():
         h = h.replace(k, v)
-    html = h + '<script src="js/idol-match.js?v=20260938"></script>\n<script src="js/idol-recommendation-core.js?v=20260938"></script>\n<script src="js/same-scene.js?v=20260938"></script>\n<script src="js/rank-history.js?v=20260938"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
+    html = h + '<script src="js/idol-match.js?v=20260941"></script>\n<script src="js/idol-recommendation-core.js?v=20260941"></script>\n<script src="js/same-scene.js?v=20260941"></script>\n<script src="js/rank-history.js?v=20260941"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
     open(os.path.join(ROOT, page["file"]), "w", encoding="utf-8", newline="\n").write(html)
     noimg = [d["n"] for d in data if not d["img"]]
     print(page["file"], len(data), "groups; without photo:", len(noimg))

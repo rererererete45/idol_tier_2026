@@ -127,11 +127,14 @@ h1 .w{display:inline-block;animation:blurIn .7s cubic-bezier(.2,.7,.2,1) both;an
 .mp[data-glow="3"] .halo{opacity:.17;animation:halo 2.8s ease-in-out infinite;transform-origin:0 0}
 @keyframes halo{0%,100%{transform:scale(.92);opacity:.24}50%{transform:scale(1.14);opacity:.1}}
 .mp .ring,.mp .ring-g{fill:none;stroke:transparent}
+.mp .ring,.mp .ring-g,.mp .lbl{pointer-events:none}
 .mp .rip{fill:none;stroke:transparent;transform-origin:0 0;pointer-events:none}
 .lb{display:none;pointer-events:none}
 .lb.show{display:block}
 .lbl{fill:#fff;font-size:11px;font-weight:700;paint-order:stroke;stroke:rgba(12,12,12,.9);stroke-width:3.6px;stroke-linejoin:round;pointer-events:none}
-.mp.off{opacity:.06;pointer-events:none}
+.mp.off{opacity:.13}
+.mp.off:hover{opacity:.55}
+.mp.off.sel{opacity:1}
 .mp.dimmed{opacity:.24}
 .mp:focus-visible .ring{stroke:#fff;stroke-width:2.5}
 .mp.sel .ring{stroke:#fff;stroke-width:2}
@@ -259,6 +262,11 @@ body.sheet-open .side-empty{display:none}
 /* ---- responsive ---- */
 @media(max-width:999px){
   body.sheet-open{padding-bottom:46vh}
+  body.sheet-open.sheet-peek{padding-bottom:104px}
+  .sh-hero .pk{display:inline-grid;place-items:center;margin-right:6px}
+  .sheet.peek{max-height:92px;overflow:hidden}
+  .sheet.peek .pk{transform:rotate(180deg)}
+  .sheet.peek .sh-hero{cursor:pointer}
   .sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;border-radius:20px 20px 0 0;max-width:680px;margin:0 auto;max-height:46vh;overflow-y:auto;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:rgba(28,28,28,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),rgba(0,0,0,.6) 0 -10px 34px;animation:sheetUp .3s cubic-bezier(.2,.8,.2,1)}
   .sheet::before{border-radius:20px 20px 0 0}
   @keyframes sheetUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
@@ -269,6 +277,10 @@ body.sheet-open .side-empty{display:none}
 .map-loading{position:absolute;inset:0;display:grid;place-items:center;margin:0;font-size:13px;font-weight:700;color:var(--tx3);pointer-events:none}
 .map-loading[hidden]{display:none}
 #mapwrap{min-height:420px}
+.pill.dirty{position:relative}
+.pill.dirty::after{content:"";position:absolute;top:7px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.pill.dirty{background:var(--card);color:var(--tx)}
+.pk{display:none}
 .tbtn{display:none}
 .tbcar{display:inline-block;transition:transform .2s}
 .toolbar.open .tbcar{transform:rotate(180deg)}
