@@ -225,11 +225,13 @@ function detailHTML(o){
     +(o.img?'<p class="dpsrc">사진 출처: <a href="'+(o.imgpage?esc(o.imgpage):namuUrl(o))+'"'+TGT+'>'+(o.imgpage?'공식 사이트':'나무위키')+'</a></p>':'')
     +'</div></div>'
     +'<nav class="djump" aria-label="상세 섹션 바로가기"><button type="button" data-jump="scenebox">🧬 비슷한 '+(CFG.country==='KR'?'한국':'일본')+' 그룹</button><button type="button" data-jump="matchbox">'+CFG.other.label+' 취향</button><button type="button" data-jump="histbox">📈 순위 추이</button></nav>'
-    +(o.intro?'<p class="dpintro">'+esc(o.intro)+'</p>':'')
     +'<div class="dpradar">'+bigRadarSVG(o)+'</div>'
     +'<div class="bars">'+barsHTML(o)+'</div>'
     +'<div class="dpgrid">'+info+'</div>'
-    +(o.editor?'<div class="dpedit"><p class="dpedit-k">에디터 코멘트 <span>주관적 의견 · 점수/티어와 무관</span></p><p class="dpedit-v">'+esc(o.editor)+'</p></div>':'')
+    +((o.intro||o.editor)?'<div class="dpedit">'
+      +(o.intro?'<p class="dpedit-v">'+esc(o.intro)+'</p>':'')
+      +(o.editor?'<p class="dpedit-k">에디터 코멘트</p><p class="dpedit-v">'+esc(o.editor)+'</p>':'')
+      +'</div>':'')
     +'<div class="acts">'+officialBtn
     +'<a class="btn grn"'+TGT+' href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
     +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'

@@ -18,14 +18,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/idol-map.css?v=20260955">
+<link rel="stylesheet" href="css/idol-map.css?v=20260956">
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">IDOL MAP은 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
 <script>/* 과거 월 지도(?history=1 또는 ?period=)는 HISTORY 의 MAP REPLAY 로 연결한다 */
 (function(){var q=new URLSearchParams(location.search);if(q.get('history')!=='1'&&!q.has('period'))return;var u=new URLSearchParams();u.set('country',q.get('country')==='JP'?'JP':'KR');if(/^\d{4}-\d{2}$/.test(q.get('period')||''))u.set('period',q.get('period'));u.set('view','map');location.replace('history?'+u.toString());})();
 </script>
-<script src="js/site-nav.js?v=20260955"></script>
+<script src="js/site-nav.js?v=20260956"></script>
 <div class="wrap">
 <header>
   <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -113,8 +113,8 @@
 </div>
 </div>
 
-<script src="js/idol-match.js?v=20260955"></script>
-<script src="js/idol-recommendation-core.js?v=20260955"></script>
-<script src="js/idol-map.js?v=20260955"></script>
+<script src="js/idol-match.js?v=20260956"></script>
+<script src="js/idol-recommendation-core.js?v=20260956"></script>
+<script src="js/idol-map.js?v=20260956"></script>
 </body>
 </html>
