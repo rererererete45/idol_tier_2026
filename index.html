@@ -18,11 +18,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/home.css?v=20260951">
+<link rel="stylesheet" href="css/home.css?v=20260953">
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">이 사이트는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260951"></script>
+<script src="js/site-nav.js?v=20260953"></script>
 <div class="wrap">
 
 <section class="hero" aria-labelledby="ttl">
@@ -74,7 +74,7 @@
 
   <div class="feat rv">
     <div class="fv mapv" id="mapV" aria-hidden="true"></div>
-    <div class="ft" style="--ac:#539df5">
+    <div class="ft" style="--ac:#1ed760">
       <span class="k">스타일 지도</span>
       <h3>이 그룹은 어떤 매력으로<br>강한 걸까?</h3>
       <p>팬덤형 ↔ 대중형, 디지털 ↔ 라이브. 두 축으로 본 그룹의 위치예요.</p>
@@ -84,9 +84,9 @@
 
   <div class="feat rev rv">
     <div class="fv histv" id="histV"><div class="ph">불러오는 중…</div></div>
-    <div class="ft" style="--ac:#ffd166">
-      <span class="k">지난 순위</span>
-      <h3>작년엔 몇 위였지?<br>타임머신으로 확인해요</h3>
+    <div class="ft" style="--ac:#1ed760">
+      <span class="k">월별 기록</span>
+      <h3>작년엔 몇 위였지?<br>지난 기록으로 확인해요</h3>
       <p>2025년부터 순위가 어떻게 바뀌었는지 그대로 남겨 뒀어요.</p>
       <a class="btn" href="./history">지난 순위 보러 가기 →</a>
     </div>
@@ -94,7 +94,7 @@
 
   <div class="feat rv">
     <div class="fv" id="fanV" aria-hidden="true"><div class="fan"></div></div>
-    <div class="ft" style="--ac:#a78bfa">
+    <div class="ft" style="--ac:#1ed760">
       <span class="k">새 그룹 발견</span>
       <h3>몰랐던 그룹,<br>한 번 뽑아 볼래요?</h3>
       <p>아직 모르는 그룹을 취향에 맞게 찾아드려요.</p>
@@ -306,8 +306,8 @@
       var lastP = h[h.length - 1];
       histV.innerHTML = '<div class="lbl">순위 변화 · <b>' + esc(best.name) + '</b></div><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">'
         + [lo, hi].map(function (v) { return '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yf(v) + '" y2="' + yf(v) + '" stroke="#fff" stroke-opacity=".08"/><text x="' + (L - 6) + '" y="' + (yf(v) + 3.5) + '" fill="#7c7c7c" font-size="10" font-weight="700" text-anchor="end">#' + v + '</text>'; }).join('')
-        + '<path class="line" pathLength="1" d="' + d + '" fill="none" stroke="#ffd166" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'
-        + '<circle cx="' + xf(lastP.period) + '" cy="' + yf(lastP.rank) + '" r="5" fill="#ffd166" stroke="#181818" stroke-width="2"/>'
+        + '<path class="line" pathLength="1" d="' + d + '" fill="none" stroke="#1ed760" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'
+        + '<circle cx="' + xf(lastP.period) + '" cy="' + yf(lastP.rank) + '" r="5" fill="#1ed760" stroke="#181818" stroke-width="2"/>'
         + '<text x="' + L + '" y="' + (H - 8) + '" fill="#7c7c7c" font-size="10" font-weight="700">' + RankHistory.fmtPeriod(h[0].period) + '</text><text x="' + (W - R) + '" y="' + (H - 8) + '" fill="#7c7c7c" font-size="10" font-weight="700" text-anchor="end">' + RankHistory.fmtPeriod(lastP.period) + '</text></svg>';
       histV.classList.remove('in'); void histV.offsetWidth; histV.classList.add('in'); // 선이 그려지는 모션을 다시 시작
     }).catch(function () { histV.innerHTML = '<div class="ph">📈</div>'; });

@@ -13,7 +13,7 @@
     'PUBLIC HIT': { color: '#539df5', text: '대중 확장 · 디지털 강세' }, 'CORE DIGITAL': { color: '#a78bfa', text: '팬덤 중심 · 디지털 강세' }, 'BALANCED': { color: '#b3b3b3', text: '중앙 균형형' }
   };
   var ZONE_ORDER = ['CORE LIVE', 'STAGE STAR', 'PUBLIC HIT', 'CORE DIGITAL', 'BALANCED'];
-  var SPEEDS = [0.75, 1, 1.5, 2], TRAILS = [['off', 'OFF'], ['3', '3M'], ['6', '6M'], ['12', '12M'], ['all', 'ALL']];
+  var SPEEDS = [0.75, 1, 1.5, 2], TRAILS = [['off', '없음'], ['3', '3개월'], ['6', '6개월'], ['12', '12개월'], ['all', '전체']];
   var BASE_STEP = 1500;
   var reduced = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -252,7 +252,7 @@
   function drawPin() {
     var box = $('mrPin'), d = M.cur, id = M.pin, e = M.ctx.esc;
     if (!id) {
-      box.innerHTML = '<h3>FOLLOW A GROUP</h3><p class="mr-help">점을 누르면 그 그룹만 또렷하게 남고 나머지는 흐려져요. 그 상태에서 <b style="color:var(--tx)">PLAY</b>를 누르면 카메라가 확대해서 그룹을 따라가요. 확대는 + − 버튼이나 Ctrl+휠로, 확대한 뒤에는 드래그로 옮길 수 있어요.</p>';
+      box.innerHTML = '<h3>그룹 따라가기</h3><p class="mr-help">점을 누르면 그 그룹만 또렷하게 남고 나머지는 흐려져요. 그 상태에서 <b style="color:var(--tx)">재생</b>을 누르면 카메라가 확대해서 그룹을 따라가요. 확대는 + − 버튼이나 Ctrl+휠로, 확대한 뒤에는 드래그로 옮길 수 있어요.</p>';
       return;
     }
     var p = d.by[id], ent = HA.entryById(d.snap, id), name = ent ? ent.group : (p ? p.group : id);
@@ -289,7 +289,7 @@
     var fb = $('mrFollow'); if (fb) { fb.disabled = !M.pin; fb.setAttribute('aria-pressed', !!M.follow); }
     var zi = $('mrZin'), zo = $('mrZout'), zr = $('mrZreset');
     if (zi) { zi.disabled = M.cam.k >= MAXK - 0.01; zo.disabled = M.cam.k <= 1.01; zr.disabled = M.cam.k <= 1.01 && !M.follow; }
-    var pb = $('mrPlay'); pb.textContent = M.playing ? '❚❚ PAUSE' : (i >= ps.length - 1 ? '↺ REPLAY' : '▶ PLAY'); pb.setAttribute('aria-pressed', !!M.playing);
+    var pb = $('mrPlay'); pb.textContent = M.playing ? '❚❚ 일시정지' : (i >= ps.length - 1 ? '↺ 다시 재생' : '▶ 재생'); pb.setAttribute('aria-pressed', !!M.playing);
   }
   function goPeriod(p, animate, fromUser) {
     var tok = ++M.goTok, m = M;
@@ -356,14 +356,14 @@
       + '<div class="mr-zoom" role="group" aria-label="지도 확대"><button type="button" id="mrZin" aria-label="확대" title="확대">+</button><button type="button" id="mrZout" aria-label="축소" title="축소">−</button><button type="button" id="mrZreset" aria-label="전체 보기" title="전체 보기">⤢</button></div>'
       + '<div class="mr-hud" id="mrHud" hidden></div>'
       + '<div class="mr-load" id="mrLoad">지도를 계산하는 중…</div><div class="mr-tip" id="mrTip" hidden></div></div>'
-      + '<aside class="mr-side"><div class="mr-card wide" id="mrPin"></div><div class="mr-card"><h3>MARKET POSITION <small id="mrZoneH" style="text-transform:none;letter-spacing:0;margin-left:6px"></small></h3><ul class="zlist" id="mrZones"></ul></div></aside></div>'
+      + '<aside class="mr-side"><div class="mr-card wide" id="mrPin"></div><div class="mr-card"><h3>시장 위치 <small id="mrZoneH" style="text-transform:none;letter-spacing:0;margin-left:6px"></small></h3><ul class="zlist" id="mrZones"></ul></div></aside></div>'
       + '<div class="mr-ctl" id="mrCtl" role="group" aria-label="지도 재생 컨트롤">'
       + '<div class="mr-slide"><input type="range" id="mrSlide" min="0" max="' + (ps.length - 1) + '" step="1" aria-label="월 선택"><output id="mrOut" for="mrSlide"></output></div>'
-      + '<span class="g"><button class="ibtn" type="button" id="mrPrev" aria-label="이전 달">‹</button><button class="playbtn" type="button" id="mrPlay" aria-pressed="false">▶ PLAY</button><button class="ibtn" type="button" id="mrNext" aria-label="다음 달">›</button></span>'
+      + '<span class="g"><button class="ibtn" type="button" id="mrPrev" aria-label="이전 달">‹</button><button class="playbtn" type="button" id="mrPlay" aria-pressed="false">▶ 재생</button><button class="ibtn" type="button" id="mrNext" aria-label="다음 달">›</button></span>'
       + '</div><div class="mr-opts" id="mrOpts">'
-      + '<span class="g"><span class="lab">SPEED</span><span class="seg" role="group" aria-label="재생 속도">' + SPEEDS.map(function (s) { return '<button class="pill" type="button" data-speed="' + s + '" aria-pressed="false">' + s + 'x</button>'; }).join('') + '</span></span>'
-      + '<span class="g"><span class="lab">TRAIL</span><span class="seg" role="group" aria-label="궤적 범위">' + TRAILS.map(function (t) { return '<button class="pill" type="button" data-trail="' + t[0] + '" aria-pressed="false">' + t[1] + '</button>'; }).join('') + '</span></span>'
-      + '<span class="g"><span class="lab">CAMERA</span><button class="pill" type="button" id="mrFollow" aria-pressed="false" disabled title="그룹을 고른 뒤 눌러 보세요">따라가기</button></span>'
+      + '<span class="g"><span class="lab">속도</span><span class="seg" role="group" aria-label="재생 속도">' + SPEEDS.map(function (s) { return '<button class="pill" type="button" data-speed="' + s + '" aria-pressed="false">' + s + 'x</button>'; }).join('') + '</span></span>'
+      + '<span class="g"><span class="lab">궤적</span><span class="seg" role="group" aria-label="궤적 범위">' + TRAILS.map(function (t) { return '<button class="pill" type="button" data-trail="' + t[0] + '" aria-pressed="false">' + t[1] + '</button>'; }).join('') + '</span></span>'
+      + '<span class="g"><span class="lab">카메라</span><button class="pill" type="button" id="mrFollow" aria-pressed="false" disabled title="그룹을 고른 뒤 눌러 보세요">따라가기</button></span>'
       + '<input class="mr-pick" id="mrPick" list="mrGroups" placeholder="그룹 이름으로 따라가기" autocomplete="off" aria-label="그룹 찾아 따라가기"><datalist id="mrGroups"></datalist></div>'
       + '<div class="verbanner" id="mrBreak" role="note" hidden></div>'
       + '<p class="mr-disc"><b>이 지도는 그 달 자국 시장 안에서의 상대 위치예요.</b> 같은 점수여도 그 달 전체 분포가 다르면 위치가 달라질 수 있어요. 가로는 코어 팬덤 ↔ 대중, 세로는 디지털·음원 ↔ 라이브·공연이고, 위치는 우열이 아니라 성향이에요. 버블 크기는 그 달 총점이 시장에서 어느 정도인지를 뜻해요. 한국과 일본은 따로 봐요.</p>'

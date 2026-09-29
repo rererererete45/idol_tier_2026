@@ -8,7 +8,7 @@
   var RH = window.RankHistory, HA = window.HistoryAnalytics;
   var DEBUG = new URLSearchParams(location.search).get('debugHistory') === '1';
   var script = document.currentScript, BASE = script && script.src ? script.src.replace(/js\/history-explorer\.js.*$/, '') : '';
-  var V = '20260951';
+  var V = '20260953';
 
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -16,19 +16,19 @@
 
   var TIER_COLORS = { 'S+': '#1ed760', 'S': '#36e0a0', 'A+': '#22d3ee', 'A': '#38a8f8', 'B+': '#5b8def', 'B': '#7c7cf0', 'C+': '#a78bfa', 'C': '#b592e8', 'D+': '#8b95a7', 'D': '#5f6b7d' };
   var VIEWS = ['timeline', 'movers', 'records', 'map'];
-  var VIEW_NAME = { timeline: 'TIME MACHINE', movers: 'MOVERS', records: 'RECORD BOOK', map: 'MAP REPLAY' };
-  var EN = { KR: 'KOREA', JP: 'JAPAN' }, KO = HA.COUNTRY_NAME, PAGE = { KR: 'kr', JP: 'jp' };
+  var VIEW_NAME = { timeline: '월별 순위', movers: '달라진 점', records: '역대 기록', map: '지도로 보기' };
+  var EN = { KR: '한국', JP: '일본' }, KO = HA.COUNTRY_NAME, PAGE = { KR: 'kr', JP: 'jp' };
   var MCATS = [
-    { key: 'rankUp', label: 'RANK UP', desc: '순위가 오른 그룹. 상대 위치가 많이 오른 순서예요' },
-    { key: 'rankDown', label: 'RANK DOWN', desc: '순위가 내려간 그룹. 순위가 내려갔다고 인기가 떨어진 건 아니에요' },
-    { key: 'scoreUp', label: 'SCORE UP', desc: '총점이 오른 그룹, 많이 오른 순서' },
-    { key: 'scoreDown', label: 'SCORE DOWN', desc: '총점이 내려간 그룹, 많이 내려간 순서' },
-    { key: 'momentumUp', label: 'MOMENTUM UP', desc: '현재기세 점수가 오른 그룹, 많이 오른 순서' },
-    { key: 'tierUp', label: 'TIER UP', desc: '티어가 오른 그룹, 많이 오른 순서' },
-    { key: 'newPeak', label: 'NEW PEAK', desc: '지금까지의 자기 최고 순위를 넘어선 그룹' },
-    { key: 'newEntry', label: 'NEW ENTRY', desc: '비교 시작 때는 없다가 새로 들어온 그룹' }
+    { key: 'rankUp', label: '순위 상승', desc: '순위가 오른 그룹. 상대 위치가 많이 오른 순서예요' },
+    { key: 'rankDown', label: '순위 하락', desc: '순위가 내려간 그룹. 순위가 내려갔다고 인기가 떨어진 건 아니에요' },
+    { key: 'scoreUp', label: '점수 상승', desc: '총점이 오른 그룹, 많이 오른 순서' },
+    { key: 'scoreDown', label: '점수 하락', desc: '총점이 내려간 그룹, 많이 내려간 순서' },
+    { key: 'momentumUp', label: '기세 상승', desc: '현재기세 점수가 오른 그룹, 많이 오른 순서' },
+    { key: 'tierUp', label: '티어 상승', desc: '티어가 오른 그룹, 많이 오른 순서' },
+    { key: 'newPeak', label: '최고 순위 경신', desc: '지금까지의 자기 최고 순위를 넘어선 그룹' },
+    { key: 'newEntry', label: '신규 진입', desc: '비교 시작 때는 없다가 새로 들어온 그룹' }
   ];
-  var RANGES = [['all', '전체'], ['2025', '2025'], ['2026', '2026 YTD']];
+  var RANGES = [['all', '전체'], ['2025', '2025년'], ['2026', '2026년']];
 
   /* ---------- 상태 / URL ---------- */
   var S = { country: 'KR', period: null, view: 'timeline', from: null, mcat: null, cat: 'rank', range: 'all', q: '', group: null, pin: null, trail: '6', speed: 1 };
@@ -166,8 +166,8 @@
     Array.prototype.forEach.call($('hxRail').querySelectorAll('button'), function (b) { b.removeAttribute('aria-current'); if (b.getAttribute('data-p') === S.period) b.setAttribute('aria-current', 'true'); });
     var cur = $('hxRail').querySelector('[aria-current]');
     if (cur && !rec) { var r = $('hxRail'); r.scrollLeft = cur.offsetLeft - r.clientWidth / 2 + cur.clientWidth / 2; }
-    $('hxEyebrow').textContent = 'HISTORY · ' + fp(first) + ' – ' + fp(last) + ' · ' + ps.length + ' MONTHS';
-    document.title = (S.view === 'records' ? 'RECORD BOOK' : fp(S.period) + ' ' + VIEW_NAME[S.view]) + ' · ' + KO[c] + ' · HISTORY';
+    $('hxEyebrow').textContent = '기록 · ' + fp(first) + ' – ' + fp(last) + ' · ' + ps.length + '개월치';
+    document.title = (S.view === 'records' ? '역대 기록' : fp(S.period) + ' ' + VIEW_NAME[S.view]) + ' · ' + KO[c] + ' · 기록';
   }
   function buildRail() {
     var ps = periods(), h = '', prevY = '';
@@ -200,9 +200,8 @@
     var avg = gs.reduce(function (a, g) { return a + g.score; }, 0) / n;
     var sCnt = (tiers['S+'] || 0) + (tiers['S'] || 0);
     var prevMissing = !!pp && !prev;
-    var top5 = cmp.rows.filter(function (r) { return r.cur.rank <= 5; }).sort(function (a, b) { return a.cur.rank - b.cur.rank || (a.id < b.id ? -1 : 1); });
     var firstTxt = !pp ? '첫 기록' : prevMissing ? '지난달 기록 없음' : '지난달 ' + cmp.prevPop + '팀';
-    var h = '<section class="tm-hero"><p class="k">MONTHLY SNAPSHOT</p><h2><span class="big">' + fp(p) + '</span><span class="what">' + EN[c] + ' — MONTHLY ARCHIVE</span></h2>'
+    var h = '<section class="tm-hero"><p class="k">이 달의 기록</p><h2><span class="big">' + fp(p) + '</span><span class="what">' + (c === 'KR' ? '🇰🇷' : '🇯🇵') + ' ' + EN[c] + '</span></h2>'
       + '<p class="lead">그 달에 매겨진 순위와 점수 그대로예요. 지금 기준으로 다시 계산하지 않았어요.</p></section>';
     if (prevMissing) h += '<p class="note">지난달(' + fp(pp) + ') 기록을 불러오지 못해서 순위 변동은 못 보여줘요.</p>';
     h += breakBanner(cmp.breaks, '이 달 순위 변동은 참고만 하세요');
@@ -213,26 +212,17 @@
       + '<div class="kpi"><small>S+ / S 팀</small><b>' + sCnt + '</b><em>S+ ' + (tiers['S+'] || 0) + ' · S ' + (tiers['S'] || 0) + '</em></div>'
       + '<div class="kpi"><small>신규 진입</small><b>' + (cmp.first ? '–' : cmp.newEntries.length) + '</b><em>' + (cmp.first ? '비교할 지난달 기록 없음' : cmp.exits.length ? '빠진 팀 ' + cmp.exits.length + '팀' : '지난달 대비') + '</em></div>'
       + '</div>';
-    // 티어 분포
+    // 전체 순위 (가장 궁금해할 내용을 먼저 보여준다)
     var tk = HA.TIERS.filter(function (t) { return tiers[t]; });
-    h += '<section class="sec"><h2>TIER DISTRIBUTION <small>' + esc(KO[c]) + ' ' + fp(p) + ' 기준</small></h2><div class="tierbar" role="img" aria-label="티어 분포: ' + tk.map(function (t) { return t + ' ' + tiers[t] + '팀'; }).join(', ') + '">'
-      + tk.map(function (t) { return '<i style="flex:' + tiers[t] + ';background:' + TIER_COLORS[t] + '" title="' + t + ' ' + tiers[t] + '팀"></i>'; }).join('') + '</div>'
-      + '<ul class="tiersleg">' + tk.map(function (t) { return '<li><i style="background:' + TIER_COLORS[t] + '"></i>' + t + ' <b>' + tiers[t] + '</b></li>'; }).join('') + '</ul></section>';
-    // TOP 5
-    h += '<section class="sec"><h2>TOP 5 RANKS <small>' + (top5.length > 5 ? '공동 순위를 모두 표시해 ' + top5.length + '팀' : '5위권') + '</small></h2><ol class="t5">'
-      + top5.map(function (r) {
-        return '<li><button type="button" data-open="' + r.id + '" title="' + esc(moveTitle(r)) + '"><span class="n">' + r.cur.rank + '</span><span class="nm">' + esc(r.group) + '</span><span class="sc">' + r.cur.score + '점 ' + tierChip(r.cur.tier) + ' ' + badge(r) + '</span></button></li>';
-      }).join('') + '</ol></section>';
-    if (!cmp.first && cmp.newEntries.length) {
-      h += '<section class="sec"><h2>NEW ENTRIES <small>이번 달 처음 들어온 그룹</small></h2><ul class="newlist">'
-        + cmp.newEntries.map(function (r) { return '<li><button type="button" data-open="' + r.id + '">NEW · ' + esc(r.group) + ' <span style="color:var(--tx2)">#' + r.cur.rank + '</span></button></li>'; }).join('') + '</ul></section>';
-    }
-    // 전체 순위
     var tierBtns = ['ALL'].concat(tk).map(function (t) { return '<button type="button" data-tier="' + t + '" aria-pressed="' + (TL.tier === t) + '">' + (t === 'ALL' ? '전체' : t) + '</button>'; }).join('');
-    h += '<section class="sec"><h2>FULL RANKING <small id="rkCount"></small></h2>'
+    h += '<section class="sec"><h2>전체 순위 <small id="rkCount"></small></h2>'
       + '<div class="filt"><label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 015.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"/></svg><input id="tlQ" type="search" placeholder="그룹 이름 찾기" autocomplete="off" value="' + esc(TL.q) + '" aria-label="그룹 이름 검색"></label><div class="tchips" role="group" aria-label="티어 필터">' + tierBtns + '</div></div>'
       + '<ol class="rk" id="rkList"></ol>'
       + '<p class="note">순위는 그 달에 매긴 값 그대로예요(T는 공동 순위). 변동 배지는 <b>' + (pp ? fp(pp) + ' 대비' : '비교할 지난달 기록 없음') + '</b>예요. 순위가 내려갔다고 인기가 떨어진 건 아니에요. 한국과 일본은 기준이 달라서 서로 비교하지 않아요.</p></section>';
+    // 티어 분포 (더 알고 싶을 때만 펼쳐서 본다)
+    h += '<details class="foldsec"><summary>티어 분포 더 보기</summary><div style="margin-top:14px"><div class="tierbar" role="img" aria-label="티어 분포: ' + tk.map(function (t) { return t + ' ' + tiers[t] + '팀'; }).join(', ') + '">'
+      + tk.map(function (t) { return '<i style="flex:' + tiers[t] + ';background:' + TIER_COLORS[t] + '" title="' + t + ' ' + tiers[t] + '팀"></i>'; }).join('') + '</div>'
+      + '<ul class="tiersleg">' + tk.map(function (t) { return '<li><i style="background:' + TIER_COLORS[t] + '"></i>' + t + ' <b>' + tiers[t] + '</b></li>'; }).join('') + '</ul></div></details>';
     if (DEBUG) h += '<details class="note"><summary>debug</summary>' + esc(JSON.stringify(HA.validateSnapshot(c, p, cur))) + '</details>';
     return h;
   }
@@ -293,7 +283,7 @@
     detailBase(id).then(function (d) {
       if (token !== TOK_D) return;
       if (!d || d.missing) {
-        sheet.innerHTML = '<div class="hx-sh-head"><div class="tt"><p class="ey">' + fp(S.period) + ' ARCHIVE</p><h2 id="hxDlgTitle">기록 없음</h2></div><button class="hx-sh-x" type="button" data-close aria-label="닫기">✕</button></div><div class="hx-sh-body"><p class="note">' + (d ? '이 그룹은 ' + fp(S.period) + '에는 평가에 없었어요.' : '이 달 기록을 불러오지 못했어요.') + '</p></div>';
+        sheet.innerHTML = '<div class="hx-sh-head"><div class="tt"><p class="ey">' + fp(S.period) + ' 기록</p><h2 id="hxDlgTitle">기록 없음</h2></div><button class="hx-sh-x" type="button" data-close aria-label="닫기">✕</button></div><div class="hx-sh-body"><p class="note">' + (d ? '이 그룹은 ' + fp(S.period) + '에는 평가에 없었어요.' : '이 달 기록을 불러오지 못했어요.') + '</p></div>';
         focusSheet(); return;
       }
       DET = d; d.tab = tab; renderDetail();
@@ -312,8 +302,8 @@
     var ae = document.activeElement, fk = null;
     if (ae && sheet.contains(ae)) fk = ae.hasAttribute('data-close') ? '[data-close]' : ae.getAttribute('data-dtab') ? '[data-dtab="' + ae.getAttribute('data-dtab') + '"]' : null;
     var y = sheet.scrollTop, r = d.row, e = d.cur, i = d.order.map(function (o) { return o.id; }).indexOf(d.id), pv = d.order[i - 1], nx = d.order[i + 1];
-    var tabs = [['summary', 'SUMMARY'], ['metrics', 'METRICS'], ['career', 'CAREER LINE']];
-    var h = '<div class="hx-sh-head"><div class="tt"><p class="ey">' + fp(d.period) + ' ARCHIVE · ' + EN[d.country] + '</p><h2 id="hxDlgTitle">' + esc(e.group) + '</h2></div><button class="hx-sh-x" type="button" data-close aria-label="닫기">✕</button></div>'
+    var tabs = [['summary', '요약'], ['metrics', '세부 항목'], ['career', '변화 그래프']];
+    var h = '<div class="hx-sh-head"><div class="tt"><p class="ey">' + fp(d.period) + ' 기록 · ' + EN[d.country] + '</p><h2 id="hxDlgTitle">' + esc(e.group) + '</h2></div><button class="hx-sh-x" type="button" data-close aria-label="닫기">✕</button></div>'
       + '<div class="hx-sh-nav"><button type="button" data-open="' + (pv ? pv.id : '') + '"' + (pv ? '' : ' disabled') + ' aria-label="한 순위 위 그룹">' + (pv ? '‹ #' + pv.rank + ' ' + esc(pv.name) : '‹') + '</button><button type="button" data-open="' + (nx ? nx.id : '') + '"' + (nx ? '' : ' disabled') + ' aria-label="한 순위 아래 그룹">' + (nx ? '#' + nx.rank + ' ' + esc(nx.name) + ' ›' : '›') + '</button></div>'
       + '<div class="hx-sh-tabs" role="tablist">' + tabs.map(function (t) { return '<button type="button" role="tab" data-dtab="' + t[0] + '" aria-selected="' + (d.tab === t[0]) + '">' + t[1] + '</button>'; }).join('') + '</div>'
       + '<div class="hx-sh-body" id="hxDBody">' + detailTab(d) + '</div>';
@@ -352,7 +342,7 @@
       + '<div><dt>기록 기간</dt><dd>' + (d.hist && d.hist.length ? fp(d.hist[0].period) + '–' + fp(d.period).slice(2) : '…') + '<small>' + (d.hist ? d.hist.length + '개월 (이후 기록 제외)' : '불러오는 중') + '</small></dd></div>'
       + '<div><dt>평가 팀 수</dt><dd>' + d.cmp.curPop + '팀<small>' + (d.prev ? '지난달 ' + d.cmp.prevPop + '팀' : '첫 기록') + '</small></dd></div>'
       + '</dl>';
-    h += '<div class="dwhy"><h3>WHY IT MOVED · 달라진 항목</h3>';
+    h += '<div class="dwhy"><h3>달라진 항목</h3>';
     if (d.prevMissing) h += '<p class="note" style="margin:0">지난달 기록을 불러오지 못해 변화를 계산하지 못했어요.</p>';
     else if (r.kind === 'none') h += '<p class="note" style="margin:0"><b>첫 기록</b> · 비교할 지난달 기록이 없어요.</p>';
     else if (r.kind === 'new') h += '<p class="note" style="margin:0">이번 달 처음 들어와서 비교할 지난달 기록이 없어요.</p>';
@@ -409,11 +399,11 @@
     var fromOpts = ps.filter(function (p) { return RH.monthIndex(p) < RH.monthIndex(d.to); }).reverse();
     var presets = [['전월', 1], ['3개월', 3], ['6개월', 6], ['12개월', 12]].map(function (x) { var f = presetFrom(d.to, x[1]); return f ? '<button class="pill" type="button" data-mfrom="' + f + '" aria-pressed="' + (f === d.from && span === RH.monthIndex(d.to) - RH.monthIndex(f)) + '">' + x[0] + '</button>' : ''; }).join('')
       + '<button class="pill" type="button" data-mfrom="' + ps[0] + '" aria-pressed="' + (d.from === ps[0] && d.from !== presetFrom(d.to, 12)) + '">처음부터</button>';
-    var h = '<div class="cmpbar"><span class="lab">FROM</span><select class="sel" id="mvFrom" aria-label="비교 시작 월">' + fromOpts.map(function (p) { return '<option value="' + p + '"' + (p === d.from ? ' selected' : '') + '>' + fp(p) + '</option>'; }).join('') + '</select>'
-      + '<span class="arrow" aria-hidden="true">→</span><span class="lab">TO</span><strong style="font-size:15px;font-variant-numeric:tabular-nums">' + fp(d.to) + '</strong>'
+    var h = '<div class="cmpbar"><span class="lab">비교 시작</span><select class="sel" id="mvFrom" aria-label="비교 시작 월">' + fromOpts.map(function (p) { return '<option value="' + p + '"' + (p === d.from ? ' selected' : '') + '>' + fp(p) + '</option>'; }).join('') + '</select>'
+      + '<span class="arrow" aria-hidden="true">→</span><span class="lab">기준</span><strong style="font-size:15px;font-variant-numeric:tabular-nums">' + fp(d.to) + '</strong>'
       + '<span class="grow"></span><div class="seg" role="group" aria-label="비교 기간 프리셋">' + presets + '</div></div>';
     h += '<p class="cmpsum"><b>' + fp(d.from) + ' → ' + fp(d.to) + '</b> · ' + esc(KO[c]) + ' 평가 ' + cmp.prevPop + '팀 → ' + cmp.curPop + '팀'
-      + (cmp.exits.length ? ' · 빠진 팀 ' + cmp.exits.length + '팀' : '') + (span > 1 ? '<br><span style="color:var(--tx3);font-size:12.5px">' + span + '개월 동안 쌓인 변화예요. RECORD BOOK의 한 달 기준 기록과는 달라요.</span>' : '') + '</p>';
+      + (cmp.exits.length ? ' · 빠진 팀 ' + cmp.exits.length + '팀' : '') + (span > 1 ? '<br><span style="color:var(--tx3);font-size:12.5px">' + span + '개월 동안 쌓인 변화예요. 역대 기록의 한 달 기준 기록과는 달라요.</span>' : '') + '</p>';
     h += breakBanner(cmp.breaks, '이 비교에는 점수가 크게 뒤바뀐 구간이 들어 있어요');
     h += '<div class="mcats" role="group" aria-label="변화 유형">' + MCATS.map(function (m) {
       var wait = m.key === 'newPeak' && !d.ready;
@@ -424,8 +414,8 @@
     if (!list.length) h += '<div class="empty" style="margin-top:12px"><b>해당하는 그룹이 없어요</b>' + (cat === 'newPeak' && !d.ready ? '이전 기록을 불러오고 있어요.' : '이 기간엔 해당하는 그룹이 없어요.') + '</div>';
     else h += '<ol class="mlist">' + list.slice(0, MV.limit).map(function (r) { return moverCard(r, cat, d); }).join('') + '</ol>'
       + (list.length > MV.limit ? '<button class="hx-more" type="button" data-mmore>더 보기 (' + (list.length - MV.limit) + '팀 더)</button>' : '');
-    // EDITOR'S WATCH
-    h += '<section class="sec"><h2>EDITOR\'S WATCH <small>' + fp(d.to) + ' 기준 · 추천이 아니라, 아래 조건에 맞는 그룹만 모았어요</small></h2>';
+    // 주목할 만한 그룹
+    h += '<section class="sec"><h2>주목할 만한 그룹 <small>' + fp(d.to) + ' 기준 · 추천이 아니라, 아래 조건에 맞는 그룹만 모았어요</small></h2>';
     if (!d.ready) h += '<p class="note">이전 기록을 불러오는 중…</p>';
     else if (!d.watch.ready) h += '<p class="note">' + esc(d.watch.reason) + '.</p>';
     else if (!d.watch.cards.length) h += '<div class="empty"><b>해당하는 그룹이 없어요</b>이번 달엔 아래 조건에 맞는 그룹이 없어요.</div>' + watchRules();
@@ -487,7 +477,7 @@
     var c = S.country, ps = periods(), q = S.q.trim().toLowerCase();
     var cats = HA.CATEGORIES.map(function (m) { return '<button class="pill" type="button" data-rcat="' + m.key + '" aria-pressed="' + (S.cat === m.key) + '">' + m.label + '</button>'; }).join('');
     var ranges = RANGES.map(function (r) { return '<button class="pill" type="button" data-rrange="' + r[0] + '" aria-pressed="' + (S.range === r[0]) + '">' + r[1] + '</button>'; }).join('');
-    var h = '<p class="rec-lead"><b style="color:var(--tx)">RECORD BOOK</b> · 남아 있는 기록을 그대로 집계한 결과예요. 사람이 고른 게 아니라 ' + esc(KO[c]) + ' ' + rec.periods.length + '개월치 전체에 같은 기준을 적용했어요.</p>';
+    var h = '<p class="rec-lead"><b style="color:var(--tx)">역대 기록</b> · 남아 있는 기록을 그대로 집계한 결과예요. 사람이 고른 게 아니라 ' + esc(KO[c]) + ' ' + rec.periods.length + '개월치 전체에 같은 기준을 적용했어요.</p>';
     h += '<div class="rec-bar"><div class="seg" role="group" aria-label="기간">' + ranges + '</div><div class="seg" role="group" aria-label="기록 종류">' + cats + '</div>'
       + '<label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 015.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"/></svg><input id="recQ" type="search" placeholder="그룹 기록 찾기" autocomplete="off" value="' + esc(S.q) + '" aria-label="그룹 기록 검색"></label></div>';
     h += breakBanner(rec.breaks, '기록에서 뺀 구간');
