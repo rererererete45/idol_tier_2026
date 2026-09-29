@@ -118,7 +118,7 @@
   },
   "Dreamcatcher": {
    "img": "img/KR-030.webp",
-   "wiki": ""
+   "wiki": "드림캐쳐(아이돌)"
   },
   "VIVIZ": {
    "img": "img/KR-031.webp",
@@ -306,7 +306,7 @@
   },
   "NAVILLERA": {
    "img": "img/KR-080.webp",
-   "wiki": ""
+   "wiki": "나빌레라(아이돌)"
   },
   "BEWAVE": {
    "img": "img/KR-081.webp",
@@ -335,6 +335,14 @@
   "Candy Shop": {
    "img": "img/KR-061.webp",
    "wiki": "Candy Shop(아이돌)"
+  },
+  "UNICODE": {
+   "img": "img/KR-083.webp",
+   "wiki": "유니코드(아이돌)"
+  },
+  "SAY MY NAME": {
+   "img": "img/KR-039.webp",
+   "wiki": "SAY MY NAME(아이돌)"
   }
  },
  "JP": {
@@ -735,6 +743,10 @@
    "wiki": "",
    "src": "official",
    "page": "https://ruruneige.com/"
+  },
+  "Merry BAD TUNE.": {
+   "img": "img/JP-033.png",
+   "wiki": ""
   }
  }
 }
