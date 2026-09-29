@@ -16,6 +16,13 @@ class Handler(SimpleHTTPRequestHandler):
             return p + ".html"
         return p
 
+    def end_headers(self):
+        # 로컬 개발 서버는 절대 캐시하지 않는다 — Python http.server 는 Cache-Control 을 안 보내서
+        # 브라우저가 Last-Modified 기준 휴리스틱 캐싱을 적용해, ?v= 를 올려도 HTML 문서 자체가
+        # 캐시된 채로 남아 옛 스크립트 버전을 계속 참조하는 문제가 생긴다.
+        self.send_header("Cache-Control", "no-store")
+        SimpleHTTPRequestHandler.end_headers(self)
+
     def log_message(self, *args):
         pass
 

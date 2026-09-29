@@ -4,7 +4,7 @@
  * - REPLACE_NAV=false 로 바꾸면 예전처럼 브라우저 기록에 쌓인다. */
 (function () {
   'use strict';
-  var SITE_V = '20260953', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
+  var SITE_V = '20260955', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
   var script = document.currentScript, base = '';
   if (script && script.src) base = script.src.replace(/js\/site-nav\.js.*$/, '');
 
@@ -230,10 +230,10 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260953'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260953'); });
-      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260953'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260953'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260955'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260955'); });
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260955'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260955'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });
@@ -290,7 +290,7 @@
   var IDX = null, loading = false, active = -1;
   function loadIdx() {
     if (IDX || loading) return; loading = true;
-    Promise.all([fetch(base + 'data/kr_db.json').then(function (r) { return r.json(); }), fetch(base + 'data/jp_db.json').then(function (r) { return r.json(); })]).then(function (r) {
+    Promise.all([fetch(base + 'data/kr_db.json?v=' + SITE_V).then(function (r) { return r.json(); }), fetch(base + 'data/jp_db.json?v=' + SITE_V).then(function (r) { return r.json(); })]).then(function (r) {
       var kr = r[0].korea || r[0], jp = r[1].japan || r[1];
       IDX = [];
       (Array.isArray(kr) ? kr : []).forEach(function (g) { IDX.push({ c: 'kr', n: g['그룹'], t: g['티어'], s: g['총점'] }); });

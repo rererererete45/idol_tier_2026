@@ -29,7 +29,7 @@
   var IMGS = null; // data/namu_images.json: {KR:{name:{img}}, JP:{...}} — 사진이 있는 그룹만 <img> 를 만든다(404 방지)
   function loadImgs() {
     if (IMGS) return Promise.resolve(IMGS);
-    return fetch(base + 'data/namu_images.json').then(function (r) { return r.json(); }).catch(function () { return {}; }).then(function (j) { IMGS = j || {}; return IMGS; });
+    return fetch(base + 'data/namu_images.json?v=' + IM.version).then(function (r) { return r.json(); }).catch(function () { return {}; }).then(function (j) { IMGS = j || {}; return IMGS; });
   }
   function imgOf(e) {
     var r = IMGS && IMGS[e.country] && IMGS[e.country][e.name];

@@ -492,7 +492,7 @@
   // 사진이 있는 그룹만 <img> 를 만든다(data/namu_images.json) — 없는 파일 요청으로 404 가 나지 않게.
   var IMGS = {};
   function loadImgs() {
-    return fetch('data/namu_images.json').then(function (r) { return r.json(); }).catch(function () { return {}; }).then(function (j) { IMGS = j || {}; });
+    return fetch('data/namu_images.json?v=' + IM.version).then(function (r) { return r.json(); }).catch(function () { return {}; }).then(function (j) { IMGS = j || {}; });
   }
   function imgHtml(p) {
     var r = IMGS[p.country] && IMGS[p.country][p.group];
