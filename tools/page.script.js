@@ -8,6 +8,15 @@ const MI=CFG.country==='KR'?5:4; // 현재기세 항목 위치
 A.sort((a,b)=>b.s-a.s||b.v[MI]-a.v[MI]||String(a.id).localeCompare(String(b.id)));
 let pv=null,pr=0;A.forEach((o,i)=>{if(o.s!==pv){pr=i+1;pv=o.s}o.r=pr});
 
+// 한글·영문 별칭 검색: "에스파"로 aespa 를 찾을 수 있게. 없으면 그룹 이름만으로 검색.
+let ALIAS=null;
+fetch('data/aliases.json?v=20260965').then(r=>r.json()).then(j=>{ALIAS=(j&&j[CFG.country])||{};render()}).catch(()=>{ALIAS={}});
+function matchesQuery(o,v){
+  if(o.n.toLowerCase().includes(v))return true;
+  const al=ALIAS&&ALIAS[o.id];
+  return !!al&&al.some(a=>a.toLowerCase().includes(v));
+}
+
 function statusBucket(s){
   if(CFG.country==='JP'){
     if(s.startsWith('해산예정'))return '해산예정';
@@ -197,7 +206,7 @@ function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','
 
 function render(){
   const src=AHIST||A;
-  let list=src.filter(o=>(!qs||o.n.toLowerCase().includes(qs))&&FACETS.every(f=>F[f.key]==='ALL'||fvals(o,f).includes(F[f.key])));
+  let list=src.filter(o=>(!qs||matchesQuery(o,qs))&&FACETS.every(f=>F[f.key]==='ALL'||fvals(o,f).includes(F[f.key])));
   const board=document.getElementById('board');
   if(!list.length){board.innerHTML='';document.getElementById('empty').hidden=false;return}
   document.getElementById('empty').hidden=true;

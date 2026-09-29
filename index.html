@@ -18,11 +18,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/home.css?v=20260964">
+<link rel="stylesheet" href="css/home.css?v=20260965">
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">이 사이트는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260964"></script>
+<script src="js/site-nav.js?v=20260965"></script>
 <div class="wrap">
 
 <section class="hero" aria-labelledby="ttl">
@@ -152,28 +152,39 @@
     return { c: c, id: r.id, name: r['그룹'], rank: r['순위'], tier: r['티어'], score: r['총점'], style: String(r['스타일'] || '').split(/[\/,·]/).map(function (s) { return s.trim(); }).filter(Boolean),
       active: !/활동종료|해산(?!예정)/.test(r['활동상태'] || ''), song: songs[0] && songs[0].spotify_url || '' };
   }
+  var ALIAS = { KR: {}, JP: {} };
   Promise.all([
     fetch('data/kr_db.json?v=' + V).then(function (r) { return r.json(); }),
     fetch('data/jp_db.json?v=' + V).then(function (r) { return r.json(); }),
-    fetch('data/namu_images.json?v=' + V).then(function (r) { return r.json(); }).catch(function () { return {}; })
+    fetch('data/namu_images.json?v=' + V).then(function (r) { return r.json(); }).catch(function () { return {}; }),
+    fetch('data/aliases.json?v=' + V).then(function (r) { return r.json(); }).catch(function () { return { KR: {}, JP: {} }; })
   ]).then(function (r) {
     var kr = r[0].korea || r[0], jp = Array.isArray(r[1]) ? r[1] : (r[1].japan || []);
     G.KR = kr.map(function (x) { return norm('KR', x); }); G.JP = jp.map(function (x) { return norm('JP', x); });
     ['KR', 'JP'].forEach(function (c) { G[c].sort(function (a, b) { return a.rank - b.rank || (a.id < b.id ? -1 : 1); }); });
-    IMG = r[2]; all = G.KR.concat(G.JP);
+    IMG = r[2]; ALIAS = r[3] || ALIAS; all = G.KR.concat(G.JP);
     buildBelt(); renderLadder(); pickToday(false); buildFan(); buildMap();
   }).catch(function () {
     $('ladder').innerHTML = '<p style="color:var(--tx2);font-size:14px">데이터를 불러오지 못했어요. 새로고침해 주세요.</p>';
     $('today').closest('section').hidden = true;
   });
 
-  /* ---------- 검색 ---------- */
+  /* ---------- 검색: 그룹 이름 + 한글·영문 별칭("에스파"로 aespa 찾기) ---------- */
   var q = $('q'), fr = $('fr'), on = -1;
+  function nameHits(g, v) { // 0=이름/별칭이 v로 시작, 1=포함, -1=매치 없음
+    var n = g.name.toLowerCase(), i = n.indexOf(v);
+    if (i === 0) return 0; if (i > 0) return 1;
+    var al = (ALIAS[g.c] || {})[g.id] || [];
+    for (var k = 0; k < al.length; k++) {
+      var a = al[k].toLowerCase(), j = a.indexOf(v);
+      if (j === 0) return 0; if (j > 0) return 1;
+    }
+    return -1;
+  }
   function results() {
     var v = q.value.trim().toLowerCase(); if (!v) { fr.hidden = true; q.setAttribute('aria-expanded', 'false'); return; }
-    var list = all.filter(function (g) { return g.name.toLowerCase().indexOf(v) !== -1; }).sort(function (a, b) {
-      return (a.name.toLowerCase().indexOf(v) === 0 ? 0 : 1) - (b.name.toLowerCase().indexOf(v) === 0 ? 0 : 1) || a.rank - b.rank;
-    }).slice(0, 7);
+    var list = all.map(function (g) { return { g: g, hit: nameHits(g, v) }; }).filter(function (x) { return x.hit >= 0; })
+      .sort(function (a, b) { return a.hit - b.hit || a.g.rank - b.g.rank; }).map(function (x) { return x.g; }).slice(0, 7);
     on = list.length ? 0 : -1;
     fr.innerHTML = list.length ? list.map(function (g, i) {
       return '<li role="option"><a href="' + href(g) + '" class="' + (i === 0 ? 'on' : '') + '">' + av(g, '', 'width:38px;height:38px;border-radius:12px') + '<span class="nm">' + esc(g.name) + '</span>' + tchip(g.tier) + '<small>' + FLAG[g.c] + ' ' + g.score + '점</small></a></li>';

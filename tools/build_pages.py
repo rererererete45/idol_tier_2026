@@ -89,7 +89,7 @@ KR = dict(
     navhref="./jp", navtext="일본 여자아이돌 티어리스트 보기 →",
     font=FONT_KR, fs=FS_KR,
     footer=(
-        "<p>점수는 Circle Chart·Melon 등 국내음원 성적, 앨범 판매·팬덤 구매력, 국내외 단독공연·투어 규모, Spotify·해외 차트·글로벌 투어 소비력, 대중 인지도, 최근 12개월 기세를 교차 반영한 상대평가 지수입니다. 점수·티어는 2026년 9월 평가 스냅샷이며, 멤버수·활동상태 등 상세 정보는 2026-09-28 기준 공식 사이트·소속사 공지·보도를 반영했습니다. 카드에 <b style=\"color:var(--warn)\">부분검증</b>이 표시된 항목은 최신 공식 정보 재확인이 필요합니다.</p>\n"
+        "<p>점수는 Circle Chart·Melon 등 국내음원 성적(최근 12개월 반복성·지속기간 중시), 앨범 판매·팬덤 구매력, 국내외 단독공연·투어 규모, Spotify·해외 차트·글로벌 투어 소비력, 대중 인지도, 최근 90일 기세를 교차 반영한 상대평가 지수입니다. 점수·티어는 2026-09-15 기준 평가이며, 멤버수·활동상태 등 상세 정보는 2026-09-28 기준 공식 사이트·소속사 공지·보도를 반영했습니다. 카드에 <b style=\"color:var(--warn)\">부분검증</b>이 표시된 항목은 최신 공식 정보 재확인이 필요합니다.</p>\n"
         "  <p>카드를 클릭하면 데뷔일·소속사·멤버수·대표곡·SNS 등을 담은 그룹 상세 정보가 열립니다. 상세 화면의 ‘에디터 코멘트’는 객관 데이터와 별개의 주관적 해석이며 순위·티어·점수에는 영향을 주지 않습니다. 프로필 사진은 나무위키 문서의 대표 이미지를 작게 축소해 저장한 것으로, 출처는 상세 화면에 표기했으며 저작권은 각 권리자에게 있습니다.</p>\n"
         "  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결됩니다. PC에서는 새 탭으로 열리고, 모바일에서는 현재 화면에서 바로 연결되어 해당 앱이 설치되어 있으면 자동으로 앱이 열립니다(앱이 없으면 웹페이지로 이동). 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>"
     ),
@@ -120,7 +120,7 @@ JP = dict(
     navhref="./kr", navtext="한국 여자아이돌 티어리스트 보기 →",
     font=FONT_JP, fs=FS_JP,
     footer=(
-        "<p>점수는 공개 공연 규모·투어 회차·매진 여부, CD/특전·팬클럽 구매력, 대중 인지도, 스트리밍·SNS 화제량, 최근 12개월 성장세, 메이저 미디어 존재감을 교차 반영한 상대평가 지수입니다. 점수·티어는 2026년 9월 평가 스냅샷이며, 멤버수·활동상태 등 상세 정보는 2026-09-28 기준 공식 사이트·공지·보도를 반영했습니다. 카드에 <b style=\"color:var(--warn)\">부분검증·추가검증필요·인원변동형</b>이 표시된 항목은 최신 공식 정보 재확인이 필요하며, 확인되지 않은 정보는 '확인필요'로 표기했습니다.</p>\n"
+        "<p>점수는 공개 공연 규모·투어 회차·매진 여부, CD/특전·팬클럽 구매력, 대중 인지도, 스트리밍·SNS 화제량, 최근 90일 기세, 메이저 미디어 존재감을 교차 반영한 상대평가 지수입니다. 점수·티어는 2026-09-15 기준 평가이며, 멤버수·활동상태 등 상세 정보는 2026-09-28 기준 공식 사이트·공지·보도를 반영했습니다. 카드에 <b style=\"color:var(--warn)\">부분검증·추가검증필요·인원변동형</b>이 표시된 항목은 최신 공식 정보 재확인이 필요하며, 확인되지 않은 정보는 '확인필요'로 표기했습니다.</p>\n"
         "  <p>카드를 클릭하면 결성/데뷔일·소속/운영·멤버수·대표곡·SNS 등을 담은 그룹 상세 정보가 열립니다. 상세 화면의 ‘에디터 코멘트’는 객관 데이터와 별개의 주관적 해석이며 순위·티어·점수에는 영향을 주지 않습니다. 프로필 사진은 나무위키 문서의 대표 이미지(문서가 없는 그룹은 공식 사이트의 공유용 대표 이미지)를 작게 축소해 저장한 것으로(사진을 구하지 못한 그룹은 이니셜로 대체), 출처는 상세 화면에 표기했으며 저작권은 각 권리자에게 있습니다.</p>\n"
         "  <p>Spotify · YouTube 버튼은 채널이나 아티스트 페이지가 아니라 각 서비스의 그룹명 검색 결과로 연결됩니다. PC에서는 새 탭으로 열리고, 모바일에서는 현재 화면에서 바로 연결되어 해당 앱이 설치되어 있으면 자동으로 앱이 열립니다(앱이 없으면 웹페이지로 이동). 나무위키 버튼은 그룹명 문서로 바로 이동하며, 문서가 없는 경우 나무위키 검색 화면이 뜹니다.</p>"
     ),
@@ -185,7 +185,7 @@ def build(page, data):
     }
     for k, v in rep.items():
         h = h.replace(k, v)
-    html = h + '<script src="js/idol-match.js?v=20260964"></script>\n<script src="js/idol-recommendation-core.js?v=20260964"></script>\n<script src="js/same-scene.js?v=20260964"></script>\n<script src="js/rank-history.js?v=20260964"></script>\n<script src="js/history-analytics.js?v=20260964"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
+    html = h + '<script src="js/idol-match.js?v=20260965"></script>\n<script src="js/idol-recommendation-core.js?v=20260965"></script>\n<script src="js/same-scene.js?v=20260965"></script>\n<script src="js/rank-history.js?v=20260965"></script>\n<script src="js/history-analytics.js?v=20260965"></script>\n' + "<script>\nconst D=" + dumps(data) + ";\nconst CFG=" + dumps(page["cfg"]) + ";\n" + SCRIPT + "</script>\n</body>\n</html>\n"
     open(os.path.join(ROOT, page["file"]), "w", encoding="utf-8", newline="\n").write(html)
     noimg = [d["n"] for d in data if not d["img"]]
     print(page["file"], len(data), "groups; without photo:", len(noimg))

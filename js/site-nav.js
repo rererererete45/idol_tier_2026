@@ -4,7 +4,7 @@
  * - REPLACE_NAV=false 로 바꾸면 예전처럼 브라우저 기록에 쌓인다. */
 (function () {
   'use strict';
-  var SITE_V = '20260964', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
+  var SITE_V = '20260965', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
   var script = document.currentScript, base = '';
   if (script && script.src) base = script.src.replace(/js\/site-nav\.js.*$/, '');
 
@@ -230,10 +230,10 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260964'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260964'); });
-      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260964'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260964'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260965'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260965'); });
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260965'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260965'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });
@@ -287,23 +287,39 @@
 
   /* ---------- 그룹 검색 ---------- */
   var sr = document.getElementById('snSr'), q = document.getElementById('snQ'), res = document.getElementById('snRes'), sBtn = document.getElementById('snSearch');
-  var IDX = null, loading = false, active = -1;
+  var IDX = null, loading = false, active = -1, ALIAS = { KR: {}, JP: {} };
   function loadIdx() {
     if (IDX || loading) return; loading = true;
-    Promise.all([fetch(base + 'data/kr_db.json?v=' + SITE_V).then(function (r) { return r.json(); }), fetch(base + 'data/jp_db.json?v=' + SITE_V).then(function (r) { return r.json(); })]).then(function (r) {
+    Promise.all([
+      fetch(base + 'data/kr_db.json?v=' + SITE_V).then(function (r) { return r.json(); }),
+      fetch(base + 'data/jp_db.json?v=' + SITE_V).then(function (r) { return r.json(); }),
+      fetch(base + 'data/aliases.json?v=' + SITE_V).then(function (r) { return r.json(); }).catch(function () { return { KR: {}, JP: {} }; })
+    ]).then(function (r) {
       var kr = r[0].korea || r[0], jp = r[1].japan || r[1];
+      ALIAS = r[2] || ALIAS;
       IDX = [];
-      (Array.isArray(kr) ? kr : []).forEach(function (g) { IDX.push({ c: 'kr', n: g['그룹'], t: g['티어'], s: g['총점'] }); });
-      (Array.isArray(jp) ? jp : []).forEach(function (g) { IDX.push({ c: 'jp', n: g['그룹'], t: g['티어'], s: g['총점'] }); });
+      (Array.isArray(kr) ? kr : []).forEach(function (g) { IDX.push({ c: 'kr', id: g.id, n: g['그룹'], t: g['티어'], s: g['총점'] }); });
+      (Array.isArray(jp) ? jp : []).forEach(function (g) { IDX.push({ c: 'jp', id: g.id, n: g['그룹'], t: g['티어'], s: g['총점'] }); });
       render();
     }).catch(function () { IDX = []; loading = false; render(); });
   }
   function urlOf(x) { return base + PAGES[x.c] + '?group=' + encodeURIComponent(x.n); }
+  function nameHits(x, v) { // 0=이름/별칭이 v로 시작, 1=포함, -1=매치 없음
+    var n = x.n.toLowerCase(), i = n.indexOf(v);
+    if (i === 0) return 0; if (i > 0) return 1;
+    var al = (ALIAS[x.c.toUpperCase()] || {})[x.id] || [];
+    for (var k = 0; k < al.length; k++) {
+      var a = al[k].toLowerCase(), j = a.indexOf(v);
+      if (j === 0) return 0; if (j > 0) return 1;
+    }
+    return -1;
+  }
   function render() {
     var v = q.value.trim().toLowerCase(), list;
     if (!IDX) { res.innerHTML = '<li class="none">불러오는 중…</li>'; return; }
     if (!v) list = IDX.slice().sort(function (a, b) { return b.s - a.s; }).slice(0, 6);
-    else list = IDX.filter(function (x) { return x.n.toLowerCase().indexOf(v) !== -1; }).sort(function (a, b) { return (a.n.toLowerCase().indexOf(v) === 0 ? 0 : 1) - (b.n.toLowerCase().indexOf(v) === 0 ? 0 : 1) || b.s - a.s; }).slice(0, 8);
+    else list = IDX.map(function (x) { return { x: x, hit: nameHits(x, v) }; }).filter(function (o) { return o.hit >= 0; })
+      .sort(function (a, b) { return a.hit - b.hit || b.x.s - a.x.s; }).map(function (o) { return o.x; }).slice(0, 8);
     active = list.length ? 0 : -1;
     res.innerHTML = (list.length ? list.map(function (x, i) {
       return '<li><a href="' + urlOf(x) + '" class="' + (i === 0 ? 'on' : '') + '"><span class="f ' + x.c + '">' + x.c.toUpperCase() + '</span>' + x.n.replace(/[&<>]/g, '') + '<small>' + x.t + ' · ' + x.s + '</small></a></li>';
