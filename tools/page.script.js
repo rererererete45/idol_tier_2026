@@ -152,6 +152,28 @@ function barsHTML(o){
   }).join('');
 }
 let HD=null; // 전월 대비 순위 변동(id -> delta). 로딩 전/실패 시 null
+let HD8=null; // 최근(또는 보고 있는 달 기준) 8개월 점수 흐름: id -> [점수,...] 오래된 → 최신
+function trendBars(o){
+  const arr=HD8&&HD8[o.id];
+  if(!arr||arr.length<2)return '';
+  const lo=Math.min(...arr),hi=Math.max(...arr),span=hi-lo||1;
+  return '<span class="rtrend8" style="color:'+tierClr(o)+'" title="최근 '+arr.length+'개월 점수 흐름" aria-hidden="true">'+arr.map(v=>'<i style="height:'+(3+Math.round((v-lo)/span*11))+'px"></i>').join('')+'</span>';
+}
+// 랭킹 행의 "등급 앞" 8개월 점수 흐름. period 를 생략하면 최신 달 기준 8개월.
+function loadTrend8(period){
+  if(!window.RankHistory)return;
+  RankHistory.loadHistoryIndex().then(idx=>{
+    const all=idx&&idx[CFG.country];if(!all||all.length<2)return null;
+    const target=period||all[all.length-1],i=all.indexOf(target);if(i<0)return null;
+    const ps=all.slice(Math.max(0,i-7),i+1);
+    return Promise.all(ps.map(p=>RankHistory.loadCountrySnapshot(CFG.country,p)));
+  }).then(snaps=>{
+    if(!snaps)return;
+    const m={};
+    snaps.filter(Boolean).forEach(s=>{s.groups.forEach(g=>{(m[g.id]=m[g.id]||[]).push(g.score)})});
+    HD8=m;render();
+  }).catch(()=>{});
+}
 function rkBadge(o){return HD&&window.RankHistory&&!AHIST?RankHistory.renderRankDeltaBadge(HD[o.id]):''}
 // RankingProfileRow: 큰 아이콘 카드 대신 한 줄 프로필 바. 사진은 식별 정보이고 순위·티어·점수·능력치가 콘텐츠다.
 function card(o){
@@ -164,7 +186,7 @@ function card(o){
    +'<button class="cmpbtn'+(cmpOn?' on':'')+'" data-cmp="'+esc(o.n)+'" aria-pressed="'+cmpOn+'" aria-label="비교에 추가">'+(cmpOn?'✓':'+')+'</button>'
    +'<span class="rankcol"><span class="rank">#'+o.r+'</span><span class="rkslot">'+rkBadge(o)+'</span></span>'
    +photo
-   +'<div class="rbody"><p class="rline1"><span class="nm">'+esc(o.n)+'</span><span class="rtier" style="color:'+tierClr(o)+'">'+esc(o.tier)+'</span></p>'
+   +'<div class="rbody"><p class="rline1"><span class="nm">'+esc(o.n)+'</span>'+trendBars(o)+'<span class="rtier" style="color:'+tierClr(o)+'">'+esc(o.tier)+'</span></p>'
    +(line2?'<p class="rline2">'+esc(line2)+'</p>':'')+'</div>'
    +'<span class="rradar">'+miniRadarSVG(o)+'</span>'
    +'<span class="rscorecol"><span class="tot"><span class="n">'+o.s+'</span><span class="u">/100</span></span>'
@@ -230,7 +252,7 @@ function detailHTML(o){
     +'<div class="bars">'+barsHTML(o)+'</div>'
     +'<div class="dpgrid">'+info+'</div>'
     +((o.intro||o.editor)?'<div class="dpedit">'
-      +(o.intro?'<p class="dpedit-v">'+esc(o.intro)+'</p>':'')
+      +(o.intro?'<p class="dpedit-k">소개글</p><p class="dpedit-v">'+esc(o.intro)+'</p>':'')
       +(o.editor?'<p class="dpedit-k">에디터 코멘트</p><p class="dpedit-v">'+esc(o.editor)+'</p>':'')
       +'</div>':'')
     +'<div class="acts">'+officialBtn
@@ -630,6 +652,7 @@ if(window.RankHistory){
     last.groups.forEach(g=>{m[g.id]=RankHistory.getRankDelta(g,idx[g.id],true)});
     HD3=m;render();
   }).catch(()=>{});
+  loadTrend8();
 
   /* ---- 월별 순위 보기: 랭킹 화면에서 바로 과거 달을 골라 그 달 순위 그대로 본다(HISTORY 의 TIME MACHINE을 여기로 옮김) ---- */
   (function(){
@@ -653,6 +676,7 @@ if(window.RankHistory){
     }
     function showMonth(p){
       cur=p;sel.value=p;sync();
+      loadTrend8(p);
       const my=++tok,isLatest=p===periods[periods.length-1];
       if(isLatest){AHIST=null;render();return}
       RankHistory.loadCountrySnapshot(CFG.country,p).then(snap=>{

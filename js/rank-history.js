@@ -6,7 +6,7 @@
  * window.RankHistory 로만 노출한다. */
 (function (global) {
   'use strict';
-  var VERSION = '20260959';
+  var VERSION = '20260960';
   var script = document.currentScript, base = script && script.src ? script.src.replace(/js\/rank-history\.js.*$/, '') : '';
   var DIR = base + 'data/history/';
 
@@ -287,7 +287,7 @@
     + '.rh-radartl-step:hover:not(:disabled){background:var(--card2,#272727)}'
     + '.rh-radartl-step:disabled{opacity:.3;cursor:default}'
     + '.rh-radartl input[type=range]{flex:1;min-width:0;height:30px;accent-color:#1ed760;cursor:pointer}'
-    + '.rh-radartl-play{width:100%;min-height:38px;border:0;border-radius:9999px;background:#1ed760;color:#000;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;transition:background .15s,box-shadow .15s}'
+    + '.rh-radartl-play{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:#1ed760;color:#000;font-family:inherit;font-size:13px;cursor:pointer;display:grid;place-items:center;transition:background .15s,box-shadow .15s}'
     + '.rh-radartl-play:hover{background:#3be477}'
     + '.rh-radartl-play[aria-pressed="true"]{background:var(--surf2,#1f1f1f);color:#1ed760;box-shadow:inset 0 0 0 1px #1ed760}';
   function injectCss() {
@@ -334,11 +334,11 @@
       slider.value = idx;
       prevBtn.disabled = idx <= 0; nextBtn.disabled = idx >= hist.length - 1;
     }
-    function stop() { if (playTimer) { clearTimeout(playTimer); playTimer = 0; } playBtn.textContent = '▶ 시계열 재생'; playBtn.setAttribute('aria-pressed', 'false'); }
+    function stop() { if (playTimer) { clearTimeout(playTimer); playTimer = 0; } playBtn.textContent = '▶'; playBtn.setAttribute('aria-pressed', 'false'); playBtn.setAttribute('aria-label', '재생'); }
     function stepPlay() {
       idx = idx >= hist.length - 1 ? 0 : idx + 1;
-      sync(650);
-      if (idx < hist.length - 1) playTimer = setTimeout(stepPlay, 780); else stop();
+      sync(220);
+      if (idx < hist.length - 1) playTimer = setTimeout(stepPlay, 260); else stop();
     }
     var box = document.createElement('div');
     box.id = 'dpRadarTl';
@@ -346,8 +346,8 @@
     box.innerHTML = '<span class="rh-radartl-lab"></span>'
       + '<div class="rh-radartl-row"><button type="button" class="rh-radartl-step" aria-label="이전 달">‹</button>'
       + '<input type="range" min="0" max="' + (hist.length - 1) + '" step="1" aria-label="' + esc(fmtPeriod(hist[0].period)) + '부터 ' + esc(fmtPeriod(hist[hist.length - 1].period)) + '까지, 월 선택">'
-      + '<button type="button" class="rh-radartl-step" aria-label="다음 달">›</button></div>'
-      + '<button type="button" class="rh-radartl-play" aria-pressed="false">▶ 시계열 재생</button>';
+      + '<button type="button" class="rh-radartl-play" aria-pressed="false" aria-label="재생">▶</button>'
+      + '<button type="button" class="rh-radartl-step" aria-label="다음 달">›</button></div>';
     wrap.insertAdjacentElement('afterend', box);
     var lab = box.querySelector('.rh-radartl-lab'), slider = box.querySelector('input[type=range]'),
       prevBtn = box.querySelector('.rh-radartl-row button:first-child'), nextBtn = box.querySelector('.rh-radartl-row button:last-child'), playBtn = box.querySelector('.rh-radartl-play');
@@ -356,9 +356,9 @@
     nextBtn.addEventListener('click', function () { stop(); idx = Math.min(hist.length - 1, idx + 1); sync(350); });
     playBtn.addEventListener('click', function () {
       if (playTimer) { stop(); return; }
-      playBtn.textContent = '❚❚ 정지'; playBtn.setAttribute('aria-pressed', 'true');
-      idx = idx >= hist.length - 1 ? 0 : idx + 1; sync(650);
-      playTimer = setTimeout(stepPlay, 780);
+      playBtn.textContent = '❚❚'; playBtn.setAttribute('aria-pressed', 'true'); playBtn.setAttribute('aria-label', '일시정지');
+      idx = idx >= hist.length - 1 ? 0 : idx + 1; sync(220);
+      playTimer = setTimeout(stepPlay, 260);
     });
     sync(0);
   }
