@@ -20,10 +20,10 @@ li small{color:#7c7c7c;margin-left:8px}
 <h1>HISTORY SUITE 엔진 테스트</h1>
 <p id="sum">실행 중…</p>
 <ul id="out"></ul>
-<script src="js/idol-match.js?v=20260960"></script>
-<script src="js/idol-recommendation-core.js?v=20260960"></script>
-<script src="js/rank-history.js?v=20260960"></script>
-<script src="js/history-analytics.js?v=20260960"></script>
+<script src="js/idol-match.js?v=20260962"></script>
+<script src="js/idol-recommendation-core.js?v=20260962"></script>
+<script src="js/rank-history.js?v=20260962"></script>
+<script src="js/history-analytics.js?v=20260962"></script>
 <script>
 (async function () {
   var IM = window.IdolMatch, R = window.IdolRec, RH = window.RankHistory, HA = window.HistoryAnalytics, res = [];
@@ -280,8 +280,8 @@ li small{color:#7c7c7c;margin-left:8px}
 
   /* ---------- 구간 경계(breaks) ---------- */
   var BRK = await RH.loadBreaks();
-  t('breaks.json: KR/JP 각각 2025-12 → 2026-01 이 등록되어 있고 근거 수치가 있음', function () {
-    return ['KR', 'JP'].every(function (c) { var b = BRK[c] && BRK[c][0]; return b && b.from === '2025-12' && b.to === '2026-01' && b.reason && b.evidence && b.excludeFromMonthlyRecords === true; });
+  t('breaks.json: 2025-12→2026-01 은 재평가(2026-09-29)로 해소돼 현재는 KR/JP 모두 등록된 경계가 없음', function () {
+    return Array.isArray(BRK.KR) && Array.isArray(BRK.JP) && BRK.KR.length === 0 && BRK.JP.length === 0;
   });
   t('합성: 경계 구간의 점수 하락/순위 하락은 단월 기록에서 제외, 경계 밖 구간은 유지', function () {
     var h = [['2025-11', 1, 90], ['2025-12', 1, 90], ['2026-01', 9, 60], ['2026-02', 8, 62]].map(function (x) { return { period: x[0], rank: x[1], score: x[2], tier: 'S', group: 'G' }; });
@@ -294,27 +294,26 @@ li small{color:#7c7c7c;margin-left:8px}
     var pops = { '2025-11': 9, '2025-12': 9, '2026-01': 9, '2026-02': 9 };
     return HA.computeGroupRecord('KR', h, pops, 4, []).riseStreak.length === 3 && HA.computeGroupRecord('KR', h, pops, 4, [{ from: '2025-12', to: '2026-01' }]).riseStreak.length === 1;
   });
-  t('실제(KR): RECORD BOOK 단월 최대 점수 하락에 2025-12→2026-01 구간(-23 등)이 들어가지 않음', function () {
+  t('실제(KR): 등록된 경계가 없어 RECORD BOOK 은 breaks 유무와 무관하게 같은 결과', function () {
     var withB = HA.computeRecords('KR', snapsKR, { breaks: BRK.KR }), noB = HA.computeRecords('KR', snapsKR);
-    var loss = function (r) { return r.boards.filter(function (b) { return b.key === 'scoreLoss'; })[0]; };
-    var top = loss(withB).rows[0], topNo = loss(noB).rows[0];
-    return (topNo.value >= 20 && topNo.periods[0] === '2026-01' && top.value < 15 && loss(withB).rows.every(function (r) { return r.periods[0] !== '2026-01'; })) || (topNo.value + '/' + top.value + ' ' + top.periods);
+    var loss = function (r) { return r.boards.filter(function (b) { return b.key === 'scoreLoss'; })[0].rows[0]; };
+    return loss(withB).value === loss(noB).value && loss(withB).periods[0] === loss(noB).periods[0];
   });
-  t('실제(JP): 단월 최대 점수 상승에서 MORE STAR +25(2026-01)가 빠짐', function () {
+  t('실제(JP): 등록된 경계가 없어 단월 최대 점수 상승 기록도 breaks 유무와 무관하게 같은 결과', function () {
     var b = function (r) { return r.boards.filter(function (x) { return x.key === 'scoreGain'; })[0].rows[0]; };
-    return b(HA.computeRecords('JP', snapsJP)).value === 25 && b(HA.computeRecords('JP', snapsJP, { breaks: BRK.JP })).value < 25;
+    return b(HA.computeRecords('JP', snapsJP)).value === b(HA.computeRecords('JP', snapsJP, { breaks: BRK.JP })).value;
   });
-  t('records.breaks: 전체 범위에는 1개, 2026 범위에는 0개(경계가 범위 밖)', function () {
-    return HA.computeRecords('KR', snapsKR, { breaks: BRK.KR }).breaks.length === 1 && HA.computeRecords('KR', snapsKR, { range: '2026', breaks: BRK.KR }).breaks.length === 0;
+  t('records.breaks: 등록된 경계가 없어 전체·2026 범위 모두 0개', function () {
+    return HA.computeRecords('KR', snapsKR, { breaks: BRK.KR }).breaks.length === 0 && HA.computeRecords('KR', snapsKR, { range: '2026', breaks: BRK.KR }).breaks.length === 0;
   });
-  t('compareSnapshots.breaks: 2025-12→2026-01 비교에만 붙고 다른 달에는 없음, 넓은 범위 비교에는 포함', function () {
+  t('compareSnapshots.breaks: 등록된 경계가 없어 2025-12→2026-01 비교를 포함해 어디에도 없음', function () {
     var i12 = idx.KR.indexOf('2025-12');
     var c1 = HA.compareSnapshots('KR', snapsKR[i12], snapsKR[i12 + 1], { breaks: BRK.KR }), c2 = HA.compareSnapshots('KR', snapsKR[i12 + 1], snapsKR[i12 + 2], { breaks: BRK.KR }), c3 = HA.compareSnapshots('KR', snapsKR[0], snapsKR[snapsKR.length - 1], { breaks: BRK.KR });
-    return c1.breaks.length === 1 && c2.breaks.length === 0 && c3.breaks.length === 1;
+    return c1.breaks.length === 0 && c2.breaks.length === 0 && c3.breaks.length === 0;
   });
-  t('EDITOR\'S WATCH: 경계를 포함한 4개월(2026-03)은 계산하지 않고 사유를 알림, 2026-04 는 계산', function () {
+  t('EDITOR\'S WATCH: 등록된 경계가 없어 2026-03·2026-04 모두 정상 계산', function () {
     var a = HA.computeEditorsWatch('KR', snapsKR, '2026-03', BRK.KR), b = HA.computeEditorsWatch('KR', snapsKR, '2026-04', BRK.KR);
-    return !a.ready && /구간/.test(a.reason) && b.ready;
+    return a.ready && b.ready;
   });
 
   var pass = res.filter(function (r) { return r[1]; }).length;
