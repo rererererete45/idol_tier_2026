@@ -4,7 +4,7 @@
  * - REPLACE_NAV=false 로 바꾸면 예전처럼 브라우저 기록에 쌓인다. */
 (function () {
   'use strict';
-  var SITE_V = '20260948', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
+  var SITE_V = '20260951', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
   var script = document.currentScript, base = '';
   if (script && script.src) base = script.src.replace(/js\/site-nav\.js.*$/, '');
 
@@ -97,8 +97,8 @@
     + '.sn-dd{position:relative}'
     + '.sn-dd .car{width:10px;height:10px;fill:currentColor;margin-left:1px;transition:transform .15s;flex:none}'
     + '.sn-dd[data-open="1"] .car{transform:rotate(180deg)}'
-    + '.sn-ddmenu{display:none;position:absolute;left:0;top:50px;z-index:30;min-width:172px;background:#181818;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),rgba(0,0,0,.6) 0 18px 40px;padding:6px;list-style:none;margin:0}'
-    + '.sn-dd[data-open="1"] .sn-ddmenu{display:block;animation:snFp .16s ease-out}'
+    + '.sn-ddmenu{display:none;position:fixed;z-index:30;min-width:172px;background:#181818;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),rgba(0,0,0,.6) 0 18px 40px;padding:6px;list-style:none;margin:0}'
+    + '.sn-ddmenu.on{display:block;animation:snFp .16s ease-out}'
     + '.sn-ddmenu a{display:flex;align-items:center;gap:8px;min-height:46px;padding:0 14px;border-radius:10px;color:#fff;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap}'
     + '.sn-ddmenu a:hover{background:#252525}'
     + '.sn-ddmenu a[aria-current="page"]{background:#1ed760;color:#000}'
@@ -120,10 +120,6 @@
     + '<div class="sn-links">'
     +   '<div class="sn-dd" id="snRankDD" data-open="0">'
     +     '<button class="sn-b" id="snRankBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="snRankMenu"' + (here === 'kr' || here === 'jp' ? ' aria-current="page"' : '') + '>랭킹<svg class="car" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button>'
-    +     '<ul class="sn-ddmenu" id="snRankMenu" role="menu" aria-label="랭킹">'
-    +       '<li role="none">' + link('kr', '🇰🇷 한국 랭킹') + '</li>'
-    +       '<li role="none">' + link('jp', '🇯🇵 일본 랭킹') + '</li>'
-    +     '</ul>'
     +   '</div>'
     +   link('map', '지도') + link('history', '기록')
     + '</div>'
@@ -132,6 +128,10 @@
     + '<button class="sn-b" id="snSearch" type="button" aria-label="그룹 검색" aria-expanded="false">' + SEARCH + '</button>'
     + '<button class="sn-b sn-fav" id="snFavBtn" type="button" aria-label="내 최애 목록 열기" aria-expanded="false" aria-controls="snFp"><span class="h">♥</span><b id="snFav">0</b><span class="t">최애</span></button>'
     + '</div>'
+    + '<ul class="sn-ddmenu" id="snRankMenu" role="menu" aria-label="랭킹">'
+    +   '<li role="none">' + link('kr', '🇰🇷 한국 랭킹') + '</li>'
+    +   '<li role="none">' + link('jp', '🇯🇵 일본 랭킹') + '</li>'
+    + '</ul>'
     + '<div class="sn-fp" id="snFp" role="dialog" aria-label="내 최애"></div>'
     + '<div class="sn-sr" id="snSr"><div class="sn-sr-in"><input id="snQ" type="search" placeholder="그룹 이름 검색 (한국·일본 전체)" autocomplete="off" aria-label="그룹 검색"><ul class="sn-res" id="snRes"></ul></div></div>';
   document.body.insertBefore(nav, document.body.firstChild);
@@ -153,14 +153,20 @@
   window.addEventListener('scroll', function () { top.classList.toggle('on', window.scrollY > 900); }, { passive: true });
 
   /* ---------- 랭킹 드롭다운 (한국/일본) ---------- */
-  var rankDD = document.getElementById('snRankDD'), rankBtn = document.getElementById('snRankBtn');
+  var rankDD = document.getElementById('snRankDD'), rankBtn = document.getElementById('snRankBtn'), rankMenu = document.getElementById('snRankMenu');
   function toggleRankDD(on) {
     rankDD.setAttribute('data-open', on ? '1' : '0');
     rankBtn.setAttribute('aria-expanded', on);
-    if (on) { toggleFav(false); toggleSearch(false); }
+    rankMenu.classList.toggle('on', on);
+    if (on) {
+      var r = rankBtn.getBoundingClientRect();
+      rankMenu.style.left = Math.round(r.left) + 'px';
+      rankMenu.style.top = Math.round(r.bottom + 6) + 'px';
+      toggleFav(false); toggleSearch(false);
+    }
   }
   rankBtn.addEventListener('click', function (e) { e.stopPropagation(); toggleRankDD(rankDD.getAttribute('data-open') !== '1'); });
-  document.addEventListener('click', function (e) { if (rankDD.getAttribute('data-open') === '1' && !rankDD.contains(e.target)) toggleRankDD(false); });
+  document.addEventListener('click', function (e) { if (rankDD.getAttribute('data-open') === '1' && !rankDD.contains(e.target) && !rankMenu.contains(e.target)) toggleRankDD(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && rankDD.getAttribute('data-open') === '1') { toggleRankDD(false); rankBtn.focus(); } });
 
   /* 이전 화면 버튼 */
@@ -224,10 +230,10 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260948'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260948'); });
-      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260948'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260948'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260951'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260951'); });
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260951'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260951'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });

@@ -18,11 +18,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/home.css?v=20260948">
+<link rel="stylesheet" href="css/home.css?v=20260951">
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">이 사이트는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260948"></script>
+<script src="js/site-nav.js?v=20260951"></script>
 <div class="wrap">
 
 <section class="hero" aria-labelledby="ttl">
@@ -49,12 +49,14 @@
   </div>
 </section>
 
-<section class="sec rv" aria-labelledby="tmT">
-  <div class="sec-h"><div><h2 id="tmT">THIS MONTH</h2><p>지금 가장 높은 자리에 있는 그룹이에요</p></div></div>
-  <div class="thismonth" id="thismonth">
-    <div class="tmcol"><div class="sk" style="height:20px;width:60px"></div><div class="sk" style="height:56px;margin-top:8px"></div><div class="sk" style="height:56px;margin-top:6px"></div><div class="sk" style="height:56px;margin-top:6px"></div></div>
-    <div class="tmcol"><div class="sk" style="height:20px;width:60px"></div><div class="sk" style="height:56px;margin-top:8px"></div><div class="sk" style="height:56px;margin-top:6px"></div><div class="sk" style="height:56px;margin-top:6px"></div></div>
+<section class="sec rv" aria-labelledby="ladT">
+  <div class="sec-h">
+    <div><h2 id="ladT">한눈에 보는 티어리스트</h2><p>사진을 누르면 그 그룹의 상세 정보가 열려요</p></div>
+    <div class="seg" role="group" aria-label="나라 선택"><button type="button" data-c="KR" aria-pressed="true">🇰🇷 한국</button><button type="button" data-c="JP" aria-pressed="false">🇯🇵 일본</button></div>
   </div>
+  <div class="ladder" id="ladder"><div class="sk" style="height:110px"></div><div class="sk" style="height:110px"></div><div class="sk" style="height:110px"></div></div>
+  <div class="expand"><button class="btn" type="button" id="expand" hidden>더 낮은 티어도 보기 ↓</button></div>
+  <div class="expand"><a class="btn g" id="fullList" href="./kr">전체 순위표 보기 →</a></div>
 </section>
 
 <section class="sec rv" id="risersSec" aria-labelledby="risT" hidden>
@@ -161,9 +163,9 @@
     G.KR = kr.map(function (x) { return norm('KR', x); }); G.JP = jp.map(function (x) { return norm('JP', x); });
     ['KR', 'JP'].forEach(function (c) { G[c].sort(function (a, b) { return a.rank - b.rank || (a.id < b.id ? -1 : 1); }); });
     IMG = r[2]; all = G.KR.concat(G.JP);
-    buildBelt(); renderThisMonth(); pickToday(false); buildFan(); buildMap();
+    buildBelt(); renderLadder(); pickToday(false); buildFan(); buildMap();
   }).catch(function () {
-    $('thismonth').innerHTML = '<p style="color:var(--tx2);font-size:14px">데이터를 불러오지 못했어요. 새로고침해 주세요.</p>';
+    $('ladder').innerHTML = '<p style="color:var(--tx2);font-size:14px">데이터를 불러오지 못했어요. 새로고침해 주세요.</p>';
     $('today').closest('section').hidden = true;
   });
 
@@ -198,16 +200,22 @@
     $('belt').innerHTML = h + h; // 이어 붙여 끊김 없이 흐르게
   }
 
-  /* ---------- THIS MONTH: 한국·일본 TOP3를 나란히 (가장 먼저 아이돌부터 보여준다) ---------- */
-  function renderThisMonth() {
-    var box = $('thismonth');
-    box.innerHTML = ['KR', 'JP'].map(function (c) {
-      var top3 = G[c].slice(0, 3);
-      return '<div class="tmcol"><h3>' + FLAG[c] + ' ' + (c === 'KR' ? 'KOREA' : 'JAPAN') + '</h3><div class="tmrows">'
-        + top3.map(function (g) { return '<a class="tmrow" href="' + href(g) + '"><span class="tmrk">#' + g.rank + '</span>' + av(g, 'tmav') + '<span class="tmnm">' + esc(g.name) + '</span>' + tchip(g.tier) + '<span class="tmsc">' + g.score + '</span></a>'; }).join('')
-        + '</div><a class="textlink" href="./' + PAGE[c] + '">' + (c === 'KR' ? '한국' : '일본') + ' 전체 랭킹 →</a></div>';
+  /* ---------- 티어리스트 사다리 ---------- */
+  var lad = { c: 'KR', all: false };
+  function renderLadder() {
+    var list = G[lad.c], by = {}, box = $('ladder');
+    list.forEach(function (g) { (by[g.tier] = by[g.tier] || []).push(g); });
+    var tiers = TIERS.filter(function (t) { return by[t]; }), shown = lad.all ? tiers : tiers.slice(0, 4);
+    box.innerHTML = shown.map(function (t) {
+      return '<div class="trow pop" style="--tc:' + TC[t] + '"><div class="tlab">' + esc(t) + '<small>' + by[t].length + '팀</small></div><div class="tsc" role="list">'
+        + by[t].map(function (g, i) { return '<a class="tg" role="listitem" style="--i:' + Math.min(i, 24) + '" href="' + href(g) + '" title="' + esc(g.name) + ' · ' + g.score + '점">' + av(g) + '<span class="n">' + esc(g.name) + '</span></a>'; }).join('') + '</div></div>';
     }).join('');
+    var ex = $('expand'); ex.hidden = tiers.length <= 4; ex.textContent = lad.all ? '위쪽만 보기 ↑' : '더 낮은 티어도 보기 ↓ (' + (tiers.length - 4) + '개 티어 더)';
+    $('fullList').setAttribute('href', './' + PAGE[lad.c]); $('fullList').textContent = (lad.c === 'KR' ? '한국' : '일본') + ' 전체 순위표 보기 →';
+    Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === lad.c); });
   }
+  document.querySelector('.seg').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && b.getAttribute('data-c') !== lad.c) { lad.c = b.getAttribute('data-c'); lad.all = false; renderLadder(); } });
+  $('expand').addEventListener('click', function () { lad.all = !lad.all; renderLadder(); });
 
   /* ---------- 월별 기록(rank-history.js)은 한 번만 불러온다 ---------- */
   var rhP = loadScript('js/rank-history.js');

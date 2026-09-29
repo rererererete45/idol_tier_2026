@@ -8,7 +8,7 @@
   var RH = window.RankHistory, HA = window.HistoryAnalytics;
   var DEBUG = new URLSearchParams(location.search).get('debugHistory') === '1';
   var script = document.currentScript, BASE = script && script.src ? script.src.replace(/js\/history-explorer\.js.*$/, '') : '';
-  var V = '20260948';
+  var V = '20260951';
 
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }

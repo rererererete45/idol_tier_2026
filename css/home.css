@@ -41,7 +41,7 @@ h1 .w{display:inline-block;animation:blurIn .8s cubic-bezier(.2,.7,.2,1) both;an
 .textlink:hover{color:var(--green)}
 
 /* 검색 */
-.find{position:relative;max-width:580px;margin-top:22px}
+.hero .find{position:relative;z-index:2;max-width:580px;margin-top:22px}
 .find svg{position:absolute;left:20px;top:29px;width:18px;height:18px;transform:translateY(-50%);fill:var(--tx3);pointer-events:none}
 .find input{width:100%;height:58px;padding:0 20px 0 52px;border:0;border-radius:9999px;background:#1f1f1f;color:var(--tx);font:600 16px var(--fs);box-shadow:inset 0 0 0 1px var(--rim2),0 12px 32px rgba(0,0,0,.35);outline:0;transition:box-shadow .15s}
 .find input:focus{box-shadow:inset 0 0 0 2px var(--green),0 12px 32px rgba(0,0,0,.35)}
@@ -52,18 +52,6 @@ h1 .w{display:inline-block;animation:blurIn .8s cubic-bezier(.2,.7,.2,1) both;an
 .fr .nm{flex:1;min-width:0;font-size:15px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .fr small{color:var(--tx3);font-weight:700;font-size:12px}
 .fr .none{padding:16px;color:var(--tx3);font-size:14px}
-
-/* THIS MONTH: 한국·일본 TOP3 나란히 */
-.thismonth{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.tmcol{background:var(--surf);border-radius:20px;padding:16px;box-shadow:inset 0 0 0 1px var(--rim)}
-.tmcol h3{margin:0 0 10px;font-size:12px;font-weight:900;letter-spacing:.12em;color:var(--tx3);text-transform:uppercase}
-.tmrows{display:grid;gap:4px}
-.tmrow{display:flex;align-items:center;gap:10px;min-height:56px;padding:6px 8px;border-radius:12px;transition:background .15s}
-.tmrow:hover{background:var(--surf2)}
-.tmrk{flex:none;width:22px;font-size:13px;font-weight:900;color:var(--tx3);font-variant-numeric:tabular-nums}
-.tmav{width:44px;height:44px;border-radius:12px;font-size:16px}
-.tmnm{flex:1;min-width:0;font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tmsc{flex:none;font-size:14px;font-weight:900;font-variant-numeric:tabular-nums}
 
 /* 바로가기 타일 */
 .go{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:20px}
@@ -221,7 +209,6 @@ footer nav a:hover{color:var(--green)}
   .tile.sm{grid-column:span 1}
 }
 @media(max-width:640px){
-  .thismonth{grid-template-columns:1fr}
   .rail{grid-template-columns:1fr}
 }
 @media(max-width:520px){
