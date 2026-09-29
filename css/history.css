@@ -240,7 +240,7 @@ body[data-country="JP"] .grec{background:linear-gradient(160deg,rgba(243,114,127
 
 /* ---- MAP REPLAY ---- */
 .mr{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;margin-top:20px;align-items:start}
-.mr-stage{user-select:none;-webkit-user-select:none;position:relative;border-radius:22px;background:var(--surf);box-shadow:inset 0 0 0 1px var(--rim);overflow:hidden;min-width:0}
+.mr-stage{user-select:none;-webkit-user-select:none;position:relative;border-radius:20px;background:radial-gradient(120% 90% at 50% 0%,#1c1f1d 0%,#151515 55%,#111 100%);box-shadow:inset 0 0 0 1px var(--rim),rgba(0,0,0,.5) 0 18px 44px;overflow:hidden;min-width:0}
 .mr-map{display:block;width:100%;height:auto;touch-action:pan-y}
 .mr-map.zoomed{touch-action:none;cursor:grab}
 .mr-map .cam{transform-origin:0 0}
@@ -251,9 +251,10 @@ body[data-country="JP"] .grec{background:linear-gradient(160deg,rgba(243,114,127
 .mr-tip[hidden]{display:none}
 .mr-tip b{font-size:13px}
 .mr-tip small{display:block;color:var(--tx2);font-weight:600}
-.mr-zoom{position:absolute;top:10px;right:10px;z-index:2;display:grid;gap:6px}
-.mr-zoom button{width:44px;height:44px;border:0;border-radius:50%;background:rgba(37,37,37,.92);color:#fff;font:700 20px var(--fs);line-height:1;cursor:pointer;box-shadow:inset 0 0 0 1px var(--rim2),rgba(0,0,0,.4) 0 4px 12px}
+.mr-zoom{position:absolute;top:8px;right:8px;z-index:2;display:flex;flex-direction:row;gap:4px;align-items:center;padding:3px;border-radius:9999px;background:rgba(10,10,10,.6);box-shadow:inset 0 0 0 1px var(--rim);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.mr-zoom button{width:40px;height:40px;border:0;border-radius:50%;background:var(--card,#252525);color:#fff;font:700 19px var(--fs);line-height:1;cursor:pointer;transition:background .15s,transform .12s}
 .mr-zoom button:hover:not(:disabled){background:#333}
+.mr-zoom button:active:not(:disabled){transform:scale(.92)}
 .mr-zoom button:disabled{opacity:.35;cursor:default}
 .mr-hud{position:absolute;left:12px;top:12px;z-index:2;max-width:calc(100% - 84px);padding:8px 14px;border-radius:9999px;background:rgba(37,37,37,.92);font-size:12px;font-weight:700;color:var(--tx2);box-shadow:inset 0 0 0 1px var(--rim2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mr-hud b{color:var(--tx)}
@@ -299,7 +300,7 @@ body[data-country="JP"] .playbtn{box-shadow:0 4px 18px rgba(243,114,127,.3)}
 .mr-map .al{font:700 11px var(--fs);font-size:calc(11px*var(--ts,1));fill:var(--tx3);pointer-events:none}
 .mr-map .tl{font:800 10px var(--fs);font-size:calc(10px*var(--ts,1));fill:#fff;paint-order:stroke;stroke:#121212;stroke-width:calc(3px*var(--ts,1));pointer-events:none}
 .mr-map .pt{cursor:pointer;transition:transform var(--dur,.8s) cubic-bezier(.4,0,.2,1),opacity var(--dur,.8s) ease}
-.mr-map .pt circle{stroke:rgba(0,0,0,.55);stroke-width:1.2;transition:r var(--dur,.8s) ease}
+.mr-map .pt circle{stroke:rgba(0,0,0,.55);stroke-width:1.2;transition:r var(--dur,.8s) ease;filter:drop-shadow(0 0 5px rgba(255,255,255,.16))}
 .mr-map .pt.enter{opacity:0}
 .mr-map .pt.dim{opacity:.14}
 .mr-map .pt.dim:hover{opacity:.6}

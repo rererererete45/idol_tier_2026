@@ -3,7 +3,7 @@
  *   현재 IDOL MAP 과 같은 함수를 쓰므로 알고리즘이 갈라지지 않는다(2026-09 좌표 = 현재 지도 좌표는 테스트로 검증).
  * - 점은 같은 id 끼리 위치를 이어서 움직이고(CSS transition), 새로 생긴 그룹은 fade in, 사라진 그룹은 fade out 한다.
  * - prefers-reduced-motion 이면 애니메이션 없이 즉시 위치가 바뀐다.
- * - 이 모듈은 history-explorer.js 가 ctx 를 넘겨 mount 한다. window.MapReplay 로만 노출한다. */
+ * - 호출 쪽(map.html)이 ctx 를 만들어 mount 한다. window.MapReplay 로만 노출한다. */
 (function (global) {
   'use strict';
   var R = global.IdolRec, HA = global.HistoryAnalytics, RH = global.RankHistory;

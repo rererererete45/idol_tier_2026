@@ -85,6 +85,15 @@ h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-hei
 .viewtoggle{display:inline-flex;gap:2px;margin-left:auto;background:var(--surf2);border-radius:9999px;padding:3px}
 .viewtoggle .pill{padding:0 14px;letter-spacing:.04em;background:transparent}
 .viewtoggle .pill[aria-pressed="true"]{background:var(--green);color:#000}
+.monthbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.monthbar[hidden]{display:none}
+.monthbar .ibtn{width:36px;height:36px;flex:none;display:inline-grid;place-items:center;border:0;border-radius:50%;background:var(--surf2);color:var(--tx);font-size:16px;cursor:pointer;transition:background .15s}
+.monthbar .ibtn:hover:not(:disabled){background:var(--card2)}
+.monthbar .ibtn:disabled{opacity:.3;cursor:default}
+.monthbar .msel{appearance:none;-webkit-appearance:none;height:36px;padding:0 32px 0 14px;border:0;border-radius:9999px;background:var(--surf2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23b3b3b3' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 14px center;color:var(--tx);font:700 13px var(--fs);cursor:pointer}
+.monthbar .mbnote{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:9999px;background:rgba(255,164,43,.12);color:#ffa42b;font-size:12px;font-weight:700}
+.monthbar .mbnote[hidden]{display:none}
+.monthbar .mbnote button{border:0;background:transparent;color:#ffa42b;font-size:12px;font-weight:800;text-decoration:underline;cursor:pointer;padding:0}
 
 /* ---- ranking row (RankingProfileRow) ---- */
 .grid{display:flex;flex-direction:column;gap:6px}
@@ -340,7 +349,7 @@ html{scroll-behavior:smooth}
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">점수표는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260956"></script>
+<script src="js/site-nav.js?v=20260959"></script>
 <div class="wrap">
 
 <header>
@@ -369,6 +378,12 @@ html{scroll-behavior:smooth}
       <button class="pill" id="viewVisual" type="button" aria-pressed="true">자세히</button>
       <button class="pill" id="viewCompact" type="button" aria-pressed="false">간단히</button>
     </div>
+  </div>
+  <div class="monthbar" id="monthBar" hidden>
+    <button class="ibtn" id="mbPrev" type="button" aria-label="이전 달">‹</button>
+    <select class="msel" id="mbSelect" aria-label="기준 월"></select>
+    <button class="ibtn" id="mbNext" type="button" aria-label="다음 달">›</button>
+    <span class="mbnote" id="mbNote" hidden>그 달 순위 그대로예요 · 지금 순위 아님 <button type="button" id="mbLatest">현재로</button></span>
   </div>
 </div>
 

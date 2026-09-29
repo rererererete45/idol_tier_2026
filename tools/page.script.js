@@ -61,7 +61,7 @@ if(!REDUCE)document.querySelectorAll('#stats .v').forEach(el=>{
   });
 });
 
-let sf=-1,qs='';
+let sf=-1,qs='',AHIST=null;
 document.getElementById('facetRows').innerHTML=FACETS.map(f=>'<div class="pgroup"><span class="plabel">'+esc(f.label)+'</span><div class="pills" data-facet="'+f.key+'"><button class="pill" data-v="ALL" aria-pressed="true">전체</button>'
   +f.vals.map(v=>'<button class="pill" data-v="'+esc(v)+'" aria-pressed="false">'+esc(v)+'</button>').join('')+'</div></div>').join('');
 const sp=document.getElementById('sortpills');
@@ -120,7 +120,7 @@ function miniRadarSVG(o){
 }
 function bigRadarSVG(o){
   const N=LB.length,cx=110,cy=104,R=78,col=tierClr(o),ang=i=>i*(2*Math.PI/N)-Math.PI/2,nv=normVals(o);
-  let svg='<svg viewBox="0 0 220 220" role="img" aria-label="'+esc(o.n)+' 능력치: '+LB.map((l,i)=>l+' '+Math.round(nv[i]*100)).join(', ')+'">';
+  let svg='<svg id="dpRadarSvg" viewBox="0 0 220 220" role="img" aria-label="'+esc(o.n)+' 능력치: '+LB.map((l,i)=>l+' '+Math.round(nv[i]*100)).join(', ')+'">';
   [0.33,0.66,1].forEach(f=>{svg+='<polygon points="'+Array.from({length:N},(_,i)=>polar(cx,cy,R*f,ang(i)).map(v=>v.toFixed(1)).join(',')).join(' ')+'" fill="none" stroke="var(--bd)" stroke-width="1"/>'});
   for(let i=0;i<N;i++){
     const [x2,y2]=polar(cx,cy,R,ang(i));
@@ -130,12 +130,12 @@ function bigRadarSVG(o){
     svg+='<text x="'+lx.toFixed(1)+'" y="'+(ly+dy).toFixed(1)+'" text-anchor="'+anchor+'" font-size="11" font-weight="700" fill="var(--tx3)">'+esc(LB[i])+'</text>';
   }
   const pts=nv.map((v,i)=>polar(cx,cy,R*Math.max(0.04,v),ang(i)).map(x=>x.toFixed(1)).join(',')).join(' ');
-  return svg+'<polygon points="'+pts+'" fill="'+col+'" fill-opacity="0.22" stroke="'+col+'" stroke-width="2.5"/></svg>';
+  return svg+'<polygon id="dpRadarShape" points="'+pts+'" fill="'+col+'" fill-opacity="0.22" stroke="'+col+'" stroke-width="2.5"/></svg>';
 }
 function styleLine(o){return (o.style||'').split('/').map(s=>s.trim()).filter(Boolean).slice(0,3).join(' · ')}
 let HD3=null; // 최근 3개월(4개 snapshot) 순위 변동. 없으면 표시하지 않는다
 function trendText(o){
-  if(!HD3)return '';
+  if(!HD3||AHIST)return '';
   const d=HD3[o.id];
   if(!d)return '';
   if(d.kind==='up')return '최근 3개월 ▲'+d.n;
@@ -152,7 +152,7 @@ function barsHTML(o){
   }).join('');
 }
 let HD=null; // 전월 대비 순위 변동(id -> delta). 로딩 전/실패 시 null
-function rkBadge(o){return HD&&window.RankHistory?RankHistory.renderRankDeltaBadge(HD[o.id]):''}
+function rkBadge(o){return HD&&window.RankHistory&&!AHIST?RankHistory.renderRankDeltaBadge(HD[o.id]):''}
 // RankingProfileRow: 큰 아이콘 카드 대신 한 줄 프로필 바. 사진은 식별 정보이고 순위·티어·점수·능력치가 콘텐츠다.
 function card(o){
   const cmpOn=cmp.has(o.n);
@@ -174,7 +174,8 @@ function card(o){
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
 function render(){
-  let list=A.filter(o=>(!qs||o.n.toLowerCase().includes(qs))&&FACETS.every(f=>F[f.key]==='ALL'||fvals(o,f).includes(F[f.key])));
+  const src=AHIST||A;
+  let list=src.filter(o=>(!qs||o.n.toLowerCase().includes(qs))&&FACETS.every(f=>F[f.key]==='ALL'||fvals(o,f).includes(F[f.key])));
   const board=document.getElementById('board');
   if(!list.length){board.innerHTML='';document.getElementById('empty').hidden=false;return}
   document.getElementById('empty').hidden=true;
@@ -225,7 +226,7 @@ function detailHTML(o){
     +(o.img?'<p class="dpsrc">사진 출처: <a href="'+(o.imgpage?esc(o.imgpage):namuUrl(o))+'"'+TGT+'>'+(o.imgpage?'공식 사이트':'나무위키')+'</a></p>':'')
     +'</div></div>'
     +'<nav class="djump" aria-label="상세 섹션 바로가기"><button type="button" data-jump="scenebox">🧬 비슷한 '+(CFG.country==='KR'?'한국':'일본')+' 그룹</button><button type="button" data-jump="matchbox">'+CFG.other.label+' 취향</button><button type="button" data-jump="histbox">📈 순위 추이</button></nav>'
-    +'<div class="dpradar">'+bigRadarSVG(o)+'</div>'
+    +'<div class="dpradar" id="dpRadarWrap">'+bigRadarSVG(o)+'</div>'
     +'<div class="bars">'+barsHTML(o)+'</div>'
     +'<div class="dpgrid">'+info+'</div>'
     +((o.intro||o.editor)?'<div class="dpedit">'
@@ -629,6 +630,49 @@ if(window.RankHistory){
     last.groups.forEach(g=>{m[g.id]=RankHistory.getRankDelta(g,idx[g.id],true)});
     HD3=m;render();
   }).catch(()=>{});
+
+  /* ---- 월별 순위 보기: 랭킹 화면에서 바로 과거 달을 골라 그 달 순위 그대로 본다(HISTORY 의 TIME MACHINE을 여기로 옮김) ---- */
+  (function(){
+    const bar=document.getElementById('monthBar'),sel=document.getElementById('mbSelect'),prev=document.getElementById('mbPrev'),next=document.getElementById('mbNext'),note=document.getElementById('mbNote'),latestBtn=document.getElementById('mbLatest');
+    const byId=new Map(A.map(o=>[o.id,o]));
+    let periods=null,cur=null,tok=0;
+    RankHistory.loadHistoryIndex().then(idx=>{
+      periods=idx&&idx[CFG.country];
+      if(!periods||periods.length<2)return; // 기록이 한 달뿐이면 고를 게 없으니 보여주지 않는다
+      cur=periods[periods.length-1];
+      sel.innerHTML=periods.slice().reverse().map(p=>'<option value="'+p+'">'+p.replace('-','.')+(p===periods[periods.length-1]?' (현재)':'')+'</option>').join('');
+      sel.value=cur;
+      bar.hidden=false;
+      sync();
+    });
+    function sync(){
+      const i=periods.indexOf(cur);
+      prev.disabled=i<=0;next.disabled=i>=periods.length-1;
+      const isLatest=cur===periods[periods.length-1];
+      note.hidden=isLatest;
+    }
+    function showMonth(p){
+      cur=p;sel.value=p;sync();
+      const my=++tok,isLatest=p===periods[periods.length-1];
+      if(isLatest){AHIST=null;render();return}
+      RankHistory.loadCountrySnapshot(CFG.country,p).then(snap=>{
+        if(my!==tok)return;
+        if(!snap){if(window.__toast)window.__toast('그 달 기록을 불러오지 못했어요.');AHIST=null;render();return}
+        const HA=window.HistoryAnalytics,defs=HA&&HA.metricDefs(CFG.country);
+        if(!defs){AHIST=null;render();return}
+        AHIST=snap.groups.map(g=>{
+          const base=byId.get(g.id);if(!base)return null;
+          const v=defs.map(d=>{const mv=g.metrics&&g.metrics[d.key];return mv==null?0:mv});
+          return Object.assign({},base,{v:v,s:g.score,tier:g.tier,r:g.rank});
+        }).filter(Boolean);
+        render();
+      });
+    }
+    prev.addEventListener('click',()=>{const i=periods.indexOf(cur);if(i>0)showMonth(periods[i-1])});
+    next.addEventListener('click',()=>{const i=periods.indexOf(cur);if(i<periods.length-1)showMonth(periods[i+1])});
+    sel.addEventListener('change',()=>showMonth(sel.value));
+    latestBtn.addEventListener('click',()=>showMonth(periods[periods.length-1]));
+  })();
 }
 
 /* ---- 보기 방식(자세히/간단히): localStorage 에 저장, DOM 을 다시 그리지 않고 클래스만 바꾼다 ---- */

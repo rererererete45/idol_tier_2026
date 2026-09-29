@@ -18,14 +18,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/idol-map.css?v=20260956">
+<link rel="stylesheet" href="css/idol-map.css?v=20260959">
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">IDOL MAP은 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script>/* 과거 월 지도(?history=1 또는 ?period=)는 HISTORY 의 MAP REPLAY 로 연결한다 */
-(function(){var q=new URLSearchParams(location.search);if(q.get('history')!=='1'&&!q.has('period'))return;var u=new URLSearchParams();u.set('country',q.get('country')==='JP'?'JP':'KR');if(/^\d{4}-\d{2}$/.test(q.get('period')||''))u.set('period',q.get('period'));u.set('view','map');location.replace('history?'+u.toString());})();
-</script>
-<script src="js/site-nav.js?v=20260956"></script>
+<script src="js/site-nav.js?v=20260959"></script>
 <div class="wrap">
 <header>
   <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -66,6 +63,9 @@
   <div class="tgroup more">
     <button class="pill tog" id="cmpToggle" aria-pressed="false">⇄ 두 그룹 비교</button>
   </div>
+  <div class="tgroup">
+    <button class="pill tog" id="replayToggle" type="button" aria-pressed="false">📈 지난 기록 보기</button>
+  </div>
   <div class="tgroup grow">
     <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 015.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"/></svg><input id="q" type="search" placeholder="그룹 검색" autocomplete="off" aria-label="그룹 검색"></label>
     <button class="pill tog" id="resetBtn" type="button" aria-label="필터와 선택을 모두 초기화">↺ 초기화</button>
@@ -73,6 +73,7 @@
   </div>
 </div>
 
+<div id="staticMapArea">
 <div class="zones" id="zones" role="group" aria-label="영역별 필터"></div>
 <div class="empty-note" id="emptyNote" role="status" hidden></div>
 
@@ -106,6 +107,8 @@
     <section class="sheet" id="sheet" hidden aria-live="polite" aria-label="그룹 상세"></section>
   </aside>
 </div>
+</div>
+<div id="mrHost" hidden></div>
 
 <div class="foot">
   <p>위치 = 자국 시장 안 백분위 기반(한국 86팀 · 일본 126팀 각각 계산). 버블 크기 = 총점(자국 백분위), 빛 = 현재기세. 점을 누르면 그룹의 시장 성향과 그 위치인 이유를 보여주고, "비슷한 그룹"으로 IDOL MATCH 결과를 지도에서 확인할 수 있어요.</p>
@@ -113,8 +116,84 @@
 </div>
 </div>
 
-<script src="js/idol-match.js?v=20260956"></script>
-<script src="js/idol-recommendation-core.js?v=20260956"></script>
-<script src="js/idol-map.js?v=20260956"></script>
+<script src="js/idol-match.js?v=20260959"></script>
+<script src="js/idol-recommendation-core.js?v=20260959"></script>
+<script src="js/idol-map.js?v=20260959"></script>
+<script>
+/* ---------- 지난 기록 보기: 정적 지도 ↔ MAP REPLAY(월별 재생) 전환 ---------- */
+(function () {
+  'use strict';
+  var V = '20260959';
+  var btn = document.getElementById('replayToggle'), staticArea = document.getElementById('staticMapArea'), host = document.getElementById('mrHost');
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var KO = { KR: '한국', JP: '일본' };
+  var loadP = null, IDX = null, BR = null, active = false, country = 'KR';
+  function loadCss(href) {
+    if (document.querySelector('link[href^="' + href + '"]')) return;
+    var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href + '?v=' + V; document.head.appendChild(l);
+  }
+  function loadScript(src) {
+    return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = src + '?v=' + V; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  }
+  function ensure() {
+    if (!loadP) {
+      loadCss('css/history.css');
+      var p = Promise.resolve();
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js'); });
+      if (!window.HistoryAnalytics) p = p.then(function () { return loadScript('js/history-analytics.js'); });
+      if (!window.MapReplay) p = p.then(function () { return loadScript('js/map-replay.js'); });
+      loadP = p.then(function () { return Promise.all([RankHistory.loadHistoryIndex(), RankHistory.loadBreaks()]); }).then(function (r) {
+        IDX = r[0]; BR = r[1] || { KR: [], JP: [] };
+      });
+    }
+    return loadP;
+  }
+  function currentCountry() {
+    var m = window.__IDOL_MAP__ && window.__IDOL_MAP__.S && window.__IDOL_MAP__.S.mode;
+    return m === 'JP' ? 'JP' : 'KR'; // 통합(ALL)은 재생을 지원하지 않아 한국으로 시작
+  }
+  function mountReplay() {
+    var periods = IDX[country];
+    if (!periods || !periods.length) { if (window.__toast) window.__toast('불러올 기록이 없어요.'); return; }
+    var state = { country: country, period: periods[periods.length - 1], pin: null, trail: '6', speed: 1 };
+    window.MapReplay.mount(host, {
+      state: state, periods: periods, breaks: BR[country] || [],
+      snap: function (c, p) { return RankHistory.loadCountrySnapshot(c, p); }, all: function (c) { return RankHistory.loadAll(c); },
+      tierColors: { 'S+': '#1ed760', 'S': '#36e0a0', 'A+': '#22d3ee', 'A': '#38a8f8', 'B+': '#5b8def', 'B': '#7c7cf0', 'C+': '#a78bfa', 'C': '#b592e8', 'D+': '#8b95a7', 'D': '#5f6b7d' },
+      esc: esc, ko: KO,
+      setPeriod: function (p) { state.period = p; },
+      setState: function (patch) { Object.assign(state, patch); },
+      openDetail: function (id) { location.href = (country === 'KR' ? 'kr' : 'jp') + '?id=' + encodeURIComponent(id); }
+    });
+  }
+  function setActive(on) {
+    active = on;
+    btn.setAttribute('aria-pressed', String(on));
+    staticArea.hidden = on; host.hidden = !on;
+    if (on) { host.innerHTML = '<p style="padding:40px;text-align:center;color:var(--tx3,#7c7c7c)">불러오는 중…</p>'; ensure().then(function () { country = currentCountry(); mountReplay(); }).catch(function () { host.innerHTML = '<p style="padding:40px;text-align:center;color:var(--tx3,#7c7c7c)">지난 기록을 불러오지 못했어요.</p>'; }); }
+    else if (window.MapReplay) window.MapReplay.destroy();
+  }
+  btn.addEventListener('click', function () { setActive(!active); });
+  // 통합(ALL)으로 바꾸면 재생을 끝낸다. 한국/일본 전환이면 그 나라로 다시 마운트한다.
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-mode]');
+    if (!b || !active) return;
+    if (b.dataset.mode === 'ALL') { setActive(false); return; }
+    var c = b.dataset.mode === 'JP' ? 'JP' : 'KR';
+    if (c !== country) { country = c; window.MapReplay.destroy(); mountReplay(); }
+  });
+  // map.html?history=1 또는 ?period= 로 들어오면 바로 재생 모드로 연다(예전 HISTORY 페이지로 보내던 링크 호환)
+  var qp = new URLSearchParams(location.search);
+  if (qp.get('history') === '1' || qp.has('period')) {
+    country = qp.get('country') === 'JP' ? 'JP' : 'KR';
+    setActive(true);
+    ensure().then(function () {
+      if (/^\d{4}-\d{2}$/.test(qp.get('period') || '') && (IDX[country] || []).indexOf(qp.get('period')) >= 0) {
+        var check = setInterval(function () { if (window.MapReplay.active()) { clearInterval(check); window.MapReplay.setPeriod(qp.get('period')); } }, 100);
+      }
+    });
+  }
+})();
+</script>
 </body>
 </html>

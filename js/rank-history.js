@@ -6,7 +6,7 @@
  * window.RankHistory 로만 노출한다. */
 (function (global) {
   'use strict';
-  var VERSION = '20260956';
+  var VERSION = '20260959';
   var script = document.currentScript, base = script && script.src ? script.src.replace(/js\/rank-history\.js.*$/, '') : '';
   var DIR = base + 'data/history/';
 
@@ -233,12 +233,10 @@
         h += '<div class="rh-why"><h4>왜 움직였나 <small>달라진 항목 · ' + fmtPeriod(prevSnap.meta.period) + ' → ' + fmtPeriod(curPeriodOf(snaps[ci])) + '</small></h4>'
           + '<p class="rh-sum">총점 <b>' + pe.score + ' → ' + ce.score + '</b> (' + HA.fmtSigned(cmp.scoreDelta) + ') · 순위 <b>#' + pe.rank + ' → #' + ce.rank + '</b>'
           + (cmp.movementPct !== null ? ' · 상대 위치 <b>' + HA.fmtSigned(cmp.movementPct, 1) + '%p</b>' : '') + '</p>' + chips
-          + (HA.isBreakInterval(brk, prevSnap.meta.period, curPeriodOf(snaps[ci])) ? '<p class="rh-note" style="color:#ffd7a0">이 구간(' + fmtPeriod(prevSnap.meta.period) + ' → ' + fmtPeriod(curPeriodOf(snaps[ci])) + ')은 점수가 한꺼번에 크게 뒤바뀐 구간이라 한 달 변화로 보기 어려워요. 자세한 건 HISTORY에서 확인하세요.</p>' : '')
+          + (HA.isBreakInterval(brk, prevSnap.meta.period, curPeriodOf(snaps[ci])) ? '<p class="rh-note" style="color:#ffd7a0">이 구간(' + fmtPeriod(prevSnap.meta.period) + ' → ' + fmtPeriod(curPeriodOf(snaps[ci])) + ')은 점수가 한꺼번에 크게 뒤바뀐 구간이라 한 달 변화로 보기 어려워요.</p>' : '')
           + '<p class="rh-note">어떤 항목이 달라졌는지만 보여줘요. 이유까지는 알 수 없어요.</p></div>';
       }
     }
-    h += '<div class="rh-cta"><a href="history?country=' + country + '&period=' + cur.period + '&view=timeline&group=' + encodeURIComponent(id) + '">' + fmtPeriod(cur.period) + ' 기록 보기</a>'
-      + '<a href="history?country=' + country + '&period=' + cur.period + '&view=movers">이달의 MOVERS</a></div>';
     return h;
   }
   function curPeriodOf(snap) { return snap.meta.period; }
@@ -281,12 +279,89 @@
     + '.rh-tbl{margin:10px 0 0;font-size:12px;color:var(--tx2,#b3b3b3)}.rh-tbl summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:700}'
     + '.rh-tbl table{width:100%;border-collapse:collapse}.rh-tbl th,.rh-tbl td{padding:6px 8px;text-align:left;border-bottom:1px solid #2a2a2a;font-variant-numeric:tabular-nums}.rh-tbl th{color:#7c7c7c;font-size:10.5px}'
     + '.rh-legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin:8px 0 0;font-size:12px;font-weight:700}.rh-legend span{display:inline-flex;align-items:center;gap:6px}.rh-legend i{width:10px;height:10px;border-radius:50%}'
-    + '.rh-note{margin:12px 0 0;font-size:10.5px;line-height:1.6;color:var(--tx3,#7c7c7c)}';
+    + '.rh-note{margin:12px 0 0;font-size:10.5px;line-height:1.6;color:var(--tx3,#7c7c7c)}'
+    + '.rh-radartl{display:flex;flex-direction:column;align-items:center;gap:10px;max-width:260px;margin:-6px auto 18px}'
+    + '.rh-radartl-lab{display:inline-flex;align-items:center;min-height:26px;padding:0 12px;border-radius:9999px;background:var(--surf2,#1f1f1f);color:var(--tx2,#b3b3b3);font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}'
+    + '.rh-radartl-row{display:flex;align-items:center;gap:8px;width:100%}'
+    + '.rh-radartl-step{flex:none;width:30px;height:30px;border:0;border-radius:50%;background:var(--surf2,#1f1f1f);color:#fff;font-size:15px;cursor:pointer;display:grid;place-items:center;transition:background .15s}'
+    + '.rh-radartl-step:hover:not(:disabled){background:var(--card2,#272727)}'
+    + '.rh-radartl-step:disabled{opacity:.3;cursor:default}'
+    + '.rh-radartl input[type=range]{flex:1;min-width:0;height:30px;accent-color:#1ed760;cursor:pointer}'
+    + '.rh-radartl-play{width:100%;min-height:38px;border:0;border-radius:9999px;background:#1ed760;color:#000;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;transition:background .15s,box-shadow .15s}'
+    + '.rh-radartl-play:hover{background:#3be477}'
+    + '.rh-radartl-play[aria-pressed="true"]{background:var(--surf2,#1f1f1f);color:#1ed760;box-shadow:inset 0 0 0 1px #1ed760}';
   function injectCss() {
     if (document.getElementById('rhCss')) return;
     var st = document.createElement('style'); st.id = 'rhCss'; st.textContent = css; document.head.appendChild(st);
   }
   injectCss();
+
+  // 상세 팝업 위쪽의 방사형 차트(#dpRadarWrap/#dpRadarShape, tools/page.script.js 의 bigRadarSVG)를
+  // 월별로 스크럽·재생할 수 있게 만든다. 모양만 바뀌고(부드럽게 보간) 색은 현재 티어색 그대로 둔다.
+  function mountRadarTimeline(hist, country) {
+    var wrap = document.getElementById('dpRadarWrap'), shape = document.getElementById('dpRadarShape');
+    var HA = global.HistoryAnalytics;
+    if (!wrap || !shape || !HA || hist.length < 2 || document.getElementById('dpRadarTl')) return;
+    var defs = HA.metricDefs(country), N = defs.length, cx = 110, cy = 104, R = 78;
+    function ang(i) { return i * (2 * Math.PI / N) - Math.PI / 2; }
+    function ptsFor(idx) {
+      var m = hist[idx].metrics || {};
+      return defs.map(function (d, i) {
+        var v = m[d.key], nv = Math.max(0, Math.min(1, (v == null ? 0 : v) / d.max)), a = ang(i), r = R * Math.max(0.04, nv);
+        return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+      });
+    }
+    function curPts() {
+      return (shape.getAttribute('points') || '').split(' ').filter(Boolean).map(function (s) { var xy = s.split(',').map(Number); return [xy[0], xy[1]]; });
+    }
+    var idx = hist.length - 1, animTok = 0, playTimer = 0;
+    function paintTo(target, ms) {
+      var from = curPts(), tok = ++animTok, t0 = null;
+      if (!ms || from.length !== target.length) { shape.setAttribute('points', target.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ')); return; }
+      function frame(t) {
+        if (tok !== animTok) return;
+        if (t0 === null) t0 = t;
+        var p = Math.min(1, (t - t0) / ms), e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        shape.setAttribute('points', from.map(function (fp, i) { var tp = target[i]; return (fp[0] + (tp[0] - fp[0]) * e).toFixed(1) + ',' + (fp[1] + (tp[1] - fp[1]) * e).toFixed(1); }).join(' '));
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+    function sync(ms) {
+      paintTo(ptsFor(idx), ms);
+      var h = hist[idx];
+      lab.textContent = fmtPeriod(h.period) + ' · #' + h.rank + ' · ' + h.score + '점' + (idx === hist.length - 1 ? ' · 현재' : '');
+      slider.value = idx;
+      prevBtn.disabled = idx <= 0; nextBtn.disabled = idx >= hist.length - 1;
+    }
+    function stop() { if (playTimer) { clearTimeout(playTimer); playTimer = 0; } playBtn.textContent = '▶ 시계열 재생'; playBtn.setAttribute('aria-pressed', 'false'); }
+    function stepPlay() {
+      idx = idx >= hist.length - 1 ? 0 : idx + 1;
+      sync(650);
+      if (idx < hist.length - 1) playTimer = setTimeout(stepPlay, 780); else stop();
+    }
+    var box = document.createElement('div');
+    box.id = 'dpRadarTl';
+    box.className = 'rh-radartl';
+    box.innerHTML = '<span class="rh-radartl-lab"></span>'
+      + '<div class="rh-radartl-row"><button type="button" class="rh-radartl-step" aria-label="이전 달">‹</button>'
+      + '<input type="range" min="0" max="' + (hist.length - 1) + '" step="1" aria-label="' + esc(fmtPeriod(hist[0].period)) + '부터 ' + esc(fmtPeriod(hist[hist.length - 1].period)) + '까지, 월 선택">'
+      + '<button type="button" class="rh-radartl-step" aria-label="다음 달">›</button></div>'
+      + '<button type="button" class="rh-radartl-play" aria-pressed="false">▶ 시계열 재생</button>';
+    wrap.insertAdjacentElement('afterend', box);
+    var lab = box.querySelector('.rh-radartl-lab'), slider = box.querySelector('input[type=range]'),
+      prevBtn = box.querySelector('.rh-radartl-row button:first-child'), nextBtn = box.querySelector('.rh-radartl-row button:last-child'), playBtn = box.querySelector('.rh-radartl-play');
+    slider.addEventListener('input', function () { stop(); idx = Number(slider.value); sync(200); });
+    prevBtn.addEventListener('click', function () { stop(); idx = Math.max(0, idx - 1); sync(350); });
+    nextBtn.addEventListener('click', function () { stop(); idx = Math.min(hist.length - 1, idx + 1); sync(350); });
+    playBtn.addEventListener('click', function () {
+      if (playTimer) { stop(); return; }
+      playBtn.textContent = '❚❚ 정지'; playBtn.setAttribute('aria-pressed', 'true');
+      idx = idx >= hist.length - 1 ? 0 : idx + 1; sync(650);
+      playTimer = setTimeout(stepPlay, 780);
+    });
+    sync(0);
+  }
 
   // 상세 팝업 하단 "📈 순위 추이" 섹션. 팝업을 열 때 해당 국가의 snapshot 전체를 lazy load 한다.
   function renderDetail(box, opts) {
@@ -299,6 +374,7 @@
       var hist = extractGroupHistory(snaps, opts.id);
       if (!snaps.length || !hist.length) { box.innerHTML = ''; box.hidden = true; return; } // 로딩 실패/기록 없음: 섹션만 숨김
       box.hidden = false;
+      mountRadarTimeline(hist, opts.country);
       // '현재'는 이 그룹의 가장 최근 기록 월. 전월은 그 월 바로 앞의 실제 snapshot(없으면 최초 월).
       var latest = snaps[snaps.length - 1], curP = hist[hist.length - 1].period, ci = -1;
       snaps.forEach(function (s, i) { if (s.meta.period === curP) ci = i; });

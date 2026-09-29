@@ -4,15 +4,15 @@
  * - REPLACE_NAV=false 로 바꾸면 예전처럼 브라우저 기록에 쌓인다. */
 (function () {
   'use strict';
-  var SITE_V = '20260956', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
+  var SITE_V = '20260959', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
   var script = document.currentScript, base = '';
   if (script && script.src) base = script.src.replace(/js\/site-nav\.js.*$/, '');
 
-  var PAGES = { home: '', kr: 'kr', jp: 'jp', map: 'map', history: 'history' };
+  var PAGES = { home: '', kr: 'kr', jp: 'jp', map: 'map' };
   // 주소는 /kr, /jp, /map (확장자 없음). 예전 .html 주소로 들어와도 같은 페이지로 인식하고 주소창을 정리한다.
   function pageKey(path) {
     var seg = String(path).replace(/\/+$/, '').split('/').pop().replace(/\.html$/, '');
-    return seg === 'map' || seg === 'idol-map' ? 'map' : seg === 'history' ? 'history' : seg === 'kr' ? 'kr' : seg === 'jp' ? 'jp' : 'home';
+    return seg === 'map' || seg === 'idol-map' ? 'map' : seg === 'kr' ? 'kr' : seg === 'jp' ? 'jp' : 'home';
   }
   (function cleanUrl() {
     try {
@@ -21,7 +21,7 @@
       history.replaceState(history.state, '', p + location.search + location.hash);
     } catch (e) { /* noop */ }
   })();
-  var NAMES = { home: '홈', kr: '한국', jp: '일본', map: 'IDOL MAP', history: 'HISTORY' };
+  var NAMES = { home: '홈', kr: '한국', jp: '일본', map: 'IDOL MAP' };
   var here = pageKey(location.pathname);
 
   /* ---------- 이전 화면 스택 ---------- */
@@ -121,7 +121,7 @@
     +   '<div class="sn-dd" id="snRankDD" data-open="0">'
     +     '<button class="sn-b" id="snRankBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="snRankMenu"' + (here === 'kr' || here === 'jp' ? ' aria-current="page"' : '') + '>랭킹<svg class="car" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button>'
     +   '</div>'
-    +   link('map', '지도') + link('history', '기록')
+    +   link('map', '지도')
     + '</div>'
     + '<span class="sn-sp"></span>'
     + '<button class="sn-b sn-disc" id="snDisc" type="button" data-discover aria-label="DISCOVER 아이돌 발견하기">🎲<span class="t">DISCOVER</span></button>'
@@ -230,10 +230,10 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260956'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260956'); });
-      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260956'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260956'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260959'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260959'); });
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260959'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260959'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });

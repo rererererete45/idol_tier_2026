@@ -13,17 +13,17 @@
 | SAME SCENE | 그룹 상세 안 | 같은 나라에서 비슷한 그룹 TOP 3 + 취향 확장 |
 | IDOL MAP | `/map` (`map.html`) | 팬덤↔대중 / 디지털↔라이브 두 축의 시장 포지셔닝 지도 |
 | DISCOVER | 상단 🎲 버튼 | 랜덤·내 취향·숨은 보석·취향 확장·HOT·자동·오늘의 아이돌, 컬렉션, 월간 리포트, 공유 카드 |
-| 월별 순위 변동 | 점수표 카드·그룹 상세 하단 | 전월 대비 ▲▼–/NEW 배지, 순위·점수 시계열 차트(3·6·12개월·전체), 최고/최저 순위, 같은 국가 그룹 순위 추이 비교, **왜 움직였나(평가항목상 주요 변화)**·최근 3개월·최고 점수·연속 상승 |
-| **HISTORY** | `/history` (`history.html`) | **TIME MACHINE**(그 달의 순위를 당시 snapshot 그대로) · **MOVERS**(두 달 사이 변화·평가항목 변화·EDITOR'S WATCH) · **RECORD BOOK**(누적 기록 자동 집계) · **MAP REPLAY**(월별 시장 포지션 이동 재생·궤적). 선택 상태는 주소에 저장돼 공유·새로고침·뒤로가기가 됩니다 |
-| 상단 내비게이션 | 모든 페이지 | 홈·한국·일본·지도·HISTORY·검색·최애·이전 화면 (사이트 안 이동은 브라우저 기록을 쌓지 않음) |
+| 월별 순위 변동 | 점수표 카드·그룹 상세 하단 | 전월 대비 ▲▼–/NEW 배지, 순위·점수 시계열 차트(3·6·12개월·전체), 최고/최저 순위, 같은 국가 그룹 순위 추이 비교, **왜 움직였나(평가항목상 주요 변화)**·최근 3개월·최고 점수·연속 상승, **방사형 차트 시계열 재생/스크럽**(그룹 상세 안) |
+| 월별 순위 보기 | `/kr`, `/jp` 상단 월 선택 | 그 달 snapshot 그대로의 순위·티어·점수·능력치로 점수표를 다시 그린다(예전 HISTORY의 TIME MACHINE) |
+| MAP REPLAY | `/map` "📈 지난 기록 보기" | 월별 시장 포지션 이동을 재생·스크럽(예전 HISTORY의 MAP REPLAY를 지도 페이지로 이동) |
+| 상단 내비게이션 | 모든 페이지 | 홈·한국·일본·지도·검색·최애·이전 화면 (사이트 안 이동은 브라우저 기록을 쌓지 않음) |
 
 ## 파일 구조
 
 ```text
 index.html                     홈 (/)
 kr.html, jp.html               점수표 (/kr, /jp — tools/build_pages.py 가 생성)
-map.html                       IDOL MAP (/map)
-history.html                   HISTORY (/history) — 월별 아카이브·변화·기록·지도 재생
+map.html                       IDOL MAP (/map) — "지난 기록 보기"로 MAP REPLAY 포함
 kr-idol-tier-2026-09.html 등    예전 주소 → 새 주소 리다이렉트(쿼리·해시 유지)
 404.html, manifest.webmanifest
 
@@ -32,10 +32,9 @@ js/
   idol-match.js                데이터 로드, percentile 정규화, 스타일 태그, IDOL MATCH, 최애 저장
   idol-recommendation-core.js  IDOL MAP 논리 좌표 + SAME SCENE + DISCOVER 공통 엔진 (window.IdolRec)
   same-scene.js                SAME SCENE 카드 UI
-  rank-history.js              월별 snapshot 로딩·캐시·순위 변동·시계열 (window.RankHistory)
-  history-analytics.js         변동·기록·MOVERS·EDITOR'S WATCH 순수 계산 + 무결성 검사 (window.HistoryAnalytics, UI 없음)
-  history-explorer.js          HISTORY 화면(상태·URL·TIME MACHINE·MOVERS·RECORD BOOK)
-  map-replay.js                MAP REPLAY (월별 지도 재생, 궤적)
+  rank-history.js              월별 snapshot 로딩·캐시·순위 변동·시계열·방사형 차트 시계열 재생 (window.RankHistory)
+  history-analytics.js         변동·기록 순수 계산 + 무결성 검사 (window.HistoryAnalytics, UI 없음)
+  map-replay.js                MAP REPLAY (월별 지도 재생, 궤적) — map.html 에서 mount
   discover.js                  DISCOVER 모달 UI
   idol-map.js                  IDOL MAP 렌더링
 css/idol-map.css, css/history.css
