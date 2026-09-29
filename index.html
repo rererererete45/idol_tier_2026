@@ -7,10 +7,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icons/kr-32.png">
 <link rel="apple-touch-icon" href="icons/kr-180.png">
 <meta name="theme-color" content="#121212">
-<meta name="description" content="한국·일본 여자아이돌 티어리스트, IDOL MAP, 월별 변화 기록 HISTORY, 비슷한 그룹 추천, DISCOVER를 한곳에서.">
+<meta name="description" content="내 최애는 몇 티어일까? 한국·일본 여자아이돌 212팀의 티어리스트. 지난 순위, 스타일 지도, 새 그룹 발견까지 한곳에서.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="여자아이돌 티어리스트">
-<meta property="og:description" content="한국·일본 여자아이돌 티어리스트, IDOL MAP, 월별 변화 기록 HISTORY, 비슷한 그룹 추천, DISCOVER를 한곳에서.">
+<meta property="og:description" content="내 최애는 몇 티어일까? 한국·일본 여자아이돌 212팀의 티어리스트.">
 <meta property="og:image" content="https://rererererete45.github.io/idol_tier_2026/icons/kr-192.png">
 <meta property="og:url" content="https://rererererete45.github.io/idol_tier_2026/">
 <meta name="twitter:card" content="summary">
@@ -18,201 +18,113 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#121212; --surf:#181818; --surf2:#1f1f1f; --card:#252525; --card2:#272727;
-  --tx:#fff; --tx2:#b3b3b3; --tx3:#7c7c7c; --bd:#4d4d4d; --bdl:#7c7c7c; --rim:rgba(255,255,255,.08);
-  --green:#1ed760; --green2:#1db954; --sakura:#f3727f; --blue:#539df5; --violet:#a78bfa;
-  --sh-md:rgba(0,0,0,.3) 0 8px 8px; --sh-hv:rgba(0,0,0,.5) 0 8px 24px;
-  --fs:"Figtree","Helvetica Neue",helvetica,arial,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans JP",sans-serif;
-  color-scheme:dark;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:#121212;color:var(--tx);font-family:var(--fs);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1080px;margin:0 auto;padding:0 20px 64px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
-
-/* hero */
-header{position:relative;overflow:hidden;padding:64px 0 30px}
-header>*:not(.aurora){position:relative;z-index:1}
-.aurora{position:absolute;inset:-60% -20%;z-index:0;pointer-events:none;filter:blur(70px);opacity:.38}
-.aurora span{position:absolute;border-radius:50%;mix-blend-mode:screen}
-.aurora span:nth-child(1){width:340px;height:340px;background:var(--green);top:0;left:10%;animation:a1 18s ease-in-out infinite}
-.aurora span:nth-child(2){width:280px;height:280px;background:var(--blue);top:20%;right:5%;animation:a2 22s ease-in-out infinite}
-.aurora span:nth-child(3){width:260px;height:260px;background:var(--violet);bottom:-10%;left:35%;animation:a3 26s ease-in-out infinite}
-@keyframes a1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
-@keyframes a2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,40px)}}
-@keyframes a3{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-30px)}}
-.eyebrow{font-size:12px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;margin:0 0 12px}
-.shiny{background:linear-gradient(110deg,#1ed760 35%,#d9ffe6 50%,#1ed760 65%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:shine 3.6s linear infinite}
-@keyframes shine{from{background-position:120% 0}to{background-position:-120% 0}}
-h1{font-size:clamp(32px,6vw,56px);font-weight:900;letter-spacing:-.025em;line-height:1.08;margin:0 0 14px}
-h1 .w{display:inline-block;animation:blurIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i)*.09s + .05s)}
-@keyframes blurIn{from{opacity:0;filter:blur(10px);transform:translateY(12px)}to{opacity:1;filter:blur(0);transform:none}}
-.sub{font-size:14px;color:var(--tx2);margin:0;max-width:62ch;line-height:1.7}
-.hero-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-.hbtn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 20px;border:0;border-radius:9999px;font-family:var(--fs);font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--tx);background:transparent;box-shadow:inset 0 0 0 1px var(--bdl);cursor:pointer;transition:background .15s,transform .12s,box-shadow .15s}
-.hbtn:hover{background:rgba(255,255,255,.07)}.hbtn:active{transform:scale(.97)}
-.hbtn.grn{background:var(--green);color:#000;box-shadow:none}.hbtn.grn:hover{background:#3be477}
-.hbtn kbd{font-family:var(--fs);font-size:11px;font-weight:800;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.1);color:var(--tx2)}
-
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 0}
-.stat{background:var(--surf);border-radius:14px;padding:14px 16px;box-shadow:inset 0 0 0 1px var(--rim)}
-.stat small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3)}
-.stat b{display:block;margin-top:4px;font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
-.stat b u{text-decoration:none;font-size:13px;color:var(--tx3);font-weight:700;margin-left:3px}
-
-/* section */
-.sec{margin-top:34px}
-.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 12px}
-.sec-h h2{font-size:18px;font-weight:900;letter-spacing:-.01em;margin:0}
-.sec-h a{font-size:12px;font-weight:700;color:var(--tx2);min-height:44px;display:inline-flex;align-items:center}
-.sec-h a:hover{color:var(--green)}
-
-/* today's idol */
-.today{position:relative;overflow:hidden;display:flex;gap:16px;align-items:center;padding:18px;border-radius:20px;background:linear-gradient(135deg,rgba(167,139,250,.18),#1b1b1b 55%);box-shadow:inset 0 0 0 1px rgba(167,139,250,.3);min-height:120px}
-.today .av{position:relative;flex:none;width:88px;height:88px;border-radius:22px;overflow:hidden;background:#2a2a2a;display:grid;place-items:center;font-size:32px;font-weight:900;color:var(--tx3);box-shadow:0 0 0 2px var(--violet),0 10px 24px rgba(0,0,0,.5)}
-.today .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.today .bd{min-width:0;flex:1}
-.today .bdg{display:inline-flex;align-items:center;min-height:26px;padding:0 12px;border-radius:9999px;background:var(--violet);color:#000;font-size:11.5px;font-weight:900}
-.today h3{margin:8px 0 2px;font-size:22px;font-weight:900;letter-spacing:-.02em;overflow-wrap:anywhere}
-.today .mt{margin:0;font-size:12.5px;font-weight:700;color:var(--tx2)}
-.today .tg{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
-.today .tg span{font-size:11px;font-weight:800;padding:3px 10px;border-radius:9999px;background:rgba(255,255,255,.08)}
-.today .ac{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.today .ac a,.today .ac button{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:0;border-radius:9999px;font-family:var(--fs);font-size:12px;font-weight:700;color:var(--tx);background:transparent;box-shadow:inset 0 0 0 1px var(--bdl);cursor:pointer}
-.today .ac .g{background:var(--green);color:#000;box-shadow:none}
-.today .ac a:hover,.today .ac button:hover{background:rgba(255,255,255,.07)}
-.sk{background:linear-gradient(90deg,#1f1f1f 25%,#2a2a2a 50%,#1f1f1f 75%);background-size:200% 100%;animation:sk 1.4s linear infinite;border-radius:10px}
-@keyframes sk{from{background-position:200% 0}to{background-position:-200% 0}}
-
-/* top lists */
-.tops{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.top{background:var(--surf);border-radius:18px;padding:14px;box-shadow:inset 0 0 0 1px var(--rim)}
-.top h3{display:flex;align-items:center;justify-content:space-between;margin:2px 4px 10px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)}
-.top h3 em{font-style:normal;font-weight:700;letter-spacing:0;text-transform:none;color:var(--tx3)}
-.top ol{list-style:none;margin:0;padding:0;display:grid;gap:4px}
-.top li a{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 10px;border-radius:12px;background:var(--surf2);transition:background .15s,transform .12s}
-.top li a:hover{background:var(--card);transform:translateX(2px)}
-.top .rk{width:22px;font-size:12px;font-weight:900;color:var(--tx3);font-variant-numeric:tabular-nums}
-.top li:nth-child(1) .rk{color:#ffd166}.top li:nth-child(2) .rk{color:#c8ccd4}.top li:nth-child(3) .rk{color:#e0a173}
-.top .nm{flex:1;min-width:0;font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.top .sc{font-size:14px;font-weight:900;font-variant-numeric:tabular-nums}
-.rkd{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:20px;padding:0 6px;border-radius:9999px;font-size:10.5px;font-weight:800;background:rgba(255,255,255,.08);color:var(--tx2)}
-.rkd.up{background:rgba(30,215,96,.16);color:#1ed760}.rkd.down{background:rgba(243,114,127,.16);color:#f3727f}.rkd.new{background:rgba(255,209,102,.16);color:#ffd166}
-.rkd.none,.rkd.same{background:transparent;color:var(--tx3);min-width:0;padding:0 2px}
-
-/* feature cards */
-.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.card.wide{grid-column:1/-1}
-.card{--mx:50%;--my:0%;position:relative;overflow:hidden;background:var(--surf);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px;box-shadow:inset 0 0 0 1px var(--rim);transition:background .2s,box-shadow .2s,transform .2s;animation:cardIn .5s ease backwards}
-.card::before{content:"";position:absolute;inset:0;background:radial-gradient(240px circle at var(--mx) var(--my),color-mix(in srgb,var(--ac,#1ed760) 18%,transparent),transparent 70%);opacity:0;transition:opacity .3s;pointer-events:none}
-.card:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac,#1ed760) 40%,transparent),var(--sh-hv)}
-.card:hover::before{opacity:1}
-.card:nth-child(2){animation-delay:.06s}.card:nth-child(3){animation-delay:.12s}.card:nth-child(4){animation-delay:.18s}
-@keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:color-mix(in srgb,var(--ac,#1ed760) 18%,#1f1f1f);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac,#1ed760) 35%,transparent)}
-.flag{font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--ac,#1ed760)}
-.card h2{font-size:21px;font-weight:900;margin:0;letter-spacing:-.01em}
-.card p{font-size:13px;color:var(--tx2);margin:0;line-height:1.65}
-.card .cta{margin-top:auto;padding-top:8px;font-size:12px;font-weight:800;color:var(--tx2);display:inline-flex;align-items:center;gap:6px;min-height:44px}
-.card:hover .cta{color:var(--ac,#1ed760)}
-footer{margin-top:52px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:12px;color:var(--tx3);line-height:1.7}
-@media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}.tops{grid-template-columns:1fr}}
-@media(max-width:600px){
-  header{padding:36px 0 22px}
-  .wrap{padding:0 14px 48px}
-  .cards{grid-template-columns:1fr}
-  .today{flex-direction:column;align-items:flex-start}
-  .hbtn{flex:1;justify-content:center;padding:0 14px}
-  .hbtn kbd{display:none}
-}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .aurora span,.shiny,.sk{animation:none}
-  h1 .w,.card{animation:none}
-}
-</style>
+<link rel="stylesheet" href="css/home.css?v=20260947">
 </head>
 <body>
-<noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">이 사이트의 점수표·지도·추천 기능은 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260946"></script>
+<noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">이 사이트는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
+<script src="js/site-nav.js?v=20260947"></script>
 <div class="wrap">
-<header>
+
+<section class="hero" aria-labelledby="ttl">
   <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
-  <p class="eyebrow"><span class="shiny">2026.09 기준</span></p>
-  <h1 aria-label="여자아이돌 티어리스트"><span class="w" style="--i:0">여자아이돌</span><br><span class="w" style="--i:1">티어리스트</span></h1>
-  <p class="sub">시장마다 배점을 다르게 두고 100점 만점으로 환산한 점수입니다. 공식 통계가 아니라 같은 기준으로 매긴 상대평가라서 ±2~3점 차이는 같은 급으로 봅니다.</p>
-  <div class="hero-act">
-    <a class="hbtn grn" href="./kr">🇰🇷 한국 점수표</a>
-    <a class="hbtn" href="./jp">🇯🇵 일본 점수표</a>
-    <button class="hbtn" type="button" id="hSearch" aria-label="그룹 검색 열기">🔍 그룹 찾기 <kbd>/</kbd></button>
-    <a class="hbtn" href="?discover=1" data-discover>🎲 발견하기</a>
+  <span class="chip"><i></i><span>2026.09 업데이트</span></span>
+  <h1 id="ttl"><span class="w" style="--i:0">내 최애는</span><br><span class="w grad" style="--i:1">몇 티어일까?</span></h1>
+  <p class="lead">한국·일본 여자아이돌 <b>212팀</b>을 점수로 줄 세웠어요. 이름을 검색하거나 아래에서 골라 보세요.</p>
+
+  <div class="find" role="search">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 015.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"/></svg>
+    <input id="q" type="search" placeholder="최애 그룹 이름을 입력해 보세요" autocomplete="off" aria-label="그룹 이름 검색" aria-controls="fr" aria-expanded="false">
+    <ul class="fr" id="fr" role="listbox" hidden></ul>
   </div>
-</header>
 
-<div class="stats" id="stats">
-  <div class="stat"><small>한국</small><b><span data-n="86">86</span><u>팀</u></b></div>
-  <div class="stat"><small>일본</small><b><span data-n="126">126</span><u>팀</u></b></div>
-  <div class="stat"><small>월별 기록</small><b><span id="stMonths" data-n="1">1</span><u>개월</u></b></div>
-  <div class="stat"><small>탐색 기능</small><b><span data-n="5">5</span><u>가지</u></b></div>
-</div>
+  <nav class="go" aria-label="바로가기">
+    <a class="tile big" href="./kr" style="--ac:#1ed760"><span class="ic" aria-hidden="true">🇰🇷</span><span class="stack" id="stKR" aria-hidden="true"></span><b>한국 티어리스트</b><small id="cKR">86팀</small></a>
+    <a class="tile big" href="./jp" style="--ac:#f3727f"><span class="ic" aria-hidden="true">🇯🇵</span><span class="stack" id="stJP" aria-hidden="true"></span><b>일본 티어리스트</b><small id="cJP">126팀</small></a>
+    <a class="tile sm" href="?discover=1" data-discover style="--ac:#a78bfa"><span class="ic" aria-hidden="true">🎲</span><b>새 그룹 발견</b><small>랜덤·취향으로 뽑아 보기</small></a>
+    <a class="tile sm" href="./map" style="--ac:#539df5"><span class="ic" aria-hidden="true">🗺</span><b>스타일 지도</b><small>어떤 매력인지 한눈에</small></a>
+    <a class="tile sm" href="./history" style="--ac:#ffd166"><span class="ic" aria-hidden="true">🕰</span><b>지난 순위</b><small>달마다 어떻게 바뀌었나</small></a>
+  </nav>
 
-<section class="sec" aria-labelledby="todayT">
-  <div class="sec-h"><h2 id="todayT">📅 오늘의 아이돌</h2><a href="?discover=1" data-discover>다른 그룹 발견하기 →</a></div>
-  <div class="today" id="today"><div class="sk" style="width:88px;height:88px;border-radius:22px"></div><div class="bd" style="flex:1"><div class="sk" style="height:22px;width:60%"></div><div class="sk" style="height:14px;width:40%;margin-top:10px"></div></div></div>
-</section>
-
-<section class="sec" aria-labelledby="topT">
-  <div class="sec-h"><h2 id="topT">🏆 이번 달 TOP 5</h2><span style="display:inline-flex;gap:18px;flex-wrap:wrap"><a href="./history?view=movers">월별 변화 보기 →</a><a href="./map">지도로 보기 →</a></span></div>
-  <div class="tops" id="tops">
-    <div class="top"><h3>Korea</h3><div class="sk" style="height:200px"></div></div>
-    <div class="top"><h3>Japan</h3><div class="sk" style="height:200px"></div></div>
+  <div class="belt" aria-label="그룹 미리보기">
+    <div class="belt-track" id="belt"></div>
   </div>
 </section>
 
-<section class="sec" aria-labelledby="featT">
-  <div class="sec-h"><h2 id="featT">탐색 기능</h2></div>
-  <div class="cards">
-    <a class="card" href="./kr" style="--ac:#1ed760">
-      <span class="ic" aria-hidden="true">🇰🇷</span><span class="flag">Korea · 86팀</span>
-      <h2>한국 여자아이돌</h2>
-      <p>국내음원·음반·팬덤, 공연, 글로벌 소비력, 국내인지도, 현재기세를 반영한 점수표. 상세 필터와 그룹 비교, 월별 순위 변동까지.</p>
-      <span class="cta">점수표 보기 →</span>
-    </a>
-    <a class="card" href="./jp" style="--ac:#f3727f">
-      <span class="ic" aria-hidden="true">🇯🇵</span><span class="flag">Japan · 126팀</span>
-      <h2>일본 여자아이돌</h2>
-      <p>공연·현장 동원력에 가장 큰 배점을 둔 일본 시장 구조 기준 점수표. 계열·활동형태별로 골라 볼 수 있어요.</p>
-      <span class="cta">점수표 보기 →</span>
-    </a>
-    <a class="card" href="./map" style="--ac:#539df5">
-      <span class="ic" aria-hidden="true">🗺</span><span class="flag">IDOL MAP</span>
-      <h2>시장 포지셔닝 지도</h2>
-      <p>코어 팬덤↔대중, 라이브↔디지털 두 축으로 한국·일본 아이돌의 성향을 지도에서 확인해요.</p>
-      <span class="cta">지도 보기 →</span>
-    </a>
-    <a class="card" href="?discover=1" data-discover style="--ac:#a78bfa">
-      <span class="ic" aria-hidden="true">🎲</span><span class="flag">DISCOVER</span>
-      <h2>아이돌 발견하기</h2>
-      <p>랜덤·숨은 보석·내 취향·HOT으로 아직 모르는 그룹을 골라 보세요. 비슷한 그룹과 지도로 계속 이어서 탐색할 수 있어요.</p>
-      <span class="cta">🎲 발견하기 →</span>
-    </a>
-    <a class="card wide" href="./history" style="--ac:#ffd166">
-      <span class="ic" aria-hidden="true">🕰</span><span class="flag">HISTORY · 2025.01 ~</span>
-      <h2>월별 변화 기록</h2>
-      <p>그 달 순위를 그대로 다시 보는 TIME MACHINE, 지난달과 달라진 점을 보는 MOVERS, 누적 기록 RECORD BOOK, 지도 위 위치 이동을 재생하는 MAP REPLAY.</p>
-      <span class="cta">HISTORY 보기 →</span>
-    </a>
+<section class="sec rv" aria-labelledby="ladT">
+  <div class="sec-h">
+    <div><h2 id="ladT">한눈에 보는 티어리스트</h2><p>사진을 누르면 그 그룹의 상세 정보가 열려요</p></div>
+    <div class="seg" role="group" aria-label="나라 선택"><button type="button" data-c="KR" aria-pressed="true">🇰🇷 한국</button><button type="button" data-c="JP" aria-pressed="false">🇯🇵 일본</button></div>
+  </div>
+  <div class="ladder" id="ladder"><div class="sk" style="height:110px"></div><div class="sk" style="height:110px"></div><div class="sk" style="height:110px"></div></div>
+  <div class="expand"><button class="btn" type="button" id="expand" hidden>더 낮은 티어도 보기 ↓</button></div>
+  <div class="expand"><a class="btn g" id="fullList" href="./kr">전체 순위표 보기 →</a></div>
+</section>
+
+<section class="sec rv" id="risersSec" aria-labelledby="risT" hidden>
+  <div class="sec-h">
+    <div><h2 id="risT">이번 달 급상승 🔥</h2><p id="risSub">지난달보다 순위가 크게 오른 그룹이에요</p></div>
+    <a class="more" href="./history?view=movers">전체 보기 →</a>
+  </div>
+  <div class="railwrap">
+    <button class="arrow l" type="button" aria-label="이전" data-dir="-1">‹</button>
+    <div class="rail" id="rail" tabindex="0" aria-label="급상승 그룹 목록"></div>
+    <button class="arrow r" type="button" aria-label="다음" data-dir="1">›</button>
+  </div>
+</section>
+
+<section class="sec rv" aria-labelledby="tdT">
+  <div class="sec-h"><div><h2 id="tdT">오늘 누구 들어볼까요?</h2><p>하루에 한 팀, 오늘의 추천이에요</p></div></div>
+  <div class="today" id="today"><div class="sk" style="width:132px;height:132px;border-radius:30px"></div><div><div class="sk" style="height:24px;width:60%"></div><div class="sk" style="height:16px;width:40%;margin-top:12px"></div></div></div>
+</section>
+
+<section class="sec" aria-labelledby="ftT">
+  <div class="sec-h rv"><div><h2 id="ftT">이런 것도 해볼 수 있어요</h2></div></div>
+
+  <div class="feat rv">
+    <div class="fv mapv" id="mapV" aria-hidden="true"></div>
+    <div class="ft" style="--ac:#539df5">
+      <span class="k">스타일 지도</span>
+      <h3>이 그룹은 어떤 매력으로<br>강한 걸까?</h3>
+      <p>팬덤이 두터운지 대중적인지, 공연이 강한지 음원이 강한지. 두 가지 축으로 그룹의 위치를 지도에 찍어 봤어요. 순위와는 또 다른 재미가 있어요.</p>
+      <a class="btn" href="./map">지도 보러 가기 →</a>
+    </div>
+  </div>
+
+  <div class="feat rev rv">
+    <div class="fv histv" id="histV"><div class="ph">불러오는 중…</div></div>
+    <div class="ft" style="--ac:#ffd166">
+      <span class="k">지난 순위</span>
+      <h3>작년엔 몇 위였지?<br>타임머신으로 확인해요</h3>
+      <p>2025년 1월부터 매달의 순위를 그대로 남겨 뒀어요. 그 달로 돌아가 보거나, 누가 얼마나 올랐는지 비교하고, 그룹이 지도 위를 어떻게 움직였는지도 볼 수 있어요.</p>
+      <a class="btn" href="./history">지난 순위 보러 가기 →</a>
+    </div>
+  </div>
+
+  <div class="feat rv">
+    <div class="fv" id="fanV" aria-hidden="true"><div class="fan"></div></div>
+    <div class="ft" style="--ac:#a78bfa">
+      <span class="k">새 그룹 발견</span>
+      <h3>몰랐던 그룹,<br>한 번 뽑아 볼래요?</h3>
+      <p>좋아하는 그룹을 저장해 두면 취향이 비슷한 그룹을 골라 줘요. 아직 덜 알려진 숨은 그룹이나 요즘 뜨는 그룹만 뽑아 볼 수도 있어요.</p>
+      <a class="btn g" href="?discover=1" data-discover>🎲 발견하러 가기</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec rv" aria-labelledby="faqT">
+  <div class="sec-h"><div><h2 id="faqT">자주 묻는 질문</h2></div></div>
+  <div class="faq">
+    <details><summary>티어는 어떻게 정해졌나요?</summary><p>음원, 음반·팬덤, 공연, 인지도, 요즘 기세 같은 항목에 점수를 매기고 합쳐서 100점 만점으로 환산했어요. 90점 이상이 S+, 80점대가 S예요. 공식 통계가 아니라 같은 기준으로 매긴 상대평가라서, ±2~3점 차이는 같은 급으로 봐 주세요.</p></details>
+    <details><summary>한국이랑 일본 점수를 비교해도 되나요?</summary><p>비교하지 마세요. 두 나라는 시장 구조가 달라서 항목과 배점을 다르게 뒀어요. 한국은 음원·음반이, 일본은 공연·현장이 더 크게 반영돼요. 그래서 한국 S와 일본 S는 같은 급이 아니에요.</p></details>
+    <details><summary>순위가 내려가면 인기가 떨어진 건가요?</summary><p>꼭 그렇진 않아요. 신인이 새로 들어오면 순위가 밀릴 수 있고, 점수는 그대로여도 다른 그룹이 올라오면 내려가기도 해요. 순위는 그 달 시장 안에서의 상대적인 위치예요.</p></details>
+    <details><summary>순위는 언제 바뀌나요?</summary><p>한 달에 한 번, 월말 기준으로 업데이트해요. 지난 달 기록은 그대로 남아 있어서 지난 순위에서 다시 볼 수 있어요.</p></details>
+    <details><summary>우리 애가 없어요 / 정보가 달라요</summary><p>자료를 계속 보강하고 있어요. 빠진 그룹이나 틀린 정보가 있으면 알려 주세요.</p></details>
   </div>
 </section>
 
 <footer>
-  <p>각 점수표의 배점 기준과 신뢰도 표기는 개별 페이지 하단에 설명되어 있습니다. 프로필 사진의 저작권은 각 권리자에게 있습니다. Algorithm v2.1 · 월별 기록은 2025.01부터예요. 한국과 일본은 평가 기준이 달라서 점수를 서로 비교하지 않아요.</p>
+  <nav aria-label="사이트 메뉴"><a href="./kr">한국 티어리스트</a><a href="./jp">일본 티어리스트</a><a href="./map">스타일 지도</a><a href="./history">지난 순위</a><a href="?discover=1" data-discover>새 그룹 발견</a></nav>
+  <p>티어리스트는 공식 통계가 아니라 자체 기준으로 매긴 상대평가입니다. 프로필 사진의 저작권은 각 권리자에게 있어요.</p>
 </footer>
 </div>
 
@@ -221,56 +133,186 @@ footer{margin-top:52px;padding-top:24px;border-top:1px solid #2a2a2a;font-size:1
   'use strict';
   var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var vm = document.querySelector('script[src*="site-nav.js"]').src.match(/v=(\d+)/), V = vm ? vm[1] : '';
-  var PAGE = { KR: 'kr', JP: 'jp' };
+  var PAGE = { KR: 'kr', JP: 'jp' }, FLAG = { KR: '🇰🇷', JP: '🇯🇵' };
+  var TIERS = ['S+', 'S', 'A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D'];
+  var TC = { 'S+': '#1ed760', 'S': '#36e0a0', 'A+': '#22d3ee', 'A': '#38a8f8', 'B+': '#5b8def', 'B': '#7c7cf0', 'C+': '#a78bfa', 'C': '#b592e8', 'D+': '#8b95a7', 'D': '#5f6b7d' };
+  var G = { KR: [], JP: [] }, IMG = {}, all = [];
+  var $ = function (id) { return document.getElementById(id); };
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function loadScript(src) { return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = src + '?v=' + V; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
-  function count(n, to) {
-    if (REDUCED) { n.textContent = to; return; }
-    var t0 = performance.now();
-    (function step(now) { var k = Math.min(1, (now - t0) / 800); n.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); })(t0);
+  function href(g) { return PAGE[g.c] + '?id=' + encodeURIComponent(g.id) + '&group=' + encodeURIComponent(g.name); }
+  function photo(g) { var im = IMG[g.c] && IMG[g.c][g.name]; return im && im.img ? im.img : ''; }
+  function av(g, cls, style) {
+    var p = photo(g);
+    return '<span class="av ' + (cls || '') + '"' + (style ? ' style="' + style + '"' : '') + '>' + esc(g.name.charAt(0)) + (p ? '<img alt="" loading="lazy" src="' + esc(p) + '" onerror="this.remove()">' : '') + '</span>';
   }
-  Array.prototype.forEach.call(document.querySelectorAll('[data-n]'), function (n) { count(n, Number(n.getAttribute('data-n'))); });
+  function tchip(t) { return '<span class="tchip" style="background:' + (TC[t] || '#777') + '">' + esc(t) + '</span>'; }
+  function seeded(n) { return function () { n |= 0; n = n + 0x6D2B79F5 | 0; var t = Math.imul(n ^ n >>> 15, 1 | n); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
-  // 카드 스포트라이트
-  Array.prototype.forEach.call(document.querySelectorAll('.card'), function (c) {
-    c.addEventListener('pointermove', function (e) { var r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
+  /* ---------- 스크롤에 맞춰 나타나기 ---------- */
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); if (e.target._onin) e.target._onin(); } });
+  }, { threshold: .12, rootMargin: '0px 0px -8% 0px' }) : null;
+  function reveal(n) { if (!io || REDUCED) { n.classList.add('in'); if (n._onin) n._onin(); } else io.observe(n); }
+  Array.prototype.forEach.call(document.querySelectorAll('.rv'), reveal);
+
+  /* ---------- 데이터 ---------- */
+  function norm(c, r) {
+    var songs = r['대표곡목록'] || [];
+    return { c: c, id: r.id, name: r['그룹'], rank: r['순위'], tier: r['티어'], score: r['총점'], style: String(r['스타일'] || '').split(/[\/,·]/).map(function (s) { return s.trim(); }).filter(Boolean),
+      active: !/활동종료|해산(?!예정)/.test(r['활동상태'] || ''), song: songs[0] && songs[0].spotify_url || '' };
+  }
+  Promise.all([
+    fetch('data/kr_db.json').then(function (r) { return r.json(); }),
+    fetch('data/jp_db.json').then(function (r) { return r.json(); }),
+    fetch('data/namu_images.json').then(function (r) { return r.json(); }).catch(function () { return {}; })
+  ]).then(function (r) {
+    var kr = r[0].korea || r[0], jp = Array.isArray(r[1]) ? r[1] : (r[1].japan || []);
+    G.KR = kr.map(function (x) { return norm('KR', x); }); G.JP = jp.map(function (x) { return norm('JP', x); });
+    ['KR', 'JP'].forEach(function (c) { G[c].sort(function (a, b) { return a.rank - b.rank || (a.id < b.id ? -1 : 1); }); });
+    IMG = r[2]; all = G.KR.concat(G.JP);
+    $('cKR').textContent = G.KR.length + '팀 · 점수순으로 보기'; $('cJP').textContent = G.JP.length + '팀 · 점수순으로 보기';
+    ['KR', 'JP'].forEach(function (c) { $('st' + c).innerHTML = G[c].slice(0, 3).map(function (g) { return av(g); }).join(''); });
+    buildBelt(); renderLadder(); pickToday(false); buildFan(); buildMap();
+  }).catch(function () {
+    $('ladder').innerHTML = '<p style="color:var(--tx2);font-size:14px">데이터를 불러오지 못했어요. 새로고침해 주세요. 위의 버튼으로 바로 이동할 수도 있어요.</p>';
+    $('today').closest('section').hidden = true;
   });
-  document.getElementById('hSearch').addEventListener('click', function () { document.getElementById('snSearch').click(); });
 
-  /* 이번 달 TOP 5 — history snapshot(현재월+이전월)만 읽는다. 실패하면 섹션을 숨긴다. */
-  var tops = document.getElementById('tops');
-  loadScript('js/rank-history.js').then(function () {
-    return Promise.all(['KR', 'JP'].map(function (c) { return RankHistory.loadRecent(c, 2); }));
-  }).then(function (all) {
-    var html = '', months = 0;
+  /* ---------- 검색 ---------- */
+  var q = $('q'), fr = $('fr'), on = -1;
+  function results() {
+    var v = q.value.trim().toLowerCase(); if (!v) { fr.hidden = true; q.setAttribute('aria-expanded', 'false'); return; }
+    var list = all.filter(function (g) { return g.name.toLowerCase().indexOf(v) !== -1; }).sort(function (a, b) {
+      return (a.name.toLowerCase().indexOf(v) === 0 ? 0 : 1) - (b.name.toLowerCase().indexOf(v) === 0 ? 0 : 1) || a.rank - b.rank;
+    }).slice(0, 7);
+    on = list.length ? 0 : -1;
+    fr.innerHTML = list.length ? list.map(function (g, i) {
+      return '<li role="option"><a href="' + href(g) + '" class="' + (i === 0 ? 'on' : '') + '">' + av(g, '', 'width:38px;height:38px;border-radius:12px') + '<span class="nm">' + esc(g.name) + '</span>' + tchip(g.tier) + '<small>' + FLAG[g.c] + ' ' + g.score + '점</small></a></li>';
+    }).join('') : '<li class="none">찾는 그룹이 없어요. 이름을 다시 확인해 주세요.</li>';
+    fr.hidden = false; q.setAttribute('aria-expanded', 'true');
+  }
+  q.addEventListener('input', results);
+  q.addEventListener('focus', function () { if (q.value.trim()) results(); });
+  q.addEventListener('keydown', function (e) {
+    var items = fr.querySelectorAll('a');
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (!items.length) return; on = (on + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length; Array.prototype.forEach.call(items, function (a, i) { a.classList.toggle('on', i === on); }); }
+    else if (e.key === 'Enter' && items[on]) { e.preventDefault(); items[on].click(); }
+    else if (e.key === 'Escape') { fr.hidden = true; q.setAttribute('aria-expanded', 'false'); }
+  });
+  document.addEventListener('click', function (e) { if (!fr.hidden && !e.target.closest('.find')) { fr.hidden = true; q.setAttribute('aria-expanded', 'false'); } });
+
+  /* ---------- 흐르는 사진 띠: 두 나라 상위 그룹을 번갈아 ---------- */
+  function buildBelt() {
+    var mix = [], i;
+    for (i = 0; i < 14; i++) { if (G.KR[i]) mix.push(G.KR[i]); if (G.JP[i]) mix.push(G.JP[i]); }
+    var h = mix.map(function (g) { return '<a class="bi" href="' + href(g) + '" title="' + esc(g.name) + '" tabindex="-1">' + av(g) + '<span class="n">' + esc(g.name) + '</span></a>'; }).join('');
+    $('belt').innerHTML = h + h; // 이어 붙여 끊김 없이 흐르게
+  }
+
+  /* ---------- 티어리스트 사다리 ---------- */
+  var lad = { c: 'KR', all: false };
+  function renderLadder() {
+    var list = G[lad.c], by = {}, box = $('ladder');
+    list.forEach(function (g) { (by[g.tier] = by[g.tier] || []).push(g); });
+    var tiers = TIERS.filter(function (t) { return by[t]; }), shown = lad.all ? tiers : tiers.slice(0, 4);
+    box.innerHTML = shown.map(function (t) {
+      return '<div class="trow pop" style="--tc:' + TC[t] + '"><div class="tlab">' + esc(t) + '<small>' + by[t].length + '팀</small></div><div class="tsc" role="list">'
+        + by[t].map(function (g, i) { return '<a class="tg" role="listitem" style="--i:' + Math.min(i, 24) + '" href="' + href(g) + '" title="' + esc(g.name) + ' · ' + g.score + '점">' + av(g) + '<span class="n">' + esc(g.name) + '</span></a>'; }).join('') + '</div></div>';
+    }).join('');
+    var ex = $('expand'); ex.hidden = tiers.length <= 4; ex.textContent = lad.all ? '위쪽만 보기 ↑' : '더 낮은 티어도 보기 ↓ (' + (tiers.length - 4) + '개 티어 더)';
+    $('fullList').setAttribute('href', './' + PAGE[lad.c]); $('fullList').textContent = (lad.c === 'KR' ? '한국' : '일본') + ' 전체 순위표 보기 →';
+    Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === lad.c); });
+  }
+  document.querySelector('.seg').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && b.getAttribute('data-c') !== lad.c) { lad.c = b.getAttribute('data-c'); lad.all = false; renderLadder(); } });
+  $('expand').addEventListener('click', function () { lad.all = !lad.all; renderLadder(); });
+
+  /* ---------- 월별 기록(rank-history.js)은 한 번만 불러온다 ---------- */
+  var rhP = loadScript('js/rank-history.js');
+
+  // 이번 달 급상승: 마지막 두 달을 비교. 점수가 한꺼번에 크게 뒤바뀐 구간(breaks)은 보여주지 않는다.
+  rhP.then(function () {
+    return Promise.all([RankHistory.loadRecent('KR', 2), RankHistory.loadRecent('JP', 2), RankHistory.loadBreaks()]);
+  }).then(function (r) {
+    var out = [], month = '', ok = false;
     ['KR', 'JP'].forEach(function (c, i) {
-      var snaps = all[i]; if (!snaps.length) return;
-      var cur = snaps[snaps.length - 1], d = RankHistory.deltasFromSnapshots(snaps);
-      months = Math.max(months, 0);
-      var top = cur.groups.slice().sort(function (a, b) { return a.rank - b.rank || String(a.id).localeCompare(String(b.id)); }).slice(0, 5);
-      html += '<div class="top"><h3>' + (c === 'KR' ? '🇰🇷 Korea' : '🇯🇵 Japan') + '<em>' + RankHistory.fmtPeriod(cur.meta.period) + '</em></h3><ol>' + top.map(function (g) {
-        return '<li><a href="' + PAGE[c] + '?id=' + encodeURIComponent(g.id) + '&group=' + encodeURIComponent(g.group) + '"><span class="rk">' + g.rank + '</span><span class="nm">' + esc(g.group) + '</span>' + RankHistory.renderRankDeltaBadge(d[g.id]) + '<span class="sc">' + g.score + '</span></a></li>';
-      }).join('') + '</ol></div>';
+      var snaps = r[i]; if (snaps.length < 2) return;
+      var a = snaps[snaps.length - 2].meta.period, b = snaps[snaps.length - 1].meta.period, cur = snaps[snaps.length - 1];
+      if ((r[2][c] || []).some(function (x) { return x.from === a && x.to === b; })) return;
+      var d = RankHistory.deltasFromSnapshots(snaps); month = RankHistory.fmtPeriod(b); ok = true;
+      cur.groups.forEach(function (g) { var x = d[g.id]; if (x && x.kind === 'up' && x.movement > 0) out.push({ c: c, id: g.id, name: g.group, tier: g.tier, rank: g.rank, prev: x.prevRank, n: x.n, mv: x.movement }); });
     });
-    if (!html) throw new Error('empty');
-    tops.innerHTML = html;
-    RankHistory.loadHistoryIndex().then(function (idx) { if (idx) { var m = Math.max((idx.KR || []).length, (idx.JP || []).length); if (m) count(document.getElementById('stMonths'), m); } });
-  }).catch(function () { var s = tops.closest('.sec'); if (s) s.hidden = true; });
+    if (!ok || !out.length) { $('risersSec').hidden = true; return; }
+    out.sort(function (a, b) { return b.mv - a.mv || a.id.localeCompare(b.id); });
+    $('risSub').textContent = month + ' 기준, 지난달보다 순위가 크게 오른 그룹이에요';
+    $('rail').innerHTML = out.slice(0, 10).map(function (g) {
+      return '<a class="mc" href="' + href(g) + '"><span class="ph">' + av(g) + '<span class="up">▲' + g.n + '</span><span class="fl">' + FLAG[g.c] + '</span></span><span class="bd"><span class="nm">' + esc(g.name) + '</span><span class="mt">#' + g.prev + ' → #' + g.rank + ' · ' + tchip(g.tier) + '</span></span></a>';
+    }).join('');
+    $('risersSec').hidden = false;
+    var rail = $('rail');
+    Array.prototype.forEach.call(document.querySelectorAll('.arrow'), function (b) { b.addEventListener('click', function () { rail.scrollBy({ left: Number(b.getAttribute('data-dir')) * 360, behavior: 'smooth' }); }); });
+  }).catch(function () { $('risersSec').hidden = true; });
 
-  /* 오늘의 아이돌 — 하루 동안 고정(날짜 기반). 실패하면 섹션을 숨긴다. */
-  var today = document.getElementById('today');
-  Promise.resolve().then(function () { return window.__ensureData(); }).then(function () { return window.IdolRec ? null : loadScript('js/idol-recommendation-core.js'); })
-    .then(function () { return fetch('data/namu_images.json').then(function (r) { return r.json(); }).catch(function () { return {}; }); })
-    .then(function (imgs) {
-      var r = IdolRec.pickDiscovery('daily', 'ALL'); if (!r) throw new Error('none');
-      var e = r.ent, im = imgs[e.country] && imgs[e.country][e.name], tags = IdolRec.describeStyle(e);
-      var page = PAGE[e.country] + '?id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name);
-      today.innerHTML = '<div class="av">' + esc(e.name.charAt(0)) + (im && im.img ? '<img alt="" src="' + esc(im.img) + '" onerror="this.remove()">' : '') + '</div>'
-        + '<div class="bd"><span class="bdg">📅 오늘의 아이돌</span><h3>' + esc(e.name) + '</h3><p class="mt">' + (e.country === 'KR' ? '🇰🇷 한국' : '🇯🇵 일본') + ' · ' + esc(e.tier) + ' · ' + e.total + '점</p>'
-        + '<div class="tg">' + tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>'
-        + '<div class="ac"><a class="g" href="' + page + '">상세보기</a>' + (e.spotify ? '<a target="_blank" rel="noopener noreferrer" href="' + esc(e.spotify) + '">Spotify ▶</a>' : '')
-        + '<a href="map?country=' + e.country + '&id=' + encodeURIComponent(e.id) + '&group=' + encodeURIComponent(e.name) + '">🗺 지도</a></div></div>';
-    }).catch(function () { var s = today.closest('.sec'); if (s) s.hidden = true; });
+  /* ---------- 오늘의 아이돌 (하루 고정 · 다시 뽑기) ---------- */
+  var pool = function () { return all.filter(function (g) { return g.active; }); };
+  function pickToday(random) {
+    var p = pool(); if (!p.length) return;
+    var g = random ? p[Math.floor(Math.random() * p.length)] : p[Math.floor(seeded(Math.floor(Date.now() / 864e5))() * p.length)];
+    var t = $('today');
+    function paint() {
+      t.innerHTML = av(g, 'ph') + '<div class="bd"><span class="bdg">' + (random ? '🎲 방금 뽑은 그룹' : '📅 오늘의 아이돌') + '</span><h3>' + esc(g.name) + '</h3><p class="mt">' + FLAG[g.c] + ' ' + (g.c === 'KR' ? '한국' : '일본') + ' · ' + tchip(g.tier) + ' · ' + g.score + '점 · ' + g.rank + '위</p>'
+        + '<div class="tg2">' + g.style.slice(0, 4).map(function (s) { return '<span>' + esc(s) + '</span>'; }).join('') + '</div>'
+        + '<div class="ac"><a class="btn g" href="' + href(g) + '">자세히 보기</a>' + (g.song ? '<a class="btn" target="_blank" rel="noopener noreferrer" href="' + esc(g.song) + '">대표곡 들어보기 ▶</a>' : '') + '<button class="btn" type="button" id="again">🎲 다시 뽑기</button></div></div>';
+      $('again').addEventListener('click', function () { pickToday(true); });
+    }
+    if (random && !REDUCED) { t.classList.remove('flip'); void t.offsetWidth; t.classList.add('flip'); setTimeout(paint, 270); } else paint();
+  }
+
+  /* ---------- 기능 소개 그림 ---------- */
+  function buildMap() { // 지도: 사분면 안에서 점들이 천천히 떠다닌다(설명용 그림)
+    var box = $('mapV'), r = seeded(7), W = 320, H = 220, svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice">'
+      + '<rect x="0" y="0" width="160" height="110" fill="#f3727f" fill-opacity=".07"/><rect x="160" y="0" width="160" height="110" fill="#ffa42b" fill-opacity=".07"/><rect x="160" y="110" width="160" height="110" fill="#539df5" fill-opacity=".07"/><rect x="0" y="110" width="160" height="110" fill="#a78bfa" fill-opacity=".07"/>'
+      + '<line x1="160" y1="8" x2="160" y2="212" stroke="#fff" stroke-opacity=".16" stroke-dasharray="4 5"/><line x1="8" y1="110" x2="312" y2="110" stroke="#fff" stroke-opacity=".16" stroke-dasharray="4 5"/>'
+      + '<g font-size="9" font-weight="800" letter-spacing="1.4" fill-opacity=".85"><text x="10" y="18" fill="#f3727f">CORE LIVE</text><text x="310" y="18" fill="#ffa42b" text-anchor="end">STAGE STAR</text><text x="10" y="210" fill="#a78bfa">CORE DIGITAL</text><text x="310" y="210" fill="#539df5" text-anchor="end">PUBLIC HIT</text></g>';
+    var cols = ['#f3727f', '#ffa42b', '#539df5', '#a78bfa', '#1ed760'], i;
+    for (i = 0; i < 46; i++) {
+      var x = 24 + r() * 272, y = 26 + r() * 168, rad = 3 + r() * 6, c = cols[i % cols.length];
+      svg += '<circle class="dot" style="--d:' + (r() * 7).toFixed(1) + ';--x:' + (r() * 14 - 7).toFixed(1) + 'px;--y:' + (r() * 14 - 7).toFixed(1) + 'px" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + rad.toFixed(1) + '" fill="' + c + '" fill-opacity=".8"/>';
+    }
+    svg += '<circle class="ring" cx="212" cy="76" r="9" fill="none" stroke="#fff" stroke-width="2"/><circle cx="212" cy="76" r="7" fill="#1ed760" stroke="#fff" stroke-width="2"/></svg>';
+    box.innerHTML = svg;
+  }
+  function buildFan() { // 발견: 오늘 고른 세 팀의 카드
+    var p = pool(), rnd = seeded(Math.floor(Date.now() / 864e5) + 3), pick = [], guard = 0;
+    while (pick.length < 3 && p.length && guard++ < 50) { var g = p[Math.floor(rnd() * p.length)]; if (pick.indexOf(g) < 0) pick.push(g); }
+    document.querySelector('#fanV .fan').innerHTML = pick.map(function (g) { return '<div class="fc">' + av(g) + '<span class="n">' + esc(g.name) + '</span></div>'; }).join('');
+  }
+  // 지난 순위: 실제 월별 기록에서 순위가 가장 크게 움직인 상위권 그룹을 선 그래프로 그린다(화면에 보일 때 불러온다)
+  var histV = $('histV');
+  histV._onin = function () {
+    rhP.then(function () { return RankHistory.loadAll('KR'); }).then(function (snaps) {
+      if (snaps.length < 3) throw new Error('few');
+      var last = snaps[snaps.length - 1], best = null;
+      last.groups.filter(function (g) { return g.rank <= 20; }).forEach(function (g) {
+        var h = RankHistory.extractGroupHistory(snaps, g.id); if (h.length < 6) return;
+        var rk = h.map(function (x) { return x.rank; }), range = Math.max.apply(null, rk) - Math.min.apply(null, rk);
+        if (!best || range > best.range || (range === best.range && g.id < best.id)) best = { id: g.id, name: g.group, h: h, range: range };
+      });
+      if (!best) throw new Error('none');
+      var W = 320, H = 220, L = 30, R = 16, T = 46, B = 30, h = best.h, rk = h.map(function (x) { return x.rank; });
+      var lo = Math.min.apply(null, rk), hi = Math.max.apply(null, rk), m0 = RankHistory.monthIndex(h[0].period), m1 = RankHistory.monthIndex(h[h.length - 1].period);
+      var xf = function (p) { return L + (RankHistory.monthIndex(p) - m0) / Math.max(1, m1 - m0) * (W - L - R); }, yf = function (v) { return T + (v - lo) / Math.max(1, hi - lo) * (H - T - B); };
+      var d = h.map(function (x, i) { return (i ? 'L' : 'M') + xf(x.period).toFixed(1) + ' ' + yf(x.rank).toFixed(1); }).join(' ');
+      var lastP = h[h.length - 1];
+      histV.innerHTML = '<div class="lbl">순위 변화 · <b>' + esc(best.name) + '</b></div><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">'
+        + [lo, hi].map(function (v) { return '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yf(v) + '" y2="' + yf(v) + '" stroke="#fff" stroke-opacity=".08"/><text x="' + (L - 6) + '" y="' + (yf(v) + 3.5) + '" fill="#7c7c7c" font-size="10" font-weight="700" text-anchor="end">#' + v + '</text>'; }).join('')
+        + '<path class="line" pathLength="1" d="' + d + '" fill="none" stroke="#ffd166" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'
+        + '<circle cx="' + xf(lastP.period) + '" cy="' + yf(lastP.rank) + '" r="5" fill="#ffd166" stroke="#181818" stroke-width="2"/>'
+        + '<text x="' + L + '" y="' + (H - 8) + '" fill="#7c7c7c" font-size="10" font-weight="700">' + RankHistory.fmtPeriod(h[0].period) + '</text><text x="' + (W - R) + '" y="' + (H - 8) + '" fill="#7c7c7c" font-size="10" font-weight="700" text-anchor="end">' + RankHistory.fmtPeriod(lastP.period) + '</text></svg>';
+      histV.classList.remove('in'); void histV.offsetWidth; histV.classList.add('in'); // 선이 그려지는 모션을 다시 시작
+    }).catch(function () { histV.innerHTML = '<div class="ph">📈</div>'; });
+  };
+  reveal(histV);
 })();
 </script>
 </body>
