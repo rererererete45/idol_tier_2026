@@ -3,11 +3,13 @@
     "country": "KR",
     "period": "2025-01",
     "published_at": "2025-01-31",
-    "revision": 1,
+    "revision": 2,
     "population_count": 64,
     "normalization_version": "v2",
     "percentile_scope": "same-country, same-period relative position",
-    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)"
+    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)",
+    "corrected_at": "2026-09-29",
+    "correction_note": "기세(현재기세) 재보정 v2 반영 — 총점/티어/순위 갱신, 다른 지표는 변경 없음"
   },
   "groups": [
     {
@@ -373,16 +375,16 @@
     {
       "id": "KR-033",
       "group": "OH MY GIRL",
-      "rank": 24,
+      "rank": 25,
       "tier": "B+",
-      "score": 57,
+      "score": 56,
       "metrics": {
         "domestic_digital": 10,
         "album_fandom": 7,
         "performance": 8,
         "global": 7,
         "recognition": 15,
-        "momentum": 10
+        "momentum": 9
       }
     },
     {

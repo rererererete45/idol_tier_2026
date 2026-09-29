@@ -3,11 +3,13 @@
     "country": "KR",
     "period": "2026-06",
     "published_at": "2026-06-30",
-    "revision": 1,
+    "revision": 2,
     "population_count": 84,
     "normalization_version": "v2",
     "percentile_scope": "same-country, same-period relative position",
-    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)"
+    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)",
+    "corrected_at": "2026-09-29",
+    "correction_note": "기세(현재기세) 재보정 v2 반영 — 총점/티어/순위 갱신, 다른 지표는 변경 없음"
   },
   "groups": [
     {
@@ -26,21 +28,6 @@
       }
     },
     {
-      "id": "KR-002",
-      "group": "TWICE",
-      "rank": 2,
-      "tier": "S+",
-      "score": 90,
-      "metrics": {
-        "domestic_digital": 15,
-        "album_fandom": 18,
-        "performance": 19,
-        "global": 15,
-        "recognition": 15,
-        "momentum": 8
-      }
-    },
-    {
       "id": "KR-003",
       "group": "aespa",
       "rank": 2,
@@ -53,6 +40,21 @@
         "global": 14,
         "recognition": 14,
         "momentum": 8
+      }
+    },
+    {
+      "id": "KR-002",
+      "group": "TWICE",
+      "rank": 3,
+      "tier": "S",
+      "score": 89,
+      "metrics": {
+        "domestic_digital": 15,
+        "album_fandom": 18,
+        "performance": 19,
+        "global": 15,
+        "recognition": 15,
+        "momentum": 7
       }
     },
     {
@@ -75,14 +77,14 @@
       "group": "LE SSERAFIM",
       "rank": 5,
       "tier": "S",
-      "score": 86,
+      "score": 85,
       "metrics": {
         "domestic_digital": 17,
         "album_fandom": 15,
         "performance": 18,
         "global": 15,
         "recognition": 13,
-        "momentum": 8
+        "momentum": 7
       }
     },
     {
@@ -476,21 +478,6 @@
       }
     },
     {
-      "id": "KR-032",
-      "group": "Girls' Generation",
-      "rank": 32,
-      "tier": "B",
-      "score": 46,
-      "metrics": {
-        "domestic_digital": 6,
-        "album_fandom": 4,
-        "performance": 7,
-        "global": 5,
-        "recognition": 15,
-        "momentum": 9
-      }
-    },
-    {
       "id": "KR-034",
       "group": "KARA",
       "rank": 32,
@@ -501,6 +488,21 @@
         "album_fandom": 4,
         "performance": 8,
         "global": 7,
+        "recognition": 15,
+        "momentum": 7
+      }
+    },
+    {
+      "id": "KR-032",
+      "group": "Girls' Generation",
+      "rank": 33,
+      "tier": "B",
+      "score": 44,
+      "metrics": {
+        "domestic_digital": 6,
+        "album_fandom": 4,
+        "performance": 7,
+        "global": 5,
         "recognition": 15,
         "momentum": 7
       }
@@ -581,21 +583,6 @@
       }
     },
     {
-      "id": "KR-038",
-      "group": "UNIS",
-      "rank": 39,
-      "tier": "C+",
-      "score": 38,
-      "metrics": {
-        "domestic_digital": 4,
-        "album_fandom": 7,
-        "performance": 5,
-        "global": 6,
-        "recognition": 8,
-        "momentum": 8
-      }
-    },
-    {
       "id": "KR-044",
       "group": "BBGIRLS",
       "rank": 39,
@@ -611,9 +598,24 @@
       }
     },
     {
+      "id": "KR-038",
+      "group": "UNIS",
+      "rank": 40,
+      "tier": "C+",
+      "score": 37,
+      "metrics": {
+        "domestic_digital": 4,
+        "album_fandom": 7,
+        "performance": 5,
+        "global": 6,
+        "recognition": 8,
+        "momentum": 7
+      }
+    },
+    {
       "id": "KR-039",
       "group": "SAY MY NAME",
-      "rank": 41,
+      "rank": 40,
       "tier": "C+",
       "score": 37,
       "metrics": {
@@ -630,20 +632,20 @@
       "group": "ifeye",
       "rank": 42,
       "tier": "C+",
-      "score": 36,
+      "score": 35,
       "metrics": {
         "domestic_digital": 6,
         "album_fandom": 4,
         "performance": 3,
         "global": 7,
         "recognition": 8,
-        "momentum": 8
+        "momentum": 7
       }
     },
     {
       "id": "KR-042",
       "group": "AtHeart",
-      "rank": 43,
+      "rank": 42,
       "tier": "C+",
       "score": 35,
       "metrics": {
@@ -658,7 +660,7 @@
     {
       "id": "KR-048",
       "group": "MADEIN",
-      "rank": 43,
+      "rank": 42,
       "tier": "C+",
       "score": 35,
       "metrics": {

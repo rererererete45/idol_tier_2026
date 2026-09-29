@@ -3,11 +3,13 @@
     "country": "KR",
     "period": "2025-10",
     "published_at": "2025-10-31",
-    "revision": 1,
+    "revision": 2,
     "population_count": 76,
     "normalization_version": "v2",
     "percentile_scope": "same-country, same-period relative position",
-    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)"
+    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)",
+    "corrected_at": "2026-09-29",
+    "correction_note": "기세(현재기세) 재보정 v2 반영 — 총점/티어/순위 갱신, 다른 지표는 변경 없음"
   },
   "groups": [
     {
@@ -15,29 +17,14 @@
       "group": "BLACKPINK",
       "rank": 1,
       "tier": "S+",
-      "score": 95,
+      "score": 94,
       "metrics": {
         "domestic_digital": 19,
         "album_fandom": 20,
         "performance": 20,
         "global": 14,
         "recognition": 14,
-        "momentum": 8
-      }
-    },
-    {
-      "id": "KR-002",
-      "group": "TWICE",
-      "rank": 2,
-      "tier": "S+",
-      "score": 93,
-      "metrics": {
-        "domestic_digital": 15,
-        "album_fandom": 19,
-        "performance": 20,
-        "global": 15,
-        "recognition": 15,
-        "momentum": 9
+        "momentum": 7
       }
     },
     {
@@ -56,21 +43,6 @@
       }
     },
     {
-      "id": "KR-004",
-      "group": "IVE",
-      "rank": 2,
-      "tier": "S+",
-      "score": 93,
-      "metrics": {
-        "domestic_digital": 20,
-        "album_fandom": 20,
-        "performance": 16,
-        "global": 12,
-        "recognition": 15,
-        "momentum": 10
-      }
-    },
-    {
       "id": "KR-005",
       "group": "LE SSERAFIM",
       "rank": 2,
@@ -83,6 +55,36 @@
         "global": 15,
         "recognition": 14,
         "momentum": 10
+      }
+    },
+    {
+      "id": "KR-002",
+      "group": "TWICE",
+      "rank": 4,
+      "tier": "S+",
+      "score": 92,
+      "metrics": {
+        "domestic_digital": 15,
+        "album_fandom": 19,
+        "performance": 20,
+        "global": 15,
+        "recognition": 15,
+        "momentum": 8
+      }
+    },
+    {
+      "id": "KR-004",
+      "group": "IVE",
+      "rank": 5,
+      "tier": "S+",
+      "score": 91,
+      "metrics": {
+        "domestic_digital": 20,
+        "album_fandom": 20,
+        "performance": 16,
+        "global": 12,
+        "recognition": 15,
+        "momentum": 8
       }
     },
     {
@@ -105,14 +107,14 @@
       "group": "i-dle",
       "rank": 7,
       "tier": "S",
-      "score": 88,
+      "score": 87,
       "metrics": {
         "domestic_digital": 18,
         "album_fandom": 16,
         "performance": 17,
         "global": 13,
         "recognition": 15,
-        "momentum": 9
+        "momentum": 8
       }
     },
     {
@@ -135,29 +137,29 @@
       "group": "ILLIT",
       "rank": 9,
       "tier": "S",
-      "score": 82,
+      "score": 81,
       "metrics": {
         "domestic_digital": 19,
         "album_fandom": 15,
         "performance": 9,
         "global": 15,
         "recognition": 14,
-        "momentum": 10
+        "momentum": 9
       }
     },
     {
       "id": "KR-014",
       "group": "KATSEYE",
       "rank": 10,
-      "tier": "S",
-      "score": 80,
+      "tier": "A+",
+      "score": 79,
       "metrics": {
         "domestic_digital": 10,
         "album_fandom": 13,
         "performance": 18,
         "global": 15,
         "recognition": 14,
-        "momentum": 10
+        "momentum": 9
       }
     },
     {
@@ -180,50 +182,35 @@
       "group": "ITZY",
       "rank": 12,
       "tier": "A+",
-      "score": 72,
+      "score": 71,
       "metrics": {
         "domestic_digital": 10,
         "album_fandom": 11,
         "performance": 18,
         "global": 11,
         "recognition": 13,
-        "momentum": 9
+        "momentum": 8
       }
     },
     {
       "id": "KR-018",
       "group": "KISS OF LIFE",
       "rank": 13,
-      "tier": "A+",
-      "score": 71,
+      "tier": "A",
+      "score": 69,
       "metrics": {
         "domestic_digital": 14,
         "album_fandom": 11,
         "performance": 14,
         "global": 11,
         "recognition": 11,
-        "momentum": 10
-      }
-    },
-    {
-      "id": "KR-015",
-      "group": "QWER",
-      "rank": 14,
-      "tier": "A",
-      "score": 68,
-      "metrics": {
-        "domestic_digital": 20,
-        "album_fandom": 8,
-        "performance": 11,
-        "global": 5,
-        "recognition": 15,
-        "momentum": 9
+        "momentum": 8
       }
     },
     {
       "id": "KR-008",
       "group": "NewJeans",
-      "rank": 15,
+      "rank": 14,
       "tier": "A",
       "score": 67,
       "metrics": {
@@ -238,7 +225,7 @@
     {
       "id": "KR-012",
       "group": "Hearts2Hearts",
-      "rank": 15,
+      "rank": 14,
       "tier": "A",
       "score": 67,
       "metrics": {
@@ -251,32 +238,17 @@
       }
     },
     {
-      "id": "KR-013",
-      "group": "KiiiKiii",
-      "rank": 17,
+      "id": "KR-015",
+      "group": "QWER",
+      "rank": 14,
       "tier": "A",
-      "score": 65,
+      "score": 67,
       "metrics": {
         "domestic_digital": 20,
-        "album_fandom": 10,
-        "performance": 6,
-        "global": 8,
-        "recognition": 13,
-        "momentum": 8
-      }
-    },
-    {
-      "id": "KR-019",
-      "group": "tripleS",
-      "rank": 17,
-      "tier": "A",
-      "score": 65,
-      "metrics": {
-        "domestic_digital": 10,
-        "album_fandom": 17,
-        "performance": 12,
-        "global": 9,
-        "recognition": 9,
+        "album_fandom": 8,
+        "performance": 11,
+        "global": 5,
+        "recognition": 15,
         "momentum": 8
       }
     },
@@ -292,6 +264,36 @@
         "performance": 14,
         "global": 10,
         "recognition": 13,
+        "momentum": 7
+      }
+    },
+    {
+      "id": "KR-013",
+      "group": "KiiiKiii",
+      "rank": 18,
+      "tier": "A",
+      "score": 64,
+      "metrics": {
+        "domestic_digital": 20,
+        "album_fandom": 10,
+        "performance": 6,
+        "global": 8,
+        "recognition": 13,
+        "momentum": 7
+      }
+    },
+    {
+      "id": "KR-019",
+      "group": "tripleS",
+      "rank": 18,
+      "tier": "A",
+      "score": 64,
+      "metrics": {
+        "domestic_digital": 10,
+        "album_fandom": 17,
+        "performance": 12,
+        "global": 9,
+        "recognition": 9,
         "momentum": 7
       }
     },
@@ -313,61 +315,31 @@
     {
       "id": "KR-022",
       "group": "fromis_9",
-      "rank": 20,
+      "rank": 21,
       "tier": "A",
-      "score": 63,
+      "score": 62,
       "metrics": {
         "domestic_digital": 13,
         "album_fandom": 8,
         "performance": 13,
         "global": 7,
         "recognition": 13,
-        "momentum": 9
+        "momentum": 8
       }
     },
     {
       "id": "KR-031",
       "group": "VIVIZ",
-      "rank": 20,
+      "rank": 21,
       "tier": "A",
-      "score": 63,
+      "score": 62,
       "metrics": {
         "domestic_digital": 9,
         "album_fandom": 8,
         "performance": 12,
         "global": 10,
         "recognition": 14,
-        "momentum": 10
-      }
-    },
-    {
-      "id": "KR-021",
-      "group": "MEOVV",
-      "rank": 23,
-      "tier": "B+",
-      "score": 59,
-      "metrics": {
-        "domestic_digital": 10,
-        "album_fandom": 10,
-        "performance": 7,
-        "global": 12,
-        "recognition": 11,
         "momentum": 9
-      }
-    },
-    {
-      "id": "KR-027",
-      "group": "ARTMS",
-      "rank": 23,
-      "tier": "B+",
-      "score": 59,
-      "metrics": {
-        "domestic_digital": 7,
-        "album_fandom": 9,
-        "performance": 15,
-        "global": 10,
-        "recognition": 10,
-        "momentum": 8
       }
     },
     {
@@ -386,18 +358,48 @@
       }
     },
     {
+      "id": "KR-021",
+      "group": "MEOVV",
+      "rank": 24,
+      "tier": "B+",
+      "score": 58,
+      "metrics": {
+        "domestic_digital": 10,
+        "album_fandom": 10,
+        "performance": 7,
+        "global": 12,
+        "recognition": 11,
+        "momentum": 8
+      }
+    },
+    {
+      "id": "KR-027",
+      "group": "ARTMS",
+      "rank": 24,
+      "tier": "B+",
+      "score": 58,
+      "metrics": {
+        "domestic_digital": 7,
+        "album_fandom": 9,
+        "performance": 15,
+        "global": 10,
+        "recognition": 10,
+        "momentum": 7
+      }
+    },
+    {
       "id": "KR-030",
       "group": "Dreamcatcher",
-      "rank": 23,
+      "rank": 24,
       "tier": "B+",
-      "score": 59,
+      "score": 58,
       "metrics": {
         "domestic_digital": 5,
         "album_fandom": 8,
         "performance": 17,
         "global": 10,
         "recognition": 11,
-        "momentum": 8
+        "momentum": 7
       }
     },
     {
@@ -405,35 +407,20 @@
       "group": "OH MY GIRL",
       "rank": 27,
       "tier": "B+",
-      "score": 58,
+      "score": 57,
       "metrics": {
         "domestic_digital": 10,
         "album_fandom": 8,
         "performance": 8,
         "global": 7,
         "recognition": 15,
-        "momentum": 10
-      }
-    },
-    {
-      "id": "KR-029",
-      "group": "Kep1er",
-      "rank": 28,
-      "tier": "B+",
-      "score": 56,
-      "metrics": {
-        "domestic_digital": 7,
-        "album_fandom": 7,
-        "performance": 11,
-        "global": 9,
-        "recognition": 13,
         "momentum": 9
       }
     },
     {
       "id": "KR-026",
       "group": "FIFTY FIFTY",
-      "rank": 29,
+      "rank": 28,
       "tier": "B+",
       "score": 55,
       "metrics": {
@@ -448,7 +435,7 @@
     {
       "id": "KR-024",
       "group": "izna",
-      "rank": 30,
+      "rank": 29,
       "tier": "B+",
       "score": 54,
       "metrics": {
@@ -457,6 +444,21 @@
         "performance": 7,
         "global": 9,
         "recognition": 12,
+        "momentum": 7
+      }
+    },
+    {
+      "id": "KR-029",
+      "group": "Kep1er",
+      "rank": 29,
+      "tier": "B+",
+      "score": 54,
+      "metrics": {
+        "domestic_digital": 7,
+        "album_fandom": 7,
+        "performance": 11,
+        "global": 9,
+        "recognition": 13,
         "momentum": 7
       }
     },
@@ -480,14 +482,14 @@
       "group": "Girls' Generation",
       "rank": 32,
       "tier": "B",
-      "score": 45,
+      "score": 44,
       "metrics": {
         "domestic_digital": 6,
         "album_fandom": 4,
         "performance": 6,
         "global": 6,
         "recognition": 15,
-        "momentum": 8
+        "momentum": 7
       }
     },
     {
@@ -525,14 +527,14 @@
       "group": "ifeye",
       "rank": 35,
       "tier": "B",
-      "score": 42,
+      "score": 41,
       "metrics": {
         "domestic_digital": 7,
         "album_fandom": 5,
         "performance": 4,
         "global": 8,
         "recognition": 9,
-        "momentum": 9
+        "momentum": 8
       }
     },
     {
@@ -551,24 +553,9 @@
       }
     },
     {
-      "id": "KR-054",
-      "group": "HITGS",
-      "rank": 36,
-      "tier": "B",
-      "score": 40,
-      "metrics": {
-        "domestic_digital": 5,
-        "album_fandom": 6,
-        "performance": 6,
-        "global": 6,
-        "recognition": 8,
-        "momentum": 9
-      }
-    },
-    {
       "id": "KR-043",
       "group": "YOUNG POSSE",
-      "rank": 38,
+      "rank": 37,
       "tier": "C+",
       "score": 39,
       "metrics": {
@@ -581,39 +568,39 @@
       }
     },
     {
+      "id": "KR-054",
+      "group": "HITGS",
+      "rank": 37,
+      "tier": "C+",
+      "score": 39,
+      "metrics": {
+        "domestic_digital": 5,
+        "album_fandom": 6,
+        "performance": 6,
+        "global": 6,
+        "recognition": 8,
+        "momentum": 8
+      }
+    },
+    {
       "id": "KR-055",
       "group": "USPEER",
       "rank": 39,
       "tier": "C+",
-      "score": 37,
+      "score": 36,
       "metrics": {
         "domestic_digital": 5,
         "album_fandom": 9,
         "performance": 5,
         "global": 4,
         "recognition": 6,
-        "momentum": 8
-      }
-    },
-    {
-      "id": "KR-062",
-      "group": "KIIRAS",
-      "rank": 40,
-      "tier": "C+",
-      "score": 35,
-      "metrics": {
-        "domestic_digital": 5,
-        "album_fandom": 5,
-        "performance": 4,
-        "global": 5,
-        "recognition": 7,
-        "momentum": 9
+        "momentum": 7
       }
     },
     {
       "id": "KR-040",
       "group": "EVERGLOW",
-      "rank": 41,
+      "rank": 40,
       "tier": "C+",
       "score": 34,
       "metrics": {
@@ -623,6 +610,21 @@
         "global": 7,
         "recognition": 8,
         "momentum": 7
+      }
+    },
+    {
+      "id": "KR-062",
+      "group": "KIIRAS",
+      "rank": 40,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "domestic_digital": 5,
+        "album_fandom": 5,
+        "performance": 4,
+        "global": 5,
+        "recognition": 7,
+        "momentum": 8
       }
     },
     {
@@ -656,24 +658,9 @@
       }
     },
     {
-      "id": "KR-064",
-      "group": "ablume",
-      "rank": 43,
-      "tier": "C+",
-      "score": 32,
-      "metrics": {
-        "domestic_digital": 4,
-        "album_fandom": 3,
-        "performance": 2,
-        "global": 7,
-        "recognition": 8,
-        "momentum": 8
-      }
-    },
-    {
       "id": "KR-035",
       "group": "Billlie",
-      "rank": 45,
+      "rank": 44,
       "tier": "C+",
       "score": 31,
       "metrics": {
@@ -688,7 +675,7 @@
     {
       "id": "KR-036",
       "group": "H1-KEY",
-      "rank": 45,
+      "rank": 44,
       "tier": "C+",
       "score": 31,
       "metrics": {
@@ -703,7 +690,7 @@
     {
       "id": "KR-053",
       "group": "BLACKSWAN",
-      "rank": 45,
+      "rank": 44,
       "tier": "C+",
       "score": 31,
       "metrics": {
@@ -716,24 +703,24 @@
       }
     },
     {
-      "id": "KR-070",
-      "group": "UDTT",
-      "rank": 48,
+      "id": "KR-064",
+      "group": "ablume",
+      "rank": 44,
       "tier": "C+",
-      "score": 30,
+      "score": 31,
       "metrics": {
         "domestic_digital": 4,
-        "album_fandom": 4,
-        "performance": 3,
-        "global": 4,
-        "recognition": 7,
-        "momentum": 8
+        "album_fandom": 3,
+        "performance": 2,
+        "global": 7,
+        "recognition": 8,
+        "momentum": 7
       }
     },
     {
       "id": "KR-038",
       "group": "UNIS",
-      "rank": 49,
+      "rank": 48,
       "tier": "C",
       "score": 29,
       "metrics": {
@@ -748,7 +735,7 @@
     {
       "id": "KR-048",
       "group": "MADEIN",
-      "rank": 49,
+      "rank": 48,
       "tier": "C",
       "score": 29,
       "metrics": {
@@ -763,7 +750,7 @@
     {
       "id": "KR-058",
       "group": "EXID",
-      "rank": 49,
+      "rank": 48,
       "tier": "C",
       "score": 29,
       "metrics": {
@@ -776,24 +763,24 @@
       }
     },
     {
-      "id": "KR-066",
-      "group": "VVS",
-      "rank": 49,
+      "id": "KR-070",
+      "group": "UDTT",
+      "rank": 48,
       "tier": "C",
       "score": 29,
       "metrics": {
         "domestic_digital": 4,
-        "album_fandom": 3,
-        "performance": 4,
-        "global": 3,
+        "album_fandom": 4,
+        "performance": 3,
+        "global": 4,
         "recognition": 7,
-        "momentum": 8
+        "momentum": 7
       }
     },
     {
       "id": "KR-039",
       "group": "SAY MY NAME",
-      "rank": 53,
+      "rank": 52,
       "tier": "C",
       "score": 28,
       "metrics": {
@@ -808,7 +795,7 @@
     {
       "id": "KR-052",
       "group": "WJSN",
-      "rank": 53,
+      "rank": 52,
       "tier": "C",
       "score": 28,
       "metrics": {
@@ -818,6 +805,21 @@
         "global": 4,
         "recognition": 13,
         "momentum": 3
+      }
+    },
+    {
+      "id": "KR-066",
+      "group": "VVS",
+      "rank": 52,
+      "tier": "C",
+      "score": 28,
+      "metrics": {
+        "domestic_digital": 4,
+        "album_fandom": 3,
+        "performance": 4,
+        "global": 3,
+        "recognition": 7,
+        "momentum": 7
       }
     },
     {

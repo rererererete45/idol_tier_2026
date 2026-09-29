@@ -3,28 +3,15 @@
     "country": "KR",
     "period": "2025-04",
     "published_at": "2025-04-30",
-    "revision": 1,
+    "revision": 2,
     "population_count": 70,
     "normalization_version": "v2",
     "percentile_scope": "same-country, same-period relative position",
-    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)"
+    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)",
+    "corrected_at": "2026-09-29",
+    "correction_note": "기세(현재기세) 재보정 v2 반영 — 총점/티어/순위 갱신, 다른 지표는 변경 없음"
   },
   "groups": [
-    {
-      "id": "KR-004",
-      "group": "IVE",
-      "rank": 1,
-      "tier": "S+",
-      "score": 92,
-      "metrics": {
-        "domestic_digital": 20,
-        "album_fandom": 20,
-        "performance": 16,
-        "global": 12,
-        "recognition": 15,
-        "momentum": 9
-      }
-    },
     {
       "id": "KR-005",
       "group": "LE SSERAFIM",
@@ -38,6 +25,21 @@
         "global": 15,
         "recognition": 14,
         "momentum": 9
+      }
+    },
+    {
+      "id": "KR-004",
+      "group": "IVE",
+      "rank": 2,
+      "tier": "S+",
+      "score": 91,
+      "metrics": {
+        "domestic_digital": 20,
+        "album_fandom": 20,
+        "performance": 16,
+        "global": 12,
+        "recognition": 15,
+        "momentum": 8
       }
     },
     {
@@ -343,16 +345,16 @@
     {
       "id": "KR-031",
       "group": "VIVIZ",
-      "rank": 19,
-      "tier": "A",
-      "score": 60,
+      "rank": 23,
+      "tier": "B+",
+      "score": 59,
       "metrics": {
         "domestic_digital": 9,
         "album_fandom": 8,
         "performance": 12,
         "global": 9,
         "recognition": 13,
-        "momentum": 9
+        "momentum": 8
       }
     },
     {
@@ -371,24 +373,9 @@
       }
     },
     {
-      "id": "KR-033",
-      "group": "OH MY GIRL",
-      "rank": 25,
-      "tier": "B+",
-      "score": 57,
-      "metrics": {
-        "domestic_digital": 10,
-        "album_fandom": 7,
-        "performance": 8,
-        "global": 7,
-        "recognition": 15,
-        "momentum": 10
-      }
-    },
-    {
       "id": "KR-013",
       "group": "KiiiKiii",
-      "rank": 26,
+      "rank": 25,
       "tier": "B+",
       "score": 56,
       "metrics": {
@@ -398,6 +385,21 @@
         "global": 7,
         "recognition": 12,
         "momentum": 6
+      }
+    },
+    {
+      "id": "KR-033",
+      "group": "OH MY GIRL",
+      "rank": 25,
+      "tier": "B+",
+      "score": 56,
+      "metrics": {
+        "domestic_digital": 10,
+        "album_fandom": 7,
+        "performance": 8,
+        "global": 7,
+        "recognition": 15,
+        "momentum": 9
       }
     },
     {

@@ -3,11 +3,13 @@
     "country": "KR",
     "period": "2026-05",
     "published_at": "2026-05-31",
-    "revision": 1,
+    "revision": 2,
     "population_count": 82,
     "normalization_version": "v2",
     "percentile_scope": "same-country, same-period relative position",
-    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)"
+    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)",
+    "corrected_at": "2026-09-29",
+    "correction_note": "기세(현재기세) 재보정 v2 반영 — 총점/티어/순위 갱신, 다른 지표는 변경 없음"
   },
   "groups": [
     {
@@ -29,21 +31,21 @@
       "id": "KR-002",
       "group": "TWICE",
       "rank": 2,
-      "tier": "S+",
-      "score": 90,
+      "tier": "S",
+      "score": 89,
       "metrics": {
         "domestic_digital": 15,
         "album_fandom": 18,
         "performance": 19,
         "global": 15,
         "recognition": 15,
-        "momentum": 8
+        "momentum": 7
       }
     },
     {
       "id": "KR-003",
       "group": "aespa",
-      "rank": 3,
+      "rank": 2,
       "tier": "S",
       "score": 89,
       "metrics": {
@@ -296,21 +298,6 @@
       }
     },
     {
-      "id": "KR-021",
-      "group": "MEOVV",
-      "rank": 20,
-      "tier": "B+",
-      "score": 57,
-      "metrics": {
-        "domestic_digital": 9,
-        "album_fandom": 10,
-        "performance": 6,
-        "global": 12,
-        "recognition": 11,
-        "momentum": 9
-      }
-    },
-    {
       "id": "KR-022",
       "group": "fromis_9",
       "rank": 20,
@@ -343,7 +330,7 @@
     {
       "id": "KR-023",
       "group": "I.O.I",
-      "rank": 23,
+      "rank": 22,
       "tier": "B+",
       "score": 56,
       "metrics": {
@@ -358,7 +345,7 @@
     {
       "id": "KR-024",
       "group": "izna",
-      "rank": 23,
+      "rank": 22,
       "tier": "B+",
       "score": 56,
       "metrics": {
@@ -368,6 +355,21 @@
         "global": 9,
         "recognition": 12,
         "momentum": 9
+      }
+    },
+    {
+      "id": "KR-021",
+      "group": "MEOVV",
+      "rank": 24,
+      "tier": "B+",
+      "score": 55,
+      "metrics": {
+        "domestic_digital": 9,
+        "album_fandom": 10,
+        "performance": 6,
+        "global": 12,
+        "recognition": 11,
+        "momentum": 7
       }
     },
     {
@@ -476,21 +478,6 @@
       }
     },
     {
-      "id": "KR-032",
-      "group": "Girls' Generation",
-      "rank": 32,
-      "tier": "B",
-      "score": 46,
-      "metrics": {
-        "domestic_digital": 6,
-        "album_fandom": 4,
-        "performance": 7,
-        "global": 5,
-        "recognition": 15,
-        "momentum": 9
-      }
-    },
-    {
       "id": "KR-034",
       "group": "KARA",
       "rank": 32,
@@ -501,6 +488,21 @@
         "album_fandom": 4,
         "performance": 8,
         "global": 7,
+        "recognition": 15,
+        "momentum": 7
+      }
+    },
+    {
+      "id": "KR-032",
+      "group": "Girls' Generation",
+      "rank": 33,
+      "tier": "B",
+      "score": 44,
+      "metrics": {
+        "domestic_digital": 6,
+        "album_fandom": 4,
+        "performance": 7,
+        "global": 5,
         "recognition": 15,
         "momentum": 7
       }

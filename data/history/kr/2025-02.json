@@ -3,11 +3,13 @@
     "country": "KR",
     "period": "2025-02",
     "published_at": "2025-02-28",
-    "revision": 1,
+    "revision": 2,
     "population_count": 65,
     "normalization_version": "v2",
     "percentile_scope": "same-country, same-period relative position",
-    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)"
+    "source": "월말 평가 엑셀(후향적 상대평가, 해당 월 말일 23:59 KST까지 공개된 자료만 반영)",
+    "corrected_at": "2026-09-29",
+    "correction_note": "기세(현재기세) 재보정 v2 반영 — 총점/티어/순위 갱신, 다른 지표는 변경 없음"
   },
   "groups": [
     {
@@ -195,35 +197,20 @@
       "group": "KISS OF LIFE",
       "rank": 13,
       "tier": "A",
-      "score": 68,
+      "score": 67,
       "metrics": {
         "domestic_digital": 13,
         "album_fandom": 10,
         "performance": 13,
         "global": 11,
         "recognition": 11,
-        "momentum": 10
-      }
-    },
-    {
-      "id": "KR-015",
-      "group": "QWER",
-      "rank": 14,
-      "tier": "A",
-      "score": 66,
-      "metrics": {
-        "domestic_digital": 19,
-        "album_fandom": 7,
-        "performance": 11,
-        "global": 5,
-        "recognition": 15,
         "momentum": 9
       }
     },
     {
       "id": "KR-014",
       "group": "KATSEYE",
-      "rank": 15,
+      "rank": 14,
       "tier": "A",
       "score": 65,
       "metrics": {
@@ -236,9 +223,24 @@
       }
     },
     {
+      "id": "KR-015",
+      "group": "QWER",
+      "rank": 14,
+      "tier": "A",
+      "score": 65,
+      "metrics": {
+        "domestic_digital": 19,
+        "album_fandom": 7,
+        "performance": 11,
+        "global": 5,
+        "recognition": 15,
+        "momentum": 8
+      }
+    },
+    {
       "id": "KR-017",
       "group": "MAMAMOO",
-      "rank": 15,
+      "rank": 14,
       "tier": "A",
       "score": 65,
       "metrics": {
@@ -311,24 +313,9 @@
       }
     },
     {
-      "id": "KR-031",
-      "group": "VIVIZ",
-      "rank": 19,
-      "tier": "A",
-      "score": 60,
-      "metrics": {
-        "domestic_digital": 9,
-        "album_fandom": 8,
-        "performance": 12,
-        "global": 9,
-        "recognition": 13,
-        "momentum": 9
-      }
-    },
-    {
       "id": "KR-028",
       "group": "Apink",
-      "rank": 22,
+      "rank": 21,
       "tier": "B+",
       "score": 59,
       "metrics": {
@@ -338,6 +325,21 @@
         "global": 6,
         "recognition": 15,
         "momentum": 9
+      }
+    },
+    {
+      "id": "KR-031",
+      "group": "VIVIZ",
+      "rank": 21,
+      "tier": "B+",
+      "score": 59,
+      "metrics": {
+        "domestic_digital": 9,
+        "album_fandom": 8,
+        "performance": 12,
+        "global": 9,
+        "recognition": 13,
+        "momentum": 8
       }
     },
     {
@@ -373,16 +375,16 @@
     {
       "id": "KR-033",
       "group": "OH MY GIRL",
-      "rank": 24,
+      "rank": 25,
       "tier": "B+",
-      "score": 57,
+      "score": 56,
       "metrics": {
         "domestic_digital": 10,
         "album_fandom": 7,
         "performance": 8,
         "global": 7,
         "recognition": 15,
-        "momentum": 10
+        "momentum": 9
       }
     },
     {
