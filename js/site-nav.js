@@ -4,7 +4,7 @@
  * - REPLACE_NAV=false 로 바꾸면 예전처럼 브라우저 기록에 쌓인다. */
 (function () {
   'use strict';
-  var SITE_V = '20260947', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
+  var SITE_V = '20260948', REPLACE_NAV = true, STACK_KEY = 'idolNavStack', FAV_KEY = 'idolTierFavorites', MAXSTACK = 40;
   var script = document.currentScript, base = '';
   if (script && script.src) base = script.src.replace(/js\/site-nav\.js.*$/, '');
 
@@ -94,6 +94,14 @@
     + '.sn-fp .empty{padding:10px 4px;font-size:13px;line-height:1.7;color:#b3b3b3}'
     + '.sn-top{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:35;width:44px;height:44px;border-radius:50%;border:0;background:#252525;color:#fff;font-size:18px;cursor:pointer;box-shadow:rgba(0,0,0,.5) 0 6px 18px;opacity:0;pointer-events:none;transition:opacity .2s,transform .15s}'
     + '.sn-top.on{opacity:1;pointer-events:auto}.sn-top:hover{background:#333}.sn-top:active{transform:scale(.92)}'
+    + '.sn-dd{position:relative}'
+    + '.sn-dd .car{width:10px;height:10px;fill:currentColor;margin-left:1px;transition:transform .15s;flex:none}'
+    + '.sn-dd[data-open="1"] .car{transform:rotate(180deg)}'
+    + '.sn-ddmenu{display:none;position:absolute;left:0;top:50px;z-index:30;min-width:172px;background:#181818;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),rgba(0,0,0,.6) 0 18px 40px;padding:6px;list-style:none;margin:0}'
+    + '.sn-dd[data-open="1"] .sn-ddmenu{display:block;animation:snFp .16s ease-out}'
+    + '.sn-ddmenu a{display:flex;align-items:center;gap:8px;min-height:46px;padding:0 14px;border-radius:10px;color:#fff;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap}'
+    + '.sn-ddmenu a:hover{background:#252525}'
+    + '.sn-ddmenu a[aria-current="page"]{background:#1ed760;color:#000}'
     + '@media(max-width:560px){.sn-sp{display:none}.sn-links{flex:1;-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent);padding-right:10px}.sn-disc .t{display:none}.sn-in{padding:0 8px;gap:2px}.sn-b{padding:0 10px;font-size:12.5px}.sn-home span{display:none}.sn-back{padding:0 10px}.sn-back span{display:none}.sn-b .sm{display:inline}.sn-b .lg{display:none}.sn-fav .t{display:none}}'
     + '@media(prefers-reduced-motion:reduce){.sn-b,.sn-top{transition:none}}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
@@ -109,7 +117,16 @@
   nav.innerHTML = '<a class="sn-skip" href="#main">본문 바로가기</a><div class="sn-in">'
     + '<button class="sn-b sn-back" id="snBack" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5.4L14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg><span></span></button>'
     + link('home', HOUSE + '<span>홈</span>', 'sn-home')
-    + '<div class="sn-links">' + link('kr', '🇰🇷 한국') + link('jp', '🇯🇵 일본') + link('map', '<span class="lg">IDOL MAP</span><span class="sm">지도</span>') + link('history', '<span class="lg">HISTORY</span><span class="sm">기록</span>') + '</div>'
+    + '<div class="sn-links">'
+    +   '<div class="sn-dd" id="snRankDD" data-open="0">'
+    +     '<button class="sn-b" id="snRankBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="snRankMenu"' + (here === 'kr' || here === 'jp' ? ' aria-current="page"' : '') + '>랭킹<svg class="car" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button>'
+    +     '<ul class="sn-ddmenu" id="snRankMenu" role="menu" aria-label="랭킹">'
+    +       '<li role="none">' + link('kr', '🇰🇷 한국 랭킹') + '</li>'
+    +       '<li role="none">' + link('jp', '🇯🇵 일본 랭킹') + '</li>'
+    +     '</ul>'
+    +   '</div>'
+    +   link('map', '지도') + link('history', '기록')
+    + '</div>'
     + '<span class="sn-sp"></span>'
     + '<button class="sn-b sn-disc" id="snDisc" type="button" data-discover aria-label="DISCOVER 아이돌 발견하기">🎲<span class="t">DISCOVER</span></button>'
     + '<button class="sn-b" id="snSearch" type="button" aria-label="그룹 검색" aria-expanded="false">' + SEARCH + '</button>'
@@ -134,6 +151,17 @@
   document.body.appendChild(top);
   top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
   window.addEventListener('scroll', function () { top.classList.toggle('on', window.scrollY > 900); }, { passive: true });
+
+  /* ---------- 랭킹 드롭다운 (한국/일본) ---------- */
+  var rankDD = document.getElementById('snRankDD'), rankBtn = document.getElementById('snRankBtn');
+  function toggleRankDD(on) {
+    rankDD.setAttribute('data-open', on ? '1' : '0');
+    rankBtn.setAttribute('aria-expanded', on);
+    if (on) { toggleFav(false); toggleSearch(false); }
+  }
+  rankBtn.addEventListener('click', function (e) { e.stopPropagation(); toggleRankDD(rankDD.getAttribute('data-open') !== '1'); });
+  document.addEventListener('click', function (e) { if (rankDD.getAttribute('data-open') === '1' && !rankDD.contains(e.target)) toggleRankDD(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && rankDD.getAttribute('data-open') === '1') { toggleRankDD(false); rankBtn.focus(); } });
 
   /* 이전 화면 버튼 */
   var backBtn = document.getElementById('snBack');
@@ -196,10 +224,10 @@
   window.openDiscover = function (opts) {
     if (!discP) {
       var p = Promise.resolve();
-      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260947'); });
-      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260947'); });
-      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260947'); });
-      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260947'); });
+      if (!window.IdolMatch) p = p.then(function () { return loadScript('js/idol-match.js?v=20260948'); });
+      if (!window.IdolRec) p = p.then(function () { return loadScript('js/idol-recommendation-core.js?v=20260948'); });
+      if (!window.RankHistory) p = p.then(function () { return loadScript('js/rank-history.js?v=20260948'); });
+      if (!window.Discover) p = p.then(function () { return loadScript('js/discover.js?v=20260948'); });
       discP = p;
     }
     discP.then(function () { window.Discover.open(opts); }).catch(function () { discP = null; window.__toast('발견 기능을 불러오지 못했어요. 네트워크를 확인하고 다시 눌러 주세요.'); });
@@ -234,7 +262,7 @@
   }
   function toggleFav(on) {
     fp.classList.toggle('on', on); fpBtn.setAttribute('aria-expanded', on);
-    if (on) { toggleSearchIfOpen(); renderFav(); }
+    if (on) { toggleSearchIfOpen(); toggleRankDD(false); renderFav(); }
   }
   function toggleSearchIfOpen() { var s = document.getElementById('snSr'); if (s && s.classList.contains('on')) document.getElementById('snSearch').click(); }
   fpBtn.addEventListener('click', function (e) { e.stopPropagation(); toggleFav(!fp.classList.contains('on')); });
@@ -278,7 +306,7 @@
   }
   function toggleSearch(on) {
     sr.classList.toggle('on', on); sBtn.setAttribute('aria-expanded', on);
-    if (on) { loadIdx(); render(); q.focus(); } else q.blur();
+    if (on) { loadIdx(); render(); q.focus(); toggleRankDD(false); } else q.blur();
   }
   sBtn.addEventListener('click', function () { toggleSearch(!sr.classList.contains('on')); });
   q.addEventListener('input', render);

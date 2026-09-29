@@ -18,11 +18,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/home.css?v=20260947">
+<link rel="stylesheet" href="css/home.css?v=20260948">
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">이 사이트는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260947"></script>
+<script src="js/site-nav.js?v=20260948"></script>
 <div class="wrap">
 
 <section class="hero" aria-labelledby="ttl">
@@ -37,39 +37,29 @@
     <ul class="fr" id="fr" role="listbox" hidden></ul>
   </div>
 
-  <nav class="go" aria-label="바로가기">
-    <a class="tile big" href="./kr" style="--ac:#1ed760"><span class="ic" aria-hidden="true">🇰🇷</span><span class="stack" id="stKR" aria-hidden="true"></span><b>한국 티어리스트</b><small id="cKR">86팀</small></a>
-    <a class="tile big" href="./jp" style="--ac:#f3727f"><span class="ic" aria-hidden="true">🇯🇵</span><span class="stack" id="stJP" aria-hidden="true"></span><b>일본 티어리스트</b><small id="cJP">126팀</small></a>
-    <a class="tile sm" href="?discover=1" data-discover style="--ac:#a78bfa"><span class="ic" aria-hidden="true">🎲</span><b>새 그룹 발견</b><small>랜덤·취향으로 뽑아 보기</small></a>
-    <a class="tile sm" href="./map" style="--ac:#539df5"><span class="ic" aria-hidden="true">🗺</span><b>스타일 지도</b><small>어떤 매력인지 한눈에</small></a>
-    <a class="tile sm" href="./history" style="--ac:#ffd166"><span class="ic" aria-hidden="true">🕰</span><b>지난 순위</b><small>달마다 어떻게 바뀌었나</small></a>
-  </nav>
+  <div class="herocta">
+    <a class="btn g" href="./kr">🇰🇷 한국 랭킹</a>
+    <a class="btn" href="./jp">🇯🇵 일본 랭킹</a>
+    <a class="btn" href="?discover=1" data-discover>✨ 아이돌 찾아보기</a>
+  </div>
+  <a class="textlink" href="./history">지난 기록 보기 →</a>
 
   <div class="belt" aria-label="그룹 미리보기">
     <div class="belt-track" id="belt"></div>
   </div>
 </section>
 
-<section class="sec rv" aria-labelledby="ladT">
-  <div class="sec-h">
-    <div><h2 id="ladT">한눈에 보는 티어리스트</h2><p>사진을 누르면 그 그룹의 상세 정보가 열려요</p></div>
-    <div class="seg" role="group" aria-label="나라 선택"><button type="button" data-c="KR" aria-pressed="true">🇰🇷 한국</button><button type="button" data-c="JP" aria-pressed="false">🇯🇵 일본</button></div>
+<section class="sec rv" aria-labelledby="tmT">
+  <div class="sec-h"><div><h2 id="tmT">THIS MONTH</h2><p>지금 가장 높은 자리에 있는 그룹이에요</p></div></div>
+  <div class="thismonth" id="thismonth">
+    <div class="tmcol"><div class="sk" style="height:20px;width:60px"></div><div class="sk" style="height:56px;margin-top:8px"></div><div class="sk" style="height:56px;margin-top:6px"></div><div class="sk" style="height:56px;margin-top:6px"></div></div>
+    <div class="tmcol"><div class="sk" style="height:20px;width:60px"></div><div class="sk" style="height:56px;margin-top:8px"></div><div class="sk" style="height:56px;margin-top:6px"></div><div class="sk" style="height:56px;margin-top:6px"></div></div>
   </div>
-  <div class="ladder" id="ladder"><div class="sk" style="height:110px"></div><div class="sk" style="height:110px"></div><div class="sk" style="height:110px"></div></div>
-  <div class="expand"><button class="btn" type="button" id="expand" hidden>더 낮은 티어도 보기 ↓</button></div>
-  <div class="expand"><a class="btn g" id="fullList" href="./kr">전체 순위표 보기 →</a></div>
 </section>
 
 <section class="sec rv" id="risersSec" aria-labelledby="risT" hidden>
-  <div class="sec-h">
-    <div><h2 id="risT">이번 달 급상승 🔥</h2><p id="risSub">지난달보다 순위가 크게 오른 그룹이에요</p></div>
-    <a class="more" href="./history?view=movers">전체 보기 →</a>
-  </div>
-  <div class="railwrap">
-    <button class="arrow l" type="button" aria-label="이전" data-dir="-1">‹</button>
-    <div class="rail" id="rail" tabindex="0" aria-label="급상승 그룹 목록"></div>
-    <button class="arrow r" type="button" aria-label="다음" data-dir="1">›</button>
-  </div>
+  <div class="sec-h"><div><h2 id="risT">RISING THIS MONTH 🔥</h2><p id="risSub">지난달보다 순위가 크게 오른 그룹이에요</p></div></div>
+  <div class="rail" id="rail" aria-label="이번 달 급상승 그룹"></div>
 </section>
 
 <section class="sec rv" aria-labelledby="tdT">
@@ -85,7 +75,7 @@
     <div class="ft" style="--ac:#539df5">
       <span class="k">스타일 지도</span>
       <h3>이 그룹은 어떤 매력으로<br>강한 걸까?</h3>
-      <p>팬덤이 두터운지 대중적인지, 공연이 강한지 음원이 강한지. 두 가지 축으로 그룹의 위치를 지도에 찍어 봤어요. 순위와는 또 다른 재미가 있어요.</p>
+      <p>팬덤형 ↔ 대중형, 디지털 ↔ 라이브. 두 축으로 본 그룹의 위치예요.</p>
       <a class="btn" href="./map">지도 보러 가기 →</a>
     </div>
   </div>
@@ -95,7 +85,7 @@
     <div class="ft" style="--ac:#ffd166">
       <span class="k">지난 순위</span>
       <h3>작년엔 몇 위였지?<br>타임머신으로 확인해요</h3>
-      <p>2025년 1월부터 매달의 순위를 그대로 남겨 뒀어요. 그 달로 돌아가 보거나, 누가 얼마나 올랐는지 비교하고, 그룹이 지도 위를 어떻게 움직였는지도 볼 수 있어요.</p>
+      <p>2025년부터 순위가 어떻게 바뀌었는지 그대로 남겨 뒀어요.</p>
       <a class="btn" href="./history">지난 순위 보러 가기 →</a>
     </div>
   </div>
@@ -105,7 +95,7 @@
     <div class="ft" style="--ac:#a78bfa">
       <span class="k">새 그룹 발견</span>
       <h3>몰랐던 그룹,<br>한 번 뽑아 볼래요?</h3>
-      <p>좋아하는 그룹을 저장해 두면 취향이 비슷한 그룹을 골라 줘요. 아직 덜 알려진 숨은 그룹이나 요즘 뜨는 그룹만 뽑아 볼 수도 있어요.</p>
+      <p>아직 모르는 그룹을 취향에 맞게 찾아드려요.</p>
       <a class="btn g" href="?discover=1" data-discover>🎲 발견하러 가기</a>
     </div>
   </div>
@@ -171,11 +161,9 @@
     G.KR = kr.map(function (x) { return norm('KR', x); }); G.JP = jp.map(function (x) { return norm('JP', x); });
     ['KR', 'JP'].forEach(function (c) { G[c].sort(function (a, b) { return a.rank - b.rank || (a.id < b.id ? -1 : 1); }); });
     IMG = r[2]; all = G.KR.concat(G.JP);
-    $('cKR').textContent = G.KR.length + '팀 · 점수순으로 보기'; $('cJP').textContent = G.JP.length + '팀 · 점수순으로 보기';
-    ['KR', 'JP'].forEach(function (c) { $('st' + c).innerHTML = G[c].slice(0, 3).map(function (g) { return av(g); }).join(''); });
-    buildBelt(); renderLadder(); pickToday(false); buildFan(); buildMap();
+    buildBelt(); renderThisMonth(); pickToday(false); buildFan(); buildMap();
   }).catch(function () {
-    $('ladder').innerHTML = '<p style="color:var(--tx2);font-size:14px">데이터를 불러오지 못했어요. 새로고침해 주세요. 위의 버튼으로 바로 이동할 수도 있어요.</p>';
+    $('thismonth').innerHTML = '<p style="color:var(--tx2);font-size:14px">데이터를 불러오지 못했어요. 새로고침해 주세요.</p>';
     $('today').closest('section').hidden = true;
   });
 
@@ -210,47 +198,51 @@
     $('belt').innerHTML = h + h; // 이어 붙여 끊김 없이 흐르게
   }
 
-  /* ---------- 티어리스트 사다리 ---------- */
-  var lad = { c: 'KR', all: false };
-  function renderLadder() {
-    var list = G[lad.c], by = {}, box = $('ladder');
-    list.forEach(function (g) { (by[g.tier] = by[g.tier] || []).push(g); });
-    var tiers = TIERS.filter(function (t) { return by[t]; }), shown = lad.all ? tiers : tiers.slice(0, 4);
-    box.innerHTML = shown.map(function (t) {
-      return '<div class="trow pop" style="--tc:' + TC[t] + '"><div class="tlab">' + esc(t) + '<small>' + by[t].length + '팀</small></div><div class="tsc" role="list">'
-        + by[t].map(function (g, i) { return '<a class="tg" role="listitem" style="--i:' + Math.min(i, 24) + '" href="' + href(g) + '" title="' + esc(g.name) + ' · ' + g.score + '점">' + av(g) + '<span class="n">' + esc(g.name) + '</span></a>'; }).join('') + '</div></div>';
+  /* ---------- THIS MONTH: 한국·일본 TOP3를 나란히 (가장 먼저 아이돌부터 보여준다) ---------- */
+  function renderThisMonth() {
+    var box = $('thismonth');
+    box.innerHTML = ['KR', 'JP'].map(function (c) {
+      var top3 = G[c].slice(0, 3);
+      return '<div class="tmcol"><h3>' + FLAG[c] + ' ' + (c === 'KR' ? 'KOREA' : 'JAPAN') + '</h3><div class="tmrows">'
+        + top3.map(function (g) { return '<a class="tmrow" href="' + href(g) + '"><span class="tmrk">#' + g.rank + '</span>' + av(g, 'tmav') + '<span class="tmnm">' + esc(g.name) + '</span>' + tchip(g.tier) + '<span class="tmsc">' + g.score + '</span></a>'; }).join('')
+        + '</div><a class="textlink" href="./' + PAGE[c] + '">' + (c === 'KR' ? '한국' : '일본') + ' 전체 랭킹 →</a></div>';
     }).join('');
-    var ex = $('expand'); ex.hidden = tiers.length <= 4; ex.textContent = lad.all ? '위쪽만 보기 ↑' : '더 낮은 티어도 보기 ↓ (' + (tiers.length - 4) + '개 티어 더)';
-    $('fullList').setAttribute('href', './' + PAGE[lad.c]); $('fullList').textContent = (lad.c === 'KR' ? '한국' : '일본') + ' 전체 순위표 보기 →';
-    Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === lad.c); });
   }
-  document.querySelector('.seg').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && b.getAttribute('data-c') !== lad.c) { lad.c = b.getAttribute('data-c'); lad.all = false; renderLadder(); } });
-  $('expand').addEventListener('click', function () { lad.all = !lad.all; renderLadder(); });
 
   /* ---------- 월별 기록(rank-history.js)은 한 번만 불러온다 ---------- */
   var rhP = loadScript('js/rank-history.js');
 
-  // 이번 달 급상승: 마지막 두 달을 비교. 점수가 한꺼번에 크게 뒤바뀐 구간(breaks)은 보여주지 않는다.
+  // RISING THIS MONTH: 마지막 두 달을 비교해 최대 3팀만. 점수가 한꺼번에 크게 뒤바뀐 구간(breaks)은 보여주지 않는다.
+  var METRIC_LABEL = {
+    KR: { domestic_digital: '국내음원', album_fandom: '음반·팬덤', performance: '공연', global: '글로벌', recognition: '인지도', momentum: '기세' },
+    JP: { live: '공연', fandom: '팬덤', recognition: '인지도', streaming_sns: 'SNS', momentum: '기세', industry: '업계' }
+  };
   rhP.then(function () {
     return Promise.all([RankHistory.loadRecent('KR', 2), RankHistory.loadRecent('JP', 2), RankHistory.loadBreaks()]);
   }).then(function (r) {
     var out = [], month = '', ok = false;
     ['KR', 'JP'].forEach(function (c, i) {
       var snaps = r[i]; if (snaps.length < 2) return;
-      var a = snaps[snaps.length - 2].meta.period, b = snaps[snaps.length - 1].meta.period, cur = snaps[snaps.length - 1];
-      if ((r[2][c] || []).some(function (x) { return x.from === a && x.to === b; })) return;
-      var d = RankHistory.deltasFromSnapshots(snaps); month = RankHistory.fmtPeriod(b); ok = true;
-      cur.groups.forEach(function (g) { var x = d[g.id]; if (x && x.kind === 'up' && x.movement > 0) out.push({ c: c, id: g.id, name: g.group, tier: g.tier, rank: g.rank, prev: x.prevRank, n: x.n, mv: x.movement }); });
+      var prevSnap = snaps[snaps.length - 2], curSnap = snaps[snaps.length - 1];
+      if ((r[2][c] || []).some(function (x) { return x.from === prevSnap.meta.period && x.to === curSnap.meta.period; })) return;
+      var prevById = {}; prevSnap.groups.forEach(function (g) { prevById[g.id] = g; });
+      var d = RankHistory.deltasFromSnapshots(snaps); month = RankHistory.fmtPeriod(curSnap.meta.period); ok = true;
+      curSnap.groups.forEach(function (g) {
+        var x = d[g.id]; if (!x || x.kind !== 'up' || !(x.movement > 0)) return;
+        var p = prevById[g.id], deltas = [];
+        if (p && p.metrics && g.metrics) {
+          Object.keys(METRIC_LABEL[c]).forEach(function (k) { var dv = g.metrics[k] - p.metrics[k]; if (dv > 0) deltas.push(METRIC_LABEL[c][k] + ' +' + dv); });
+        }
+        out.push({ c: c, id: g.id, name: g.group, tier: g.tier, rank: g.rank, prev: x.prevRank, n: x.n, mv: x.movement, scoreDelta: x.scoreDelta, deltas: deltas.slice(0, 2) });
+      });
     });
     if (!ok || !out.length) { $('risersSec').hidden = true; return; }
     out.sort(function (a, b) { return b.mv - a.mv || a.id.localeCompare(b.id); });
     $('risSub').textContent = month + ' 기준, 지난달보다 순위가 크게 오른 그룹이에요';
-    $('rail').innerHTML = out.slice(0, 10).map(function (g) {
-      return '<a class="mc" href="' + href(g) + '"><span class="ph">' + av(g) + '<span class="up">▲' + g.n + '</span><span class="fl">' + FLAG[g.c] + '</span></span><span class="bd"><span class="nm">' + esc(g.name) + '</span><span class="mt">#' + g.prev + ' → #' + g.rank + ' · ' + tchip(g.tier) + '</span></span></a>';
+    $('rail').innerHTML = out.slice(0, 3).map(function (g) {
+      return '<a class="mc" href="' + href(g) + '"><span class="ph">' + av(g) + '<span class="up">▲' + g.n + '</span><span class="fl">' + FLAG[g.c] + '</span></span><span class="bd"><span class="nm">' + esc(g.name) + '</span><span class="mt">#' + g.prev + ' → #' + g.rank + (g.scoreDelta != null ? ' · +' + g.scoreDelta + '점' : '') + '</span>' + (g.deltas.length ? '<span class="mt2">' + esc(g.deltas.join(' · ')) + '</span>' : '') + '</span></a>';
     }).join('');
     $('risersSec').hidden = false;
-    var rail = $('rail');
-    Array.prototype.forEach.call(document.querySelectorAll('.arrow'), function (b) { b.addEventListener('click', function () { rail.scrollBy({ left: Number(b.getAttribute('data-dir')) * 360, behavior: 'smooth' }); }); });
   }).catch(function () { $('risersSec').hidden = true; });
 
   /* ---------- 오늘의 아이돌 (하루 고정 · 다시 뽑기) ---------- */

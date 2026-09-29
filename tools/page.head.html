@@ -71,57 +71,65 @@ h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-hei
 /* ---- tier section ---- */
 .tsec{margin-top:40px}
 .thead{display:flex;align-items:center;gap:12px;margin:0 0 16px}
-.tbadge{font-size:18px;font-weight:900;padding:6px 16px;border-radius:9999px;line-height:1.1}
-.t0{background:var(--green);color:#000;animation:badgePulse 2.4s ease-in-out infinite}
-@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(30,215,96,.45)}50%{box-shadow:0 0 16px 3px rgba(30,215,96,.35)}}
-@media(prefers-reduced-motion:reduce){.t0{animation:none}}
+.tbadge{font-size:15px;font-weight:900;padding:5px 14px;border-radius:9999px;line-height:1.1}
+.t0{background:var(--green);color:#000}
 .t1{background:transparent;color:var(--green);box-shadow:inset 0 0 0 1px var(--green2)}
 .t2{background:transparent;color:var(--tx);box-shadow:inset 0 0 0 1px var(--bdl)}
 .t3{background:transparent;color:var(--tx2);box-shadow:inset 0 0 0 1px var(--bd)}
 .t4,.t5,.t6,.t7,.t8,.t9{background:transparent;color:var(--tx3);box-shadow:inset 0 0 0 1px var(--bd)}
 .trange{font-size:13px;font-weight:400;color:var(--tx3)}
 .tcount{margin-left:auto;font-size:12px;font-weight:700;color:var(--tx2)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
 
-/* ---- card ---- */
-.card{position:relative;overflow:hidden;background:var(--surf);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;transition:background .2s,box-shadow .2s,transform .2s;animation:cardIn .35s ease backwards}
-.card:hover{background:var(--card2);box-shadow:var(--sh-md);transform:translateY(-2px)}
-.card::before{content:"";position:absolute;inset:0;background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),rgba(30,215,96,.14),transparent 70%);opacity:0;transition:opacity .3s;pointer-events:none}
+/* ---- view toggle ---- */
+.ctrlrow{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:2px}
+.viewtoggle{display:inline-flex;gap:2px;margin-left:auto;background:var(--surf2);border-radius:9999px;padding:3px}
+.viewtoggle .pill{padding:0 14px;letter-spacing:.04em;background:transparent}
+.viewtoggle .pill[aria-pressed="true"]{background:var(--green);color:#000}
+
+/* ---- ranking row (RankingProfileRow) ---- */
+.grid{display:flex;flex-direction:column;gap:6px}
+.card{position:relative;overflow:hidden;background:var(--surf);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;min-height:88px;transition:background .15s,box-shadow .15s;animation:cardIn .3s ease backwards;cursor:pointer}
+.card:hover{background:var(--card2);box-shadow:var(--sh-md)}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(180px circle at var(--mx,50%) var(--my,50%),rgba(30,215,96,.12),transparent 70%);opacity:0;transition:opacity .3s;pointer-events:none}
 .card:hover::before{opacity:1}
-@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.grid>.card:nth-child(1){animation-delay:0ms}
-.grid>.card:nth-child(2){animation-delay:30ms}
-.grid>.card:nth-child(3){animation-delay:60ms}
-.grid>.card:nth-child(4){animation-delay:90ms}
-.grid>.card:nth-child(5){animation-delay:120ms}
-.grid>.card:nth-child(6){animation-delay:150ms}
-.grid>.card:nth-child(n+7){animation-delay:170ms}
+@keyframes cardIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.grid>.card{animation-delay:0ms!important}
 .spark{position:fixed;width:5px;height:5px;border-radius:50%;background:var(--green);pointer-events:none;z-index:999;transform:translate(-50%,-50%);animation:sparkOut .5s ease-out forwards}
 @keyframes sparkOut{to{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy)));opacity:0}}
 @media(prefers-reduced-motion:reduce){
   .card{animation:none}
-  .grid>.card{animation-delay:0ms!important}
 }
-.crow{display:flex;align-items:flex-start;gap:10px}
 .card:has(.cmpbtn.on){box-shadow:0 0 0 2px var(--green) inset}
-.cmpbtn{flex:none;width:28px;height:28px;border-radius:50%;background:var(--surf2);color:var(--tx2);border:0;cursor:pointer;font-size:15px;font-weight:700;line-height:1;display:inline-flex;align-items:center;justify-content:center;padding:0;transition:background .15s,color .15s}
+.cmpbtn{position:relative;flex:none;width:24px;height:24px;border-radius:50%;background:var(--surf2);color:var(--tx2);border:0;cursor:pointer;font-size:13px;font-weight:700;line-height:1;display:inline-flex;align-items:center;justify-content:center;padding:0;transition:background .15s,color .15s}
+.cmpbtn::after{content:"";position:absolute;inset:-10px}
 .cmpbtn:hover{background:var(--card)}
 .cmpbtn.on{background:var(--green);color:#000}
 @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-3px)}40%,60%{transform:translateX(3px)}}
 .cmpbtn.shake{animation:shake .3s}
-.rankcol{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:34px}
-.rkslot{display:block;min-height:20px}
+.rankcol{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:40px}
+.rkslot{display:block;min-height:18px}
 .nohist .rkslot{display:none}
-.rank{font-size:12px;font-weight:700;color:var(--tx3);min-width:34px;padding-top:3px}
-.nm{font-size:16px;font-weight:700;line-height:1.25;margin:0;word-break:break-word;flex:1}
-.tot{text-align:right;line-height:1}
-.tot .n{font-size:26px;font-weight:900;letter-spacing:-.02em}
-.tot .u{font-size:10px;font-weight:600;color:var(--tx3);display:block;margin-top:3px}
+.rank{font-size:14px;font-weight:900;color:var(--tx2);font-variant-numeric:tabular-nums}
+.rphoto{position:relative;flex:none;width:60px;height:60px;border-radius:14px;overflow:hidden;background:var(--surf2);display:grid;place-items:center;font-size:20px;font-weight:900;color:var(--tx3)}
+.rphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.rbody{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.rline1{display:flex;align-items:baseline;gap:8px;min-width:0}
+.nm{font-size:15px;font-weight:800;line-height:1.25;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.rtier{flex:none;font-size:12px;font-weight:900}
+.rline2{display:flex;align-items:center;gap:6px;min-width:0;font-size:12px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rline2 .rtrend{color:var(--tx3);flex:none}
+.rline2 .sep{color:var(--tx3);flex:none}
 .meta{display:flex;gap:6px;flex-wrap:wrap}
 .chip{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:9999px;background:var(--surf2);color:var(--tx2)}
 .chip.hi{color:var(--green)}
 .chip.mid{color:var(--warn)}
 .chip.lo{color:var(--neg)}
+.rradar{flex:none;width:64px;height:64px}
+.rradar svg{width:100%;height:100%;display:block}
+.rscorecol{flex:none;display:flex;align-items:center;gap:8px}
+.tot{text-align:right;line-height:1}
+.tot .n{font-size:22px;font-weight:900;letter-spacing:-.02em}
+.tot .u{font-size:9.5px;font-weight:600;color:var(--tx3);display:block;margin-top:2px}
 .bars{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}
 .br{display:grid;grid-template-columns:34px 1fr 22px;gap:6px;align-items:center}
 .br span:first-child{font-size:10px;font-weight:600;color:var(--tx3);letter-spacing:.02em}
@@ -129,6 +137,8 @@ h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-hei
 .fil{display:block;height:4px;border-radius:2px;background:var(--green)}
 .fil.lo{background:var(--bdl)}
 .br span:last-child{font-size:10px;font-weight:700;color:var(--tx2);text-align:right;font-variant-numeric:tabular-nums}
+.dpradar{display:flex;justify-content:center;margin:4px 0 14px}
+.dpradar svg{width:100%;max-width:260px;height:auto}
 .acts{display:flex;gap:5px;margin-top:auto;padding-top:2px}
 .btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:9px 6px;border-radius:9999px;white-space:nowrap;transition:background .15s,color .15s,box-shadow .15s}
 .btn.out{color:var(--tx);box-shadow:inset 0 0 0 1px var(--bdl)}
@@ -268,13 +278,22 @@ a.mshare{display:inline-flex;align-items:center;justify-content:center}
 .dpnote{font-size:11.5px;color:var(--tx3);line-height:1.6;margin:14px 0 0;padding-top:14px;border-top:1px solid #2a2a2a}
 @media(max-width:560px){.dpgrid{grid-template-columns:1fr}}
 
+/* 419px 이하에서는 미니 레이더를 숨긴다 */
+@media(max-width:419px){
+  .rradar{display:none}
+}
+#board.compact .rphoto{width:44px;height:44px;font-size:15px;border-radius:10px}
+#board.compact .card{min-height:64px;padding:8px 12px;gap:8px}
+#board.compact .rline2,#board.compact .rradar{display:none}
+#board.compact .tot .n{font-size:19px}
 @media(max-width:560px){
   header{padding:32px 0 16px}
-  .grid{grid-template-columns:1fr}
   .wrap{padding:0 14px 48px}
-  .crow{gap:8px}
-  .rank{min-width:24px}
+  .card{padding:9px 10px;gap:8px;min-height:76px}
+  .rphoto{width:48px;height:48px;font-size:16px;border-radius:12px}
+  .rank{min-width:24px;font-size:13px}
   .rankcol{min-width:30px}
+  .rline2{font-size:11px}
   .pills{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
   .pills::-webkit-scrollbar{display:none}
   .pill{flex:none}
@@ -293,7 +312,7 @@ a.mshare{display:inline-flex;align-items:center;justify-content:center}
 .navlink,.filtertoggle,#favClear{min-height:44px}
 .meta{align-items:center}
 .card:focus-visible{outline:2px solid var(--green);outline-offset:2px}
-.favmini{margin-left:auto;position:relative;width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:var(--tx3);font-size:17px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:color .15s,transform .15s,background .15s}
+.favmini{position:relative;flex:none;width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:var(--tx3);font-size:17px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:color .15s,transform .15s,background .15s}
 .favmini::after{content:"";position:absolute;inset:-7px}
 .favmini:hover{color:#f3727f;background:rgba(243,114,127,.12)}
 .favmini[aria-pressed="true"]{color:#f3727f}
@@ -321,7 +340,7 @@ html{scroll-behavior:smooth}
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">점수표는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260947"></script>
+<script src="js/site-nav.js?v=20260948"></script>
 <div class="wrap">
 
 <header>
@@ -341,10 +360,16 @@ html{scroll-behavior:smooth}
     <input id="q" type="search" placeholder="그룹 이름 검색" autocomplete="off" aria-label="그룹 이름 검색">
     <button id="clr" aria-label="검색어 지우기">✕</button>
   </div>
-  <button class="filtertoggle" id="filterToggle" aria-expanded="false" aria-controls="filtersPanel">
-    상세 필터<span class="badge" id="filterBadge" hidden></span>
-    <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-  </button>
+  <div class="ctrlrow">
+    <button class="filtertoggle" id="filterToggle" aria-expanded="false" aria-controls="filtersPanel">
+      상세 필터<span class="badge" id="filterBadge" hidden></span>
+      <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+    </button>
+    <div class="viewtoggle" role="group" aria-label="보기 방식">
+      <button class="pill" id="viewVisual" type="button" aria-pressed="true">자세히</button>
+      <button class="pill" id="viewCompact" type="button" aria-pressed="false">간단히</button>
+    </div>
+  </div>
 </div>
 
 <div class="favbar" id="favbar" hidden>

@@ -106,6 +106,45 @@ const TGT=MOB?'':' target="_blank" rel="noopener noreferrer"';
 const VCHIP=/부분|추가검증|인원변동/;
 const namuUrl=o=>'https://namu.wiki/w/'+encodeURIComponent(o.wiki||o.n);
 
+/* ---- 미니/상세 레이더: 항목별 만점 대비 0~100 정규화(총점 축은 넣지 않는다) ---- */
+const TIER_COLORS={'S+':'#1ed760','S':'#36e0a0','A+':'#22d3ee','A':'#38a8f8','B+':'#5b8def','B':'#7c7cf0','C+':'#a78bfa','C':'#b592e8','D+':'#8b95a7','D':'#5f6b7d'};
+const tierClr=o=>TIER_COLORS[o.tier]||'#7c7c7c';
+const normVals=o=>LB.map((l,i)=>Math.max(0,Math.min(1,o.v[i]/MX[i])));
+function polar(cx,cy,r,ang){return [cx+r*Math.cos(ang), cy+r*Math.sin(ang)]}
+function miniRadarSVG(o){
+  const N=LB.length,cx=32,cy=32,R=24,col=tierClr(o),ang=i=>i*(2*Math.PI/N)-Math.PI/2,nv=normVals(o);
+  let svg='<svg viewBox="0 0 64 64" role="img" aria-label="'+esc(o.n)+' 능력치: '+LB.map((l,i)=>l+' '+Math.round(nv[i]*100)).join(', ')+'">';
+  [0.5,1].forEach(f=>{svg+='<polygon points="'+Array.from({length:N},(_,i)=>polar(cx,cy,R*f,ang(i)).map(v=>v.toFixed(1)).join(',')).join(' ')+'" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1"/>'});
+  const pts=nv.map((v,i)=>polar(cx,cy,R*Math.max(0.05,v),ang(i)).map(x=>x.toFixed(1)).join(',')).join(' ');
+  return svg+'<polygon points="'+pts+'" fill="'+col+'" fill-opacity="0.32" stroke="'+col+'" stroke-width="1.6"/></svg>';
+}
+function bigRadarSVG(o){
+  const N=LB.length,cx=110,cy=104,R=78,col=tierClr(o),ang=i=>i*(2*Math.PI/N)-Math.PI/2,nv=normVals(o);
+  let svg='<svg viewBox="0 0 220 220" role="img" aria-label="'+esc(o.n)+' 능력치: '+LB.map((l,i)=>l+' '+Math.round(nv[i]*100)).join(', ')+'">';
+  [0.33,0.66,1].forEach(f=>{svg+='<polygon points="'+Array.from({length:N},(_,i)=>polar(cx,cy,R*f,ang(i)).map(v=>v.toFixed(1)).join(',')).join(' ')+'" fill="none" stroke="var(--bd)" stroke-width="1"/>'});
+  for(let i=0;i<N;i++){
+    const [x2,y2]=polar(cx,cy,R,ang(i));
+    svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="var(--bd)" stroke-width="1"/>';
+    const [lx,ly]=polar(cx,cy,R+18,ang(i)),cv=Math.cos(ang(i)),sv=Math.sin(ang(i));
+    const anchor=Math.abs(cv)<0.05?'middle':(cv>0?'start':'end'),dy=sv>0.5?9:(sv<-0.5?-3:4);
+    svg+='<text x="'+lx.toFixed(1)+'" y="'+(ly+dy).toFixed(1)+'" text-anchor="'+anchor+'" font-size="11" font-weight="700" fill="var(--tx3)">'+esc(LB[i])+'</text>';
+  }
+  const pts=nv.map((v,i)=>polar(cx,cy,R*Math.max(0.04,v),ang(i)).map(x=>x.toFixed(1)).join(',')).join(' ');
+  return svg+'<polygon points="'+pts+'" fill="'+col+'" fill-opacity="0.22" stroke="'+col+'" stroke-width="2.5"/></svg>';
+}
+function styleLine(o){return (o.style||'').split('/').map(s=>s.trim()).filter(Boolean).slice(0,3).join(' · ')}
+let HD3=null; // 최근 3개월(4개 snapshot) 순위 변동. 없으면 표시하지 않는다
+function trendText(o){
+  if(!HD3)return '';
+  const d=HD3[o.id];
+  if(!d)return '';
+  if(d.kind==='up')return '최근 3개월 ▲'+d.n;
+  if(d.kind==='down')return '최근 3개월 ▼'+d.n;
+  if(d.kind==='new')return '최근 3개월 NEW';
+  if(d.kind==='same')return '최근 3개월 –';
+  return '';
+}
+
 function barsHTML(o){
   return LB.map((l,i)=>{
     const v=o.v[i],p=Math.round(v/MX[i]*100);
@@ -114,18 +153,23 @@ function barsHTML(o){
 }
 let HD=null; // 전월 대비 순위 변동(id -> delta). 로딩 전/실패 시 null
 function rkBadge(o){return HD&&window.RankHistory?RankHistory.renderRankDeltaBadge(HD[o.id]):''}
+// RankingProfileRow: 큰 아이콘 카드 대신 한 줄 프로필 바. 사진은 식별 정보이고 순위·티어·점수·능력치가 콘텐츠다.
 function card(o){
-  const nm=encodeURIComponent(o.n);
-  const verifychip=VCHIP.test(o.verify)?'<span class="chip mid">'+esc(o.verify)+'</span>':'';
-  const stchip=o.status==='현역'?'':'<span class="chip">'+esc(o.status)+'</span>';
   const cmpOn=cmp.has(o.n);
   const fav=!!(window.IdolMatch&&IdolMatch.isFavorite(CFG.country,o.id));
-  return '<article class="card" tabindex="0" data-slug="'+esc(o.slug)+'"><div class="crow"><button class="cmpbtn'+(cmpOn?' on':'')+'" data-cmp="'+esc(o.n)+'" aria-pressed="'+cmpOn+'" aria-label="비교에 추가">'+(cmpOn?'✓':'+')+'</button><span class="rankcol"><span class="rank">#'+o.r+'</span><span class="rkslot">'+rkBadge(o)+'</span></span><h3 class="nm">'+esc(o.n)+'</h3><div class="tot"><span class="n">'+o.s+'</span><span class="u">/ 100</span></div></div>'
-   +'<div class="meta"><span class="chip">'+o.tier+'</span>'+verifychip+stchip+(window.IdolMatch?'<button type="button" class="favmini" data-fav="'+esc(o.id)+'" aria-pressed="'+fav+'" aria-label="'+esc(o.n)+' 최애 '+(fav?'해제':'저장')+'">'+(fav?'♥':'♡')+'</button>':'')+'</div>'
-   +'<div class="bars">'+barsHTML(o)+'</div>'
-   +'<div class="acts"><a class="btn grn"'+TGT+' href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
-   +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
-   +'<a class="btn out"'+TGT+' href="'+namuUrl(o)+'">나무위키</a></div></article>';
+  const initial=o.n.trim().charAt(0).toUpperCase();
+  const photo='<span class="rphoto">'+esc(initial)+(o.img?'<img src="'+esc(o.img)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</span>';
+  const line2=[styleLine(o),trendText(o)].filter(Boolean).join('  ·  ');
+  return '<article class="card" tabindex="0" data-slug="'+esc(o.slug)+'">'
+   +'<button class="cmpbtn'+(cmpOn?' on':'')+'" data-cmp="'+esc(o.n)+'" aria-pressed="'+cmpOn+'" aria-label="비교에 추가">'+(cmpOn?'✓':'+')+'</button>'
+   +'<span class="rankcol"><span class="rank">#'+o.r+'</span><span class="rkslot">'+rkBadge(o)+'</span></span>'
+   +photo
+   +'<div class="rbody"><p class="rline1"><span class="nm">'+esc(o.n)+'</span><span class="rtier" style="color:'+tierClr(o)+'">'+esc(o.tier)+'</span></p>'
+   +(line2?'<p class="rline2">'+esc(line2)+'</p>':'')+'</div>'
+   +'<span class="rradar">'+miniRadarSVG(o)+'</span>'
+   +'<span class="rscorecol"><span class="tot"><span class="n">'+o.s+'</span><span class="u">/100</span></span>'
+   +(window.IdolMatch?'<button type="button" class="favmini" data-fav="'+esc(o.id)+'" aria-pressed="'+fav+'" aria-label="'+esc(o.n)+' 최애 '+(fav?'해제':'저장')+'">'+(fav?'♥':'♡')+'</button>':'')+'</span>'
+   +'</article>';
 }
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
@@ -182,6 +226,7 @@ function detailHTML(o){
     +'</div></div>'
     +'<nav class="djump" aria-label="상세 섹션 바로가기"><button type="button" data-jump="scenebox">🧬 비슷한 '+(CFG.country==='KR'?'한국':'일본')+' 그룹</button><button type="button" data-jump="matchbox">'+CFG.other.label+' 취향</button><button type="button" data-jump="histbox">📈 순위 추이</button></nav>'
     +(o.intro?'<p class="dpintro">'+esc(o.intro)+'</p>':'')
+    +'<div class="dpradar">'+bigRadarSVG(o)+'</div>'
     +'<div class="bars">'+barsHTML(o)+'</div>'
     +'<div class="dpgrid">'+info+'</div>'
     +(o.editor?'<div class="dpedit"><p class="dpedit-k">에디터 코멘트 <span>주관적 의견 · 점수/티어와 무관</span></p><p class="dpedit-v">'+esc(o.editor)+'</p></div>':'')
@@ -573,4 +618,26 @@ if(window.RankHistory){
     const open=document.getElementById('detailModal');
     if(!open.classList.contains('hidden')){const cur=A.find(x=>x.n===document.body.getAttribute('data-nav-group'));if(cur){const s=document.querySelector('.dpscore');if(s&&!s.querySelector('.rkd'))s.insertAdjacentHTML('beforeend',rkBadge(cur))}}
   });
+  // 최근 3개월 변화(선택 표시): 4개 snapshot 만 더 읽는다. 데이터가 부족하면 조용히 생략.
+  RankHistory.loadRecent(CFG.country,4).then(snaps=>{
+    if(snaps.length<4)return;
+    const first=snaps[0],last=snaps[snaps.length-1],idx={};
+    first.groups.forEach(g=>{idx[g.id]=g});
+    const m={};
+    last.groups.forEach(g=>{m[g.id]=RankHistory.getRankDelta(g,idx[g.id],true)});
+    HD3=m;render();
+  }).catch(()=>{});
 }
+
+/* ---- 보기 방식(자세히/간단히): localStorage 에 저장, DOM 을 다시 그리지 않고 클래스만 바꾼다 ---- */
+const VIEW_KEY='idolRankingView';
+function getView(){try{const v=localStorage.getItem(VIEW_KEY);return v==='compact'?'compact':'visual'}catch(e){return 'visual'}}
+function setView(v){
+  try{localStorage.setItem(VIEW_KEY,v)}catch(e){/* noop */}
+  document.getElementById('board').classList.toggle('compact',v==='compact');
+  document.getElementById('viewVisual').setAttribute('aria-pressed',v==='visual');
+  document.getElementById('viewCompact').setAttribute('aria-pressed',v==='compact');
+}
+document.getElementById('viewVisual').addEventListener('click',()=>setView('visual'));
+document.getElementById('viewCompact').addEventListener('click',()=>setView('compact'));
+setView(getView());
