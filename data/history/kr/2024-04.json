@@ -3,13 +3,15 @@
     "country": "KR",
     "period": "2024-04",
     "published_at": "2024-04-30",
-    "revision": 1,
+    "revision": 3,
     "population_count": 55,
     "normalization_version": "v2",
     "percentile_scope": "same-country, same-period relative position",
     "source": "2024 역사 재평가 v1 · 공식/공인 차트·발매·공연·데뷔 시점 기반 월말 독립 스냅샷",
     "corrected_at": "2026-09-30",
-    "correction_note": "전월 점수 자동승계·기세 자동감쇠 없음. 구조지표는 해당 월말까지 확인된 누적 체급, 기세는 해당 월 활동·성과를 독립 판정. 데뷔 전 팀 제외."
+    "correction_note": "전수조사 최종 v6: 국가·월별 동일 절대척도로 전체 그룹을 횡단 비교. 항목 상한을 모든 팀에 동일 적용하고 확인된 발매·앨범·대형 단독공연·라인업/활동중단 사건을 월별 기세에 반영. 검증된 공연장 규모는 JP LIVE 공통 하한으로 적용. 총점·공동순위·티어를 해당 월 전체 그룹 기준으로 재계산.",
+    "audit_version": "cross-sectional-v6-final",
+    "verified_event_overrides": 1
   },
   "groups": [
     {
@@ -538,9 +540,24 @@
       }
     },
     {
+      "id": "KR-071",
+      "group": "CSR",
+      "rank": 36,
+      "tier": "C",
+      "score": 26,
+      "metrics": {
+        "domestic_digital": 3,
+        "album_fandom": 4,
+        "performance": 3,
+        "global": 3,
+        "recognition": 7,
+        "momentum": 6
+      }
+    },
+    {
       "id": "KR-068",
       "group": "Girl's Day",
-      "rank": 36,
+      "rank": 37,
       "tier": "C",
       "score": 25,
       "metrics": {
@@ -550,21 +567,6 @@
         "global": 3,
         "recognition": 14,
         "momentum": 4
-      }
-    },
-    {
-      "id": "KR-071",
-      "group": "CSR",
-      "rank": 36,
-      "tier": "C",
-      "score": 25,
-      "metrics": {
-        "domestic_digital": 3,
-        "album_fandom": 4,
-        "performance": 3,
-        "global": 3,
-        "recognition": 7,
-        "momentum": 5
       }
     },
     {

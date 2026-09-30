@@ -3,13 +3,15 @@
     "country": "KR",
     "period": "2024-11",
     "published_at": "2024-11-30",
-    "revision": 1,
+    "revision": 3,
     "population_count": 64,
     "normalization_version": "v2",
     "percentile_scope": "same-country, same-period relative position",
     "source": "2024 역사 재평가 v1 · 공식/공인 차트·발매·공연·데뷔 시점 기반 월말 독립 스냅샷",
     "corrected_at": "2026-09-30",
-    "correction_note": "전월 점수 자동승계·기세 자동감쇠 없음. 구조지표는 해당 월말까지 확인된 누적 체급, 기세는 해당 월 활동·성과를 독립 판정. 데뷔 전 팀 제외."
+    "correction_note": "전수조사 최종 v6: 국가·월별 동일 절대척도로 전체 그룹을 횡단 비교. 항목 상한을 모든 팀에 동일 적용하고 확인된 발매·앨범·대형 단독공연·라인업/활동중단 사건을 월별 기세에 반영. 검증된 공연장 규모는 JP LIVE 공통 하한으로 적용. 총점·공동순위·티어를 해당 월 전체 그룹 기준으로 재계산.",
+    "audit_version": "cross-sectional-v6-final",
+    "verified_event_overrides": 1
   },
   "groups": [
     {
@@ -73,24 +75,9 @@
       }
     },
     {
-      "id": "KR-008",
-      "group": "NewJeans",
-      "rank": 5,
-      "tier": "S",
-      "score": 84,
-      "metrics": {
-        "domestic_digital": 20,
-        "album_fandom": 19,
-        "performance": 9,
-        "global": 16,
-        "recognition": 15,
-        "momentum": 5
-      }
-    },
-    {
       "id": "KR-007",
       "group": "BABYMONSTER",
-      "rank": 6,
+      "rank": 5,
       "tier": "S",
       "score": 83,
       "metrics": {
@@ -100,6 +87,21 @@
         "global": 15,
         "recognition": 12,
         "momentum": 8
+      }
+    },
+    {
+      "id": "KR-008",
+      "group": "NewJeans",
+      "rank": 5,
+      "tier": "S",
+      "score": 83,
+      "metrics": {
+        "domestic_digital": 20,
+        "album_fandom": 19,
+        "performance": 9,
+        "global": 15,
+        "recognition": 15,
+        "momentum": 5
       }
     },
     {
@@ -673,9 +675,24 @@
       }
     },
     {
+      "id": "KR-060",
+      "group": "ICHILLIN'",
+      "rank": 44,
+      "tier": "C",
+      "score": 24,
+      "metrics": {
+        "domestic_digital": 2,
+        "album_fandom": 3,
+        "performance": 2,
+        "global": 3,
+        "recognition": 8,
+        "momentum": 6
+      }
+    },
+    {
       "id": "KR-038",
       "group": "UNIS",
-      "rank": 45,
+      "rank": 46,
       "tier": "C",
       "score": 23,
       "metrics": {
@@ -688,24 +705,9 @@
       }
     },
     {
-      "id": "KR-060",
-      "group": "ICHILLIN'",
-      "rank": 45,
-      "tier": "C",
-      "score": 23,
-      "metrics": {
-        "domestic_digital": 2,
-        "album_fandom": 3,
-        "performance": 2,
-        "global": 3,
-        "recognition": 8,
-        "momentum": 5
-      }
-    },
-    {
       "id": "KR-075",
       "group": "X:IN",
-      "rank": 45,
+      "rank": 46,
       "tier": "C",
       "score": 23,
       "metrics": {
@@ -793,24 +795,9 @@
       }
     },
     {
-      "id": "KR-076",
-      "group": "eite",
-      "rank": 52,
-      "tier": "C",
-      "score": 20,
-      "metrics": {
-        "domestic_digital": 1,
-        "album_fandom": 3,
-        "performance": 2,
-        "global": 4,
-        "recognition": 5,
-        "momentum": 5
-      }
-    },
-    {
       "id": "KR-039",
       "group": "SAY MY NAME",
-      "rank": 54,
+      "rank": 53,
       "tier": "D+",
       "score": 19,
       "metrics": {
@@ -825,7 +812,7 @@
     {
       "id": "KR-045",
       "group": "BADVILLAIN",
-      "rank": 54,
+      "rank": 53,
       "tier": "D+",
       "score": 19,
       "metrics": {
@@ -840,7 +827,7 @@
     {
       "id": "KR-072",
       "group": "Queenz Eye",
-      "rank": 54,
+      "rank": 53,
       "tier": "D+",
       "score": 19,
       "metrics": {
@@ -855,7 +842,7 @@
     {
       "id": "KR-056",
       "group": "ODD YOUTH",
-      "rank": 57,
+      "rank": 56,
       "tier": "D+",
       "score": 15,
       "metrics": {
@@ -865,6 +852,21 @@
         "global": 2,
         "recognition": 3,
         "momentum": 6
+      }
+    },
+    {
+      "id": "KR-076",
+      "group": "eite",
+      "rank": 56,
+      "tier": "D+",
+      "score": 15,
+      "metrics": {
+        "domestic_digital": 1,
+        "album_fandom": 3,
+        "performance": 0,
+        "global": 4,
+        "recognition": 5,
+        "momentum": 2
       }
     },
     {

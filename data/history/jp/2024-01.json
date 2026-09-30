@@ -3,13 +3,15 @@
     "country": "JP",
     "period": "2024-01",
     "published_at": "2024-01-31",
-    "revision": 1,
+    "revision": 3,
     "population_count": 111,
     "normalization_version": "v2",
     "percentile_scope": "same-country, same-period relative position",
     "source": "2024 역사 재평가 v1 · 공식/공인 차트·발매·공연·데뷔 시점 기반 월말 독립 스냅샷",
     "corrected_at": "2026-09-30",
-    "correction_note": "전월 점수 자동승계·기세 자동감쇠 없음. 구조지표는 해당 월말까지 확인된 누적 체급, 기세는 해당 월 활동·성과를 독립 판정. 데뷔 전 팀 제외."
+    "correction_note": "전수조사 최종 v6: 국가·월별 동일 절대척도로 전체 그룹을 횡단 비교. 항목 상한을 모든 팀에 동일 적용하고 확인된 발매·앨범·대형 단독공연·라인업/활동중단 사건을 월별 기세에 반영. 검증된 공연장 규모는 JP LIVE 공통 하한으로 적용. 총점·공동순위·티어를 해당 월 전체 그룹 기준으로 재계산.",
+    "audit_version": "cross-sectional-v6-final",
+    "verified_event_overrides": 3
   },
   "groups": [
     {
@@ -212,14 +214,14 @@
       "group": "いぎなり東北産",
       "rank": 14,
       "tier": "A",
-      "score": 62,
+      "score": 63,
       "metrics": {
         "live": 18,
         "fandom": 13,
         "recognition": 12,
         "streaming_sns": 7,
         "industry": 7,
-        "momentum": 5
+        "momentum": 6
       }
     },
     {
@@ -285,16 +287,16 @@
     {
       "id": "JP-032",
       "group": "私立恵比寿中学",
-      "rank": 19,
+      "rank": 18,
       "tier": "B+",
-      "score": 55,
+      "score": 56,
       "metrics": {
         "live": 14,
         "fandom": 12,
         "recognition": 11,
         "streaming_sns": 7,
         "industry": 6,
-        "momentum": 5
+        "momentum": 6
       }
     },
     {
@@ -373,6 +375,21 @@
       }
     },
     {
+      "id": "JP-026",
+      "group": "WHITE SCORPION",
+      "rank": 25,
+      "tier": "B+",
+      "score": 51,
+      "metrics": {
+        "live": 13,
+        "fandom": 10,
+        "recognition": 7,
+        "streaming_sns": 8,
+        "industry": 7,
+        "momentum": 6
+      }
+    },
+    {
       "id": "JP-033",
       "group": "Merry BAD TUNE.",
       "rank": 25,
@@ -435,7 +452,7 @@
     {
       "id": "JP-010",
       "group": "iLiFE!",
-      "rank": 29,
+      "rank": 30,
       "tier": "B+",
       "score": 50,
       "metrics": {
@@ -450,7 +467,7 @@
     {
       "id": "JP-023",
       "group": "高嶺のなでしこ",
-      "rank": 29,
+      "rank": 30,
       "tier": "B+",
       "score": 50,
       "metrics": {
@@ -463,24 +480,9 @@
       }
     },
     {
-      "id": "JP-026",
-      "group": "WHITE SCORPION",
-      "rank": 29,
-      "tier": "B+",
-      "score": 50,
-      "metrics": {
-        "live": 13,
-        "fandom": 10,
-        "recognition": 7,
-        "streaming_sns": 8,
-        "industry": 7,
-        "momentum": 5
-      }
-    },
-    {
       "id": "JP-035",
       "group": "Devil ANTHEM.",
-      "rank": 29,
+      "rank": 30,
       "tier": "B+",
       "score": 50,
       "metrics": {
@@ -493,9 +495,24 @@
       }
     },
     {
+      "id": "JP-037",
+      "group": "可憐なアイボリー",
+      "rank": 30,
+      "tier": "B+",
+      "score": 50,
+      "metrics": {
+        "live": 12,
+        "fandom": 10,
+        "recognition": 8,
+        "streaming_sns": 8,
+        "industry": 6,
+        "momentum": 6
+      }
+    },
+    {
       "id": "JP-038",
       "group": "INUWASI",
-      "rank": 29,
+      "rank": 30,
       "tier": "B+",
       "score": 50,
       "metrics": {
@@ -510,7 +527,7 @@
     {
       "id": "JP-050",
       "group": "虹のコンキスタドール",
-      "rank": 29,
+      "rank": 30,
       "tier": "B+",
       "score": 50,
       "metrics": {
@@ -523,24 +540,9 @@
       }
     },
     {
-      "id": "JP-037",
-      "group": "可憐なアイボリー",
-      "rank": 35,
-      "tier": "B",
-      "score": 49,
-      "metrics": {
-        "live": 12,
-        "fandom": 10,
-        "recognition": 8,
-        "streaming_sns": 8,
-        "industry": 6,
-        "momentum": 5
-      }
-    },
-    {
       "id": "JP-039",
       "group": "Palette Parade",
-      "rank": 35,
+      "rank": 36,
       "tier": "B",
       "score": 49,
       "metrics": {
@@ -555,7 +557,7 @@
     {
       "id": "JP-040",
       "group": "JamsCollection",
-      "rank": 35,
+      "rank": 36,
       "tier": "B",
       "score": 49,
       "metrics": {
@@ -570,7 +572,7 @@
     {
       "id": "JP-053",
       "group": "STU48",
-      "rank": 35,
+      "rank": 36,
       "tier": "B",
       "score": 49,
       "metrics": {
@@ -585,7 +587,7 @@
     {
       "id": "JP-057",
       "group": "22/7",
-      "rank": 35,
+      "rank": 36,
       "tier": "B",
       "score": 49,
       "metrics": {
@@ -600,7 +602,7 @@
     {
       "id": "JP-063",
       "group": "SUPER☆GiRLS",
-      "rank": 35,
+      "rank": 36,
       "tier": "B",
       "score": 49,
       "metrics": {
@@ -610,6 +612,21 @@
         "streaming_sns": 7,
         "industry": 5,
         "momentum": 5
+      }
+    },
+    {
+      "id": "JP-043",
+      "group": "@onefive",
+      "rank": 41,
+      "tier": "B",
+      "score": 48,
+      "metrics": {
+        "live": 13,
+        "fandom": 9,
+        "recognition": 7,
+        "streaming_sns": 8,
+        "industry": 5,
+        "momentum": 6
       }
     },
     {
@@ -703,24 +720,9 @@
       }
     },
     {
-      "id": "JP-043",
-      "group": "@onefive",
-      "rank": 47,
-      "tier": "B",
-      "score": 47,
-      "metrics": {
-        "live": 13,
-        "fandom": 9,
-        "recognition": 7,
-        "streaming_sns": 8,
-        "industry": 5,
-        "momentum": 5
-      }
-    },
-    {
       "id": "JP-044",
       "group": "AVAM",
-      "rank": 47,
+      "rank": 48,
       "tier": "B",
       "score": 47,
       "metrics": {
@@ -735,7 +737,7 @@
     {
       "id": "JP-060",
       "group": "BEYOOOOONDS",
-      "rank": 47,
+      "rank": 48,
       "tier": "B",
       "score": 47,
       "metrics": {
@@ -808,9 +810,24 @@
       }
     },
     {
+      "id": "JP-069",
+      "group": "フィロソフィーのダンス",
+      "rank": 50,
+      "tier": "B",
+      "score": 46,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 9,
+        "streaming_sns": 8,
+        "industry": 5,
+        "momentum": 6
+      }
+    },
+    {
       "id": "JP-059",
       "group": "最終未来少女",
-      "rank": 54,
+      "rank": 55,
       "tier": "B",
       "score": 45,
       "metrics": {
@@ -825,7 +842,7 @@
     {
       "id": "JP-061",
       "group": "CYNHN",
-      "rank": 54,
+      "rank": 55,
       "tier": "B",
       "score": 45,
       "metrics": {
@@ -840,7 +857,7 @@
     {
       "id": "JP-066",
       "group": "yosugala",
-      "rank": 54,
+      "rank": 55,
       "tier": "B",
       "score": 45,
       "metrics": {
@@ -848,21 +865,6 @@
         "fandom": 9,
         "recognition": 8,
         "streaming_sns": 7,
-        "industry": 5,
-        "momentum": 5
-      }
-    },
-    {
-      "id": "JP-069",
-      "group": "フィロソフィーのダンス",
-      "rank": 54,
-      "tier": "B",
-      "score": 45,
-      "metrics": {
-        "live": 10,
-        "fandom": 8,
-        "recognition": 9,
-        "streaming_sns": 8,
         "industry": 5,
         "momentum": 5
       }
@@ -1048,9 +1050,24 @@
       }
     },
     {
+      "id": "JP-082",
+      "group": "ドラマチックレコード",
+      "rank": 68,
+      "tier": "B",
+      "score": 41,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 6,
+        "streaming_sns": 7,
+        "industry": 3,
+        "momentum": 7
+      }
+    },
+    {
       "id": "JP-077",
       "group": "#Mooove!",
-      "rank": 70,
+      "rank": 71,
       "tier": "B",
       "score": 40,
       "metrics": {
@@ -1063,9 +1080,24 @@
       }
     },
     {
+      "id": "JP-086",
+      "group": "KiSS KiSS",
+      "rank": 71,
+      "tier": "B",
+      "score": 40,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "industry": 4,
+        "momentum": 6
+      }
+    },
+    {
       "id": "JP-087",
       "group": "LinQ",
-      "rank": 70,
+      "rank": 71,
       "tier": "B",
       "score": 40,
       "metrics": {
@@ -1078,24 +1110,9 @@
       }
     },
     {
-      "id": "JP-082",
-      "group": "ドラマチックレコード",
-      "rank": 72,
-      "tier": "C+",
-      "score": 39,
-      "metrics": {
-        "live": 10,
-        "fandom": 8,
-        "recognition": 6,
-        "streaming_sns": 7,
-        "industry": 3,
-        "momentum": 5
-      }
-    },
-    {
       "id": "JP-083",
       "group": "GILTY x GILTY",
-      "rank": 72,
+      "rank": 74,
       "tier": "C+",
       "score": 39,
       "metrics": {
@@ -1110,7 +1127,7 @@
     {
       "id": "JP-085",
       "group": "THE ORCHESTRA TOKYO",
-      "rank": 72,
+      "rank": 74,
       "tier": "C+",
       "score": 39,
       "metrics": {
@@ -1123,24 +1140,9 @@
       }
     },
     {
-      "id": "JP-086",
-      "group": "KiSS KiSS",
-      "rank": 72,
-      "tier": "C+",
-      "score": 39,
-      "metrics": {
-        "live": 10,
-        "fandom": 8,
-        "recognition": 6,
-        "streaming_sns": 6,
-        "industry": 4,
-        "momentum": 5
-      }
-    },
-    {
       "id": "JP-088",
       "group": "TENRIN",
-      "rank": 72,
+      "rank": 74,
       "tier": "C+",
       "score": 39,
       "metrics": {
@@ -1155,7 +1157,7 @@
     {
       "id": "JP-089",
       "group": "#よーよーよー",
-      "rank": 72,
+      "rank": 74,
       "tier": "C+",
       "score": 39,
       "metrics": {
@@ -1170,7 +1172,7 @@
     {
       "id": "JP-094",
       "group": "純情のアフィリア",
-      "rank": 72,
+      "rank": 74,
       "tier": "C+",
       "score": 39,
       "metrics": {
@@ -1185,7 +1187,7 @@
     {
       "id": "JP-096",
       "group": "アップアップガールズ（仮）",
-      "rank": 72,
+      "rank": 74,
       "tier": "C+",
       "score": 39,
       "metrics": {
@@ -1288,9 +1290,24 @@
       }
     },
     {
+      "id": "JP-108",
+      "group": "アップアップガールズ（2）",
+      "rank": 83,
+      "tier": "C+",
+      "score": 37,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 5,
+        "industry": 4,
+        "momentum": 6
+      }
+    },
+    {
       "id": "JP-095",
       "group": "SITUASION",
-      "rank": 86,
+      "rank": 87,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1305,7 +1322,7 @@
     {
       "id": "JP-098",
       "group": "CiON",
-      "rank": 86,
+      "rank": 87,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1320,7 +1337,7 @@
     {
       "id": "JP-099",
       "group": "chuLa",
-      "rank": 86,
+      "rank": 87,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1335,7 +1352,7 @@
     {
       "id": "JP-100",
       "group": "きのホ。",
-      "rank": 86,
+      "rank": 87,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1350,7 +1367,7 @@
     {
       "id": "JP-101",
       "group": "カラフルスクリーム",
-      "rank": 86,
+      "rank": 87,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1365,7 +1382,7 @@
     {
       "id": "JP-105",
       "group": "PIGGS",
-      "rank": 86,
+      "rank": 87,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1380,7 +1397,7 @@
     {
       "id": "JP-106",
       "group": "Sweet Alley",
-      "rank": 86,
+      "rank": 87,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1395,7 +1412,7 @@
     {
       "id": "JP-107",
       "group": "fishbowl",
-      "rank": 86,
+      "rank": 87,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1403,21 +1420,6 @@
         "fandom": 7,
         "recognition": 6,
         "streaming_sns": 6,
-        "industry": 4,
-        "momentum": 5
-      }
-    },
-    {
-      "id": "JP-108",
-      "group": "アップアップガールズ（2）",
-      "rank": 86,
-      "tier": "C+",
-      "score": 36,
-      "metrics": {
-        "live": 9,
-        "fandom": 7,
-        "recognition": 6,
-        "streaming_sns": 5,
         "industry": 4,
         "momentum": 5
       }
@@ -1650,16 +1652,16 @@
     {
       "id": "JP-125",
       "group": "SAI²Rium",
-      "rank": 110,
+      "rank": 105,
       "tier": "C+",
-      "score": 31,
+      "score": 32,
       "metrics": {
         "live": 7,
         "fandom": 6,
         "recognition": 4,
         "streaming_sns": 6,
         "industry": 3,
-        "momentum": 5
+        "momentum": 6
       }
     },
     {
