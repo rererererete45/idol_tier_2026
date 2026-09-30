@@ -20,9 +20,9 @@ li small{color:#7c7c7c;margin-left:8px}
 <h1>SAME SCENE · DISCOVER · IDOL MAP 엔진 테스트</h1>
 <p id="sum">실행 중…</p>
 <ul id="out"></ul>
-<script src="js/idol-match.js?v=20260965"></script>
-<script src="js/idol-recommendation-core.js?v=20260965"></script>
-<script src="js/rank-history.js?v=20260965"></script>
+<script src="js/idol-match.js?v=20260968"></script>
+<script src="js/idol-recommendation-core.js?v=20260968"></script>
+<script src="js/rank-history.js?v=20260968"></script>
 <script>
 (async function () {
   var IM = window.IdolMatch, R = window.IdolRec, res = [];
@@ -320,7 +320,7 @@ li small{color:#7c7c7c;margin-left:8px}
     return (ys.length === 2 && ys[0] < ys[1]) || ys.join();
   });
   var idx = await RH.loadHistoryIndex();
-  res.push(['history index: 과거→최신 정렬, KR/JP 분리', !!idx && ['KR', 'JP'].every(function (c) { return Array.isArray(idx[c]) && idx[c].slice().sort().join() === idx[c].join() && idx[c][0] === '2025-01' && idx[c][idx[c].length - 1] === '2026-09' && idx[c].length === 21; }), '']);
+  res.push(['history index: 과거→최신 정렬, KR/JP 분리', !!idx && ['KR', 'JP'].every(function (c) { return Array.isArray(idx[c]) && idx[c].slice().sort().join() === idx[c].join() && idx[c][0] === '2024-01' && idx[c][idx[c].length - 1] === '2026-09' && idx[c].length === 33; }), '']);
   var krS = await RH.loadCountrySnapshot('KR', '2026-09'), jpS = await RH.loadCountrySnapshot('JP', '2026-09');
   res.push(['2026-09 snapshot: KR 86팀 / JP 126팀', !!krS && !!jpS && krS.groups.length === 86 && jpS.groups.length === 126, krS && jpS ? krS.groups.length + '/' + jpS.groups.length : '로드 실패']);
   res.push(['snapshot 필수 필드(id, group, rank, tier, score, metrics)', !!krS && !!jpS && krS.groups.concat(jpS.groups).every(function (g) { return g.id && g.group && Number.isFinite(g.rank) && g.tier && Number.isFinite(g.score) && g.metrics && Object.keys(g.metrics).length === 6; }), '']);
@@ -337,10 +337,10 @@ li small{color:#7c7c7c;margin-left:8px}
   res.push(['2026-09 단독이면 모든 카드 변동 = –(none)', (function () { var d = RH.deltasFromSnapshots([krS]); return Object.keys(d).length === 86 && Object.keys(d).every(function (k) { return d[k].kind === 'none'; }); })(), '']);
   // 실제 1~9월 이력: 월 수·팀 수·연속성 / 8→9월 변동이 DB 원본 순위와 일치
   var allKr = await RH.loadAll('KR'), allJp = await RH.loadAll('JP');
-  res.push(['이력 21개월(2025-01~2026-09): KR 팀 수 64→86 증가(신인 추가), JP 122→126, 월별 지표 합=총점', allKr.length === 21 && allJp.length === 21 && allKr[0].groups.length === 64 && allKr[20].groups.length === 86 && allJp[0].groups.length === 122 && allJp[20].groups.length === 126 && allKr.concat(allJp).every(function (s) { return s.groups.every(function (g) { return Math.abs(Object.keys(g.metrics).reduce(function (a, k) { return a + g.metrics[k]; }, 0) - g.score) < 0.01; }); }), allKr.map(function (s) { return s.groups.length; }).join(',')]);
+  res.push(['이력 33개월(2024-01~2026-09): KR 팀 수 47→86 증가(신인 추가), JP 111→126, 월별 지표 합=총점', allKr.length === 33 && allJp.length === 33 && allKr[0].groups.length === 47 && allKr[32].groups.length === 86 && allJp[0].groups.length === 111 && allJp[32].groups.length === 126 && allKr.concat(allJp).every(function (s) { return s.groups.every(function (g) { return Math.abs(Object.keys(g.metrics).reduce(function (a, k) { return a + g.metrics[k]; }, 0) - g.score) < 0.01; }); }), allKr.map(function (s) { return s.groups.length; }).join(',')]);
   var dKr = RH.deltasFromSnapshots(allKr.slice(-2)), moved = Object.keys(dKr).filter(function (k) { return dKr[k].kind !== 'none'; }).length;
   var hb = RH.extractGroupHistory(allKr, 'KR-001');
-  res.push(['실제 8→9월 변동 계산: 변동 있는 그룹 존재, BLACKPINK 이력 21점(2025-01 2위 → 2025-07부터 1위)', moved > 0 && hb.length === 21 && hb[0].period === '2025-01' && hb[0].rank === 2 && hb.slice(6).every(function (h) { return h.rank === 1; }), 'moved ' + moved + ', points ' + hb.length]);
+  res.push(['실제 8→9월 변동 계산: 변동 있는 그룹 존재, BLACKPINK 이력 33점(2024-01 1위 → 2025-07부터 1위)', moved > 0 && hb.length === 33 && hb[0].period === '2024-01' && hb[0].rank === 1 && hb.slice(18).every(function (h) { return h.rank === 1; }), 'moved ' + moved + ', points ' + hb.length]);
   var bad = await RH.loadCountrySnapshot('KR', '2099-01');
   res.push(['없는 snapshot 로딩은 예외 없이 null(기존 기능 영향 없음)', bad === null, '']);
 

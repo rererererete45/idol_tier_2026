@@ -20,10 +20,10 @@ li small{color:#7c7c7c;margin-left:8px}
 <h1>HISTORY SUITE 엔진 테스트</h1>
 <p id="sum">실행 중…</p>
 <ul id="out"></ul>
-<script src="js/idol-match.js?v=20260965"></script>
-<script src="js/idol-recommendation-core.js?v=20260965"></script>
-<script src="js/rank-history.js?v=20260965"></script>
-<script src="js/history-analytics.js?v=20260965"></script>
+<script src="js/idol-match.js?v=20260968"></script>
+<script src="js/idol-recommendation-core.js?v=20260968"></script>
+<script src="js/rank-history.js?v=20260968"></script>
+<script src="js/history-analytics.js?v=20260968"></script>
 <script>
 (async function () {
   var IM = window.IdolMatch, R = window.IdolRec, RH = window.RankHistory, HA = window.HistoryAnalytics, res = [];
@@ -222,8 +222,8 @@ li small{color:#7c7c7c;margin-left:8px}
     return a !== b && R.logicalPoints('KR') === R.logicalPoints('KR') && R.logicalPoints('KR').population === 86;
   });
 
-  /* ---------- 실제 21개월 데이터 정합성 ---------- */
-  t('index: 오름차순·중복 없음·KR/JP 각 21개월', function () { return HA.validateIndex(idx.KR).length === 0 && HA.validateIndex(idx.JP).length === 0 && idx.KR.length === 21 && idx.JP.length === 21 && idx.KR[0] === '2025-01'; });
+  /* ---------- 실제 33개월 데이터 정합성 ---------- */
+  t('index: 오름차순·중복 없음·KR/JP 각 33개월', function () { return HA.validateIndex(idx.KR).length === 0 && HA.validateIndex(idx.JP).length === 0 && idx.KR.length === 33 && idx.JP.length === 33 && idx.KR[0] === '2024-01'; });
   t('모든 실제 snapshot 이 무결성 검사를 통과(오류 0)', function () {
     var bad = [];
     snapsKR.forEach(function (s, i) { var r = HA.validateSnapshot('KR', idx.KR[i], s); if (r.errors.length) bad.push('KR ' + idx.KR[i] + ': ' + r.errors[0]); });
@@ -257,9 +257,9 @@ li small{color:#7c7c7c;margin-left:8px}
     return bad === 0;
   });
   var recKR = HA.computeRecords('KR', snapsKR), recJP = HA.computeRecords('JP', snapsJP);
-  t('실제 RECORD BOOK(KR): BLACKPINK 최다 1위 15개월·연속 15개월(2025-07~2026-09)', function () {
+  t('실제 RECORD BOOK(KR): BLACKPINK 최다 1위 17개월·최장 연속 15개월(2025-07~2026-09)', function () {
     var g = recKR.groups.filter(function (x) { return x.id === 'KR-001'; })[0];
-    return (g.rank1.months === 15 && g.rank1.streak.length === 15 && g.rank1.streak.start === '2025-07') || JSON.stringify(g.rank1.streak);
+    return (g.rank1.months === 17 && g.rank1.streak.length === 15 && g.rank1.streak.start === '2025-07') || JSON.stringify(g.rank1.streak);
   });
   t('실제 RECORD BOOK: 모든 보드 행은 해당 국가 그룹만 (KR-/JP- 접두사)', function () {
     return recKR.boards.every(function (b) { return b.rows.every(function (r) { return /^KR-/.test(r.id); }); }) && recJP.boards.every(function (b) { return b.rows.every(function (r) { return /^JP-/.test(r.id); }); });
@@ -274,8 +274,8 @@ li small{color:#7c7c7c;margin-left:8px}
     var a = HA.computeEditorsWatch('KR', snapsKR, '2026-09'), b = HA.computeEditorsWatch('JP', snapsJP, '2026-09');
     return a.ready && b.ready && a.cards.concat(b.cards).every(function (c) { return c.rule && c.fact && c.id; });
   });
-  t('실제 EDITOR\'S WATCH 2025-03(4번째 달): 첫 3개월 이전엔 준비 안 됨, 2025-04 부터 계산', function () {
-    return !HA.computeEditorsWatch('KR', snapsKR, '2025-03').ready && HA.computeEditorsWatch('KR', snapsKR, '2025-04').ready;
+  t('실제 EDITOR\'S WATCH 2024-04(4번째 달): 첫 3개월 이전엔 준비 안 됨, 2024-04 부터 계산', function () {
+    return !HA.computeEditorsWatch('KR', snapsKR, '2024-03').ready && HA.computeEditorsWatch('KR', snapsKR, '2024-04').ready;
   });
 
   /* ---------- 구간 경계(breaks) ---------- */

@@ -1,4 +1,6 @@
 {
   "KR": [],
-  "JP": []
+  "JP": [],
+  "version": "v7-final",
+  "note": "same absolute scale; no year-reset breaks"
 }

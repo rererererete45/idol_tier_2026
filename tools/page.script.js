@@ -10,7 +10,7 @@ let pv=null,pr=0;A.forEach((o,i)=>{if(o.s!==pv){pr=i+1;pv=o.s}o.r=pr});
 
 // 한글·영문 별칭 검색: "에스파"로 aespa 를 찾을 수 있게. 없으면 그룹 이름만으로 검색.
 let ALIAS=null;
-fetch('data/aliases.json?v=20260965').then(r=>r.json()).then(j=>{ALIAS=(j&&j[CFG.country])||{};render()}).catch(()=>{ALIAS={}});
+fetch('data/aliases.json?v=20260968').then(r=>r.json()).then(j=>{ALIAS=(j&&j[CFG.country])||{};render()}).catch(()=>{ALIAS={}});
 function matchesQuery(o,v){
   if(o.n.toLowerCase().includes(v))return true;
   const al=ALIAS&&ALIAS[o.id];
@@ -258,7 +258,7 @@ function detailHTML(o){
     +'</div></div>'
     +'<nav class="djump" aria-label="상세 섹션 바로가기"><button type="button" data-jump="scenebox">🧬 비슷한 '+(CFG.country==='KR'?'한국':'일본')+' 그룹</button><button type="button" data-jump="matchbox">'+CFG.other.label+' 취향</button><button type="button" data-jump="histbox">📈 순위 추이</button></nav>'
     +'<div class="dpradar" id="dpRadarWrap">'+bigRadarSVG(o)+'</div>'
-    +'<div class="bars">'+barsHTML(o)+'</div>'
+    +'<div class="bars" id="dpBars">'+barsHTML(o)+'</div>'
     +'<div class="dpgrid">'+info+'</div>'
     +((o.intro||o.editor)?'<div class="dpedit">'
       +(o.intro?'<p class="dpedit-k">소개글</p><p class="dpedit-v">'+esc(o.intro)+'</p>':'')

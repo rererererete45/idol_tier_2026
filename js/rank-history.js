@@ -6,7 +6,7 @@
  * window.RankHistory 로만 노출한다. */
 (function (global) {
   'use strict';
-  var VERSION = '20260965';
+  var VERSION = '20260968';
   var script = document.currentScript, base = script && script.src ? script.src.replace(/js\/rank-history\.js.*$/, '') : '';
   var DIR = base + 'data/history/';
 
@@ -314,6 +314,19 @@
     function curPts() {
       return (shape.getAttribute('points') || '').split(' ').filter(Boolean).map(function (s) { var xy = s.split(',').map(Number); return [xy[0], xy[1]]; });
     }
+    var barsBox = document.getElementById('dpBars'), barRows = barsBox ? barsBox.querySelectorAll('.br') : [];
+    function paintBars(i2) {
+      if (!barRows.length) return;
+      var m = hist[i2].metrics || {};
+      defs.forEach(function (d, i) {
+        var row = barRows[i]; if (!row) return;
+        var v = m[d.key]; v = v == null ? 0 : v;
+        var p = Math.round(v / d.max * 100);
+        var fil = row.querySelector('.fil'), val = row.lastElementChild;
+        if (fil) { fil.style.width = p + '%'; fil.classList.toggle('lo', p < 70); }
+        if (val) val.textContent = v;
+      });
+    }
     var idx = hist.length - 1, animTok = 0, playTimer = 0;
     function paintTo(target, ms) {
       var from = curPts(), tok = ++animTok, t0 = null;
@@ -329,6 +342,7 @@
     }
     function sync(ms) {
       paintTo(ptsFor(idx), ms);
+      paintBars(idx);
       var h = hist[idx];
       lab.textContent = fmtPeriod(h.period) + ' · #' + h.rank + ' · ' + h.score + '점' + (idx === hist.length - 1 ? ' · 현재' : '');
       slider.value = idx;
