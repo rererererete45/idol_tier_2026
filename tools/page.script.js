@@ -10,7 +10,7 @@ let pv=null,pr=0;A.forEach((o,i)=>{if(o.s!==pv){pr=i+1;pv=o.s}o.r=pr});
 
 // 한글·영문 별칭 검색: "에스파"로 aespa 를 찾을 수 있게. 없으면 그룹 이름만으로 검색.
 let ALIAS=null;
-fetch('data/aliases.json?v=20260971').then(r=>r.json()).then(j=>{ALIAS=(j&&j[CFG.country])||{};render()}).catch(()=>{ALIAS={}});
+fetch('data/aliases.json?v=20260972').then(r=>r.json()).then(j=>{ALIAS=(j&&j[CFG.country])||{};render()}).catch(()=>{ALIAS={}});
 function matchesQuery(o,v){
   if(o.n.toLowerCase().includes(v))return true;
   const al=ALIAS&&ALIAS[o.id];
@@ -274,11 +274,11 @@ function detailHTML(o){
       +(o.intro?'<p class="dpedit-k">소개글</p><p class="dpedit-v">'+esc(o.intro)+'</p>':'')
       +(o.editor?'<p class="dpedit-k">에디터 코멘트</p><p class="dpedit-v">'+esc(o.editor)+'</p>':'')
       +'</div></details>':'')
-    +'<div class="acts">'+officialBtn
+    +'<details class="dpsec" open><summary>🔗 바로가기</summary><div class="acts">'+officialBtn
     +'<a class="btn grn"'+TGT+' href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
     +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
     +'<a class="btn out"'+TGT+' href="'+namuUrl(o)+'">나무위키</a></div>'
-    +(noteText?'<p class="dpnote">'+esc(noteText)+'</p>':'')
+    +(noteText?'<p class="dpnote">'+esc(noteText)+'</p>':'')+'</details>'
     +'<details class="dpsec" open><summary>🧬 비슷한 '+(CFG.country==='KR'?'한국':'일본')+' 그룹</summary><section class="scenebox" id="scenebox" data-n="'+esc(o.n)+'"></section></details>'
     +'<details class="dpsec" open><summary>'+CFG.other.label+' 취향</summary><section class="matchbox" id="matchbox" data-n="'+esc(o.n)+'"><h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><p class="mnote">불러오는 중…</p></section></details>'
     +'<details class="dpsec" open><summary>📈 순위 추이</summary><section class="histbox" id="histbox" data-id="'+esc(o.id)+'"></section></details>';
