@@ -10,7 +10,7 @@ let pv=null,pr=0;A.forEach((o,i)=>{if(o.s!==pv){pr=i+1;pv=o.s}o.r=pr});
 
 // 한글·영문 별칭 검색: "에스파"로 aespa 를 찾을 수 있게. 없으면 그룹 이름만으로 검색.
 let ALIAS=null;
-fetch('data/aliases.json?v=20260968').then(r=>r.json()).then(j=>{ALIAS=(j&&j[CFG.country])||{};render()}).catch(()=>{ALIAS={}});
+fetch('data/aliases.json?v=20260969').then(r=>r.json()).then(j=>{ALIAS=(j&&j[CFG.country])||{};render()}).catch(()=>{ALIAS={}});
 function matchesQuery(o,v){
   if(o.n.toLowerCase().includes(v))return true;
   const al=ALIAS&&ALIAS[o.id];
@@ -166,7 +166,7 @@ function trendBars(o){
   const arr=HD8&&HD8[o.id];
   if(!arr||arr.length<2)return '';
   const lo=Math.min(...arr),hi=Math.max(...arr),span=hi-lo||1;
-  return '<span class="rtrend8" style="color:'+tierClr(o)+'" title="최근 '+arr.length+'개월 점수 흐름" aria-hidden="true">'+arr.map(v=>'<i style="height:'+(3+Math.round((v-lo)/span*11))+'px"></i>').join('')+'</span>';
+  return '<span class="rtrend8" style="color:'+tierClr(o)+'" title="최근 '+arr.length+'개월 점수 흐름" aria-hidden="true">'+arr.map(v=>'<i style="height:'+(4+Math.round((v-lo)/span*22))+'px"></i>').join('')+'</span>';
 }
 // 랭킹 행의 "등급 앞" 8개월 점수 흐름. period 를 생략하면 최신 달 기준 8개월.
 function loadTrend8(period){
@@ -204,8 +204,19 @@ function card(o){
 }
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
+function tierDistHTML(list){
+  const tiers={};
+  list.forEach(o=>{tiers[o.tier]=(tiers[o.tier]||0)+1});
+  const order=Object.keys(TIER_COLORS).filter(t=>tiers[t]);
+  if(!order.length)return '';
+  const bar=order.map(t=>'<i style="flex:'+tiers[t]+';background:'+TIER_COLORS[t]+'" title="'+t+' '+tiers[t]+'팀"></i>').join('');
+  const leg=order.map(t=>'<li><i style="background:'+TIER_COLORS[t]+'"></i>'+t+' <b>'+tiers[t]+'</b></li>').join('');
+  return '<p class="tdtitle">티어별 분포</p><div class="tierbar" role="img" aria-label="티어 분포: '+order.map(t=>t+' '+tiers[t]+'팀').join(', ')+'">'+bar+'</div><ul class="tiersleg">'+leg+'</ul>';
+}
 function render(){
   const src=AHIST||A;
+  const td=document.getElementById('tierDist');
+  if(td){const h=tierDistHTML(src);td.innerHTML=h;td.hidden=!h}
   let list=src.filter(o=>(!qs||matchesQuery(o,qs))&&FACETS.every(f=>F[f.key]==='ALL'||fvals(o,f).includes(F[f.key])));
   const board=document.getElementById('board');
   if(!list.length){board.innerHTML='';document.getElementById('empty').hidden=false;return}
@@ -257,21 +268,20 @@ function detailHTML(o){
     +(o.img?'<p class="dpsrc">사진 출처: <a href="'+(o.imgpage?esc(o.imgpage):namuUrl(o))+'"'+TGT+'>'+(o.imgpage?'공식 사이트':'나무위키')+'</a></p>':'')
     +'</div></div>'
     +'<nav class="djump" aria-label="상세 섹션 바로가기"><button type="button" data-jump="scenebox">🧬 비슷한 '+(CFG.country==='KR'?'한국':'일본')+' 그룹</button><button type="button" data-jump="matchbox">'+CFG.other.label+' 취향</button><button type="button" data-jump="histbox">📈 순위 추이</button></nav>'
-    +'<div class="dpradar" id="dpRadarWrap">'+bigRadarSVG(o)+'</div>'
-    +'<div class="bars" id="dpBars">'+barsHTML(o)+'</div>'
-    +'<div class="dpgrid">'+info+'</div>'
-    +((o.intro||o.editor)?'<div class="dpedit">'
+    +'<details class="dpsec" open><summary>📊 능력치</summary><div class="dpradar" id="dpRadarWrap">'+bigRadarSVG(o)+'</div><div class="bars" id="dpBars">'+barsHTML(o)+'</div></details>'
+    +'<details class="dpsec" open><summary>ℹ️ 기본 정보</summary><div class="dpgrid">'+info+'</div></details>'
+    +((o.intro||o.editor)?'<details class="dpsec" open><summary>📝 소개 · 코멘트</summary><div class="dpedit">'
       +(o.intro?'<p class="dpedit-k">소개글</p><p class="dpedit-v">'+esc(o.intro)+'</p>':'')
       +(o.editor?'<p class="dpedit-k">에디터 코멘트</p><p class="dpedit-v">'+esc(o.editor)+'</p>':'')
-      +'</div>':'')
+      +'</div></details>':'')
     +'<div class="acts">'+officialBtn
     +'<a class="btn grn"'+TGT+' href="https://open.spotify.com/search/'+nm+'">'+ICN+'Spotify</a>'
     +'<a class="btn out"'+TGT+' href="https://www.youtube.com/results?search_query='+nm+'">'+AIC+'YouTube</a>'
     +'<a class="btn out"'+TGT+' href="'+namuUrl(o)+'">나무위키</a></div>'
     +(noteText?'<p class="dpnote">'+esc(noteText)+'</p>':'')
-    +'<section class="scenebox" id="scenebox" data-n="'+esc(o.n)+'"></section>'
-    +'<section class="matchbox" id="matchbox" data-n="'+esc(o.n)+'"><h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><p class="mnote">불러오는 중…</p></section>'
-    +'<section class="histbox" id="histbox" data-id="'+esc(o.id)+'"></section>';
+    +'<details class="dpsec" open><summary>🧬 비슷한 '+(CFG.country==='KR'?'한국':'일본')+' 그룹</summary><section class="scenebox" id="scenebox" data-n="'+esc(o.n)+'"></section></details>'
+    +'<details class="dpsec" open><summary>'+CFG.other.label+' 취향</summary><section class="matchbox" id="matchbox" data-n="'+esc(o.n)+'"><h3 class="mtitle">'+flagB(CFG.other.code)+' '+CFG.other.label+'에서 비슷한 취향 찾기</h3><p class="mnote">불러오는 중…</p></section></details>'
+    +'<details class="dpsec" open><summary>📈 순위 추이</summary><section class="histbox" id="histbox" data-id="'+esc(o.id)+'"></section></details>';
 }
 function openDetailBySlug(slug){
   const o=A.find(x=>x.slug===slug);
@@ -284,7 +294,7 @@ function openDetailBySlug(slug){
   fb.addEventListener('click',()=>{toggleFavById(o.id,o.n)});
   ['dPrev','dNext'].forEach(id=>{const b=document.getElementById(id);if(b)b.addEventListener('click',()=>stepDetail(b.dataset.slug))});
   document.getElementById('dShare').addEventListener('click',()=>shareGroup(o));
-  document.querySelector('.djump').addEventListener('click',e=>{const j=e.target.closest('[data-jump]');if(!j)return;const t=document.getElementById(j.dataset.jump);if(t&&!t.hidden)t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})});
+  document.querySelector('.djump').addEventListener('click',e=>{const j=e.target.closest('[data-jump]');if(!j)return;const t=document.getElementById(j.dataset.jump);if(!t||t.hidden)return;const sec=t.closest('.dpsec');if(sec&&!sec.open)sec.open=true;t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})});
   renderMatchSection(o);
   if(window.SameScene)SameScene.render(document.getElementById('scenebox'),{country:CFG.country,name:o.n,id:o.id,onOpen:sceneOpen});
   if(window.RankHistory)RankHistory.renderDetail(document.getElementById('histbox'),{country:CFG.country,id:o.id,name:o.n});

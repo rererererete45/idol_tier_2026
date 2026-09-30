@@ -148,7 +148,14 @@
     if (S.preset === 'MINE') return !!favs[p.key];
     return true;
   }
-  function passesQuery(p) { return !S.query || p.group.toLowerCase().indexOf(S.query) !== -1; }
+  var ALIAS = { KR: {}, JP: {} };
+  fetch('data/aliases.json?v=' + IM.version).then(function (r) { return r.json(); }).then(function (j) { ALIAS = j || ALIAS; if (DATA.KR && DATA.JP) refreshStates(); }).catch(function () {});
+  function passesQuery(p) {
+    if (!S.query) return true;
+    if (p.group.toLowerCase().indexOf(S.query) !== -1) return true;
+    var al = (ALIAS[p.country] || {})[p.id];
+    return !!al && al.some(function (a) { return a.toLowerCase().indexOf(S.query) !== -1; });
+  }
   function curSet() { return S.match || S.scene; }
   function passesZone(p) { return !S.zone || p.zone === S.zone; }
   function isVisible(p, favs) { return passesPreset(p, favs) && passesQuery(p) && passesZone(p); }

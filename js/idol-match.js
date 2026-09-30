@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var DATA_VERSION = '20260968';
+  var DATA_VERSION = '20260969';
   var NORMALIZATION_VERSION = 'v2';
   var FAVORITE_KEY = 'idolTierFavorites';
 

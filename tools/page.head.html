@@ -95,6 +95,15 @@ h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-hei
 .monthbar .mbnote{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:9999px;background:rgba(255,164,43,.12);color:#ffa42b;font-size:12px;font-weight:700}
 .monthbar .mbnote[hidden]{display:none}
 .monthbar .mbnote button{border:0;background:transparent;color:#ffa42b;font-size:12px;font-weight:800;text-decoration:underline;cursor:pointer;padding:0}
+.tierdist{background:var(--surf);border-radius:8px;padding:14px 16px;margin-top:12px}
+.tierdist[hidden]{display:none}
+.tierdist .tdtitle{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3);margin:0 0 10px}
+.tierbar{display:flex;height:14px;border-radius:9999px;overflow:hidden;gap:2px;background:var(--surf2)}
+.tierbar i{display:block;min-width:4px;transition:flex-grow .4s}
+.tiersleg{display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0 0;padding:0;list-style:none;font-size:12px;font-weight:700;color:var(--tx2)}
+.tiersleg li{display:inline-flex;align-items:center;gap:6px}
+.tiersleg i{width:10px;height:10px;border-radius:3px;display:block}
+.tiersleg b{color:var(--tx);font-variant-numeric:tabular-nums}
 
 /* ---- ranking row (RankingProfileRow) ---- */
 .grid{display:flex;flex-direction:column;gap:6px}
@@ -126,8 +135,8 @@ h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-.02em;line-hei
 .rline1{display:flex;align-items:baseline;gap:8px;min-width:0}
 .nm{font-size:15px;font-weight:800;line-height:1.25;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
 .rtier{flex:none;font-size:12px;font-weight:900}
-.rtrend8{flex:none;display:inline-flex;align-items:flex-end;gap:1.5px;height:14px}
-.rtrend8 i{display:block;width:2.5px;min-height:2px;border-radius:1px 1px 0 0;background:currentColor;opacity:.7}
+.rtrend8{flex:none;display:inline-flex;align-items:flex-end;gap:2px;height:26px}
+.rtrend8 i{display:block;width:3px;min-height:3px;border-radius:1px 1px 0 0;background:currentColor;opacity:.7}
 @media(max-width:419px){.rtrend8{display:none}}
 .rline2{display:block;min-width:0;font-size:12px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .meta{display:flex;gap:6px;flex-wrap:wrap}
@@ -337,6 +346,16 @@ a.mshare{display:inline-flex;align-items:center;justify-content:center}
 .djump::-webkit-scrollbar{display:none}
 .djump button{flex:none;min-height:40px;padding:0 14px;border:0;border-radius:9999px;background:var(--surf2);color:var(--tx2);font-family:var(--fs);font-size:12px;font-weight:700;cursor:pointer;transition:background .15s,color .15s}
 .djump button:hover{color:var(--tx);background:var(--card)}
+.dpsec{margin-top:22px}
+.dpsec summary{display:flex;align-items:center;gap:8px;min-height:22px;margin:0 0 14px;font-size:15px;font-weight:900;letter-spacing:-.01em;color:var(--tx);cursor:pointer;list-style:none}
+.dpsec summary::-webkit-details-marker{display:none}
+.dpsec summary::after{content:"";flex:none;width:8px;height:8px;margin-left:auto;border-right:2px solid var(--tx3);border-bottom:2px solid var(--tx3);transform:rotate(45deg);transition:transform .15s,border-color .15s}
+.dpsec:not([open]) summary{margin-bottom:0}
+.dpsec:not([open]) summary::after{transform:rotate(-45deg)}
+.dpsec summary:hover::after{border-color:var(--tx)}
+.dpsec summary:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:4px}
+.dpsec>.scenebox,.dpsec>.matchbox,.dpsec>.histbox{margin-top:0;padding-top:0;border-top:0}
+.dpsec>.scenebox>.scenehead,.dpsec>.matchbox>.mtitle:first-child{display:none}
 html{scroll-behavior:smooth}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .mflags{margin:6px 0 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -351,7 +370,7 @@ html{scroll-behavior:smooth}
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">점수표는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260968"></script>
+<script src="js/site-nav.js?v=20260969"></script>
 <div class="wrap">
 
 <header>
@@ -387,6 +406,7 @@ html{scroll-behavior:smooth}
     <button class="ibtn" id="mbNext" type="button" aria-label="다음 달">›</button>
     <span class="mbnote" id="mbNote" hidden>그 달 순위 그대로예요 · 지금 순위 아님 <button type="button" id="mbLatest">현재로</button></span>
   </div>
+  <div class="tierdist" id="tierDist" hidden></div>
 </div>
 
 <div class="favbar" id="favbar" hidden>

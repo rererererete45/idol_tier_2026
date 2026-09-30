@@ -6,7 +6,7 @@
  * window.RankHistory 로만 노출한다. */
 (function (global) {
   'use strict';
-  var VERSION = '20260968';
+  var VERSION = '20260969';
   var script = document.currentScript, base = script && script.src ? script.src.replace(/js\/rank-history\.js.*$/, '') : '';
   var DIR = base + 'data/history/';
 
@@ -143,6 +143,20 @@
 
   var PAL = ['#1ed760', '#f3727f', '#539df5', '#ffa42b', '#a78bfa', '#22d3ee'];
 
+  // Catmull-Rom → cubic bezier: pts=[{x,y},...] (오름차순) → 부드러운 SVG path d
+  function catmullRomPath(pts) {
+    if (pts.length < 2) return '';
+    var d = 'M' + pts[0].x.toFixed(1) + ',' + pts[0].y.toFixed(1);
+    if (pts.length === 2) return d + 'L' + pts[1].x.toFixed(1) + ',' + pts[1].y.toFixed(1);
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+      var c1x = p1.x + (p2.x - p0.x) / 6, c1y = p1.y + (p2.y - p0.y) / 6;
+      var c2x = p2.x - (p3.x - p1.x) / 6, c2y = p2.y - (p3.y - p1.y) / 6;
+      d += 'C' + c1x.toFixed(1) + ',' + c1y.toFixed(1) + ' ' + c2x.toFixed(1) + ',' + c2y.toFixed(1) + ' ' + p2.x.toFixed(1) + ',' + p2.y.toFixed(1);
+    }
+    return d;
+  }
+
   // series: [{name,color,points:[{p:'2026-09', v:3}]}] · invert=true 면 값이 작을수록(=1위) 위쪽
   function lineChart(o) {
     var W = 340, H = o.h || 190, L = 34, Rm = 16, T = 18, B = 28, series = o.series.filter(function (s) { return s.points.length; });
@@ -159,6 +173,8 @@
     var steps = [1, 2, 5, 10, 20, 25, 50, 100], step = steps.filter(function (s) { return (hi - lo) / s <= 4; })[0] || 100;
     var t0 = Math.ceil(lo / step) * step, ticks = []; for (var v = t0; v <= hi; v += step) ticks.push(v);
     var yOf = function (val) { return o.invert ? T + (val - lo) / (hi - lo) * ph : T + (hi - val) / (hi - lo) * ph; };
+    // 점이 촘촘할 때(예: 33개월 전체) 인접한 호버 영역이 겹치지 않도록 hit 반경을 점 간격에 맞춰 줄인다
+    var hitR = Math.max(4, Math.min(11, (x1 > x0 ? pw / (x1 - x0) : pw) / 2 - 1)), dotR = Math.min(4, hitR);
     var svg = '<svg class="rh-chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(o.label) + '" preserveAspectRatio="xMidYMid meet">';
     ticks.forEach(function (tv) {
       var y = yOf(tv).toFixed(1);
@@ -172,20 +188,43 @@
         svg += '<text x="' + (anc === 'end' ? W - 4 : px).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + anc + '" class="rh-xl">' + fmtPeriod(p) + '</text>';
       }
     });
-    var single = series.length === 1;
+    function textW(s) { var w = 0; for (var i = 0; i < s.length; i++) w += s.charCodeAt(i) > 0x1100 ? 10.5 : 6.1; return w; } // 한글/이모지는 라틴 문자보다 훨씬 넓다
+    function pointGroup(cx, cy, label, col) {
+      var ncx = Number(cx), ncy = Number(cy), tw = Math.max(52, textW(label) + 20), th = 22;
+      var tx = Math.min(Math.max(ncx, tw / 2 + 2), W - tw / 2 - 2);
+      var above = (ncy - T) >= (H - B - ncy), ty = above ? ncy - 14 : ncy + 14, rectY = above ? -th : 0;
+      return '<g class="rh-pt" tabindex="0" role="img" aria-label="' + label + '">'
+        + '<circle class="rh-hit" cx="' + cx + '" cy="' + cy + '" r="' + hitR.toFixed(1) + '"/>'
+        + '<circle class="rh-dot" cx="' + cx + '" cy="' + cy + '" r="' + dotR.toFixed(1) + '" style="fill:' + col + '"/>'
+        + '<g class="rh-tt" transform="translate(' + tx.toFixed(1) + ',' + ty.toFixed(1) + ')"><g class="rh-ttin">'
+        + '<rect x="' + (-tw / 2).toFixed(1) + '" y="' + rectY + '" width="' + tw.toFixed(1) + '" height="' + th + '" rx="7"/>'
+        + '<text x="0" y="' + (rectY + th / 2 + 3.5).toFixed(1) + '" text-anchor="middle">' + label + '</text>'
+        + '</g></g></g>';
+    }
+    var linesSvg = '', ptsSvg = ''; // 점(+호버 툴팁)이 항상 모든 선 위에 오도록 선을 먼저, 점을 나중에 합친다
     series.forEach(function (s, si) {
       var col = s.color || PAL[si % PAL.length], pts = s.points.slice().sort(function (a, b) { return monthIndex(a.p) - monthIndex(b.p); });
-      for (var i = 1; i < pts.length; i++) { // 인접한 달은 실선, 누락된 달이 끼면 점선(보간값을 만들지 않고 이어서만 표시)
+      // 이어진 구간(누락 없음)은 부드러운 곡선으로, 구간 사이 누락된 달은 점선 직선으로만 잇는다(보간값 없음)
+      var runs = pts.length ? [[pts[0]]] : [];
+      for (var i = 1; i < pts.length; i++) {
         var gap = monthIndex(pts[i].p) - monthIndex(pts[i - 1].p) > 1;
-        svg += '<line x1="' + xOf(pts[i - 1].p).toFixed(1) + '" y1="' + yOf(pts[i - 1].v).toFixed(1) + '" x2="' + xOf(pts[i].p).toFixed(1) + '" y2="' + yOf(pts[i].v).toFixed(1) + '" stroke="' + col + '" stroke-width="2.5" stroke-linecap="round"' + (gap ? ' stroke-dasharray="2 5" opacity=".7"' : '') + '/>';
+        if (gap) {
+          linesSvg += '<line class="rh-gap" x1="' + xOf(pts[i - 1].p).toFixed(1) + '" y1="' + yOf(pts[i - 1].v).toFixed(1) + '" x2="' + xOf(pts[i].p).toFixed(1) + '" y2="' + yOf(pts[i].v).toFixed(1) + '" style="stroke:' + col + '"/>';
+          runs.push([pts[i]]);
+        } else runs[runs.length - 1].push(pts[i]);
       }
+      runs.forEach(function (run) {
+        if (run.length < 2) return;
+        var xy = run.map(function (pt) { return { x: xOf(pt.p), y: yOf(pt.v) }; });
+        linesSvg += '<path class="rh-line" d="' + catmullRomPath(xy) + '" style="stroke:' + col + '"/>';
+      });
       pts.forEach(function (pt) {
         var cx = xOf(pt.p).toFixed(1), cy = yOf(pt.v).toFixed(1);
-        svg += '<circle cx="' + cx + '" cy="' + cy + '" r="4.5" fill="' + col + '" stroke="#181818" stroke-width="1.5"><title>' + esc(s.name) + ' · ' + fmtPeriod(pt.p) + ' · ' + (o.rank ? '#' : '') + pt.v + '</title></circle>';
-        if (single && pts.length <= 8) svg += '<text x="' + cx + '" y="' + (Number(cy) - 9) + '" text-anchor="middle" class="rh-vl">' + (o.rank ? '#' : '') + pt.v + '</text>';
+        var label = esc(s.name) + ' · ' + fmtPeriod(pt.p) + ' · ' + (o.rank ? '#' : '') + pt.v;
+        ptsSvg += pointGroup(cx, cy, label, col);
       });
     });
-    return svg + '</svg>';
+    return svg + linesSvg + ptsSvg + '</svg>';
   }
 
   function histTable(hist) {
@@ -273,8 +312,20 @@
     + '.rh-range button:hover{color:#fff}.rh-range button[aria-pressed="true"]{background:#1ed760;color:#000}'
     + '.rh-range button:focus-visible,.rh-tbl summary:focus-visible{outline:2px solid #1ed760;outline-offset:2px}'
     + '.rh-k{margin:14px 0 4px;font-size:12px;font-weight:800;color:var(--tx,#fff)}.rh-k small{font-weight:600;color:var(--tx3,#7c7c7c);margin-left:6px}'
-    + '.rh-chart{display:block;width:100%;height:auto;max-width:100%}'
-    + '.rh-grid{stroke:rgba(255,255,255,.08);stroke-width:1}.rh-yl,.rh-xl{fill:#7c7c7c;font-size:10px;font-weight:700}.rh-vl{fill:#fff;font-size:10px;font-weight:800}'
+    + '.rh-chart{display:block;width:100%;height:auto;max-width:100%;overflow:visible}'
+    + '.rh-grid{stroke:rgba(255,255,255,.08);stroke-width:1}.rh-yl,.rh-xl{fill:#7c7c7c;font-size:10px;font-weight:700}'
+    + '.rh-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}'
+    + '.rh-gap{stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 5;opacity:.6}'
+    + '.rh-pt{cursor:pointer}.rh-pt .rh-hit{fill:transparent}'
+    + '.rh-pt .rh-dot{stroke:#181818;stroke-width:1.5;opacity:0;transition:opacity .15s}'
+    + '.rh-pt:hover .rh-dot,.rh-pt:focus .rh-dot{opacity:1}'
+    + '.rh-pt .rh-tt{opacity:0;pointer-events:none;transition:opacity .15s}'
+    + '.rh-pt .rh-ttin{transition:transform .15s;transform:translateY(2px)}'
+    + '.rh-pt .rh-tt rect{fill:#2a2a2a;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}'
+    + '.rh-pt .rh-tt text{fill:#fff;font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums}'
+    + '.rh-pt:hover .rh-tt,.rh-pt:focus .rh-tt{opacity:1}'
+    + '.rh-pt:hover .rh-ttin,.rh-pt:focus .rh-ttin{transform:translateY(0)}'
+    + '.rh-pt:focus{outline:0}.rh-pt:focus .rh-hit{stroke:#1ed760;stroke-width:1.5;fill:transparent}'
     + '.rh-first{padding:16px;border-radius:14px;background:var(--surf2,#1f1f1f);font-size:13px;line-height:1.7;color:var(--tx2,#b3b3b3)}.rh-first b{color:#fff}'
     + '.rh-tbl{margin:10px 0 0;font-size:12px;color:var(--tx2,#b3b3b3)}.rh-tbl summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:700}'
     + '.rh-tbl table{width:100%;border-collapse:collapse}.rh-tbl th,.rh-tbl td{padding:6px 8px;text-align:left;border-bottom:1px solid #2a2a2a;font-variant-numeric:tabular-nums}.rh-tbl th{color:#7c7c7c;font-size:10.5px}'
