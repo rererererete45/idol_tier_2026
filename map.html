@@ -18,11 +18,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/idol-map.css?v=20260969">
+<link rel="stylesheet" href="css/idol-map.css?v=20260970">
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">IDOL MAP은 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260969"></script>
+<script src="js/site-nav.js?v=20260970"></script>
 <div class="wrap">
 <header>
   <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -111,19 +111,19 @@
 <div id="mrHost" hidden></div>
 
 <div class="foot">
-  <p>위치 = 자국 시장 안 백분위 기반(한국 86팀 · 일본 126팀 각각 계산). 버블 크기 = 총점(자국 백분위), 빛 = 현재기세. 점을 누르면 그룹의 시장 성향과 그 위치인 이유를 보여주고, "비슷한 그룹"으로 IDOL MATCH 결과를 지도에서 확인할 수 있어요.</p>
+  <p>위치 = 자국 시장 안 백분위 기반(한국 86팀 · 일본 212팀 각각 계산). 버블 크기 = 총점(자국 백분위), 빛 = 현재기세. 점을 누르면 그룹의 시장 성향과 그 위치인 이유를 보여주고, "비슷한 그룹"으로 IDOL MATCH 결과를 지도에서 확인할 수 있어요.</p>
   <p id="excl"></p>
 </div>
 </div>
 
-<script src="js/idol-match.js?v=20260969"></script>
-<script src="js/idol-recommendation-core.js?v=20260969"></script>
-<script src="js/idol-map.js?v=20260969"></script>
+<script src="js/idol-match.js?v=20260970"></script>
+<script src="js/idol-recommendation-core.js?v=20260970"></script>
+<script src="js/idol-map.js?v=20260970"></script>
 <script>
 /* ---------- 지난 기록 보기: 정적 지도 ↔ MAP REPLAY(월별 재생) 전환 ---------- */
 (function () {
   'use strict';
-  var V = '20260969';
+  var V = '20260970';
   var btn = document.getElementById('replayToggle'), staticArea = document.getElementById('staticMapArea'), host = document.getElementById('mrHost');
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var KO = { KR: '한국', JP: '일본' };

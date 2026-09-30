@@ -1,6 +1,6 @@
 # 여자아이돌 티어리스트 (idol_tier_2026)
 
-한국 86팀 · 일본 126팀 여자아이돌의 티어리스트와, 그 데이터로 만든 탐색 기능 모음입니다. GitHub Pages로 배포되는 정적 사이트이며 빌드 도구 없이 바닐라 HTML/CSS/JS로 동작합니다.
+한국 86팀 · 일본 212팀 여자아이돌의 티어리스트와, 그 데이터로 만든 탐색 기능 모음입니다. GitHub Pages로 배포되는 정적 사이트이며 빌드 도구 없이 바닐라 HTML/CSS/JS로 동작합니다.
 
 사이트: https://rererererete45.github.io/idol_tier_2026/
 
@@ -66,7 +66,7 @@ tools/                         페이지 빌더, 월간 파이프라인(monthly_
 `data/kr_db.json`, `data/jp_db.json`을 새 평가 결과로 갱신한 뒤, 매달 이 한 줄을 실행합니다.
 
 ```bash
-python tools/monthly_update.py 2026-10 --published 2026-10-28 --expect-kr 86 --expect-jp 126 --bump
+python tools/monthly_update.py 2026-10 --published 2026-10-28 --expect-kr 86 --expect-jp 212 --bump
 ```
 
 | 순서 | 하는 일 |
