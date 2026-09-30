@@ -10,7 +10,7 @@ let pv=null,pr=0;A.forEach((o,i)=>{if(o.s!==pv){pr=i+1;pv=o.s}o.r=pr});
 
 // 한글·영문 별칭 검색: "에스파"로 aespa 를 찾을 수 있게. 없으면 그룹 이름만으로 검색.
 let ALIAS=null;
-fetch('data/aliases.json?v=20260970').then(r=>r.json()).then(j=>{ALIAS=(j&&j[CFG.country])||{};render()}).catch(()=>{ALIAS={}});
+fetch('data/aliases.json?v=20260971').then(r=>r.json()).then(j=>{ALIAS=(j&&j[CFG.country])||{};render()}).catch(()=>{ALIAS={}});
 function matchesQuery(o,v){
   if(o.n.toLowerCase().includes(v))return true;
   const al=ALIAS&&ALIAS[o.id];
