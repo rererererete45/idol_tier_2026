@@ -6,7 +6,7 @@
  * window.RankHistory 로만 노출한다. */
 (function (global) {
   'use strict';
-  var VERSION = '20260972';
+  var VERSION = '20260975';
   var script = document.currentScript, base = script && script.src ? script.src.replace(/js\/rank-history\.js.*$/, '') : '';
   var DIR = base + 'data/history/';
 

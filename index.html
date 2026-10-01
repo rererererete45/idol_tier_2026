@@ -7,10 +7,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icons/kr-32.png">
 <link rel="apple-touch-icon" href="icons/kr-180.png">
 <meta name="theme-color" content="#121212">
-<meta name="description" content="내 최애는 몇 티어일까? 한국·일본 여자아이돌 212팀의 티어리스트. 지난 순위, 스타일 지도, 새 그룹 발견까지 한곳에서.">
+<meta name="description" content="내 최애는 몇 티어일까? 한국·일본 여자아이돌 298팀의 티어리스트. 지난 순위, 스타일 지도, 새 그룹 발견까지 한곳에서.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="여자아이돌 티어리스트">
-<meta property="og:description" content="내 최애는 몇 티어일까? 한국·일본 여자아이돌 212팀의 티어리스트.">
+<meta property="og:description" content="내 최애는 몇 티어일까? 한국·일본 여자아이돌 298팀의 티어리스트.">
 <meta property="og:image" content="https://rererererete45.github.io/idol_tier_2026/icons/kr-192.png">
 <meta property="og:url" content="https://rererererete45.github.io/idol_tier_2026/">
 <meta name="twitter:card" content="summary">
@@ -18,18 +18,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/home.css?v=20260972">
+<link rel="stylesheet" href="css/home.css?v=20260975">
 </head>
 <body>
 <noscript><p style="margin:0;padding:12px 16px;background:#2a2a2a;color:#ffcf8a;font-size:13px">이 사이트는 JavaScript가 필요해요. 브라우저에서 JavaScript를 켜 주세요.</p></noscript>
-<script src="js/site-nav.js?v=20260972"></script>
+<script src="js/site-nav.js?v=20260975"></script>
 <div class="wrap">
 
 <section class="hero" aria-labelledby="ttl">
   <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
   <span class="chip"><i></i><span>2026.09 업데이트</span></span>
   <h1 id="ttl"><span class="w" style="--i:0">내 최애는</span><br><span class="w grad" style="--i:1">몇 티어일까?</span></h1>
-  <p class="lead">한국·일본 여자아이돌 <b>212팀</b>을 점수로 줄 세웠어요. 이름을 검색하거나 아래에서 골라 보세요.</p>
+  <p class="lead">한국·일본 여자아이돌 <b id="totalN">298팀</b>을 점수로 줄 세웠어요. 이름을 검색하거나 아래에서 골라 보세요.</p>
 
   <div class="find" role="search">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 015.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"/></svg>
@@ -163,6 +163,7 @@
     G.KR = kr.map(function (x) { return norm('KR', x); }); G.JP = jp.map(function (x) { return norm('JP', x); });
     ['KR', 'JP'].forEach(function (c) { G[c].sort(function (a, b) { return a.rank - b.rank || (a.id < b.id ? -1 : 1); }); });
     IMG = r[2]; ALIAS = r[3] || ALIAS; all = G.KR.concat(G.JP);
+    var totalEl = $('totalN'); if (totalEl) totalEl.textContent = all.length + '팀';
     buildBelt(); renderLadder(); pickToday(false); buildFan(); buildMap();
   }).catch(function () {
     $('ladder').innerHTML = '<p style="color:var(--tx2);font-size:14px">데이터를 불러오지 못했어요. 새로고침해 주세요.</p>';
@@ -257,7 +258,7 @@
     out.sort(function (a, b) { return b.mv - a.mv || a.id.localeCompare(b.id); });
     $('risSub').textContent = month + ' 기준, 지난달보다 순위가 크게 오른 그룹이에요';
     $('rail').innerHTML = out.slice(0, 3).map(function (g) {
-      return '<a class="mc" href="' + href(g) + '"><span class="ph">' + av(g) + '<span class="up">▲' + g.n + '</span><span class="fl">' + FLAG[g.c] + '</span></span><span class="bd"><span class="nm">' + esc(g.name) + '</span><span class="mt">#' + g.prev + ' → #' + g.rank + (g.scoreDelta != null ? ' · +' + g.scoreDelta + '점' : '') + '</span>' + (g.deltas.length ? '<span class="mt2">' + esc(g.deltas.join(' · ')) + '</span>' : '') + '</span></a>';
+      return '<a class="mc" href="' + href(g) + '"><span class="ph">' + av(g) + '<span class="up">▲' + g.n + '</span><span class="fl">' + FLAG[g.c] + '</span></span><span class="bd"><span class="nm">' + esc(g.name) + '</span><span class="mt">#' + g.prev + ' → #' + g.rank + (g.scoreDelta > 0 ? ' · +' + g.scoreDelta + '점' : '') + '</span>' + (g.deltas.length ? '<span class="mt2">' + esc(g.deltas.join(' · ')) + '</span>' : '') + '</span></a>';
     }).join('');
     $('risersSec').hidden = false;
   }).catch(function () { $('risersSec').hidden = true; });
