@@ -3,7 +3,7 @@
     "country": "JP",
     "period": "2026-09",
     "published_at": "2026-09-30",
-    "revision": 8,
+    "revision": 9,
     "population_count": 212,
     "normalization_version": "v7-latent-absolute-33m",
     "percentile_scope": "absolute-score cross-period; rank is same-country same-period",
@@ -11,18 +11,20 @@
     "map_version": "v1",
     "versions_stamped_at": "2026-09-30",
     "source": "V7 FINAL + TIF 2026 일본 아이돌 전수조사 신규 86팀 2026-09 독립평가",
-    "corrected_at": "2026-09-30",
-    "correction_note": "기존 JP 126팀의 2026-09 점수·세부항목은 유지하고 TIF 2026 전수조사로 검증된 신규 86팀을 추가. 212팀 기준으로 공동순위만 재계산. 신규 86팀의 2024~2026-08 과거 월별 평가는 현재 성과를 소급하지 않기 위해 별도 월별 근거 검증 전까지 미입력(backfill pending).",
+    "corrected_at": "2026-10-01",
+    "correction_note": "2026-10-01 JP 역사 재검증: TIF 2026 전수조사로 2026-09에 추가된 86팀을 DB 추가월이 아니라 실제 결성·데뷔/계보 시점부터 재배치했다. 기존 JP-001~JP-126의 월별 6항목과 총점은 변경하지 않고, 추가팀은 당시 확인 가능한 활동 단계와 검증 사건을 기준으로 월말 스냅샷을 복원했다. 현재 2026-09 점수를 과거로 단순 복사하지 않았으며, 해산·재부트 공백(예: パラディーク, Root mimi)은 별도 처리했다.",
     "audit_version": "v7-33m-full-audit",
     "source_verified_event_overrides": 8,
     "v7_event_registry_count": 0,
     "v7_strong_event_count": 0,
     "tif2026_expansion": {
       "existing_groups_preserved": 126,
-      "new_groups_added": 86,
+      "added_groups": 86,
       "population_after": 212,
-      "history_backfill_pending": true
-    }
+      "historical_backfill_pending": false,
+      "historical_backfill_completed_at": "2026-10-01"
+    },
+    "history_reaudit": "tif2026-added-86-backfill-v2"
   },
   "groups": [
     {
@@ -1928,8 +1930,7 @@
         "streaming_sns": 7,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-128",
@@ -1944,8 +1945,7 @@
         "streaming_sns": 7,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-129",
@@ -1960,8 +1960,7 @@
         "streaming_sns": 5,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-130",
@@ -1976,8 +1975,7 @@
         "streaming_sns": 7,
         "momentum": 3,
         "industry": 6
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-131",
@@ -1992,8 +1990,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-132",
@@ -2008,8 +2005,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-133",
@@ -2024,8 +2020,7 @@
         "streaming_sns": 7,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-134",
@@ -2040,8 +2035,7 @@
         "streaming_sns": 7,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-135",
@@ -2056,8 +2050,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-136",
@@ -2072,8 +2065,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-137",
@@ -2088,8 +2080,7 @@
         "streaming_sns": 5,
         "momentum": 2,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-138",
@@ -2104,8 +2095,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-139",
@@ -2120,8 +2110,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-140",
@@ -2136,8 +2125,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-141",
@@ -2152,8 +2140,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-142",
@@ -2168,8 +2155,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-143",
@@ -2184,8 +2170,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-144",
@@ -2200,8 +2185,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-145",
@@ -2216,8 +2200,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-146",
@@ -2232,8 +2215,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-147",
@@ -2248,8 +2230,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-148",
@@ -2264,8 +2245,7 @@
         "streaming_sns": 7,
         "momentum": 4,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-149",
@@ -2280,8 +2260,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-150",
@@ -2296,8 +2275,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-151",
@@ -2312,8 +2290,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-152",
@@ -2328,8 +2305,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-153",
@@ -2344,8 +2320,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-154",
@@ -2360,8 +2335,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-155",
@@ -2376,8 +2350,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-156",
@@ -2392,8 +2365,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-157",
@@ -2408,8 +2380,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-158",
@@ -2424,8 +2395,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-159",
@@ -2440,8 +2410,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-160",
@@ -2456,8 +2425,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-161",
@@ -2472,8 +2440,7 @@
         "streaming_sns": 7,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-162",
@@ -2488,8 +2455,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-163",
@@ -2504,8 +2470,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-164",
@@ -2520,8 +2485,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-165",
@@ -2536,8 +2500,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-166",
@@ -2552,8 +2515,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-167",
@@ -2568,8 +2530,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-168",
@@ -2584,8 +2545,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-169",
@@ -2600,8 +2560,7 @@
         "streaming_sns": 5,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-170",
@@ -2616,8 +2575,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-171",
@@ -2632,8 +2590,7 @@
         "streaming_sns": 7,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-172",
@@ -2648,8 +2605,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-173",
@@ -2664,8 +2620,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-174",
@@ -2680,8 +2635,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-175",
@@ -2696,8 +2650,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-176",
@@ -2712,8 +2665,7 @@
         "streaming_sns": 7,
         "momentum": 4,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-177",
@@ -2728,8 +2680,7 @@
         "streaming_sns": 7,
         "momentum": 3,
         "industry": 6
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-178",
@@ -2744,8 +2695,7 @@
         "streaming_sns": 7,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-179",
@@ -2760,8 +2710,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-180",
@@ -2776,8 +2725,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-181",
@@ -2792,8 +2740,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-182",
@@ -2808,8 +2755,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-183",
@@ -2824,8 +2770,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-184",
@@ -2840,8 +2785,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-185",
@@ -2856,8 +2800,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-186",
@@ -2872,8 +2815,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-187",
@@ -2888,8 +2830,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-188",
@@ -2904,8 +2845,7 @@
         "streaming_sns": 7,
         "momentum": 3,
         "industry": 6
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-189",
@@ -2920,8 +2860,7 @@
         "streaming_sns": 5,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-190",
@@ -2936,8 +2875,7 @@
         "streaming_sns": 7,
         "momentum": 4,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-191",
@@ -2952,8 +2890,7 @@
         "streaming_sns": 6,
         "momentum": 6,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-192",
@@ -2968,8 +2905,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-193",
@@ -2984,8 +2920,7 @@
         "streaming_sns": 7,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-194",
@@ -3000,8 +2935,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-195",
@@ -3016,8 +2950,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-196",
@@ -3032,8 +2965,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-197",
@@ -3048,8 +2980,7 @@
         "streaming_sns": 6,
         "momentum": 6,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-198",
@@ -3064,8 +2995,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-199",
@@ -3080,8 +3010,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-200",
@@ -3096,8 +3025,7 @@
         "streaming_sns": 7,
         "momentum": 3,
         "industry": 6
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-201",
@@ -3112,8 +3040,7 @@
         "streaming_sns": 8,
         "momentum": 6,
         "industry": 6
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-202",
@@ -3128,8 +3055,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-203",
@@ -3144,8 +3070,7 @@
         "streaming_sns": 6,
         "momentum": 2,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-204",
@@ -3160,8 +3085,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-205",
@@ -3176,8 +3100,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-206",
@@ -3192,8 +3115,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-207",
@@ -3208,8 +3130,7 @@
         "streaming_sns": 7,
         "momentum": 3,
         "industry": 6
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-208",
@@ -3224,8 +3145,7 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-209",
@@ -3240,8 +3160,7 @@
         "streaming_sns": 7,
         "momentum": 6,
         "industry": 6
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-210",
@@ -3256,8 +3175,7 @@
         "streaming_sns": 6,
         "momentum": 4,
         "industry": 5
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-211",
@@ -3272,8 +3190,7 @@
         "streaming_sns": 6,
         "momentum": 3,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     },
     {
       "id": "JP-212",
@@ -3288,8 +3205,7 @@
         "streaming_sns": 7,
         "momentum": 4,
         "industry": 4
-      },
-      "history_status": "tif2026_backfill_pending"
+      }
     }
   ]
 }

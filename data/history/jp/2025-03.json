@@ -3,34 +3,20 @@
     "country": "JP",
     "period": "2025-03",
     "published_at": "2025-03-31",
-    "revision": 7,
-    "population_count": 123,
+    "revision": 9,
+    "population_count": 188,
     "normalization_version": "v7-latent-absolute-33m",
     "percentile_scope": "absolute-score cross-period; rank is same-country same-period",
     "source": "월말 평가 엑셀(독립 재평가 v3 · 각 월 말일 시점 독립 스냅샷)",
-    "corrected_at": "2026-09-30",
-    "correction_note": "V7 FINAL: raw 월별 점수를 관측치로 보고 33개월 동일 절대척도의 latent 체급을 과거정보만으로 순차 추정. 다수 팀이 같은 달 동일 항목에서 동시에 +1 되는 재스케일 흔적은 항목별 누적 오프셋으로 제거하고, 저기세 상태에서 3개 이상 구조항목이 동시 급등한 팀별 재스케일은 제한. 구조항목은 증거 강도에 따라 월간 변화속도를 제한하며, 장기 무증거는 약세 신호가 있을 때만 완만하게 감쇠. 기세는 최종 구조점수의 1·3·6개월 변화와 원자료 사건 신호, 검증 사건 로그를 결합.",
+    "corrected_at": "2026-10-01",
+    "correction_note": "2026-10-01 JP 역사 재검증: TIF 2026 전수조사로 2026-09에 추가된 86팀을 DB 추가월이 아니라 실제 결성·데뷔/계보 시점부터 재배치했다. 기존 JP-001~JP-126의 월별 6항목과 총점은 변경하지 않고, 추가팀은 당시 확인 가능한 활동 단계와 검증 사건을 기준으로 월말 스냅샷을 복원했다. 현재 2026-09 점수를 과거로 단순 복사하지 않았으며, 해산·재부트 공백(예: パラディーク, Root mimi)은 별도 처리했다.",
     "audit_version": "v7-33m-full-audit",
     "source_verified_event_overrides": 2,
     "v7_event_registry_count": 2,
-    "v7_strong_event_count": 1
+    "v7_strong_event_count": 1,
+    "history_reaudit": "tif2026-added-86-backfill-v2"
   },
   "groups": [
-    {
-      "id": "JP-002",
-      "group": "乃木坂46",
-      "rank": 1,
-      "tier": "S",
-      "score": 88,
-      "metrics": {
-        "live": 23,
-        "fandom": 19,
-        "recognition": 19,
-        "streaming_sns": 13,
-        "momentum": 5,
-        "industry": 9
-      }
-    },
     {
       "id": "JP-001",
       "group": "=LOVE",
@@ -44,6 +30,21 @@
         "streaming_sns": 14,
         "momentum": 6,
         "industry": 7
+      }
+    },
+    {
+      "id": "JP-002",
+      "group": "乃木坂46",
+      "rank": 1,
+      "tier": "S",
+      "score": 88,
+      "metrics": {
+        "live": 23,
+        "fandom": 19,
+        "recognition": 19,
+        "streaming_sns": 13,
+        "momentum": 5,
+        "industry": 9
       }
     },
     {
@@ -77,17 +78,17 @@
       }
     },
     {
-      "id": "JP-008",
-      "group": "日向坂46",
-      "rank": 5,
+      "id": "JP-006",
+      "group": "CUTIE STREET",
+      "rank": 7,
       "tier": "A+",
-      "score": 75,
+      "score": 73,
       "metrics": {
-        "live": 20,
+        "live": 12,
         "fandom": 16,
-        "recognition": 16,
-        "streaming_sns": 10,
-        "momentum": 6,
+        "recognition": 14,
+        "streaming_sns": 14,
+        "momentum": 10,
         "industry": 7
       }
     },
@@ -107,48 +108,18 @@
       }
     },
     {
-      "id": "JP-006",
-      "group": "CUTIE STREET",
-      "rank": 7,
+      "id": "JP-008",
+      "group": "日向坂46",
+      "rank": 5,
       "tier": "A+",
-      "score": 73,
-      "metrics": {
-        "live": 12,
-        "fandom": 16,
-        "recognition": 14,
-        "streaming_sns": 14,
-        "momentum": 10,
-        "industry": 7
-      }
-    },
-    {
-      "id": "JP-013",
-      "group": "ME:I",
-      "rank": 7,
-      "tier": "A+",
-      "score": 73,
-      "metrics": {
-        "live": 18,
-        "fandom": 16,
-        "recognition": 15,
-        "streaming_sns": 12,
-        "momentum": 6,
-        "industry": 6
-      }
-    },
-    {
-      "id": "JP-011",
-      "group": "超ときめき♡宣伝部",
-      "rank": 7,
-      "tier": "A+",
-      "score": 73,
+      "score": 75,
       "metrics": {
         "live": 20,
-        "fandom": 15,
-        "recognition": 15,
-        "streaming_sns": 12,
-        "momentum": 5,
-        "industry": 6
+        "fandom": 16,
+        "recognition": 16,
+        "streaming_sns": 10,
+        "momentum": 6,
+        "industry": 7
       }
     },
     {
@@ -167,6 +138,36 @@
       }
     },
     {
+      "id": "JP-010",
+      "group": "iLiFE!",
+      "rank": 16,
+      "tier": "A",
+      "score": 65,
+      "metrics": {
+        "live": 17,
+        "fandom": 15,
+        "recognition": 10,
+        "streaming_sns": 12,
+        "momentum": 6,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-011",
+      "group": "超ときめき♡宣伝部",
+      "rank": 7,
+      "tier": "A+",
+      "score": 73,
+      "metrics": {
+        "live": 20,
+        "fandom": 15,
+        "recognition": 15,
+        "streaming_sns": 12,
+        "momentum": 5,
+        "industry": 6
+      }
+    },
+    {
       "id": "JP-012",
       "group": "CANDY TUNE",
       "rank": 11,
@@ -179,6 +180,21 @@
         "streaming_sns": 14,
         "momentum": 6,
         "industry": 5
+      }
+    },
+    {
+      "id": "JP-013",
+      "group": "ME:I",
+      "rank": 7,
+      "tier": "A+",
+      "score": 73,
+      "metrics": {
+        "live": 18,
+        "fandom": 16,
+        "recognition": 15,
+        "streaming_sns": 12,
+        "momentum": 6,
+        "industry": 6
       }
     },
     {
@@ -197,32 +213,17 @@
       }
     },
     {
-      "id": "JP-018",
-      "group": "ももいろクローバーZ",
-      "rank": 11,
+      "id": "JP-015",
+      "group": "≠ME",
+      "rank": 16,
       "tier": "A",
-      "score": 68,
+      "score": 65,
       "metrics": {
         "live": 17,
-        "fandom": 14,
-        "recognition": 18,
-        "streaming_sns": 8,
-        "momentum": 5,
-        "industry": 6
-      }
-    },
-    {
-      "id": "JP-017",
-      "group": "モーニング娘。'26",
-      "rank": 11,
-      "tier": "A",
-      "score": 68,
-      "metrics": {
-        "live": 17,
-        "fandom": 16,
-        "recognition": 16,
-        "streaming_sns": 8,
-        "momentum": 5,
+        "fandom": 15,
+        "recognition": 13,
+        "streaming_sns": 10,
+        "momentum": 4,
         "industry": 6
       }
     },
@@ -242,32 +243,32 @@
       }
     },
     {
-      "id": "JP-010",
-      "group": "iLiFE!",
-      "rank": 16,
+      "id": "JP-017",
+      "group": "モーニング娘。'26",
+      "rank": 11,
       "tier": "A",
-      "score": 65,
+      "score": 68,
       "metrics": {
         "live": 17,
-        "fandom": 15,
-        "recognition": 10,
-        "streaming_sns": 12,
-        "momentum": 6,
-        "industry": 5
+        "fandom": 16,
+        "recognition": 16,
+        "streaming_sns": 8,
+        "momentum": 5,
+        "industry": 6
       }
     },
     {
-      "id": "JP-015",
-      "group": "≠ME",
-      "rank": 16,
+      "id": "JP-018",
+      "group": "ももいろクローバーZ",
+      "rank": 11,
       "tier": "A",
-      "score": 65,
+      "score": 68,
       "metrics": {
         "live": 17,
-        "fandom": 15,
-        "recognition": 13,
-        "streaming_sns": 10,
-        "momentum": 4,
+        "fandom": 14,
+        "recognition": 18,
+        "streaming_sns": 8,
+        "momentum": 5,
         "industry": 6
       }
     },
@@ -282,6 +283,36 @@
         "fandom": 15,
         "recognition": 13,
         "streaming_sns": 8,
+        "momentum": 5,
+        "industry": 6
+      }
+    },
+    {
+      "id": "JP-020",
+      "group": "SWEET STEADY",
+      "rank": 67,
+      "tier": "B",
+      "score": 44,
+      "metrics": {
+        "live": 10,
+        "fandom": 10,
+        "recognition": 7,
+        "streaming_sns": 8,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-021",
+      "group": "≒JOY",
+      "rank": 20,
+      "tier": "A",
+      "score": 60,
+      "metrics": {
+        "live": 14,
+        "fandom": 14,
+        "recognition": 11,
+        "streaming_sns": 10,
         "momentum": 5,
         "industry": 6
       }
@@ -302,16 +333,16 @@
       }
     },
     {
-      "id": "JP-021",
-      "group": "≒JOY",
-      "rank": 20,
-      "tier": "A",
-      "score": 60,
+      "id": "JP-023",
+      "group": "高嶺のなでしこ",
+      "rank": 23,
+      "tier": "B+",
+      "score": 58,
       "metrics": {
-        "live": 14,
-        "fandom": 14,
+        "live": 13,
+        "fandom": 12,
         "recognition": 11,
-        "streaming_sns": 10,
+        "streaming_sns": 11,
         "momentum": 5,
         "industry": 6
       }
@@ -347,21 +378,6 @@
       }
     },
     {
-      "id": "JP-023",
-      "group": "高嶺のなでしこ",
-      "rank": 23,
-      "tier": "B+",
-      "score": 58,
-      "metrics": {
-        "live": 13,
-        "fandom": 12,
-        "recognition": 11,
-        "streaming_sns": 11,
-        "momentum": 5,
-        "industry": 6
-      }
-    },
-    {
       "id": "JP-026",
       "group": "WHITE SCORPION",
       "rank": 24,
@@ -377,6 +393,36 @@
       }
     },
     {
+      "id": "JP-027",
+      "group": "ファントムシータ",
+      "rank": 29,
+      "tier": "B+",
+      "score": 52,
+      "metrics": {
+        "live": 9,
+        "fandom": 9,
+        "recognition": 8,
+        "streaming_sns": 13,
+        "momentum": 7,
+        "industry": 6
+      }
+    },
+    {
+      "id": "JP-029",
+      "group": "Rain Tree",
+      "rank": 90,
+      "tier": "C+",
+      "score": 39,
+      "metrics": {
+        "live": 12,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
       "id": "JP-030",
       "group": "SKE48",
       "rank": 25,
@@ -387,36 +433,6 @@
         "fandom": 15,
         "recognition": 11,
         "streaming_sns": 6,
-        "momentum": 5,
-        "industry": 6
-      }
-    },
-    {
-      "id": "JP-034",
-      "group": "つばきファクトリー",
-      "rank": 25,
-      "tier": "B+",
-      "score": 56,
-      "metrics": {
-        "live": 16,
-        "fandom": 13,
-        "recognition": 9,
-        "streaming_sns": 6,
-        "momentum": 5,
-        "industry": 7
-      }
-    },
-    {
-      "id": "JP-032",
-      "group": "私立恵比寿中学",
-      "rank": 27,
-      "tier": "B+",
-      "score": 55,
-      "metrics": {
-        "live": 14,
-        "fandom": 12,
-        "recognition": 11,
-        "streaming_sns": 7,
         "momentum": 5,
         "industry": 6
       }
@@ -437,46 +453,16 @@
       }
     },
     {
-      "id": "JP-041",
-      "group": "NMB48",
-      "rank": 29,
+      "id": "JP-032",
+      "group": "私立恵比寿中学",
+      "rank": 27,
       "tier": "B+",
-      "score": 52,
+      "score": 55,
       "metrics": {
-        "live": 13,
-        "fandom": 13,
-        "recognition": 10,
-        "streaming_sns": 5,
-        "momentum": 5,
-        "industry": 6
-      }
-    },
-    {
-      "id": "JP-027",
-      "group": "ファントムシータ",
-      "rank": 29,
-      "tier": "B+",
-      "score": 52,
-      "metrics": {
-        "live": 9,
-        "fandom": 9,
-        "recognition": 8,
-        "streaming_sns": 13,
-        "momentum": 7,
-        "industry": 6
-      }
-    },
-    {
-      "id": "JP-036",
-      "group": "Girls²",
-      "rank": 31,
-      "tier": "B+",
-      "score": 51,
-      "metrics": {
-        "live": 11,
-        "fandom": 10,
-        "recognition": 9,
-        "streaming_sns": 10,
+        "live": 14,
+        "fandom": 12,
+        "recognition": 11,
+        "streaming_sns": 7,
         "momentum": 5,
         "industry": 6
       }
@@ -497,48 +483,18 @@
       }
     },
     {
-      "id": "JP-047",
-      "group": "NGT48",
-      "rank": 31,
+      "id": "JP-034",
+      "group": "つばきファクトリー",
+      "rank": 25,
       "tier": "B+",
-      "score": 51,
+      "score": 56,
       "metrics": {
-        "live": 12,
-        "fandom": 12,
-        "recognition": 11,
-        "streaming_sns": 5,
-        "momentum": 5,
-        "industry": 6
-      }
-    },
-    {
-      "id": "JP-042",
-      "group": "OCHA NORMA",
-      "rank": 31,
-      "tier": "B+",
-      "score": 51,
-      "metrics": {
-        "live": 12,
-        "fandom": 12,
+        "live": 16,
+        "fandom": 13,
         "recognition": 9,
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 7
-      }
-    },
-    {
-      "id": "JP-050",
-      "group": "虹のコンキスタドール",
-      "rank": 31,
-      "tier": "B+",
-      "score": 51,
-      "metrics": {
-        "live": 12,
-        "fandom": 10,
-        "recognition": 9,
-        "streaming_sns": 8,
-        "momentum": 6,
-        "industry": 6
       }
     },
     {
@@ -557,18 +513,18 @@
       }
     },
     {
-      "id": "JP-038",
-      "group": "INUWASI",
-      "rank": 36,
+      "id": "JP-036",
+      "group": "Girls²",
+      "rank": 31,
       "tier": "B+",
-      "score": 50,
+      "score": 51,
       "metrics": {
-        "live": 16,
-        "fandom": 11,
-        "recognition": 6,
-        "streaming_sns": 7,
+        "live": 11,
+        "fandom": 10,
+        "recognition": 9,
+        "streaming_sns": 10,
         "momentum": 5,
-        "industry": 5
+        "industry": 6
       }
     },
     {
@@ -587,31 +543,16 @@
       }
     },
     {
-      "id": "JP-057",
-      "group": "22/7",
-      "rank": 39,
-      "tier": "B",
-      "score": 49,
+      "id": "JP-038",
+      "group": "INUWASI",
+      "rank": 36,
+      "tier": "B+",
+      "score": 50,
       "metrics": {
-        "live": 12,
-        "fandom": 10,
-        "recognition": 10,
+        "live": 16,
+        "fandom": 11,
+        "recognition": 6,
         "streaming_sns": 7,
-        "momentum": 5,
-        "industry": 5
-      }
-    },
-    {
-      "id": "JP-040",
-      "group": "JamsCollection",
-      "rank": 39,
-      "tier": "B",
-      "score": 49,
-      "metrics": {
-        "live": 12,
-        "fandom": 10,
-        "recognition": 9,
-        "streaming_sns": 8,
         "momentum": 5,
         "industry": 5
       }
@@ -632,33 +573,48 @@
       }
     },
     {
-      "id": "JP-053",
-      "group": "STU48",
+      "id": "JP-040",
+      "group": "JamsCollection",
       "rank": 39,
       "tier": "B",
       "score": 49,
       "metrics": {
         "live": 12,
-        "fandom": 12,
+        "fandom": 10,
         "recognition": 9,
+        "streaming_sns": 8,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-041",
+      "group": "NMB48",
+      "rank": 29,
+      "tier": "B+",
+      "score": 52,
+      "metrics": {
+        "live": 13,
+        "fandom": 13,
+        "recognition": 10,
         "streaming_sns": 5,
         "momentum": 5,
         "industry": 6
       }
     },
     {
-      "id": "JP-063",
-      "group": "SUPER☆GiRLS",
-      "rank": 39,
-      "tier": "B",
-      "score": 49,
+      "id": "JP-042",
+      "group": "OCHA NORMA",
+      "rank": 31,
+      "tier": "B+",
+      "score": 51,
       "metrics": {
-        "live": 11,
-        "fandom": 9,
-        "recognition": 12,
-        "streaming_sns": 7,
+        "live": 12,
+        "fandom": 12,
+        "recognition": 9,
+        "streaming_sns": 6,
         "momentum": 5,
-        "industry": 5
+        "industry": 7
       }
     },
     {
@@ -692,21 +648,6 @@
       }
     },
     {
-      "id": "JP-051",
-      "group": "Appare!",
-      "rank": 44,
-      "tier": "B",
-      "score": 48,
-      "metrics": {
-        "live": 12,
-        "fandom": 9,
-        "recognition": 9,
-        "streaming_sns": 8,
-        "momentum": 5,
-        "industry": 5
-      }
-    },
-    {
       "id": "JP-045",
       "group": "ExWHYZ",
       "rank": 44,
@@ -719,21 +660,6 @@
         "streaming_sns": 8,
         "momentum": 5,
         "industry": 6
-      }
-    },
-    {
-      "id": "JP-062",
-      "group": "GANG PARADE",
-      "rank": 44,
-      "tier": "B",
-      "score": 48,
-      "metrics": {
-        "live": 13,
-        "fandom": 9,
-        "recognition": 9,
-        "streaming_sns": 7,
-        "momentum": 5,
-        "industry": 5
       }
     },
     {
@@ -752,18 +678,18 @@
       }
     },
     {
-      "id": "JP-052",
-      "group": "NANIMONO",
-      "rank": 44,
-      "tier": "B",
-      "score": 48,
+      "id": "JP-047",
+      "group": "NGT48",
+      "rank": 31,
+      "tier": "B+",
+      "score": 51,
       "metrics": {
-        "live": 15,
-        "fandom": 10,
-        "recognition": 6,
-        "streaming_sns": 8,
+        "live": 12,
+        "fandom": 12,
+        "recognition": 11,
+        "streaming_sns": 5,
         "momentum": 5,
-        "industry": 4
+        "industry": 6
       }
     },
     {
@@ -782,6 +708,66 @@
       }
     },
     {
+      "id": "JP-050",
+      "group": "虹のコンキスタドール",
+      "rank": 31,
+      "tier": "B+",
+      "score": 51,
+      "metrics": {
+        "live": 12,
+        "fandom": 10,
+        "recognition": 9,
+        "streaming_sns": 8,
+        "momentum": 6,
+        "industry": 6
+      }
+    },
+    {
+      "id": "JP-051",
+      "group": "Appare!",
+      "rank": 44,
+      "tier": "B",
+      "score": 48,
+      "metrics": {
+        "live": 12,
+        "fandom": 9,
+        "recognition": 9,
+        "streaming_sns": 8,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-052",
+      "group": "NANIMONO",
+      "rank": 44,
+      "tier": "B",
+      "score": 48,
+      "metrics": {
+        "live": 15,
+        "fandom": 10,
+        "recognition": 6,
+        "streaming_sns": 8,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-053",
+      "group": "STU48",
+      "rank": 39,
+      "tier": "B",
+      "score": 49,
+      "metrics": {
+        "live": 12,
+        "fandom": 12,
+        "recognition": 9,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 6
+      }
+    },
+    {
       "id": "JP-054",
       "group": "ばってん少女隊",
       "rank": 44,
@@ -797,30 +783,15 @@
       }
     },
     {
-      "id": "JP-060",
-      "group": "BEYOOOOONDS",
-      "rank": 53,
+      "id": "JP-055",
+      "group": "タイトル未定",
+      "rank": 57,
       "tier": "B",
-      "score": 47,
+      "score": 46,
       "metrics": {
-        "live": 11,
-        "fandom": 11,
-        "recognition": 9,
-        "streaming_sns": 5,
-        "momentum": 5,
-        "industry": 6
-      }
-    },
-    {
-      "id": "JP-073",
-      "group": "MyDearDarlin'",
-      "rank": 53,
-      "tier": "B",
-      "score": 47,
-      "metrics": {
-        "live": 15,
-        "fandom": 9,
-        "recognition": 7,
+        "live": 14,
+        "fandom": 10,
+        "recognition": 6,
         "streaming_sns": 7,
         "momentum": 5,
         "industry": 4
@@ -842,39 +813,24 @@
       }
     },
     {
-      "id": "JP-075",
-      "group": "Task have Fun",
-      "rank": 56,
+      "id": "JP-057",
+      "group": "22/7",
+      "rank": 39,
       "tier": "B",
-      "score": 46,
+      "score": 49,
       "metrics": {
-        "live": 11,
-        "fandom": 9,
-        "recognition": 8,
-        "streaming_sns": 6,
-        "momentum": 7,
-        "industry": 5
-      }
-    },
-    {
-      "id": "JP-066",
-      "group": "yosugala",
-      "rank": 56,
-      "tier": "B",
-      "score": 46,
-      "metrics": {
-        "live": 11,
-        "fandom": 9,
-        "recognition": 8,
+        "live": 12,
+        "fandom": 10,
+        "recognition": 10,
         "streaming_sns": 7,
-        "momentum": 6,
+        "momentum": 5,
         "industry": 5
       }
     },
     {
       "id": "JP-058",
       "group": "のんふぃく！",
-      "rank": 56,
+      "rank": 57,
       "tier": "B",
       "score": 46,
       "metrics": {
@@ -887,14 +843,149 @@
       }
     },
     {
-      "id": "JP-055",
-      "group": "タイトル未定",
-      "rank": 56,
+      "id": "JP-059",
+      "group": "最終未来少女",
+      "rank": 64,
+      "tier": "B",
+      "score": 45,
+      "metrics": {
+        "live": 11,
+        "fandom": 8,
+        "recognition": 7,
+        "streaming_sns": 10,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-060",
+      "group": "BEYOOOOONDS",
+      "rank": 53,
+      "tier": "B",
+      "score": 47,
+      "metrics": {
+        "live": 11,
+        "fandom": 11,
+        "recognition": 9,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 6
+      }
+    },
+    {
+      "id": "JP-061",
+      "group": "CYNHN",
+      "rank": 64,
+      "tier": "B",
+      "score": 45,
+      "metrics": {
+        "live": 14,
+        "fandom": 9,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-062",
+      "group": "GANG PARADE",
+      "rank": 44,
+      "tier": "B",
+      "score": 48,
+      "metrics": {
+        "live": 13,
+        "fandom": 9,
+        "recognition": 9,
+        "streaming_sns": 7,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-063",
+      "group": "SUPER☆GiRLS",
+      "rank": 39,
+      "tier": "B",
+      "score": 49,
+      "metrics": {
+        "live": 11,
+        "fandom": 9,
+        "recognition": 12,
+        "streaming_sns": 7,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-064",
+      "group": "夜光性アミューズ",
+      "rank": 57,
       "tier": "B",
       "score": 46,
       "metrics": {
-        "live": 14,
-        "fandom": 10,
+        "live": 12,
+        "fandom": 9,
+        "recognition": 7,
+        "streaming_sns": 9,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-065",
+      "group": "iScream",
+      "rank": 67,
+      "tier": "B",
+      "score": 44,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 7,
+        "streaming_sns": 10,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-066",
+      "group": "yosugala",
+      "rank": 57,
+      "tier": "B",
+      "score": 46,
+      "metrics": {
+        "live": 11,
+        "fandom": 9,
+        "recognition": 8,
+        "streaming_sns": 7,
+        "momentum": 6,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-067",
+      "group": "UtaGe!",
+      "rank": 74,
+      "tier": "B",
+      "score": 43,
+      "metrics": {
+        "live": 11,
+        "fandom": 9,
+        "recognition": 6,
+        "streaming_sns": 8,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-068",
+      "group": "アンスリューム",
+      "rank": 74,
+      "tier": "B",
+      "score": 43,
+      "metrics": {
+        "live": 12,
+        "fandom": 9,
         "recognition": 6,
         "streaming_sns": 7,
         "momentum": 5,
@@ -904,7 +995,7 @@
     {
       "id": "JP-069",
       "group": "フィロソフィーのダンス",
-      "rank": 56,
+      "rank": 57,
       "tier": "B",
       "score": 46,
       "metrics": {
@@ -917,99 +1008,9 @@
       }
     },
     {
-      "id": "JP-064",
-      "group": "夜光性アミューズ",
-      "rank": 56,
-      "tier": "B",
-      "score": 46,
-      "metrics": {
-        "live": 12,
-        "fandom": 9,
-        "recognition": 7,
-        "streaming_sns": 9,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-061",
-      "group": "CYNHN",
-      "rank": 62,
-      "tier": "B",
-      "score": 45,
-      "metrics": {
-        "live": 14,
-        "fandom": 9,
-        "recognition": 6,
-        "streaming_sns": 6,
-        "momentum": 5,
-        "industry": 5
-      }
-    },
-    {
-      "id": "JP-059",
-      "group": "最終未来少女",
-      "rank": 62,
-      "tier": "B",
-      "score": 45,
-      "metrics": {
-        "live": 11,
-        "fandom": 8,
-        "recognition": 7,
-        "streaming_sns": 10,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-072",
-      "group": "FES☆TIVE",
-      "rank": 64,
-      "tier": "B",
-      "score": 44,
-      "metrics": {
-        "live": 11,
-        "fandom": 9,
-        "recognition": 7,
-        "streaming_sns": 7,
-        "momentum": 5,
-        "industry": 5
-      }
-    },
-    {
-      "id": "JP-020",
-      "group": "SWEET STEADY",
-      "rank": 64,
-      "tier": "B",
-      "score": 44,
-      "metrics": {
-        "live": 10,
-        "fandom": 10,
-        "recognition": 7,
-        "streaming_sns": 8,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-065",
-      "group": "iScream",
-      "rank": 64,
-      "tier": "B",
-      "score": 44,
-      "metrics": {
-        "live": 10,
-        "fandom": 8,
-        "recognition": 7,
-        "streaming_sns": 10,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
       "id": "JP-070",
       "group": "ラフ×ラフ",
-      "rank": 64,
+      "rank": 67,
       "tier": "B",
       "score": 44,
       "metrics": {
@@ -1024,7 +1025,7 @@
     {
       "id": "JP-071",
       "group": "手羽先センセーション",
-      "rank": 64,
+      "rank": 67,
       "tier": "B",
       "score": 44,
       "metrics": {
@@ -1037,29 +1038,74 @@
       }
     },
     {
-      "id": "JP-094",
-      "group": "純情のアフィリア",
-      "rank": 64,
+      "id": "JP-072",
+      "group": "FES☆TIVE",
+      "rank": 67,
       "tier": "B",
       "score": 44,
       "metrics": {
-        "live": 14,
-        "fandom": 7,
-        "recognition": 8,
-        "streaming_sns": 6,
+        "live": 11,
+        "fandom": 9,
+        "recognition": 7,
+        "streaming_sns": 7,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-073",
+      "group": "MyDearDarlin'",
+      "rank": 53,
+      "tier": "B",
+      "score": 47,
+      "metrics": {
+        "live": 15,
+        "fandom": 9,
+        "recognition": 7,
+        "streaming_sns": 7,
         "momentum": 5,
         "industry": 4
       }
     },
     {
-      "id": "JP-067",
-      "group": "UtaGe!",
-      "rank": 70,
+      "id": "JP-074",
+      "group": "ロージークロニクル",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 4,
+        "momentum": 6,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-075",
+      "group": "Task have Fun",
+      "rank": 57,
       "tier": "B",
-      "score": 43,
+      "score": 46,
       "metrics": {
         "live": 11,
         "fandom": 9,
+        "recognition": 8,
+        "streaming_sns": 6,
+        "momentum": 7,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-076",
+      "group": "なみだ色の消しごむ",
+      "rank": 81,
+      "tier": "B",
+      "score": 41,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
         "recognition": 6,
         "streaming_sns": 8,
         "momentum": 5,
@@ -1067,31 +1113,46 @@
       }
     },
     {
-      "id": "JP-099",
-      "group": "chuLa",
-      "rank": 70,
+      "id": "JP-077",
+      "group": "#Mooove!",
+      "rank": 86,
       "tier": "B",
-      "score": 43,
+      "score": 40,
       "metrics": {
-        "live": 16,
+        "live": 7,
         "fandom": 7,
-        "recognition": 5,
-        "streaming_sns": 7,
+        "recognition": 7,
+        "streaming_sns": 10,
         "momentum": 5,
-        "industry": 3
+        "industry": 4
       }
     },
     {
-      "id": "JP-068",
-      "group": "アンスリューム",
-      "rank": 70,
+      "id": "JP-078",
+      "group": "AsIs",
+      "rank": 90,
+      "tier": "C+",
+      "score": 39,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 8,
+        "momentum": 7,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-079",
+      "group": "衛星とカラテア",
+      "rank": 77,
       "tier": "B",
-      "score": 43,
+      "score": 42,
       "metrics": {
         "live": 12,
         "fandom": 9,
         "recognition": 6,
-        "streaming_sns": 7,
+        "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
       }
@@ -1099,7 +1160,7 @@
     {
       "id": "JP-080",
       "group": "NEO JAPONISM",
-      "rank": 73,
+      "rank": 77,
       "tier": "B",
       "score": 42,
       "metrics": {
@@ -1114,7 +1175,7 @@
     {
       "id": "JP-081",
       "group": "Peel the Apple",
-      "rank": 73,
+      "rank": 77,
       "tier": "B",
       "score": 42,
       "metrics": {
@@ -1127,69 +1188,69 @@
       }
     },
     {
-      "id": "JP-079",
-      "group": "衛星とカラテア",
-      "rank": 73,
-      "tier": "B",
-      "score": 42,
-      "metrics": {
-        "live": 12,
-        "fandom": 9,
-        "recognition": 6,
-        "streaming_sns": 6,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-076",
-      "group": "なみだ色の消しごむ",
-      "rank": 76,
-      "tier": "B",
-      "score": 41,
+      "id": "JP-082",
+      "group": "ドラマチックレコード",
+      "rank": 90,
+      "tier": "C+",
+      "score": 39,
       "metrics": {
         "live": 10,
         "fandom": 8,
         "recognition": 6,
-        "streaming_sns": 8,
+        "streaming_sns": 7,
         "momentum": 5,
-        "industry": 4
+        "industry": 3
       }
     },
     {
-      "id": "JP-115",
-      "group": "透色ドロップ",
-      "rank": 76,
-      "tier": "B",
-      "score": 41,
+      "id": "JP-083",
+      "group": "GILTY x GILTY",
+      "rank": 90,
+      "tier": "C+",
+      "score": 39,
       "metrics": {
-        "live": 14,
-        "fandom": 7,
+        "live": 11,
+        "fandom": 8,
         "recognition": 5,
-        "streaming_sns": 5,
-        "momentum": 6,
-        "industry": 4
+        "streaming_sns": 7,
+        "momentum": 5,
+        "industry": 3
       }
     },
     {
-      "id": "JP-077",
-      "group": "#Mooove!",
-      "rank": 78,
+      "id": "JP-084",
+      "group": "MYERA",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 7,
+        "fandom": 5,
+        "recognition": 6,
+        "streaming_sns": 9,
+        "momentum": 5,
+        "industry": 2
+      }
+    },
+    {
+      "id": "JP-085",
+      "group": "THE ORCHESTRA TOKYO",
+      "rank": 86,
       "tier": "B",
       "score": 40,
       "metrics": {
-        "live": 7,
-        "fandom": 7,
-        "recognition": 7,
-        "streaming_sns": 10,
-        "momentum": 5,
+        "live": 11,
+        "fandom": 8,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 6,
         "industry": 4
       }
     },
     {
       "id": "JP-086",
       "group": "KiSS KiSS",
-      "rank": 78,
+      "rank": 86,
       "tier": "B",
       "score": 40,
       "metrics": {
@@ -1204,7 +1265,7 @@
     {
       "id": "JP-087",
       "group": "LinQ",
-      "rank": 78,
+      "rank": 86,
       "tier": "B",
       "score": 40,
       "metrics": {
@@ -1217,24 +1278,24 @@
       }
     },
     {
-      "id": "JP-085",
-      "group": "THE ORCHESTRA TOKYO",
-      "rank": 78,
-      "tier": "B",
-      "score": 40,
+      "id": "JP-088",
+      "group": "TENRIN",
+      "rank": 90,
+      "tier": "C+",
+      "score": 39,
       "metrics": {
         "live": 11,
-        "fandom": 8,
+        "fandom": 7,
         "recognition": 5,
-        "streaming_sns": 6,
-        "momentum": 6,
+        "streaming_sns": 7,
+        "momentum": 5,
         "industry": 4
       }
     },
     {
       "id": "JP-089",
       "group": "#よーよーよー",
-      "rank": 82,
+      "rank": 90,
       "tier": "C+",
       "score": 39,
       "metrics": {
@@ -1247,144 +1308,9 @@
       }
     },
     {
-      "id": "JP-078",
-      "group": "AsIs",
-      "rank": 82,
-      "tier": "C+",
-      "score": 39,
-      "metrics": {
-        "live": 8,
-        "fandom": 7,
-        "recognition": 5,
-        "streaming_sns": 8,
-        "momentum": 7,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-083",
-      "group": "GILTY x GILTY",
-      "rank": 82,
-      "tier": "C+",
-      "score": 39,
-      "metrics": {
-        "live": 11,
-        "fandom": 8,
-        "recognition": 5,
-        "streaming_sns": 7,
-        "momentum": 5,
-        "industry": 3
-      }
-    },
-    {
-      "id": "JP-029",
-      "group": "Rain Tree",
-      "rank": 82,
-      "tier": "C+",
-      "score": 39,
-      "metrics": {
-        "live": 12,
-        "fandom": 7,
-        "recognition": 5,
-        "streaming_sns": 5,
-        "momentum": 5,
-        "industry": 5
-      }
-    },
-    {
-      "id": "JP-088",
-      "group": "TENRIN",
-      "rank": 82,
-      "tier": "C+",
-      "score": 39,
-      "metrics": {
-        "live": 11,
-        "fandom": 7,
-        "recognition": 5,
-        "streaming_sns": 7,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-096",
-      "group": "アップアップガールズ（仮）",
-      "rank": 82,
-      "tier": "C+",
-      "score": 39,
-      "metrics": {
-        "live": 10,
-        "fandom": 7,
-        "recognition": 8,
-        "streaming_sns": 5,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-082",
-      "group": "ドラマチックレコード",
-      "rank": 82,
-      "tier": "C+",
-      "score": 39,
-      "metrics": {
-        "live": 10,
-        "fandom": 8,
-        "recognition": 6,
-        "streaming_sns": 7,
-        "momentum": 5,
-        "industry": 3
-      }
-    },
-    {
-      "id": "JP-093",
-      "group": "ジエメイ",
-      "rank": 89,
-      "tier": "C+",
-      "score": 38,
-      "metrics": {
-        "live": 11,
-        "fandom": 8,
-        "recognition": 5,
-        "streaming_sns": 6,
-        "momentum": 5,
-        "industry": 3
-      }
-    },
-    {
-      "id": "JP-103",
-      "group": "マジカル・パンチライン",
-      "rank": 89,
-      "tier": "C+",
-      "score": 38,
-      "metrics": {
-        "live": 8,
-        "fandom": 7,
-        "recognition": 7,
-        "streaming_sns": 7,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-097",
-      "group": "二丁目の魁カミングアウト",
-      "rank": 89,
-      "tier": "C+",
-      "score": 38,
-      "metrics": {
-        "live": 10,
-        "fandom": 8,
-        "recognition": 6,
-        "streaming_sns": 5,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
       "id": "JP-090",
       "group": "STAiNY",
-      "rank": 92,
+      "rank": 104,
       "tier": "C+",
       "score": 37,
       "metrics": {
@@ -1399,7 +1325,7 @@
     {
       "id": "JP-091",
       "group": "THE ENCORE",
-      "rank": 92,
+      "rank": 104,
       "tier": "C+",
       "score": 37,
       "metrics": {
@@ -1412,54 +1338,54 @@
       }
     },
     {
-      "id": "JP-102",
-      "group": "クマリデパート",
-      "rank": 92,
+      "id": "JP-092",
+      "group": "UN1CON",
+      "rank": 124,
       "tier": "C+",
-      "score": 37,
+      "score": 35,
       "metrics": {
-        "live": 9,
-        "fandom": 7,
-        "recognition": 6,
-        "streaming_sns": 6,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-098",
-      "group": "CiON",
-      "rank": 95,
-      "tier": "C+",
-      "score": 36,
-      "metrics": {
-        "live": 9,
-        "fandom": 7,
+        "live": 6,
+        "fandom": 5,
         "recognition": 5,
-        "streaming_sns": 6,
-        "momentum": 5,
-        "industry": 4
+        "streaming_sns": 10,
+        "momentum": 6,
+        "industry": 3
       }
     },
     {
-      "id": "JP-105",
-      "group": "PIGGS",
-      "rank": 95,
+      "id": "JP-093",
+      "group": "ジエメイ",
+      "rank": 98,
       "tier": "C+",
-      "score": 36,
+      "score": 38,
       "metrics": {
-        "live": 9,
-        "fandom": 7,
-        "recognition": 6,
+        "live": 11,
+        "fandom": 8,
+        "recognition": 5,
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 3
       }
     },
     {
+      "id": "JP-094",
+      "group": "純情のアフィリア",
+      "rank": 67,
+      "tier": "B",
+      "score": 44,
+      "metrics": {
+        "live": 14,
+        "fandom": 7,
+        "recognition": 8,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
       "id": "JP-095",
       "group": "SITUASION",
-      "rank": 95,
+      "rank": 113,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1472,9 +1398,159 @@
       }
     },
     {
+      "id": "JP-096",
+      "group": "アップアップガールズ（仮）",
+      "rank": 90,
+      "tier": "C+",
+      "score": 39,
+      "metrics": {
+        "live": 10,
+        "fandom": 7,
+        "recognition": 8,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-097",
+      "group": "二丁目の魁カミングアウト",
+      "rank": 98,
+      "tier": "C+",
+      "score": 38,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 6,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-098",
+      "group": "CiON",
+      "rank": 113,
+      "tier": "C+",
+      "score": 36,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-099",
+      "group": "chuLa",
+      "rank": 74,
+      "tier": "B",
+      "score": 43,
+      "metrics": {
+        "live": 16,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 7,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-100",
+      "group": "きのホ。",
+      "rank": 113,
+      "tier": "C+",
+      "score": 36,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-101",
+      "group": "カラフルスクリーム",
+      "rank": 113,
+      "tier": "C+",
+      "score": 36,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-102",
+      "group": "クマリデパート",
+      "rank": 104,
+      "tier": "C+",
+      "score": 37,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-103",
+      "group": "マジカル・パンチライン",
+      "rank": 98,
+      "tier": "C+",
+      "score": 38,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 7,
+        "streaming_sns": 7,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-104",
+      "group": "Ma'Scar'Piece",
+      "rank": 124,
+      "tier": "C+",
+      "score": 35,
+      "metrics": {
+        "live": 8,
+        "fandom": 6,
+        "recognition": 5,
+        "streaming_sns": 7,
+        "momentum": 6,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-105",
+      "group": "PIGGS",
+      "rank": 113,
+      "tier": "C+",
+      "score": 36,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
       "id": "JP-106",
       "group": "Sweet Alley",
-      "rank": 95,
+      "rank": 113,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1489,7 +1565,7 @@
     {
       "id": "JP-107",
       "group": "fishbowl",
-      "rank": 95,
+      "rank": 113,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1499,27 +1575,12 @@
         "streaming_sns": 6,
         "momentum": 5,
         "industry": 4
-      }
-    },
-    {
-      "id": "JP-100",
-      "group": "きのホ。",
-      "rank": 95,
-      "tier": "C+",
-      "score": 36,
-      "metrics": {
-        "live": 9,
-        "fandom": 7,
-        "recognition": 6,
-        "streaming_sns": 6,
-        "momentum": 5,
-        "industry": 3
       }
     },
     {
       "id": "JP-108",
       "group": "アップアップガールズ（2）",
-      "rank": 95,
+      "rank": 113,
       "tier": "C+",
       "score": 36,
       "metrics": {
@@ -1529,72 +1590,12 @@
         "streaming_sns": 5,
         "momentum": 5,
         "industry": 4
-      }
-    },
-    {
-      "id": "JP-101",
-      "group": "カラフルスクリーム",
-      "rank": 95,
-      "tier": "C+",
-      "score": 36,
-      "metrics": {
-        "live": 9,
-        "fandom": 7,
-        "recognition": 6,
-        "streaming_sns": 6,
-        "momentum": 5,
-        "industry": 3
-      }
-    },
-    {
-      "id": "JP-112",
-      "group": "KRD8",
-      "rank": 103,
-      "tier": "C+",
-      "score": 35,
-      "metrics": {
-        "live": 8,
-        "fandom": 7,
-        "recognition": 6,
-        "streaming_sns": 5,
-        "momentum": 5,
-        "industry": 4
-      }
-    },
-    {
-      "id": "JP-104",
-      "group": "Ma'Scar'Piece",
-      "rank": 103,
-      "tier": "C+",
-      "score": 35,
-      "metrics": {
-        "live": 8,
-        "fandom": 6,
-        "recognition": 5,
-        "streaming_sns": 7,
-        "momentum": 6,
-        "industry": 3
-      }
-    },
-    {
-      "id": "JP-092",
-      "group": "UN1CON",
-      "rank": 103,
-      "tier": "C+",
-      "score": 35,
-      "metrics": {
-        "live": 6,
-        "fandom": 5,
-        "recognition": 5,
-        "streaming_sns": 10,
-        "momentum": 6,
-        "industry": 3
       }
     },
     {
       "id": "JP-109",
       "group": "キングサリ",
-      "rank": 103,
+      "rank": 124,
       "tier": "C+",
       "score": 35,
       "metrics": {
@@ -1607,9 +1608,24 @@
       }
     },
     {
+      "id": "JP-110",
+      "group": "ハルニシオン",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 4,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
       "id": "JP-111",
       "group": "君に、胸キュン。",
-      "rank": 103,
+      "rank": 124,
       "tier": "C+",
       "score": 35,
       "metrics": {
@@ -1622,9 +1638,24 @@
       }
     },
     {
-      "id": "JP-116",
-      "group": "Gran☆Ciel",
-      "rank": 108,
+      "id": "JP-112",
+      "group": "KRD8",
+      "rank": 124,
+      "tier": "C+",
+      "score": 35,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-113",
+      "group": "NUANCE",
+      "rank": 136,
       "tier": "C+",
       "score": 34,
       "metrics": {
@@ -1637,24 +1668,39 @@
       }
     },
     {
-      "id": "JP-084",
-      "group": "MYERA",
-      "rank": 108,
+      "id": "JP-114",
+      "group": "さよならステイチューン",
+      "rank": 136,
       "tier": "C+",
       "score": 34,
       "metrics": {
-        "live": 7,
-        "fandom": 5,
-        "recognition": 6,
-        "streaming_sns": 9,
+        "live": 8,
+        "fandom": 6,
+        "recognition": 5,
+        "streaming_sns": 7,
         "momentum": 5,
-        "industry": 2
+        "industry": 3
       }
     },
     {
-      "id": "JP-113",
-      "group": "NUANCE",
-      "rank": 108,
+      "id": "JP-115",
+      "group": "透色ドロップ",
+      "rank": 81,
+      "tier": "B",
+      "score": 41,
+      "metrics": {
+        "live": 14,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 6,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-116",
+      "group": "Gran☆Ciel",
+      "rank": 136,
       "tier": "C+",
       "score": 34,
       "metrics": {
@@ -1669,7 +1715,7 @@
     {
       "id": "JP-117",
       "group": "かすみ草とステラ",
-      "rank": 108,
+      "rank": 136,
       "tier": "C+",
       "score": 34,
       "metrics": {
@@ -1682,29 +1728,14 @@
       }
     },
     {
-      "id": "JP-114",
-      "group": "さよならステイチューン",
-      "rank": 108,
+      "id": "JP-118",
+      "group": "すーぱーぷーばぁー!!",
+      "rank": 160,
       "tier": "C+",
-      "score": 34,
+      "score": 32,
       "metrics": {
         "live": 8,
         "fandom": 6,
-        "recognition": 5,
-        "streaming_sns": 7,
-        "momentum": 5,
-        "industry": 3
-      }
-    },
-    {
-      "id": "JP-110",
-      "group": "ハルニシオン",
-      "rank": 108,
-      "tier": "C+",
-      "score": 34,
-      "metrics": {
-        "live": 9,
-        "fandom": 7,
         "recognition": 4,
         "streaming_sns": 6,
         "momentum": 5,
@@ -1712,16 +1743,16 @@
       }
     },
     {
-      "id": "JP-074",
-      "group": "ロージークロニクル",
-      "rank": 108,
+      "id": "JP-119",
+      "group": "点染テンセイ少女。",
+      "rank": 151,
       "tier": "C+",
-      "score": 34,
+      "score": 33,
       "metrics": {
         "live": 8,
-        "fandom": 7,
-        "recognition": 6,
-        "streaming_sns": 4,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 6,
         "momentum": 6,
         "industry": 3
       }
@@ -1729,7 +1760,7 @@
     {
       "id": "JP-120",
       "group": "DREAMING MONSTER",
-      "rank": 115,
+      "rank": 151,
       "tier": "C+",
       "score": 33,
       "metrics": {
@@ -1742,9 +1773,24 @@
       }
     },
     {
+      "id": "JP-121",
+      "group": "Kolokol",
+      "rank": 160,
+      "tier": "C+",
+      "score": 32,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 4,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
       "id": "JP-122",
       "group": "PinkySpice",
-      "rank": 115,
+      "rank": 151,
       "tier": "C+",
       "score": 33,
       "metrics": {
@@ -1759,7 +1805,7 @@
     {
       "id": "JP-123",
       "group": "Ringwanderung",
-      "rank": 115,
+      "rank": 151,
       "tier": "C+",
       "score": 33,
       "metrics": {
@@ -1772,13 +1818,28 @@
       }
     },
     {
-      "id": "JP-119",
-      "group": "点染テンセイ少女。",
-      "rank": 115,
+      "id": "JP-124",
+      "group": "ルルネージュ",
+      "rank": 160,
       "tier": "C+",
-      "score": 33,
+      "score": 32,
       "metrics": {
         "live": 8,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-125",
+      "group": "SAI²Rium",
+      "rank": 160,
+      "tier": "C+",
+      "score": 32,
+      "metrics": {
+        "live": 7,
         "fandom": 6,
         "recognition": 4,
         "streaming_sns": 6,
@@ -1787,13 +1848,253 @@
       }
     },
     {
-      "id": "JP-121",
-      "group": "Kolokol",
-      "rank": 119,
+      "id": "JP-126",
+      "group": "Bunny La Crew",
+      "rank": 169,
       "tier": "C+",
-      "score": 32,
+      "score": 30,
+      "metrics": {
+        "live": 7,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-128",
+      "group": "i-COL",
+      "rank": 104,
+      "tier": "C+",
+      "score": 37,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-129",
+      "group": "アイテムはてるてるのみ",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
       "metrics": {
         "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-130",
+      "group": "アイドルカレッジ",
+      "rank": 64,
+      "tier": "B",
+      "score": 45,
+      "metrics": {
+        "live": 11,
+        "fandom": 9,
+        "recognition": 8,
+        "streaming_sns": 7,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-131",
+      "group": "AOAO",
+      "rank": 169,
+      "tier": "C+",
+      "score": 30,
+      "metrics": {
+        "live": 8,
+        "fandom": 6,
+        "recognition": 3,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-132",
+      "group": "AQUAPLANET",
+      "rank": 187,
+      "tier": "C",
+      "score": 23,
+      "metrics": {
+        "live": 4,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 4,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-133",
+      "group": "Axelight",
+      "rank": 104,
+      "tier": "C+",
+      "score": 37,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-134",
+      "group": "AdamLilith",
+      "rank": 98,
+      "tier": "C+",
+      "score": 38,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 6,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-135",
+      "group": "アルテミスの翼",
+      "rank": 113,
+      "tier": "C+",
+      "score": 36,
+      "metrics": {
+        "live": 10,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-137",
+      "group": "いちごみるく色に染まりたい。",
+      "rank": 167,
+      "tier": "C+",
+      "score": 31,
+      "metrics": {
+        "live": 8,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-139",
+      "group": "Ill",
+      "rank": 151,
+      "tier": "C+",
+      "score": 33,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-140",
+      "group": "限りなく白く",
+      "rank": 169,
+      "tier": "C+",
+      "score": 30,
+      "metrics": {
+        "live": 7,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-141",
+      "group": "Quubi",
+      "rank": 98,
+      "tier": "C+",
+      "score": 38,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 6,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-142",
+      "group": "こみっきゅおん！",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-143",
+      "group": "コングラッチェ！",
+      "rank": 151,
+      "tier": "C+",
+      "score": 33,
+      "metrics": {
+        "live": 9,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-144",
+      "group": "さとりモンスター",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-145",
+      "group": "zanka",
+      "rank": 151,
+      "tier": "C+",
+      "score": 33,
+      "metrics": {
+        "live": 9,
         "fandom": 7,
         "recognition": 4,
         "streaming_sns": 5,
@@ -1802,24 +2103,54 @@
       }
     },
     {
-      "id": "JP-125",
-      "group": "SAI²Rium",
-      "rank": 119,
+      "id": "JP-146",
+      "group": "シャニムニ＝パレード",
+      "rank": 104,
       "tier": "C+",
-      "score": 32,
+      "score": 37,
       "metrics": {
-        "live": 7,
-        "fandom": 6,
-        "recognition": 4,
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
         "streaming_sns": 6,
-        "momentum": 6,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-147",
+      "group": "Jewel☆Garden",
+      "rank": 182,
+      "tier": "C",
+      "score": 24,
+      "metrics": {
+        "live": 5,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 4,
+        "momentum": 5,
         "industry": 3
       }
     },
     {
-      "id": "JP-118",
-      "group": "すーぱーぷーばぁー!!",
-      "rank": 119,
+      "id": "JP-148",
+      "group": "シンデレラ宣言！",
+      "rank": 98,
+      "tier": "C+",
+      "score": 38,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 6,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-149",
+      "group": "すてねこキャッツ",
+      "rank": 160,
       "tier": "C+",
       "score": 32,
       "metrics": {
@@ -1832,9 +2163,54 @@
       }
     },
     {
-      "id": "JP-124",
-      "group": "ルルネージュ",
-      "rank": 119,
+      "id": "JP-151",
+      "group": "すべての瞬間は君だった。",
+      "rank": 187,
+      "tier": "C",
+      "score": 23,
+      "metrics": {
+        "live": 4,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 4,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-153",
+      "group": "selfish",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-154",
+      "group": "W.ダブルヴィー",
+      "rank": 90,
+      "tier": "C+",
+      "score": 39,
+      "metrics": {
+        "live": 11,
+        "fandom": 8,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-158",
+      "group": "Tohkei",
+      "rank": 160,
       "tier": "C+",
       "score": 32,
       "metrics": {
@@ -1847,9 +2223,189 @@
       }
     },
     {
-      "id": "JP-126",
-      "group": "Bunny La Crew",
-      "rank": 123,
+      "id": "JP-159",
+      "group": "ドレスコード",
+      "rank": 177,
+      "tier": "C",
+      "score": 26,
+      "metrics": {
+        "live": 6,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-160",
+      "group": "ナナコロビヤオキ",
+      "rank": 177,
+      "tier": "C",
+      "score": 26,
+      "metrics": {
+        "live": 6,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-161",
+      "group": "虹色の飛行少女",
+      "rank": 124,
+      "tier": "C+",
+      "score": 35,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-162",
+      "group": "ネコプラpixx.",
+      "rank": 124,
+      "tier": "C+",
+      "score": 35,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-164",
+      "group": "hakanai",
+      "rank": 182,
+      "tier": "C",
+      "score": 24,
+      "metrics": {
+        "live": 5,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 4,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-165",
+      "group": "buGG",
+      "rank": 151,
+      "tier": "C+",
+      "score": 33,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-167",
+      "group": "パラディーク",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-169",
+      "group": "ハレとハレ！",
+      "rank": 182,
+      "tier": "C",
+      "score": 24,
+      "metrics": {
+        "live": 5,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 4,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-170",
+      "group": "Pixel Ribbon",
+      "rank": 169,
+      "tier": "C+",
+      "score": 30,
+      "metrics": {
+        "live": 5,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 5,
+        "momentum": 7,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-171",
+      "group": "びっくえんじぇる",
+      "rank": 124,
+      "tier": "C+",
+      "score": 35,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-172",
+      "group": "HIBANA",
+      "rank": 179,
+      "tier": "C",
+      "score": 25,
+      "metrics": {
+        "live": 5,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-173",
+      "group": "BYBBiT",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-174",
+      "group": "himawari(船橋)",
+      "rank": 169,
       "tier": "C+",
       "score": 30,
       "metrics": {
@@ -1857,6 +2413,426 @@
         "fandom": 6,
         "recognition": 4,
         "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-175",
+      "group": "Falench.",
+      "rank": 169,
+      "tier": "C+",
+      "score": 30,
+      "metrics": {
+        "live": 7,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-176",
+      "group": "feelNEO",
+      "rank": 104,
+      "tier": "C+",
+      "score": 37,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-177",
+      "group": "風男塾",
+      "rank": 57,
+      "tier": "B",
+      "score": 46,
+      "metrics": {
+        "live": 10,
+        "fandom": 9,
+        "recognition": 10,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 6
+      }
+    },
+    {
+      "id": "JP-178",
+      "group": "フューチャーサイダー",
+      "rank": 81,
+      "tier": "B",
+      "score": 41,
+      "metrics": {
+        "live": 11,
+        "fandom": 8,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 7,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-179",
+      "group": "PRSMIN",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-180",
+      "group": "FULIT BOX",
+      "rank": 179,
+      "tier": "C",
+      "score": 25,
+      "metrics": {
+        "live": 5,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-182",
+      "group": "Hey!Mommy!",
+      "rank": 124,
+      "tier": "C+",
+      "score": 35,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-184",
+      "group": "ポンコツコンポ",
+      "rank": 169,
+      "tier": "C+",
+      "score": 30,
+      "metrics": {
+        "live": 7,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-186",
+      "group": "My_Stage",
+      "rank": 182,
+      "tier": "C",
+      "score": 24,
+      "metrics": {
+        "live": 4,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 4,
+        "momentum": 6,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-187",
+      "group": "MAGICAL SPEC",
+      "rank": 124,
+      "tier": "C+",
+      "score": 35,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-188",
+      "group": "まねきケチャ",
+      "rank": 53,
+      "tier": "B",
+      "score": 47,
+      "metrics": {
+        "live": 12,
+        "fandom": 10,
+        "recognition": 10,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-189",
+      "group": "瞬きもせず",
+      "rank": 136,
+      "tier": "C+",
+      "score": 34,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-190",
+      "group": "豆柴の大群",
+      "rank": 81,
+      "tier": "B",
+      "score": 41,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 9,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-192",
+      "group": "Mirror,Mirror",
+      "rank": 104,
+      "tier": "C+",
+      "score": 37,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-193",
+      "group": "メイビーME",
+      "rank": 113,
+      "tier": "C+",
+      "score": 36,
+      "metrics": {
+        "live": 10,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-195",
+      "group": "MORE*",
+      "rank": 113,
+      "tier": "C+",
+      "score": 36,
+      "metrics": {
+        "live": 9,
+        "fandom": 8,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-196",
+      "group": "YOLOZ",
+      "rank": 179,
+      "tier": "C",
+      "score": 25,
+      "metrics": {
+        "live": 5,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-198",
+      "group": "ラナキュラ",
+      "rank": 151,
+      "tier": "C+",
+      "score": 33,
+      "metrics": {
+        "live": 8,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-199",
+      "group": "RAViDAVi",
+      "rank": 182,
+      "tier": "C",
+      "score": 24,
+      "metrics": {
+        "live": 4,
+        "fandom": 4,
+        "recognition": 3,
+        "streaming_sns": 4,
+        "momentum": 6,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-200",
+      "group": "愛乙女★DOLL",
+      "rank": 67,
+      "tier": "B",
+      "score": 44,
+      "metrics": {
+        "live": 11,
+        "fandom": 9,
+        "recognition": 8,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-202",
+      "group": "LINKL PLANET",
+      "rank": 104,
+      "tier": "C+",
+      "score": 37,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 6,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 4
+      }
+    },
+    {
+      "id": "JP-203",
+      "group": "りんご娘",
+      "rank": 81,
+      "tier": "B",
+      "score": 41,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 8,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-204",
+      "group": "RiNCENT♯",
+      "rank": 124,
+      "tier": "C+",
+      "score": 35,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-205",
+      "group": "ROOKEY♡ROOKEYS",
+      "rank": 176,
+      "tier": "C",
+      "score": 28,
+      "metrics": {
+        "live": 7,
+        "fandom": 5,
+        "recognition": 3,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-206",
+      "group": "ルージュブック",
+      "rank": 167,
+      "tier": "C+",
+      "score": 31,
+      "metrics": {
+        "live": 8,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 5,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-207",
+      "group": "Luce Twinkle Wink☆",
+      "rank": 77,
+      "tier": "B",
+      "score": 42,
+      "metrics": {
+        "live": 10,
+        "fandom": 8,
+        "recognition": 8,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 5
+      }
+    },
+    {
+      "id": "JP-211",
+      "group": "ワッツ◎さーくる",
+      "rank": 160,
+      "tier": "C+",
+      "score": 32,
+      "metrics": {
+        "live": 8,
+        "fandom": 6,
+        "recognition": 4,
+        "streaming_sns": 6,
+        "momentum": 5,
+        "industry": 3
+      }
+    },
+    {
+      "id": "JP-212",
+      "group": "Onephony",
+      "rank": 124,
+      "tier": "C+",
+      "score": 35,
+      "metrics": {
+        "live": 9,
+        "fandom": 7,
+        "recognition": 5,
+        "streaming_sns": 6,
         "momentum": 5,
         "industry": 3
       }
